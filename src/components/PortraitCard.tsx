@@ -55,13 +55,6 @@ const traits: Trait[] = [
   },
 ]
 
-const journeyStops = [
-  { city: 'Changsha', color: '#D193A8' },
-  { city: 'Vancouver', color: '#B98ACB' },
-  { city: 'Toronto', color: '#8FAE8B' },
-  { city: 'Bay Area', color: '#C79A4B' },
-]
-
 function SketchArrow({
   side,
   active,
@@ -396,21 +389,6 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
               ))}
             </div>
 
-            <a
-              href="#journey"
-              tabIndex={flipped ? 0 : -1}
-              onClick={(e) => e.stopPropagation()}
-              className="group/journey mx-auto mt-2 flex w-fit flex-wrap items-center justify-center gap-x-1.5 gap-y-1 rounded-full px-3 py-1.5 text-[12px] text-plum-muted transition-colors hover:text-plum sm:text-[13px]"
-              aria-label="See my journey — Changsha to the Bay Area"
-            >
-              {journeyStops.map((s, i) => (
-                <span key={s.city} className="flex items-center gap-1.5">
-                  {i > 0 && <span className="text-plum-faint/60">→</span>}
-                  <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ backgroundColor: s.color }} />
-                  <span className="underline-offset-4 group-hover/journey:underline">{s.city}</span>
-                </span>
-              ))}
-            </a>
             {flipped && flipLabel}
           </div>
         </div>

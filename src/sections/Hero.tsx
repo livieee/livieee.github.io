@@ -70,27 +70,45 @@ export function Hero() {
         }}
       />
 
-      {/* 底部淡路线：Changsha → Vancouver → Toronto → Bay Area（填充首屏底部留白，呼应 Journey） */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-3 hidden opacity-70 md:block">
-        <svg viewBox="0 0 1200 130" className="mx-auto h-[110px] w-full max-w-[1300px]" fill="none">
+      {/* 底部淡地图：手绘大陆轮廓 + 跨太平洋航线 Changsha → Vancouver → Toronto → Bay Area */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-2 hidden opacity-70 md:block">
+        <svg viewBox="0 0 1200 240" className="mx-auto h-[160px] w-full max-w-[1300px]" fill="none">
+          {/* 亚洲大陆（示意轮廓） */}
           <path
-            d="M70 92 C 220 102, 320 60, 430 68 C 550 77, 650 48, 770 58 C 890 68, 1010 42, 1125 52"
-            stroke="#B98ACB"
-            strokeOpacity="0.35"
-            strokeWidth="1.6"
-            strokeDasharray="2 7"
+            d="M38 150 C 52 92, 120 58, 196 68 C 262 77, 310 112, 300 158 C 290 202, 220 226, 140 214 C 80 204, 28 188, 38 150 Z"
+            fill="#D193A8"
+            fillOpacity="0.07"
+            stroke="#D193A8"
+            strokeOpacity="0.28"
+            strokeWidth="1.2"
+            strokeDasharray="4 6"
             strokeLinecap="round"
           />
+          {/* 北美大陆（示意轮廓） */}
+          <path
+            d="M620 118 C 668 52, 800 30, 936 50 C 1058 68, 1168 106, 1158 168 C 1146 222, 1004 242, 872 228 C 748 214, 646 184, 620 118 Z"
+            fill="#B98ACB"
+            fillOpacity="0.07"
+            stroke="#B98ACB"
+            strokeOpacity="0.28"
+            strokeWidth="1.2"
+            strokeDasharray="4 6"
+            strokeLinecap="round"
+          />
+          {/* 航线：跨太平洋 + 境内两段 */}
+          <path d="M208 140 Q 440 36 668 96" stroke="#B98ACB" strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="2 7" strokeLinecap="round" />
+          <path d="M668 96 Q 860 60 1022 128" stroke="#8FAE8B" strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="2 7" strokeLinecap="round" />
+          <path d="M1022 128 Q 868 210 700 172" stroke="#C79A4B" strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="2 7" strokeLinecap="round" />
           {[
-            { x: 70, y: 92, c: '#D193A8', label: 'Changsha' },
-            { x: 430, y: 68, c: '#B98ACB', label: 'Vancouver' },
-            { x: 770, y: 58, c: '#8FAE8B', label: 'Toronto' },
-            { x: 1125, y: 52, c: '#C79A4B', label: 'Bay Area' },
+            { x: 208, y: 140, c: '#D193A8', label: 'Changsha', lx: -78, ly: 5 },
+            { x: 668, y: 96, c: '#B98ACB', label: 'Vancouver', lx: -88, ly: -6 },
+            { x: 1022, y: 128, c: '#8FAE8B', label: 'Toronto', lx: 14, ly: -2 },
+            { x: 700, y: 172, c: '#C79A4B', label: 'Bay Area', lx: -20, ly: 26 },
           ].map((s) => (
             <g key={s.label}>
-              <circle cx={s.x} cy={s.y} r="3.5" fill={s.c} fillOpacity="0.75" />
-              <circle cx={s.x} cy={s.y} r="7.5" fill="none" stroke={s.c} strokeOpacity="0.35" strokeWidth="1" strokeDasharray="2 3" />
-              <text x={s.x + 13} y={s.y + 5} className="font-hand" fontSize="15" fill="#8A6E84" fillOpacity="0.75">
+              <circle cx={s.x} cy={s.y} r="3.5" fill={s.c} fillOpacity="0.8" />
+              <circle cx={s.x} cy={s.y} r="7.5" fill="none" stroke={s.c} strokeOpacity="0.4" strokeWidth="1" strokeDasharray="2 3" />
+              <text x={s.x + s.lx} y={s.y + s.ly} className="font-hand" fontSize="15" fill="#8A6E84" fillOpacity="0.8">
                 {s.label}
               </text>
             </g>
