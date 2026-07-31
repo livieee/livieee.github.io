@@ -27,8 +27,10 @@ export function Navigation() {
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Main">
-        <a href="#top" className="font-serif text-lg font-medium tracking-tight text-plum transition-colors hover:text-orchid">
-          Olivia Xiao
+        <a href="#top" className="group/logo flex items-baseline gap-2 font-serif text-lg font-medium tracking-tight text-plum">
+          <span aria-hidden className="text-sm text-orchid/70 transition-transform duration-300 group-hover/logo:-translate-y-0.5">⌐</span>
+          <span>Hi, I'm Olivia</span>
+          <span aria-hidden className="text-sm text-orchid/70 transition-transform duration-300 group-hover/logo:translate-x-0.5 group-hover/logo:translate-y-0.5">↘</span>
         </a>
         <div className="hidden items-center gap-7 md:flex">
           {LINKS.map((l) => (

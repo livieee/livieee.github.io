@@ -83,7 +83,17 @@ export function Hero() {
               <motion.span {...rise(0.3)} className="block">
                 User Empathy
               </motion.span>
-              <motion.span {...rise(0.42)} className="block italic">
+              <motion.span {...rise(0.42)} className="relative block italic">
+                {/* 行首星形点缀（沿用旧版 four-point star） */}
+                <svg
+                  aria-hidden
+                  viewBox="0 0 20 20"
+                  className="absolute -left-6 top-1/2 h-[14px] w-[14px] -translate-y-1/2 md:-left-9 md:h-[18px] md:w-[18px]"
+                  fill="#D193A8"
+                  fillOpacity="0.55"
+                >
+                  <path d="M10 1 l2.2 6.8 6.8 2.2 -6.8 2.2 -2.2 6.8 -2.2 -6.8 -6.8 -2.2 6.8 -2.2 Z" />
+                </svg>
                 <span className="bg-[linear-gradient(100deg,#D193A8_0%,#B98ACB_34%,#9DB8E8_68%,#DECDA6_100%)] bg-clip-text text-transparent">
                   Meaningful Connection
                 </span>
