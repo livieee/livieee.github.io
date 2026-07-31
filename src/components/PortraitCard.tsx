@@ -11,6 +11,8 @@ type Trait = {
   heading: string
   keyword: string
   sentence: string
+  /** 补充小字（如地域范围） */
+  extra?: string
 }
 
 const traits: Trait[] = [
@@ -19,36 +21,37 @@ const traits: Trait[] = [
     side: 'left',
     color: '#D193A8',
     num: '01',
-    heading: 'Listen deeply',
+    heading: 'Notice what matters',
     keyword: 'customer-centric',
-    sentence: 'listens for the need behind the request',
+    sentence: 'listen for the need behind the request',
   },
   {
     word: 'connector',
     side: 'right',
     color: '#B98ACB',
     num: '02',
-    heading: 'Connect thoughtfully',
+    heading: 'Connect the dots',
     keyword: 'connector',
-    sentence: 'brings people, products & possibilities together',
+    sentence: 'bring people, products & possibilities together',
   },
   {
     word: 'builder',
     side: 'left',
     color: '#8FAE8B',
     num: '03',
-    heading: 'Build practically',
+    heading: 'Create the path forward',
     keyword: 'builder',
-    sentence: 'turns ideas into products, programs & clear next steps',
+    sentence: 'products, programs & practical next steps',
   },
   {
     word: 'cross-cultural',
     side: 'right',
     color: '#C79A4B',
     num: '04',
-    heading: 'Adapt thoughtfully',
+    heading: 'Adapt across contexts',
     keyword: 'cross-cultural',
-    sentence: 'works thoughtfully across cultures, disciplines, & contexts',
+    sentence: 'work across cultures, disciplines & contexts',
+    extra: 'China · Canada · United States',
   },
 ]
 
@@ -58,53 +61,6 @@ const journeyStops = [
   { city: 'Toronto', color: '#8FAE8B' },
   { city: 'Bay Area', color: '#C79A4B' },
 ]
-
-function SketchArrow({
-  side,
-  active,
-  animate,
-  delay,
-  color,
-}: {
-  side: 'left' | 'right'
-  active: boolean
-  animate: boolean
-  delay: number
-  color: string
-}) {
-  return (
-    <svg
-      viewBox="0 0 44 22"
-      className={`h-[12px] w-[22px] overflow-visible transition-colors duration-300 sm:h-[14px] sm:w-[26px] lg:h-[16px] lg:w-[30px] ${
-        side === 'right' ? '-scale-x-100' : ''
-      }`}
-      style={{ color: active ? color : `${color}99` }}
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M3 19 C 15 21, 28 15, 40 4"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        pathLength={1}
-        strokeDasharray={1}
-        strokeDashoffset={animate ? undefined : 0}
-        style={animate ? { animation: `arrow-draw 0.5s ease-out ${delay}s both` } : undefined}
-      />
-      <path
-        d="M40 4 l-8.5 1.2 M40 4 l-3.2 7"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        pathLength={1}
-        strokeDasharray={1}
-        strokeDashoffset={animate ? undefined : 0}
-        style={animate ? { animation: `arrow-draw 0.3s ease-out ${delay + 0.32}s both` } : undefined}
-      />
-    </svg>
-  )
-}
 
 const FLIP_CSS = `
 .flip-scene { perspective: 1400px; }
@@ -144,6 +100,14 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
     }, 1450)
     return () => window.clearTimeout(timer)
   }, [])
+
+  // hover：卡片轻微上浮并旋转至水平；离开恢复 2° 倾斜
+  useEffect(() => {
+    const el = sceneRef.current
+    if (!el || reduce) return
+    el.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)'
+    el.style.transform = hovering ? 'rotate(0deg) translateY(-6px)' : 'rotate(2deg)'
+  }, [hovering, reduce])
 
   const flip = () => {
     setTilt({ rx: 0, ry: 0 })
@@ -197,9 +161,6 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
         >
           {t.word}
         </p>
-        <div className={`mt-1 flex ${t.side === 'left' ? 'justify-end' : 'justify-start'}`}>
-          <SketchArrow side={t.side} active={isActive} animate={animateArrows} delay={enter.delay + 0.25} color={t.color} />
-        </div>
       </motion.div>
     )
   }
@@ -217,7 +178,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
         transform: 'translate(14px, -140%) rotate(4deg)',
       }}
     >
-      {flipped ? 'back to me ↩' : 'flip me ↗'}
+      {flipped ? 'back to Olivia ↩' : 'flip me ↗'}
     </span>
   )
   // 键盘 / 触屏：无光标可跟，聚焦或点按时固定在卡片顶角
@@ -228,7 +189,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
         hovering ? 'opacity-0' : ''
       } opacity-0 group-focus-visible/card:opacity-100 [@media(hover:none)]:opacity-100`}
     >
-      {flipped ? 'back to me ↩' : 'flip me ↗'}
+      {flipped ? 'back to Olivia ↩' : 'Tap to flip'}
     </span>
   )
   const flipLabel = (
@@ -250,6 +211,13 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
       onPointerLeave={onTiltLeave}
     >
       <style>{FLIP_CSS}</style>
+      {/* hover 时的柔和粉紫光晕 */}
+      <div
+        aria-hidden
+        className={`absolute -inset-5 -z-10 rounded-[2.5rem] bg-gradient-to-br from-rose/35 via-orchid/30 to-lavender-deep/35 blur-2xl transition-opacity duration-700 ${
+          hovering && !flipped ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
       <div
         role="button"
         tabIndex={0}
@@ -274,7 +242,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
           {/* ============ 正面 WHO I AM ============ */}
           <div
             aria-hidden={flipped}
-            className={`flip-face flip-front relative rounded-2xl border border-white/70 paper-grid p-4 shadow-[0_30px_70px_-28px_rgba(90,63,86,0.5)] transition-opacity duration-500 sm:p-6 ${
+            className={`flip-face flip-front relative rounded-2xl border border-white/70 paper-grid p-4 shadow-[0_44px_96px_-34px_rgba(90,63,86,0.6)] transition-opacity duration-500 sm:p-6 ${
               reduce && flipped ? 'pointer-events-none opacity-0' : 'opacity-100'
             }`}
           >
@@ -319,11 +287,11 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
               <div className="flex flex-col justify-around py-6 pr-0.5 sm:py-8 sm:pr-1">
                 {traits.filter((t) => t.side === 'left').map((t) => frontNote(t, traits.indexOf(t)))}
               </div>
-              <div className="relative w-[196px] sm:w-[204px] lg:w-[232px] xl:w-[252px]">
+              <div className="relative w-[220px] overflow-hidden rounded-xl sm:w-[236px] lg:w-[276px] xl:w-[300px]">
                 <img
                   src="/images/photo-gallery-hero.jpg"
                   alt="Olivia (Zerun) Xiao holding a red book at the museum"
-                  className="aspect-[3/4] w-full -rotate-1 rounded-xl object-cover shadow-[0_18px_40px_-16px_rgba(90,63,86,0.45)]"
+                  className="aspect-[3/4] w-full -rotate-1 rounded-xl object-cover shadow-[0_18px_40px_-16px_rgba(90,63,86,0.45)] transition-transform duration-700 ease-out group-hover/card:scale-[1.04]"
                 />
               </div>
               <div className="flex flex-col justify-around py-6 pl-0.5 sm:py-8 sm:pl-1">
@@ -332,7 +300,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
             </div>
 
             <p className="mt-4 pb-3 text-center font-hand text-[15px] text-plum-muted sm:text-[16px]">
-              listen deeply · connect thoughtfully · build practically
+              curious about people & possibilities
             </p>
             {!flipped && flipLabel}
           </div>
@@ -341,7 +309,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
           <div
             aria-hidden={!flipped}
             inert={!flipped ? true : undefined}
-            className={`flip-face flip-back absolute inset-0 flex flex-col rounded-2xl border border-white/70 p-5 shadow-[0_30px_70px_-28px_rgba(90,63,86,0.5)] transition-opacity duration-500 sm:p-7 ${
+            className={`flip-face flip-back absolute inset-0 flex flex-col rounded-2xl border border-white/70 p-5 shadow-[0_44px_96px_-34px_rgba(90,63,86,0.6)] transition-opacity duration-500 sm:p-7 ${
               reduce && !flipped ? 'pointer-events-none opacity-0' : 'opacity-100'
             }`}
             style={{
@@ -370,13 +338,16 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
                     <p className="mt-0.5 text-[12px] leading-snug text-plum-muted sm:text-[12.5px] lg:text-[13px]">
                       {t.sentence}
                     </p>
+                    {t.extra && (
+                      <p className="mt-0.5 text-[11px] tracking-wide text-plum-faint sm:text-[11.5px]">{t.extra}</p>
+                    )}
                   </div>
                 </div>
               ))}
             </div>
 
             <a
-              href="#/journey"
+              href="#journey"
               tabIndex={flipped ? 0 : -1}
               onClick={(e) => e.stopPropagation()}
               className="group/journey mx-auto mt-2 flex w-fit flex-wrap items-center justify-center gap-x-1.5 gap-y-1 rounded-full px-3 py-1.5 text-[11px] text-plum-muted transition-colors hover:text-plum sm:text-[12px]"
@@ -389,7 +360,6 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
                   <span className="underline-offset-4 group-hover/journey:underline">{s.city}</span>
                 </span>
               ))}
-              <span className="text-plum-faint/60">→ …</span>
             </a>
             {flipped && flipLabel}
           </div>

@@ -4,37 +4,37 @@ import { AuroraCanvas } from '@/components/AuroraCanvas'
 import { LetterName, type LetterPhoto } from '@/components/LetterName'
 import { PortraitCard } from '@/components/PortraitCard'
 
-/** 字母照片：个人故事，不是技能说明 */
-const LETTER_PHOTOS: LetterPhoto[] = [
+/** 字母照片：O-L-I-V-I-A 一字一故事（不与右侧主卡照片重复） */
+const LETTER_PHOTOS: (LetterPhoto | null)[] = [
   {
-    src: '/images/photo-conference.jpg',
-    alt: 'Olivia at an AI conference, exploring emerging technology',
-    caption: 'curious about what technology could become',
+    src: '/images/photo-overview.jpg',
+    alt: 'A handwritten checklist of what Olivia cares about',
+    caption: 'what I care about ✦',
+  },
+  {
+    src: '/images/photo-friends.jpg',
+    alt: 'Sharing a rooftop dinner with friends',
+    caption: 'share moments with friends',
+  },
+  {
+    src: '/images/photo-portrait.jpg',
+    alt: 'Olivia, a simple selfie',
+    caption: "hi, that's me ✦",
   },
   {
     src: '/images/photo-graduation.jpg',
-    alt: 'Olivia with classmates on graduation day at UBC',
-    caption: 'the people who make the journey worthwhile',
+    alt: 'Graduation day at UBC in Vancouver',
+    caption: 'Vancouver, where it began',
   },
   {
-    src: '/images/photo-gallery.jpg',
-    alt: 'Olivia spending a slow afternoon at the museum',
-    caption: 'design, culture & slow museum afternoons',
-  },
-  {
-    src: '/images/photo-cmu-graduation.jpg',
-    alt: 'Olivia at her CMU graduation in the Bay Area',
-    caption: 'new places, new contexts, new possibilities',
+    src: '/images/photo-cmu-friends.jpg',
+    alt: 'Olivia with friends at CMU graduation',
+    caption: 'CMU days 🎓',
   },
   {
     src: '/images/photo-conference.jpg',
-    alt: 'Olivia at a professional builder community event',
-    caption: 'learning alongside builders and communities',
-  },
-  {
-    src: '/images/photo-gallery-hero.jpg',
-    alt: 'Olivia holding a red book, an everyday moment',
-    caption: 'finding meaning in the small things',
+    alt: 'Olivia at a global AI technology conference',
+    caption: 'AI conference days',
   },
 ]
 
@@ -45,6 +45,7 @@ const LETTER_PHOTOS: LetterPhoto[] = [
 export function Hero() {
   const reduce = useReducedMotion()
   const [nameTouched, setNameTouched] = useState(false)
+  const [hintGone, setHintGone] = useState(false)
 
   const rise = (delay: number) =>
     reduce
@@ -57,8 +58,8 @@ export function Hero() {
 
   return (
     <section id="top" className="grain relative overflow-hidden">
-      {/* 珍珠极光：暖象牙底 + 腮红粉/浅紫弥散 */}
-      <AuroraCanvas className="absolute inset-0 h-full w-full" />
+      {/* 珍珠极光：暖象牙底 + 腮红粉/浅紫弥散（降透明度提高文字对比） */}
+      <AuroraCanvas className="absolute inset-0 h-full w-full opacity-[0.85]" />
       {/* 极淡网格线 */}
       <div
         aria-hidden
@@ -68,46 +69,35 @@ export function Hero() {
           WebkitMaskImage: 'radial-gradient(ellipse at 50% 40%, black 30%, transparent 78%)',
         }}
       />
-      {/* 克制的星标点缀 */}
-      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full" fill="none">
-        <g fill="#D193A8" fillOpacity="0.35">
-          <path d="M240,240 l3,7 7,3 -7,3 -3,7 -3,-7 -7,-3 7,-3 Z" />
-          <path d="M1290,560 l2.4,5.6 5.6,2.4 -5.6,2.4 -2.4,5.6 -2.4,-5.6 -5.6,-2.4 5.6,-2.4 Z" />
-        </g>
-        <g fill="#B98ACB" fillOpacity="0.3">
-          <path d="M860,170 l2.6,6.2 6.2,2.6 -6.2,2.6 -2.6,6.2 -2.6,-6.2 -6.2,-2.6 6.2,-2.6 Z" />
-        </g>
-      </svg>
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-[1400px] flex-col justify-center px-6 py-24 md:px-10 md:py-28">
-        <div className="grid items-center gap-12 md:grid-cols-[59fr_41fr] md:gap-8 lg:gap-10">
-          {/* 左栏 56% */}
+      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-40px)] max-w-[1400px] flex-col justify-center px-6 py-20 md:px-10 md:py-24">
+        <div className="grid items-center gap-12 md:grid-cols-[49fr_43fr] md:gap-[8%]">
+          {/* 左栏 49% */}
           <div>
             <motion.p {...rise(0.15)} className="label-text flex items-center gap-3 whitespace-nowrap">
               <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-orchid" />
-              <span className="text-[11px] tracking-[0.22em] md:text-[12px]">AI Product · Partner Programs · Ecosystem</span>
+              <span className="text-[11px] tracking-[0.22em] md:text-[12px]">AI Product · Programs · Partnerships</span>
             </motion.p>
 
-            <h1 className="mt-5 font-serif text-[clamp(2.3rem,4.9vw,4rem)] font-light leading-[1.09] tracking-[-0.015em] text-plum">
+            <h1 className="mt-5 font-serif text-[clamp(2.1rem,4.1vw,3.5rem)] font-light leading-[1.09] tracking-[-0.015em] text-plum">
               <motion.span {...rise(0.3)} className="block">
-                AI Product.
+                User Empathy
               </motion.span>
               <motion.span {...rise(0.42)} className="block italic">
                 <span className="bg-[linear-gradient(100deg,#D193A8_0%,#B98ACB_34%,#9DB8E8_68%,#DECDA6_100%)] bg-clip-text text-transparent">
-                  Human Connection.
+                  Meaningful Connection
                 </span>
               </motion.span>
               <motion.span {...rise(0.54)} className="block">
-                Meaningful Growth.
+                Ideas in Motion.
               </motion.span>
             </h1>
 
-            <motion.p
-              {...rise(0.72)}
-              className="mt-5 max-w-[560px] text-base leading-relaxed text-plum-muted md:text-lg"
-            >
-              I help emerging AI products become easier to understand, adopt, and
-              grow through thoughtful GTM and partnerships.
+            {/* 工作路径小标语：标题之后、按钮之前，视觉权重低于按钮 */}
+            <motion.p {...rise(0.7)} className="mt-4 font-hand text-[17px] text-plum-muted/90 md:text-[18px]">
+              insight <span aria-hidden className="text-plum-faint">→</span> alignment{' '}
+              <span aria-hidden className="text-plum-faint">→</span> momentum{' '}
+              <span aria-hidden className="text-orchid">✦</span>
             </motion.p>
 
             {/* CTA */}
@@ -132,30 +122,32 @@ export function Hero() {
               <PortraitCard animateArrows={!reduce} />
             </motion.div>
 
-            {/* 交互名字：保持在首屏内，不抢标题 */}
-            <div className="group/name relative mt-7 w-fit">
-              {/* 极简提示：鼠标进入姓名区域即淡出 */}
-              <motion.span
-                {...rise(1.7)}
+            {/* 交互签名：缩小 ~20%，按钮之下的个人签名而非第二标题 */}
+            <div
+              className="group/name relative mt-7 w-fit"
+              onPointerEnter={() => {
+                if (!nameTouched) {
+                  setNameTouched(true)
+                  window.setTimeout(() => setHintGone(true), 2400)
+                }
+              }}
+            >
+              {/* 首次进入时短暂显示一次的手写提示 */}
+              <span
                 aria-hidden
-                className={`pointer-events-none absolute -top-5 right-1 flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.22em] text-plum-faint/70 transition-opacity duration-500 group-hover/name:opacity-0 md:-right-6 ${
-                  nameTouched ? 'opacity-0' : ''
+                className={`pointer-events-none absolute -top-7 left-2 rotate-[-3deg] whitespace-nowrap font-hand text-[15px] text-orchid transition-opacity duration-700 ${
+                  nameTouched && !hintGone ? 'opacity-100' : 'opacity-0'
                 }`}
               >
-                <span className="hidden md:inline">Hover ↗</span>
-                <span className="md:hidden">Tap ↗</span>
-                <svg viewBox="0 0 34 14" className="h-[10px] w-[22px] text-plum-faint/60" fill="none">
-                  <path d="M2 11 C 10 12, 20 9, 30 3 M30 3 l-6 0.6 M30 3 l-1.8 5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                </svg>
-              </motion.span>
+                a little story in every letter ✦
+              </span>
               <h2 className="sr-only">Olivia</h2>
               <div aria-hidden className="leading-none" data-cursor="DISCOVER">
                 <LetterName
                   text="OLIVIA"
                   photos={LETTER_PHOTOS}
                   baseDelay={1.35}
-                  onFirstInteract={() => setNameTouched(true)}
-                  className="font-serif text-[clamp(3.9rem,11vw,10.2rem)] font-medium tracking-[-0.03em] text-plum"
+                  className="font-serif text-[clamp(3.1rem,8.8vw,8.2rem)] font-medium tracking-[-0.03em] text-plum"
                 />
               </div>
             </div>

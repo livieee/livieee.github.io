@@ -1,53 +1,27 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
-
-/** 入场示范：字母短暂变色 + 半张拍立得探出收回（纯 CSS 动画，一次性） */
-const DEMO_LETTER = 3
-const DEMO_CSS = `
-@keyframes letter-demo-lit {
-  0%, 22%, 62%, 100% { color: inherit; transform: none; }
-  34%, 52% { color: #B98ACB; transform: rotate(-3deg) scale(1.05); }
-}
-@keyframes letter-demo-peek {
-  0%, 26%, 64%, 100% { opacity: 0; transform: translate(-22%, 34px) scale(0.78) rotate(6deg); }
-  36%, 54% { opacity: 1; transform: translate(-22%, 10px) scale(0.86) rotate(3deg); }
-}
-.letter-demo-btn { animation: letter-demo-lit 2.7s ease-in-out 1 both; }
-.letter-demo-photo { animation: letter-demo-peek 2.7s ease-in-out 1 both; }
-@media (prefers-reduced-motion: reduce) {
-  .letter-demo-btn, .letter-demo-photo { animation: none; display: none; }
-}
-`
+import { useEffect, useState } from 'react'
 
 export type LetterPhoto = { src: string; alt: string; caption: string }
 
 type LetterNameProps = {
   text: string
-  photos: LetterPhoto[]
+  /** 与字母一一对应；null 表示该字母留白（不出照片） */
+  photos: (LetterPhoto | null)[]
   className?: string
   baseDelay?: number
-  /** 用户首次与任意字母交互（hover/focus/tap）时触发一次 */
-  onFirstInteract?: () => void
 }
 
 /**
- * OLIVIA 字母交互 — 悬停/聚焦/点按每个字母，在字母附近浮现一张
- * 拍立得照片 + 手写注脚。入场时先做一次「示范」：字母短暂变色、
- * 半张拍立得探出又收回，暗示可交互，无需提示文字。
+ * OLIVIA 字母交互 — 悬停/聚焦/点按有照片的字母，在字母附近浮现一张
+ * 拍立得照片 + 手写注脚；照片跟随鼠标轻微移动，离开后柔和淡出。
  */
-export function LetterName({ text, photos, className, baseDelay = 0, onFirstInteract }: LetterNameProps) {
+export function LetterName({ text, photos, className, baseDelay = 0 }: LetterNameProps) {
   const [hovered, setHovered] = useState<number | null>(null)
   const [pinned, setPinned] = useState<number | null>(null)
+  const [drift, setDrift] = useState({ x: 0, y: 0 })
   const reduce = useReducedMotion()
   const letters = text.split('')
   const active = pinned ?? hovered
-  const interactedRef = useRef(false)
-  const firstInteract = () => {
-    if (!interactedRef.current) {
-      interactedRef.current = true
-      onFirstInteract?.()
-    }
-  }
 
   // 点击外部关闭固定照片
   useEffect(() => {
@@ -70,57 +44,52 @@ export function LetterName({ text, photos, className, baseDelay = 0, onFirstInte
       role="group"
       aria-label={`${text} — interactive letters, each reveals a personal photo`}
     >
-      <style>{DEMO_CSS}</style>
       {letters.map((ch, i) => {
-        const item = photos[i % photos.length]
-        const isActive = active === i
-        const isDemoLetter = i === DEMO_LETTER
+        const item = photos[i] ?? null
+        const isActive = item !== null && active === i
+        // 留白字母：普通字符，不参与交互
+        if (!item) {
+          return (
+            <motion.span
+              key={i}
+              aria-hidden
+              className="inline-block"
+              initial={{ opacity: 0, y: reduce ? 0 : '0.3em' }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: baseDelay + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {ch}
+            </motion.span>
+          )
+        }
         return (
           <span key={i} className="relative inline-block">
-            {isDemoLetter && !reduce && (
-              <span
-                aria-hidden
-                className="letter-demo-photo pointer-events-none absolute bottom-full z-40 mb-3 block w-[110px] opacity-0 md:mb-5 md:w-[140px] left-1/2 -translate-x-1/2 md:left-0"
-                style={{ animationDelay: `${baseDelay + 0.5}s` }}
-              >
-                <span className="block bg-white p-1.5 pb-2 shadow-[0_20px_44px_-14px_rgba(90,63,86,0.45)]">
-                  <img
-                    src={item.src}
-                    alt=""
-                    loading="lazy"
-                    draggable={false}
-                    className="w-full object-cover"
-                    style={{ aspectRatio: '4/5' }}
-                  />
-                </span>
-                <span className="mx-auto block h-2.5 w-2.5 -translate-y-[1px] rotate-45 bg-white shadow-[3px_3px_6px_-2px_rgba(90,63,86,0.2)]" />
-              </span>
-            )}
             <motion.button
               type="button"
               aria-label={`Letter ${ch} — reveal photo`}
               aria-expanded={isActive}
-              onMouseEnter={() => {
-                setHovered(i)
-                firstInteract()
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => {
+                setHovered(null)
+                setDrift({ x: 0, y: 0 })
               }}
-              onMouseLeave={() => setHovered(null)}
-              onFocus={() => {
-                setHovered(i)
-                firstInteract()
+              onMouseMove={(e) => {
+                if (reduce) return
+                const r = e.currentTarget.getBoundingClientRect()
+                setDrift({
+                  x: ((e.clientX - r.left) / r.width - 0.5) * 10,
+                  y: ((e.clientY - r.top) / r.height - 0.5) * 6,
+                })
               }}
+              onFocus={() => setHovered(i)}
               onBlur={() => setHovered(null)}
               onClick={(e) => {
                 e.stopPropagation()
-                firstInteract()
                 setPinned(isActive && pinned === i ? null : i)
               }}
-              className={`inline-block cursor-pointer outline-none transition-colors duration-300 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-orchid/60 ${
-                isDemoLetter && !reduce ? 'letter-demo-btn' : ''
-              }`}
+              className="inline-block cursor-pointer outline-none transition-colors duration-300 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-orchid/60"
               style={{
                 color: isActive ? (i % 2 === 0 ? '#D193A8' : '#B98ACB') : undefined,
-                animationDelay: isDemoLetter && !reduce ? `${baseDelay + 0.5}s` : undefined,
               }}
               initial={{ opacity: 0, y: reduce ? 0 : '0.3em' }}
               animate={{
@@ -136,7 +105,7 @@ export function LetterName({ text, photos, className, baseDelay = 0, onFirstInte
                 scale: { duration: 0.3, ease: 'easeOut' },
               }}
             >
-              {ch === ' ' ? ' ' : ch}
+              {ch === ' ' ? ' ' : ch}
             </motion.button>
 
             <AnimatePresence>
@@ -145,9 +114,15 @@ export function LetterName({ text, photos, className, baseDelay = 0, onFirstInte
                   key={`photo-${i}`}
                   className="absolute bottom-full z-40 mb-3 block w-[118px] md:mb-4 md:w-[140px] left-1/2 -translate-x-1/2 md:-left-3 md:translate-x-[-30%]"
                   initial={{ opacity: 0, scale: 0.82, y: 14, rotate: i % 2 === 0 ? -6 : 6 }}
-                  animate={{ opacity: 1, scale: 1, y: 0, rotate: i % 2 === 0 ? -3 : 3 }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1,
+                    y: drift.y,
+                    x: drift.x,
+                    rotate: i % 2 === 0 ? -3 : 3,
+                  }}
                   exit={{ opacity: 0, scale: 0.88, y: 10 }}
-                  transition={{ type: 'spring', stiffness: 320, damping: 24 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 22 }}
                   onPointerDown={(e) => e.stopPropagation()}
                 >
                   <span className="block bg-white p-1.5 pb-2 shadow-[0_20px_44px_-14px_rgba(90,63,86,0.45)]">
