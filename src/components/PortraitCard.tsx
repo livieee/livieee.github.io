@@ -62,6 +62,53 @@ const journeyStops = [
   { city: 'Bay Area', color: '#C79A4B' },
 ]
 
+function SketchArrow({
+  side,
+  active,
+  animate,
+  delay,
+  color,
+}: {
+  side: 'left' | 'right'
+  active: boolean
+  animate: boolean
+  delay: number
+  color: string
+}) {
+  return (
+    <svg
+      viewBox="0 0 44 22"
+      className={`h-[13px] w-[24px] overflow-visible transition-colors duration-300 sm:h-[15px] sm:w-[28px] lg:h-[17px] lg:w-[32px] ${
+        side === 'right' ? '-scale-x-100' : ''
+      }`}
+      style={{ color: active ? color : `${color}99` }}
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M3 19 C 15 21, 28 15, 40 4"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={animate ? undefined : 0}
+        style={animate ? { animation: `arrow-draw 0.5s ease-out ${delay}s both` } : undefined}
+      />
+      <path
+        d="M40 4 l-8.5 1.2 M40 4 l-3.2 7"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={animate ? undefined : 0}
+        style={animate ? { animation: `arrow-draw 0.3s ease-out ${delay + 0.32}s both` } : undefined}
+      />
+    </svg>
+  )
+}
+
 const FLIP_CSS = `
 .flip-scene { perspective: 1400px; }
 .flip-group {
@@ -156,11 +203,14 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
         className={`cursor-default ${t.side === 'left' ? 'text-right' : 'text-left'}`}
       >
         <p
-          className="whitespace-nowrap font-hand text-[16px] font-semibold leading-tight transition-colors duration-300 sm:text-[17px] xl:text-[20px]"
+          className="whitespace-nowrap font-hand text-[18px] font-semibold leading-tight transition-colors duration-300 sm:text-[19px] xl:text-[22px]"
           style={{ color: t.color, opacity: isActive ? 1 : 0.92 }}
         >
           {t.word}
         </p>
+        <div className={`mt-1 flex ${t.side === 'left' ? 'justify-end' : 'justify-start'}`}>
+          <SketchArrow side={t.side} active={isActive} animate={animateArrows} delay={enter.delay + 0.25} color={t.color} />
+        </div>
       </motion.div>
     )
   }
@@ -331,7 +381,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
                       <span className="font-hand text-[18px] font-semibold leading-tight text-plum sm:text-[20px] lg:text-[21px]">
                         {t.heading}
                       </span>
-                      <span className="font-hand text-[14px] leading-tight sm:text-[15px]" style={{ color: t.color }}>
+                      <span className="font-hand text-[15px] leading-tight sm:text-[16px] lg:text-[17px]" style={{ color: t.color }}>
                         {t.keyword}
                       </span>
                     </p>
