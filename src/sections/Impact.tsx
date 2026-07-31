@@ -59,7 +59,7 @@ export function Impact() {
 
         {/* ── Case 1 · AI Product Development — full-width feature ─────────────── */}
         <Reveal className="mt-20" y={36}>
-          <article className="group/card relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-cream-soft to-blush/40 p-8 transition-transform duration-500 hover:-translate-y-1.5 md:p-14">
+          <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-cream-soft to-blush/40 p-8 transition-transform duration-500 hover:-translate-y-1.5 md:p-14">
             <div className="grid gap-10 md:grid-cols-12">
               <div className="md:col-span-7">
                 <p className="label-text mb-4">01 · AI Product Development · Theta Health</p>
@@ -106,7 +106,7 @@ export function Impact() {
         {/* ── Case 2 · Enterprise SaaS & Product Analytics — split / offset ────── */}
         <div className="mt-10 grid gap-10 md:grid-cols-12">
           <Reveal className="md:col-span-5" y={36} delay={0.05}>
-            <article className="group/card flex h-full flex-col justify-between overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-transform duration-500 hover:-translate-y-1.5 md:p-12">
+            <article id="case-peopleai" className="group/card flex h-full scroll-mt-24 flex-col justify-between overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-transform duration-500 hover:-translate-y-1.5 md:p-12">
               <div>
                 <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
                   <img
@@ -143,7 +143,7 @@ export function Impact() {
 
           {/* ── Case 3 · AI GTM & Ecosystem — offset card ──────────────────────── */}
           <Reveal className="md:col-span-6 md:col-start-7 md:mt-16" y={36} delay={0.15}>
-            <article className="group/card relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 hover:-translate-y-1.5 md:p-12">
+            <article id="case-aivalley" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 hover:-translate-y-1.5 md:p-12">
               <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
                 <img
                   src="/images/case-ecosystem.jpg"
@@ -197,7 +197,7 @@ export function Impact() {
 
         {/* ── Case 4 · Strategic Industry Engagement — minimal editorial ────────── */}
         <Reveal className="mt-10" y={36}>
-          <article className="grid gap-8 border-t border-plum/10 py-12 md:grid-cols-12 md:py-16">
+          <article id="case-yuto" className="grid scroll-mt-24 gap-8 border-t border-plum/10 py-12 md:grid-cols-12 md:py-16">
             <div className="md:col-span-4">
               <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
                 <img
