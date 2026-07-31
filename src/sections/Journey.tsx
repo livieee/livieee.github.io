@@ -19,7 +19,7 @@ const EDUCATION: TimelineEntry[] = [
     photos: [
       { src: '/images/photo-cmu-graduation.jpg', alt: 'Olivia at CMU graduation', caption: 'graduation day ✦' },
       { src: '/images/photo-cmu-group-1.jpg', alt: 'Olivia with friends at CMU graduation', caption: 'with my crew 🎈' },
-      { src: '/images/photo-cmu-group-2.jpg', alt: 'CMU MSSM 2025 cohort at graduation', caption: "MSSM 25' Cohort 🎓" },
+      { src: '/images/photo-cmu-group-2.jpg', alt: 'CMU MSSM 2025 cohort at graduation', caption: "MSSM '25 Cohort 🎓" },
     ],
   },
   {
