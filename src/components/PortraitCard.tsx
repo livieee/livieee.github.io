@@ -156,7 +156,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
         className={`cursor-default ${t.side === 'left' ? 'text-right' : 'text-left'}`}
       >
         <p
-          className="whitespace-nowrap font-hand text-[15px] font-semibold leading-tight transition-colors duration-300 sm:text-[16px] xl:text-[18px]"
+          className="whitespace-nowrap font-hand text-[16px] font-semibold leading-tight transition-colors duration-300 sm:text-[17px] xl:text-[20px]"
           style={{ color: t.color, opacity: isActive ? 1 : 0.92 }}
         >
           {t.word}
@@ -246,10 +246,10 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
               reduce && flipped ? 'pointer-events-none opacity-0' : 'opacity-100'
             }`}
           >
-            <span className="absolute -top-3 left-6 rotate-[-5deg] rounded-md bg-orchid px-2.5 py-0.5 font-hand text-[15px] font-semibold text-white shadow">
+            <span className="absolute -top-3 left-6 rotate-[-5deg] rounded-md bg-orchid px-2.5 py-0.5 font-hand text-[16px] font-semibold text-white shadow">
               that's me ↘
             </span>
-            <span className="absolute -top-3 right-4 rotate-[6deg] rounded-md border border-dashed border-rose/60 bg-white/90 px-2 py-0.5 font-hand text-[13px] text-plum shadow lg:-right-2 lg:top-8 lg:rotate-[8deg]">
+            <span className="absolute -top-3 right-4 rotate-[6deg] rounded-md border border-dashed border-rose/60 bg-white/90 px-2 py-0.5 font-hand text-[14px] text-plum shadow lg:-right-2 lg:top-8 lg:rotate-[8deg]">
               open to conversations ✦
             </span>
 
@@ -266,7 +266,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
                   style={animateArrows ? { animation: 'arrow-draw 0.6s ease-out 0.85s both' } : undefined}
                 />
               </svg>
-              <span className="font-hand text-[26px] font-semibold text-plum sm:text-[30px]">
+              <span className="font-hand text-[28px] font-semibold text-plum sm:text-[34px]">
                 Meet Olivia ✦
               </span>
               <svg viewBox="0 0 40 20" className="h-4 w-8 -scale-x-100 text-rose" fill="none" aria-hidden="true">
@@ -287,7 +287,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
               <div className="flex flex-col justify-around py-6 pr-0.5 sm:py-8 sm:pr-1">
                 {traits.filter((t) => t.side === 'left').map((t) => frontNote(t, traits.indexOf(t)))}
               </div>
-              <div className="relative w-[220px] overflow-hidden rounded-xl sm:w-[236px] lg:w-[276px] xl:w-[300px]">
+              <div className="relative w-[240px] overflow-hidden rounded-xl sm:w-[260px] lg:w-[300px] xl:w-[330px]">
                 <img
                   src="/images/photo-gallery-hero.jpg"
                   alt="Olivia (Zerun) Xiao holding a red book at the museum"
@@ -299,7 +299,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
               </div>
             </div>
 
-            <p className="mt-4 pb-3 text-center font-hand text-[15px] text-plum-muted sm:text-[16px]">
+            <p className="mt-4 pb-3 text-center font-hand text-[16px] text-plum-muted sm:text-[18px]">
               curious about people & possibilities
             </p>
             {!flipped && flipLabel}
@@ -316,30 +316,30 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
               background: 'linear-gradient(135deg, #F7E4EC 0%, #F2E9F8 52%, #EBE2F6 100%)',
             }}
           >
-            <p className="text-center font-hand text-[24px] font-semibold text-plum sm:text-[26px] lg:text-[28px]">
+            <p className="text-center font-hand text-[26px] font-semibold text-plum sm:text-[28px] lg:text-[31px]">
               How I Work ✦
             </p>
 
             <div className="mt-3 flex flex-1 flex-col justify-around divide-y divide-plum/[0.07]">
               {traits.map((t) => (
                 <div key={t.num} className="flex items-baseline gap-3 py-2.5 sm:py-3">
-                  <span className="w-7 shrink-0 font-hand text-[17px] font-semibold sm:text-[18px]" style={{ color: t.color }}>
+                  <span className="w-7 shrink-0 font-hand text-[18px] font-semibold sm:text-[20px]" style={{ color: t.color }}>
                     {t.num}
                   </span>
                   <div className="min-w-0">
                     <p className="flex flex-wrap items-baseline gap-x-2.5">
-                      <span className="font-hand text-[17px] font-semibold leading-tight text-plum sm:text-[18px] lg:text-[19px]">
+                      <span className="font-hand text-[18px] font-semibold leading-tight text-plum sm:text-[20px] lg:text-[21px]">
                         {t.heading}
                       </span>
-                      <span className="font-hand text-[13px] leading-tight sm:text-[14px]" style={{ color: t.color }}>
+                      <span className="font-hand text-[14px] leading-tight sm:text-[15px]" style={{ color: t.color }}>
                         {t.keyword}
                       </span>
                     </p>
-                    <p className="mt-0.5 text-[12px] leading-snug text-plum-muted sm:text-[12.5px] lg:text-[13px]">
+                    <p className="mt-0.5 text-[13px] leading-snug text-plum-muted sm:text-[13.5px] lg:text-[14.5px]">
                       {t.sentence}
                     </p>
                     {t.extra && (
-                      <p className="mt-0.5 text-[11px] tracking-wide text-plum-faint sm:text-[11.5px]">{t.extra}</p>
+                      <p className="mt-0.5 text-[12px] tracking-wide text-plum-faint sm:text-[12.5px]">{t.extra}</p>
                     )}
                   </div>
                 </div>
@@ -350,7 +350,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
               href="#journey"
               tabIndex={flipped ? 0 : -1}
               onClick={(e) => e.stopPropagation()}
-              className="group/journey mx-auto mt-2 flex w-fit flex-wrap items-center justify-center gap-x-1.5 gap-y-1 rounded-full px-3 py-1.5 text-[11px] text-plum-muted transition-colors hover:text-plum sm:text-[12px]"
+              className="group/journey mx-auto mt-2 flex w-fit flex-wrap items-center justify-center gap-x-1.5 gap-y-1 rounded-full px-3 py-1.5 text-[12px] text-plum-muted transition-colors hover:text-plum sm:text-[13px]"
               aria-label="See my journey — Changsha to the Bay Area"
             >
               {journeyStops.map((s, i) => (

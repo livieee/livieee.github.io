@@ -142,30 +142,37 @@ export function Hero() {
                 a little story in every letter ✦
               </span>
               <h2 className="sr-only">Olivia</h2>
-              <div aria-hidden className="leading-none" data-cursor="DISCOVER">
+              <div aria-hidden className="leading-none">
                 <LetterName
                   text="OLIVIA"
                   photos={LETTER_PHOTOS}
                   baseDelay={1.35}
-                  className="font-serif text-[clamp(3.1rem,8.8vw,8.2rem)] font-medium tracking-[-0.03em] text-plum"
+                  className="font-serif text-[clamp(3.7rem,10.2vw,9.6rem)] font-medium tracking-[-0.03em] text-plum"
                 />
               </div>
             </div>
 
             {/* LinkedIn · Email：移动端在 OLIVIA 之后，桌面端紧随 CTA */}
-            <motion.div {...rise(0.98)} className="mt-5 flex items-center gap-5 text-sm text-plum-muted md:mt-4">
+            <motion.div {...rise(0.98)} className="mt-5 flex items-center gap-6 text-sm text-plum-muted md:mt-4">
               <a
                 href="https://linkedin.com/in/olivia-zerun-xiao/"
                 target="_blank"
                 rel="noreferrer"
-                className="underline decoration-rose-soft decoration-2 underline-offset-4 transition-colors hover:text-plum"
+                className="inline-flex items-center gap-1.5 underline decoration-rose-soft decoration-2 underline-offset-4 transition-colors hover:text-plum"
               >
+                <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="currentColor" aria-hidden>
+                  <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z" />
+                </svg>
                 LinkedIn
               </a>
               <a
                 href="mailto:olivia.zxiao@gmail.com"
-                className="underline decoration-lavender-deep decoration-2 underline-offset-4 transition-colors hover:text-plum"
+                className="inline-flex items-center gap-1.5 underline decoration-lavender-deep decoration-2 underline-offset-4 transition-colors hover:text-plum"
               >
+                <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <rect x="3" y="5" width="18" height="14" rx="2.5" />
+                  <path d="m4 7.5 8 5.8 8-5.8" />
+                </svg>
                 Email
               </a>
             </motion.div>
@@ -177,17 +184,6 @@ export function Hero() {
           </div>
         </div>
 
-        {/* scroll cue */}
-        <motion.a
-          href="#about"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.1, duration: 0.8 }}
-          className="mt-10 flex items-center justify-center gap-3 text-[11px] uppercase tracking-label text-plum-faint"
-        >
-          <span className="h-10 w-px bg-gradient-to-b from-orchid to-transparent" />
-          Scroll
-        </motion.a>
       </div>
     </section>
   )
