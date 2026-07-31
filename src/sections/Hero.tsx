@@ -70,6 +70,34 @@ export function Hero() {
         }}
       />
 
+      {/* 底部淡路线：Changsha → Vancouver → Toronto → Bay Area（填充首屏底部留白，呼应 Journey） */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-3 hidden opacity-70 md:block">
+        <svg viewBox="0 0 1200 130" className="mx-auto h-[110px] w-full max-w-[1300px]" fill="none">
+          <path
+            d="M70 92 C 220 102, 320 60, 430 68 C 550 77, 650 48, 770 58 C 890 68, 1010 42, 1125 52"
+            stroke="#B98ACB"
+            strokeOpacity="0.35"
+            strokeWidth="1.6"
+            strokeDasharray="2 7"
+            strokeLinecap="round"
+          />
+          {[
+            { x: 70, y: 92, c: '#D193A8', label: 'Changsha' },
+            { x: 430, y: 68, c: '#B98ACB', label: 'Vancouver' },
+            { x: 770, y: 58, c: '#8FAE8B', label: 'Toronto' },
+            { x: 1125, y: 52, c: '#C79A4B', label: 'Bay Area' },
+          ].map((s) => (
+            <g key={s.label}>
+              <circle cx={s.x} cy={s.y} r="3.5" fill={s.c} fillOpacity="0.75" />
+              <circle cx={s.x} cy={s.y} r="7.5" fill="none" stroke={s.c} strokeOpacity="0.35" strokeWidth="1" strokeDasharray="2 3" />
+              <text x={s.x + 13} y={s.y + 5} className="font-hand" fontSize="15" fill="#8A6E84" fillOpacity="0.75">
+                {s.label}
+              </text>
+            </g>
+          ))}
+        </svg>
+      </div>
+
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-40px)] max-w-[1400px] flex-col justify-center px-6 py-20 md:px-10 md:py-24">
         <div className="grid items-center gap-12 md:grid-cols-[49fr_43fr] md:gap-[8%]">
           {/* 左栏 49% */}

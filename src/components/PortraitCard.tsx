@@ -51,7 +51,7 @@ const traits: Trait[] = [
     heading: 'Adapt across contexts',
     keyword: 'cross-cultural',
     sentence: 'work across cultures, disciplines & contexts',
-    extra: 'China · Canada · United States',
+    extra: '🇨🇳 China · 🇨🇦 Canada · 🇺🇸 United States',
   },
 ]
 
