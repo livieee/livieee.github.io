@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
+import { TiltCard } from '@/components/TiltCard'
 
 type Metric = {
   value: string
@@ -48,19 +50,46 @@ function Tag({ children }: { children: string }) {
 }
 
 export function Impact() {
+  /** Theta 主视觉上跟随光标的 Tap to view 胶囊 */
+  const [viewCur, setViewCur] = useState<{ x: number; y: number } | null>(null)
   return (
     <section id="impact" className="relative bg-white/50">
-      <div className="mx-auto max-w-6xl px-6 py-28 md:px-10 md:py-36">
+      {/* 顶部延续 Hero 的方格纸语言，向下淡出 */}
+      <div
+        aria-hidden
+        className="paper-grid pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-[0.3]"
+        style={{
+          maskImage: 'linear-gradient(to bottom, black, transparent)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)',
+        }}
+      />
+      <div className="relative mx-auto max-w-6xl px-6 py-28 md:px-10 md:py-36">
         <Reveal>
-          <p className="label-text mb-6">Selected Impact</p>
+          <p className="label-text mb-6 flex items-center gap-3">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-orchid" />
+            Selected Impact
+          </p>
         </Reveal>
         <h2 className="max-w-3xl font-serif text-[clamp(1.9rem,4.5vw,3.2rem)] font-light leading-[1.15] text-plum">
           <WordReveal text="Work that moved products, people, and programs forward." />
         </h2>
+        <Reveal delay={0.12}>
+          <p className="mt-4 font-hand text-[18px] text-plum-muted md:text-[19px]">
+            four chapters, one throughline —{' '}
+            <span className="text-orchid">make it adopted, not just shipped ✦</span>
+          </p>
+        </Reveal>
 
         {/* ── Case 1 · AI Product Development — full-width feature ─────────────── */}
         <Reveal className="mt-20" y={36}>
-          <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-cream-soft to-blush/40 p-8 transition-transform duration-500 hover:-translate-y-1.5 md:p-14">
+          <TiltCard max={2.5} className="h-full">
+            <span
+              aria-hidden
+              className="absolute -top-3 left-8 z-10 rotate-[-4deg] rounded-md bg-orchid px-2.5 py-0.5 font-hand text-[15px] font-semibold text-white shadow"
+            >
+              flagship case ✦
+            </span>
+          <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-cream-soft to-blush/40 p-8 transition-transform duration-500 md:p-14">
             <div className="grid gap-10 md:grid-cols-[48fr_52fr]">
               <div className="flex flex-col justify-center">
                 <p className="label-text mb-4">01 · AI Product Development · Theta Health</p>
@@ -88,7 +117,17 @@ export function Impact() {
               </div>
               <div className="flex flex-col justify-center gap-7">
                 {/* 产品主视觉：医生工作台 + SOAP note 叠放（淡插画作背景） */}
-                <Link to="/work/theta" className="group/visual relative block pb-12 pr-6" data-cursor="VIEW" aria-label="Theta Care product interface — open the case study">
+                <Link
+                  to="/work/theta"
+                  className="group/visual relative block cursor-none pb-12 pr-6"
+                  aria-label="Theta Care product interface — open the case study"
+                  onPointerMove={(e) => {
+                    if (e.pointerType === 'touch') return
+                    const r = e.currentTarget.getBoundingClientRect()
+                    setViewCur({ x: e.clientX - r.left, y: e.clientY - r.top })
+                  }}
+                  onPointerLeave={() => setViewCur(null)}
+                >
                   <img
                     src="/images/case-scribe.jpg"
                     alt=""
@@ -108,6 +147,20 @@ export function Impact() {
                     loading="lazy"
                     className="absolute bottom-0 right-0 w-[40%] rotate-2 rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] transition-transform duration-500 group-hover/visual:-translate-y-1.5 group-hover/visual:rotate-[3deg]"
                   />
+                  {/* 跟随光标的 Tap to view 胶囊 */}
+                  {viewCur && (
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute z-20 whitespace-nowrap rounded-full bg-orchid px-4 py-1.5 font-hand text-[16px] font-semibold text-white shadow-[0_12px_28px_-8px_rgba(122,74,133,0.6)]"
+                      style={{
+                        left: viewCur.x,
+                        top: viewCur.y,
+                        transform: 'translate(12px, -130%) rotate(3deg)',
+                      }}
+                    >
+                      Tap to view ↗
+                    </span>
+                  )}
                 </Link>
                 <Metrics
                   accent="text-rose"
@@ -120,12 +173,20 @@ export function Impact() {
               </div>
             </div>
           </article>
+          </TiltCard>
         </Reveal>
 
         {/* ── Case 2 · Enterprise SaaS & Product Analytics — split / offset ────── */}
         <div className="mt-10 grid gap-10 md:grid-cols-12">
           <Reveal className="md:col-span-5" y={36} delay={0.05}>
-            <article id="case-peopleai" className="group/card flex h-full scroll-mt-24 flex-col justify-between overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-transform duration-500 hover:-translate-y-1.5 md:p-12">
+            <TiltCard className="h-full">
+              <span
+                aria-hidden
+                className="absolute -top-3 left-8 z-10 rotate-[-3deg] rounded-md border border-dashed border-orchid/60 bg-white/95 px-2.5 py-0.5 font-hand text-[14px] text-plum shadow"
+              >
+                the enterprise chapter
+              </span>
+            <article id="case-peopleai" className="group/card flex h-full scroll-mt-24 flex-col justify-between overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-transform duration-500 md:p-12">
               <div>
                 <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
                   <img
@@ -158,11 +219,19 @@ export function Impact() {
                 />
               </div>
             </article>
+            </TiltCard>
           </Reveal>
 
           {/* ── Case 3 · AI GTM & Ecosystem — offset card ──────────────────────── */}
           <Reveal className="md:col-span-6 md:col-start-7 md:mt-16" y={36} delay={0.15}>
-            <article id="case-aivalley" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 hover:-translate-y-1.5 md:p-12">
+            <TiltCard className="h-full">
+              <span
+                aria-hidden
+                className="absolute -top-3 right-8 z-10 rotate-[3deg] rounded-md bg-rose px-2.5 py-0.5 font-hand text-[14px] font-semibold text-white shadow"
+              >
+                programs are products too
+              </span>
+            <article id="case-aivalley" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 md:p-12">
               <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
                 <img
                   src="/images/case-ecosystem.jpg"
@@ -211,12 +280,19 @@ export function Impact() {
                 </figcaption>
               </figure>
             </article>
+            </TiltCard>
           </Reveal>
         </div>
 
         {/* ── Case 4 · Strategic Industry Engagement — minimal editorial ────────── */}
         <Reveal className="mt-10" y={36}>
-          <article id="case-yuto" className="grid scroll-mt-24 gap-8 border-t border-plum/10 py-12 md:grid-cols-12 md:py-16">
+          <article id="case-yuto" className="relative grid scroll-mt-24 gap-8 border-t border-plum/10 py-12 md:grid-cols-12 md:py-16">
+            <span
+              aria-hidden
+              className="absolute -top-3 right-4 rotate-[2deg] rounded-md border border-dashed border-lavender-deep/60 bg-white/95 px-2.5 py-0.5 font-hand text-[14px] text-plum shadow"
+            >
+              now shipping ✈
+            </span>
             <div className="md:col-span-4">
               <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
                 <img
