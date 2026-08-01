@@ -1176,10 +1176,10 @@ export default function ThetaCase() {
                 <TiltCard className="h-full" max={4}>
                   <div className="group/wimg2 h-full overflow-hidden rounded-[1.6rem] border border-plum/10 shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]">
                     <img
-                      src="/theta/wellness-app-2.png"
-                      alt="Theta Wellness — the live product experience"
+                      src="/theta/wellness-app-podcast.png"
+                      alt="Theta Wellness — evidence-based personal health podcast, citing JAMA research"
                       loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover/wimg2:scale-[1.05]"
+                      className="h-full w-full object-cover object-top transition-transform duration-700 group-hover/wimg2:scale-[1.05]"
                     />
                   </div>
                 </TiltCard>
