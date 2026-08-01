@@ -107,12 +107,6 @@ const OWNED = [
   },
 ]
 
-const ARTIFACTS = [
-  { img: '/theta/artifact-prd.jpg', caption: 'Theta Wellness PRD — 46 pages, four closed loops', rotate: '-rotate-2' },
-  { img: '/theta/artifact-research.jpg', caption: 'Competitive scan — 14 healthcare AI products mapped', rotate: 'rotate-1' },
-  { img: '/theta/artifact-growth.jpg', caption: 'Growth & GTM playbook — 10 pages of channel plays', rotate: '-rotate-1' },
-]
-
 const PRESS = [
   {
     label: 'CMU Integrated Innovation Institute',
@@ -176,6 +170,118 @@ const SUB_PROJECTS: SubProject[] = [
     ],
   },
 ]
+
+/** ── 证据信息图（从工作产物中提炼，非截图） ───────────────────────────── */
+
+function InsightCard({ title, source, children }: { title: string; source: string; children: React.ReactNode }) {
+  return (
+    <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-6">
+      <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">{title}</p>
+      <p className="mt-1 font-hand text-[14px] text-orchid">{source}</p>
+      <div className="mt-4 flex flex-1 items-center justify-center">{children}</div>
+    </div>
+  )
+}
+
+/** PRD 核心：Mirobody 数据飞轮（五节点循环） */
+function FlywheelGraphic() {
+  const nodes = [
+    { x: 130, y: 34, tx: 130, ty: 22, anchor: 'middle', label: 'Log daily', c: '#D193A8' },
+    { x: 208, y: 92, tx: 216, ty: 88, anchor: 'start', label: 'See value', c: '#B98ACB' },
+    { x: 178, y: 182, tx: 182, ty: 202, anchor: 'middle', label: 'Ask AI', c: '#8FAE8B' },
+    { x: 82, y: 182, tx: 78, ty: 202, anchor: 'middle', label: 'See doctor', c: '#C79A4B' },
+    { x: 52, y: 92, tx: 44, ty: 88, anchor: 'end', label: 'Richer data', c: '#B98ACB' },
+  ] as const
+  return (
+    <svg viewBox="0 0 260 216" className="w-full max-w-[290px]" fill="none" aria-label="Mirobody data flywheel: log daily, see value, ask AI, see doctor, richer data — and around again">
+      <circle cx="130" cy="112" r="80" stroke="#B98ACB" strokeOpacity="0.4" strokeWidth="1.4" strokeDasharray="2 6" />
+      {/* 顺时针箭头 */}
+      <path d="M204 78 l8 12 M204 78 l14 3" stroke="#B98ACB" strokeOpacity="0.7" strokeWidth="1.4" strokeLinecap="round" />
+      {nodes.map((n) => (
+        <g key={n.label}>
+          <circle cx={n.x} cy={n.y} r="7" fill="#FBF7F2" stroke={n.c} strokeWidth="1.4" strokeDasharray="2 3" />
+          <circle cx={n.x} cy={n.y} r="2.6" fill={n.c} />
+          <text x={n.tx} y={n.ty} textAnchor={n.anchor} fontSize="12" fill="#6B4E63" fontFamily="inherit">
+            {n.label}
+          </text>
+        </g>
+      ))}
+      <text x="130" y="106" textAnchor="middle" fontSize="14" fill="#3A2440" className="font-hand" fontWeight="600">
+        the Mirobody
+      </text>
+      <text x="130" y="124" textAnchor="middle" fontSize="14" fill="#3A2440" className="font-hand" fontWeight="600">
+        flywheel ↻
+      </text>
+    </svg>
+  )
+}
+
+/** 竞品扫描核心：定位象限 + 我们找到的空白 */
+function QuadrantGraphic() {
+  const dots = [
+    { x: 70, y: 158, label: 'scheduling' },
+    { x: 92, y: 168 },
+    { x: 118, y: 142, label: 'voice agents' },
+    { x: 136, y: 152 },
+    { x: 158, y: 112, label: 'doc review' },
+    { x: 174, y: 124 },
+    { x: 96, y: 108, label: 'wellness' },
+  ]
+  return (
+    <svg viewBox="0 0 260 216" className="w-full max-w-[290px]" fill="none" aria-label="Competitive positioning: most products cluster as point solutions; Theta targets whole-patient context in clinical care">
+      {/* 坐标轴 */}
+      <path d="M40 188 H 236 M40 188 V 28" stroke="#3A2440" strokeOpacity="0.25" strokeWidth="1.2" strokeLinecap="round" />
+      <text x="236" y="204" textAnchor="end" fontSize="10.5" fill="#8A6E84">admin → clinical care</text>
+      <text x="28" y="30" textAnchor="start" fontSize="10.5" fill="#8A6E84" transform="rotate(-90 28 30)" />
+      <text x="34" y="24" textAnchor="start" fontSize="10.5" fill="#8A6E84">whole-patient ↑</text>
+      {/* 竞品散点 */}
+      {dots.map((d, i) => (
+        <g key={i}>
+          <circle cx={d.x} cy={d.y} r="5" fill="#3A2440" fillOpacity="0.18" />
+          {d.label && (
+            <text x={d.x + 9} y={d.y + 4} fontSize="10" fill="#8A6E84">
+              {d.label}
+            </text>
+          )}
+        </g>
+      ))}
+      {/* Theta 的空白点 */}
+      <path d="M150 92 Q 178 62 198 60" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" />
+      <path d="M208 62 l6.5 4 -7.5 2 2 7 -5.5 -5 -5.5 5 2 -7 -7.5 -2 6.5 -4 v-7 Z" fill="#B98ACB" transform="translate(0,-6)" />
+      <text x="208" y="88" textAnchor="middle" fontSize="12" fill="#3A2440" fontWeight="600">Theta</text>
+      <text x="208" y="102" textAnchor="middle" fontSize="11" fill="#B98ACB" className="font-hand">the gap ✦</text>
+      <text x="52" y="180" fontSize="10.5" fill="#8A6E84">14 products scanned</text>
+    </svg>
+  )
+}
+
+/** Growth playbook 核心：五渠道汇成一个 pilot */
+function ChannelsGraphic() {
+  const channels = [
+    { y: 38, label: 'media', c: '#D193A8' },
+    { y: 72, label: 'hackathons', c: '#B98ACB' },
+    { y: 106, label: 'influencers', c: '#8FAE8B' },
+    { y: 140, label: 'roundtables · 40+ MDs', c: '#C79A4B' },
+    { y: 174, label: 'medical associations', c: '#D193A8' },
+  ]
+  return (
+    <svg viewBox="0 0 260 216" className="w-full max-w-[290px]" fill="none" aria-label="Five growth channels converging into the first clinic pilot">
+      {channels.map((ch) => (
+        <g key={ch.label}>
+          <rect x="10" y={ch.y - 13} width="118" height="26" rx="13" fill="white" stroke={ch.c} strokeOpacity="0.5" strokeWidth="1.2" />
+          <circle cx="24" cy={ch.y} r="3" fill={ch.c} />
+          <text x="34" y={ch.y + 4} fontSize="10.5" fill="#3A2440">
+            {ch.label}
+          </text>
+          <path d={`M130 ${ch.y} Q 168 ${ch.y} 192 ${106 + (ch.y - 106) * 0.12}`} stroke={ch.c} strokeOpacity="0.45" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" />
+        </g>
+      ))}
+      <circle cx="212" cy="106" r="26" fill="#B98ACB" fillOpacity="0.14" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
+      <text x="212" y="102" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">1st clinic</text>
+      <text x="212" y="116" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">pilot</text>
+    </svg>
+  )
+}
 
 /** ── 页面 ────────────────────────────────────────────────────────────── */
 
@@ -501,24 +607,27 @@ export default function ThetaCase() {
         </Reveal>
         <Reveal delay={0.12}>
           <p className="mt-3 font-hand text-[17px] text-plum-muted">
-            the actual artifacts — <span className="text-orchid">blurred on purpose, internal docs stay internal ✦</span>
+            distilled from the real documents — <span className="text-orchid">the thinking, not the paperwork ✦</span>
           </p>
         </Reveal>
 
-        {/* 文档拍立得 */}
-        <div className="mt-10 grid gap-8 sm:grid-cols-3">
-          {ARTIFACTS.map((a, i) => (
-            <Reveal key={a.img} delay={i * 0.08}>
-              <figure className={`${a.rotate} rounded-[10px] border border-plum/10 bg-white p-2 pb-4 shadow-[0_22px_48px_-22px_rgba(90,63,86,0.45)] transition-transform duration-500 hover:rotate-0 hover:-translate-y-1`}>
-                <div className="overflow-hidden rounded-[6px]">
-                  <img src={a.img} alt={a.caption} loading="lazy" className="w-full blur-[2.5px] saturate-[0.9]" />
-                </div>
-                <figcaption className="mt-3 px-1 text-center font-hand text-[15px] leading-snug text-plum-muted">
-                  {a.caption}
-                </figcaption>
-              </figure>
-            </Reveal>
-          ))}
+        {/* 提炼信息图 */}
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <Reveal>
+            <InsightCard title="The product loop I spec’d" source="from the 46-page Theta Wellness PRD">
+              <FlywheelGraphic />
+            </InsightCard>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <InsightCard title="The gap the research found" source="from a 14-product competitive scan">
+              <QuadrantGraphic />
+            </InsightCard>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <InsightCard title="The channels that landed the pilot" source="from the growth & GTM playbook">
+              <ChannelsGraphic />
+            </InsightCard>
+          </Reveal>
         </div>
 
         {/* Demo 视频 + 报道 */}
