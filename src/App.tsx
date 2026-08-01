@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router'
 import Home from './pages/Home'
 import ThetaCase from './pages/ThetaCase'
-import AskDataCase from './pages/AskDataCase'
-import BoschSchemaCase from './pages/BoschSchemaCase'
+import { AskDataCase } from './pages/AskDataCase'
+import { BoschSchemaCase } from './pages/BoschSchemaCase'
 
 /** 路由切换时回到顶部（hash 锚点除外） */
 function ScrollToTop() {

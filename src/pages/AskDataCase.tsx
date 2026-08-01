@@ -1,166 +1,162 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router'
+import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
-import { Reveal } from '@/components/Reveal'
+import { AskDataUI } from '@/components/AskDataUI'
 
-const STEPS = [
-  { step: 'Ask', c: '#7A9CC6', title: 'Ask in plain language', body: 'Analysts type the business question as they would say it — no SQL required to get started.' },
-  { step: 'SQL', c: '#B98ACB', title: 'See the generated SQL', body: 'The workspace writes the query against the governed schema — visible, editable, and explainable.' },
-  { step: 'Analyze', c: '#8FAE8B', title: 'Go deeper in Python', body: 'One click drops the result set into a Python cell for statistical follow-ups and outlier checks.' },
-  { step: 'Visualize', c: '#C79A4B', title: 'Chart it in place', body: 'Results become shareable visualizations without leaving the flow or exporting to another tool.' },
-  { step: 'Reuse', c: '#D193A8', title: 'Save it for the team', body: 'Validated questions land in a shared library — the next analyst starts from an answer, not a blank page.' },
+const SCOPE = ['Product Strategy', 'Workflow Design', 'MVP Definition', 'PRDs']
+
+const WORKFLOW = [
+  {
+    num: '01',
+    title: 'Ask',
+    body: 'Analysts start from a plain-language question — not a blank query editor.',
+  },
+  {
+    num: '02',
+    title: 'SQL',
+    body: 'The question compiles into readable, inspectable SQL that teams can trust and adjust.',
+  },
+  {
+    num: '03',
+    title: 'Analyze',
+    body: 'Python analysis sits alongside the query, so deeper cuts stay inside the same flow.',
+  },
+  {
+    num: '04',
+    title: 'Visualize',
+    body: 'Results render as charts that can be explored, not just read.',
+  },
+  {
+    num: '05',
+    title: 'Reuse',
+    body: 'Trusted queries become reusable knowledge, so the next question starts further ahead.',
+  },
 ]
 
-export default function AskDataCase() {
-  useEffect(() => {
-    document.title = 'AskData — Case Study · Olivia Xiao'
-    return () => {
-      document.title = 'Olivia Xiao — AI Product, GTM & Partnerships'
-    }
-  }, [])
-
+/**
+ * AskData 独立详情页 —— Enterprise AI Product · Bosch × CMU。
+ * 首页 Impact 卡片 “Explore AskData →” 直达，不经过任何 overview。
+ */
+export function AskDataCase() {
   return (
-    <main className="min-h-screen bg-cream text-plum">
+    <main className="min-h-screen bg-cream">
+      {/* 简洁页头 */}
       <header className="fixed inset-x-0 top-0 z-50 bg-cream/85 shadow-[0_1px_0_0_rgba(58,36,64,0.06)] backdrop-blur-md">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Case study">
-          <Link to="/" className="group/logo flex items-baseline gap-2 font-serif text-lg font-medium tracking-tight text-plum">
-            <span aria-hidden className="text-sm text-orchid/70 transition-transform duration-300 group-hover/logo:-translate-x-0.5">←</span>
-            <span>Olivia Xiao</span>
+        <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Case">
+          <Link
+            to="/#impact"
+            className="group/back inline-flex items-center gap-1.5 text-[13px] font-medium text-plum-muted transition-colors hover:text-plum"
+          >
+            <span aria-hidden className="transition-transform duration-300 group-hover/back:-translate-x-0.5">←</span>
+            Back to work
           </Link>
-          <div className="flex items-center gap-5">
-            <Link to="/#impact" className="text-[13px] font-medium text-plum-muted transition-colors hover:text-plum">
-              All work
-            </Link>
-            <a
-              href="mailto:olivia.zxiao@gmail.com"
-              className="rounded-full bg-rose px-5 py-2 text-[13px] font-medium text-white transition-all duration-300 hover:bg-plum"
-            >
-              Say Hello
-            </a>
-          </div>
+          <Link to="/" className="font-serif text-[17px] text-plum">
+            ⌐ Hi, I'm Olivia <span aria-hidden className="text-orchid">↘</span>
+          </Link>
         </nav>
       </header>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#E8EFF7] via-cream to-cream" />
-        <div className="relative mx-auto max-w-6xl px-6 pb-16 pt-32 md:px-10 md:pb-20 md:pt-40">
-          <Reveal>
-            <p className="label-text flex items-center gap-3">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#7A9CC6]" />
-              Case Study · Enterprise AI Product · Bosch × CMU
-            </p>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <h1 className="mt-6 max-w-4xl font-serif text-[clamp(2.1rem,4.6vw,3.4rem)] font-light leading-[1.12] text-plum">
-              AskData — making enterprise analytics easier to{' '}
-              <span className="italic">
-                <span className="bg-[linear-gradient(100deg,#7A9CC6_0%,#B98ACB_55%,#D193A8_100%)] bg-clip-text text-transparent">
-                  ask, explore, and reuse
-                </span>
+      <article className="mx-auto max-w-5xl px-6 pb-28 pt-32 md:px-10 md:pt-36">
+        {/* ── Hero ─────────────────────────────────────────────── */}
+        <Reveal>
+          <p className="label-text mb-5 text-[#4E6E96]">Enterprise AI Product · Bosch × CMU</p>
+        </Reveal>
+        <h1 className="font-serif text-[clamp(2.4rem,6vw,4.2rem)] font-light leading-[1.05] text-plum">
+          <WordReveal text="AskData" />
+        </h1>
+        <Reveal delay={0.15}>
+          <p className="mt-4 max-w-2xl font-serif text-xl font-light leading-snug text-plum-muted md:text-2xl">
+            Making enterprise analytics easier to ask, explore, and reuse.
+          </p>
+        </Reveal>
+        <Reveal delay={0.25}>
+          <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
+            Designed an AI-native analytics workspace that unified natural-language SQL, Python
+            analysis, visualization, and reusable query knowledge into one end-to-end experience —
+            streamlining 80%+ of manual analytics workflows. Built within the Bosch × CMU industry
+            collaboration, 2024–2025.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {SCOPE.map((s) => (
+              <span
+                key={s}
+                className="rounded-full border border-[#7FA3CC]/40 bg-[#EFF5FB]/70 px-3.5 py-1.5 text-[11.5px] font-medium text-[#4E6E96]"
+              >
+                {s}
               </span>
-            </h1>
-          </Reveal>
-          <Reveal delay={0.16}>
-            <p className="mt-6 max-w-2xl text-[16px] leading-relaxed text-plum-muted">
-              An AI-native analytics workspace designed for Bosch data teams — unifying
-              natural-language SQL, Python analysis, visualization, and reusable query knowledge
-              into one end-to-end experience.
-            </p>
-          </Reveal>
-          <Reveal delay={0.22}>
-            <div className="mt-7 flex flex-wrap items-center gap-3">
-              {['Product strategy', 'Workflow design', 'MVP definition', 'PRDs'].map((t) => (
-                <span key={t} className="rounded-full border border-plum/15 bg-white/70 px-4 py-1.5 text-[13px] text-plum-muted">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </Reveal>
-          <Reveal delay={0.28}>
-            <div className="mt-10 w-fit rounded-[1.6rem] border border-plum/10 bg-white/70 px-8 py-6 backdrop-blur-sm">
-              <p className="font-serif text-[2.6rem] font-light leading-none text-[#7A9CC6]">
-                <CountUp value={80} suffix="%+" />
-              </p>
-              <p className="mt-2 text-[13px] text-plum-muted">of manual analytics workflows streamlined</p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 工作流 */}
-      <section className="bg-white/60 py-16 md:py-20">
-        <div className="mx-auto max-w-6xl px-6 md:px-10">
-          <Reveal>
-            <p className="label-text mb-4">The workflow</p>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 className="font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-              Five steps, one surface
-            </h2>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <p className="mt-3 font-hand text-[17px] text-plum-muted">
-              the whole analytics loop — <span className="text-orchid">without ever leaving the page ✦</span>
-            </p>
-          </Reveal>
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
-            {STEPS.map((s, i) => (
-              <Reveal key={s.step} delay={i * 0.07}>
-                <div className="flex h-full flex-col rounded-[1.4rem] border border-plum/10 bg-cream p-5">
-                  <span
-                    className="w-fit rounded-full px-2.5 py-0.5 text-[10.5px] font-bold uppercase tracking-wide"
-                    style={{ backgroundColor: `${s.c}1e`, color: s.c }}
-                  >
-                    {s.step}
-                  </span>
-                  <p className="mt-3 text-[14px] font-semibold leading-snug text-plum">{s.title}</p>
-                  <p className="mt-2 text-[12.5px] leading-relaxed text-plum-muted">{s.body}</p>
-                </div>
-              </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </Reveal>
 
-      {/* 技术底座 + 收尾 */}
-      <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
-        <Reveal>
-          <div className="grid items-center gap-8 rounded-[2rem] bg-gradient-to-br from-[#E8EFF7] to-blush/30 p-8 md:grid-cols-[3fr_2fr] md:p-12">
-            <div>
-              <p className="label-text mb-3">Built on</p>
-              <h2 className="font-serif text-[1.6rem] font-light leading-snug text-plum">
-                The technical foundation came first
-              </h2>
-              <p className="mt-3 max-w-xl text-[14.5px] leading-relaxed text-plum-muted">
-                AskData's natural-language layer stands on an earlier Bosch × CMU project: a
-                multi-agent pipeline that extracts, structures, and validates enterprise schema
-                knowledge — so the SQL the workspace writes is grounded, not guessed.
-              </p>
-              <Link
-                to="/work/bosch-schema"
-                className="group/cta mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#7A9CC6]"
+        {/* ── 产品视觉 ─────────────────────────────────────────── */}
+        <Reveal className="mt-14" y={32}>
+          <div className="rounded-[2rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-6 md:p-12">
+            <AskDataUI />
+          </div>
+        </Reveal>
+
+        {/* ── 工作流 ───────────────────────────────────────────── */}
+        <Reveal className="mt-20">
+          <p className="label-text mb-8">The workflow, end to end</p>
+          <ol className="space-y-0">
+            {WORKFLOW.map((w, i) => (
+              <li
+                key={w.num}
+                className="group/step flex gap-6 border-t border-plum/10 py-6 transition-colors duration-300 last:border-b hover:bg-white/50 md:gap-10"
               >
-                Multi-agent schema extraction
-                <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
-              </Link>
-            </div>
-            <p className="font-hand text-[18px] leading-snug text-plum-muted">
-              deck, PRDs & prototypes on file — <span className="text-orchid">ask me for the full walkthrough ✦</span>
+                <span className="font-serif text-lg text-[#7FA3CC] transition-transform duration-300 group-hover/step:-translate-y-0.5 md:text-xl">
+                  {w.num}
+                </span>
+                <div>
+                  <h2 className="font-serif text-xl font-light text-plum md:text-2xl">{w.title}</h2>
+                  <p className="mt-1.5 max-w-xl text-[14px] leading-relaxed text-plum-muted">{w.body}</p>
+                </div>
+                {i === 0 && (
+                  <span aria-hidden className="ml-auto hidden self-center font-hand text-[15px] text-plum-faint md:block">
+                    one continuous flow ↓
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </Reveal>
+
+        {/* ── 结果 ─────────────────────────────────────────────── */}
+        <Reveal className="mt-20">
+          <div className="rounded-[2rem] border border-[#7FA3CC]/25 bg-[#EFF5FB]/60 p-10 text-center md:p-14">
+            <p className="font-serif text-6xl font-light text-[#4E6E96] md:text-7xl">
+              <CountUp value={80} suffix="%+" />
+            </p>
+            <p className="mt-3 text-[13px] uppercase tracking-label text-plum-muted">
+              manual analytics workflows streamlined
             </p>
           </div>
         </Reveal>
-        <Reveal delay={0.1}>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              to="/#impact"
-              className="inline-flex items-center gap-2 rounded-full border border-plum/25 bg-white/60 px-6 py-3 text-sm font-medium text-plum transition-all duration-300 hover:-translate-y-0.5 hover:border-orchid"
+
+        {/* ── 交叉链接：早期技术基础 ────────────────────────────── */}
+        <Reveal className="mt-16">
+          <Link
+            to="/work/bosch-schema"
+            className="group/x flex items-center justify-between gap-6 rounded-[1.6rem] border border-plum/10 bg-white/70 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#7FA3CC]/50 hover:bg-white hover:shadow-[0_18px_40px_-18px_rgba(78,110,150,0.35)] md:p-8"
+          >
+            <div>
+              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+                Earlier technical foundation ↗
+              </p>
+              <p className="mt-2 font-serif text-xl font-light text-plum md:text-2xl">
+                Multi-agent schema extraction
+              </p>
+              <p className="mt-1 text-[13px] text-plum-muted">Architecture + validation</p>
+            </div>
+            <span
+              aria-hidden
+              className="shrink-0 font-serif text-2xl text-[#7FA3CC] transition-transform duration-300 group-hover/x:translate-x-1.5"
             >
-              ← Back to all work
-            </Link>
-          </div>
+              →
+            </span>
+          </Link>
         </Reveal>
-      </section>
+      </article>
     </main>
   )
 }
