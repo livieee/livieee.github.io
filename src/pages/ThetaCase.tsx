@@ -110,14 +110,25 @@ const OWNED = [
 const PRESS = [
   {
     label: 'CMU Integrated Innovation Institute',
-    title: 'Featured in “Summer Internships 2025”',
+    title: 'Summer Internship Recap 2025',
+    quote:
+      '“I didn’t just observe from the sidelines — I helped drive clarity in the workflows, organized and synthesized feedback from power-user interviews, and helped build the platform for how we interact with both patients and physicians.”',
     href: 'https://www.cmu.edu/iii/about/news/2025/summer-internships-2025.html',
   },
   {
-    label: 'LinkedIn',
-    title: 'My internship reflection — #healthcareai',
+    label: 'LinkedIn · 57 reactions',
+    title: 'Internship reflection — build with care',
+    quote:
+      'Five lessons from the summer: start with real user problems · design taste matters · personalization is essential in AI · articulate clear value · build with users, not in isolation.',
     href: 'https://www.linkedin.com/posts/olivia-zerun-xiao_productmanagement-internshipreflection-healthcareai-ugcPost-7348943917221826562-dkWk/',
   },
+]
+
+const DEMO_FRAMES = [
+  { src: '/theta/demo-frame-1.jpg', cap: 'The world’s first HIPAA-compliant health-data MCP' },
+  { src: '/theta/demo-frame-2.jpg', cap: 'Same question, two answers — without vs. with MCP' },
+  { src: '/theta/demo-frame-3.jpg', cap: 'Not just data — a what-to-do-next plan' },
+  { src: '/theta/demo-frame-4.jpg', cap: 'Success criteria the user can track' },
 ]
 
 type SubProject = {
@@ -280,6 +291,48 @@ function ChannelsGraphic() {
       <text x="212" y="102" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">1st clinic</text>
       <text x="212" y="116" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">pilot</text>
     </svg>
+  )
+}
+
+/** MCP demo：关键帧轮播动画（自动交叉淡入，可点圆点切换） */
+function DemoFrameLoop() {
+  const [idx, setIdx] = useState(0)
+  useEffect(() => {
+    const t = window.setInterval(() => setIdx((i) => (i + 1) % DEMO_FRAMES.length), 3400)
+    return () => window.clearInterval(t)
+  }, [])
+  return (
+    <div>
+      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-[#0B0E14]">
+        {DEMO_FRAMES.map((f, i) => (
+          <img
+            key={f.src}
+            src={f.src}
+            alt={f.cap}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              i === idx ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        ))}
+      </div>
+      <div className="mt-3 flex items-center justify-between gap-3 px-1">
+        <p className="min-h-[20px] font-hand text-[15px] leading-snug text-plum-muted">{DEMO_FRAMES[idx].cap}</p>
+        <div className="flex shrink-0 gap-1.5">
+          {DEMO_FRAMES.map((f, i) => (
+            <button
+              key={f.src}
+              type="button"
+              aria-label={`Show frame ${i + 1}`}
+              onClick={() => setIdx(i)}
+              className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                i === idx ? 'w-5 bg-orchid' : 'bg-plum/20 hover:bg-plum/40'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -630,24 +683,17 @@ export default function ThetaCase() {
           </Reveal>
         </div>
 
-        {/* Demo 视频 + 报道 */}
+        {/* MCP demo 关键帧动画 + 报道引语卡 */}
         <div className="mt-12 grid gap-8 lg:grid-cols-[3fr_2fr]">
           <Reveal>
-            <div className="overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]">
-              <div className="flex flex-wrap items-center gap-2 px-5 py-3.5">
-                <span className="font-hand text-[17px] font-semibold text-plum">Theta Health MCP — 82-second demo</span>
+            <div className="rounded-2xl border border-plum/10 bg-white p-4 shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)] sm:p-5">
+              <div className="mb-3 flex flex-wrap items-center gap-2 px-1">
+                <span className="font-hand text-[17px] font-semibold text-plum">Theta Health MCP — the demo, distilled</span>
                 <span className="ml-auto rounded-full bg-[#C79A4B]/15 px-3 py-1 font-hand text-[14px] text-[#9A7433]">
                   🏆 GAIA Leaderboard #1
                 </span>
               </div>
-              <video
-                controls
-                preload="none"
-                poster="/theta/mcp-demo-poster.jpg"
-                className="aspect-video w-full bg-plum/5"
-              >
-                <source src="/theta/mcp-demo.mp4" type="video/mp4" />
-              </video>
+              <DemoFrameLoop />
             </div>
           </Reveal>
           <div className="flex flex-col gap-6">
@@ -660,11 +706,14 @@ export default function ThetaCase() {
                   className="group/press flex h-full flex-col justify-center rounded-2xl border border-plum/10 bg-white/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-orchid/40 hover:bg-white"
                 >
                   <p className="label-text !text-[10px]">{p.label}</p>
-                  <p className="mt-2 font-serif text-[1.1rem] font-medium leading-snug text-plum">
+                  <p className="mt-2 font-serif text-[1.05rem] font-medium leading-snug text-plum">
                     {p.title}
                     <span aria-hidden className="ml-2 inline-block text-orchid transition-transform duration-300 group-hover/press:translate-x-0.5 group-hover/press:-translate-y-0.5">
                       ↗
                     </span>
+                  </p>
+                  <p className="mt-3 border-l-2 border-orchid/30 pl-3 font-serif text-[13.5px] italic leading-relaxed text-plum-muted">
+                    {p.quote}
                   </p>
                 </a>
               </Reveal>
