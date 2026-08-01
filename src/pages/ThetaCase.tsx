@@ -68,30 +68,34 @@ const PHASES: Phase[] = [
   },
 ]
 
-const PROCESS = [
+const OWNED = [
   {
     num: '01',
-    heading: 'Listen first',
+    heading: 'Co-led the 0→1 MVP',
     color: '#D193A8',
-    body: '5+ physician interviews and 10+ competitor teardowns. The insight: current AI scribes transcribe words but miss the patient — no lifestyle data, no context between visits.',
+    body: 'Defined the roadmap, authored PRDs, and built Figma prototypes — coordinating design and engineering to keep technical feasibility and business goals aligned, from zero to a working Scribe integrating speech-to-text and LLMs.',
+    stat: '83% less documentation time',
   },
   {
     num: '02',
-    heading: 'Map the workflow',
+    heading: 'Designed the AI features',
     color: '#B98ACB',
-    body: 'Shadowed real clinical flows from scheduling to sign-off, then translated them into product scope: pre-visit, in-visit, post-visit — each with its own job to be done.',
+    body: 'Note Customization, AI Edit, and Doc Generation — grounded in 20+ user interviews and 10+ competitor analyses, then co-designed prompt templates with engineers, iterating for LLM accuracy and reliability.',
+    stat: '20+ interviews · 10+ teardowns',
   },
   {
     num: '03',
-    heading: 'Build with engineers',
+    heading: 'Built the intake engine',
     color: '#8FAE8B',
-    body: 'Authored PRDs, built Figma prototypes, and co-designed prompt templates with engineering — integrating speech-to-text and LLMs on HIPAA-compliant infrastructure.',
+    body: 'Launched a HIPAA-compliant email workflow for patient intake, consent, and data authorization — automating collection before every visit and lifting engagement measured by open and click rates.',
+    stat: '+60% engagement',
   },
   {
     num: '04',
-    heading: 'Earn adoption',
+    heading: 'Drove GTM & adoption',
     color: '#C79A4B',
-    body: 'GTM across media, hackathons and clinical roundtables with 40+ physicians. Live demos and medical-association partnerships landed the first clinic pilot.',
+    body: 'Defined GTM across media, hackathons, and influencer partnerships; engaged 30+ developers behind the healthcare MCP, and ran clinical roundtables with 40+ physicians — live demos and medical-association partnerships that fed insights back into the roadmap.',
+    stat: '40+ physicians · 30+ developers',
   },
 ]
 
@@ -206,10 +210,10 @@ export default function ThetaCase() {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="mt-6 max-w-2xl text-[16px] leading-relaxed text-plum-muted">
-              At Theta Health I co-led the 0→1 development of an AI Scribe MVP — and shaped the
-              intake workflow, developer ecosystem, and patient app around it. One product
-              philosophy held everything together: AI should adapt to clinical reality, not the
-              other way around.
+              At Theta Health I co-led the 0→1 development of an AI Scribe MVP — integrating
+              speech-to-text and LLMs — and shaped the intake workflow, developer ecosystem, and
+              patient app around it. One product philosophy held everything together: AI should
+              adapt to clinical reality, not the other way around.
             </p>
           </Reveal>
           <Reveal delay={0.24}>
@@ -218,7 +222,10 @@ export default function ThetaCase() {
                 Product Intern · AI Health Product
               </span>
               <span className="rounded-full border border-plum/15 bg-white/70 px-4 py-1.5 text-[13px] text-plum-muted">
-                Woodside, CA
+                Roadmap · PRDs · Figma prototypes
+              </span>
+              <span className="rounded-full border border-plum/15 bg-white/70 px-4 py-1.5 text-[13px] text-plum-muted">
+                STT + LLM prompt design
               </span>
               <a
                 href="https://thetahealth.ai/"
@@ -380,26 +387,36 @@ export default function ThetaCase() {
         </div>
       </section>
 
-      {/* ── 过程 ── */}
+      {/* ── 我负责的部分 ── */}
       <section className="bg-white/60 py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
           <Reveal>
-            <p className="label-text mb-4">How it came together</p>
+            <p className="label-text mb-4">My role</p>
           </Reveal>
           <Reveal delay={0.06}>
             <h2 className="font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-              From physician interviews to a clinic pilot
+              What I owned, end to end
             </h2>
           </Reveal>
-          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {PROCESS.map((s, i) => (
+          <Reveal delay={0.12}>
+            <p className="mt-3 font-hand text-[17px] text-plum-muted">
+              from the PRD to the pilot — <span className="text-orchid">the parts with my fingerprints on them ✦</span>
+            </p>
+          </Reveal>
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            {OWNED.map((s, i) => (
               <Reveal key={s.num} delay={i * 0.08}>
-                <div className="h-full rounded-[1.6rem] border border-plum/10 bg-cream p-7">
-                  <p className="font-hand text-[20px] font-semibold" style={{ color: s.color }}>
-                    {s.num}
-                  </p>
-                  <h3 className="mt-2 font-serif text-[1.2rem] font-medium text-plum">{s.heading}</h3>
-                  <p className="mt-3 text-[13.5px] leading-relaxed text-plum-muted">{s.body}</p>
+                <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-7 md:p-8">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <p className="font-hand text-[20px] font-semibold" style={{ color: s.color }}>
+                      {s.num}
+                    </p>
+                    <p className="rounded-full px-3 py-1 font-hand text-[14px]" style={{ color: s.color, backgroundColor: `${s.color}18` }}>
+                      {s.stat}
+                    </p>
+                  </div>
+                  <h3 className="mt-2 font-serif text-[1.3rem] font-medium text-plum">{s.heading}</h3>
+                  <p className="mt-3 text-[14px] leading-relaxed text-plum-muted">{s.body}</p>
                 </div>
               </Reveal>
             ))}
