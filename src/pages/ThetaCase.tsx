@@ -791,7 +791,18 @@ export default function ThetaCase() {
                       see the work
                       <span aria-hidden className="transition-transform duration-300 group-hover/pl:translate-y-0.5">↓</span>
                     </a>
-                    {pl.ext && <SiteLink href={pl.ext.url} label={pl.ext.label} color={pl.c} small />}
+                    {pl.ext && (
+                      <a
+                        href={pl.ext.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group/v inline-flex items-center gap-1 whitespace-nowrap text-[12px] font-semibold underline-offset-4 transition-all hover:underline"
+                        style={{ color: pl.c }}
+                      >
+                        visit site
+                        <span aria-hidden className="transition-transform duration-300 group-hover/v:translate-x-0.5 group-hover/v:-translate-y-0.5">↗</span>
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -1011,7 +1022,7 @@ export default function ThetaCase() {
           </Reveal>
 
           {/* GTM 与真实产品面 */}
-          <div className="mt-10 grid gap-8 lg:grid-cols-2">
+          <div className="mt-10 grid items-start gap-8 lg:grid-cols-2">
             <Reveal>
               <InsightCard title="The clinical B2B motion" source="from pilot outreach & the growth playbook">
                 <PilotB2BGraphic />
@@ -1024,7 +1035,7 @@ export default function ThetaCase() {
                   <span className="h-2.5 w-2.5 rounded-full bg-[#DECDA6]" />
                   <span className="h-2.5 w-2.5 rounded-full bg-[#8FAE8B]/70" />
                 </div>
-                <img src="/theta/ui-soap.jpg" alt="Theta Care output — an AI-drafted SOAP note ready to sign" loading="lazy" className="w-full flex-1 object-cover object-top" />
+                <img src="/theta/ui-soap.jpg" alt="Theta Care output — an AI-drafted SOAP note ready to sign" loading="lazy" className="max-h-[380px] w-full object-cover object-top" />
                 <p className="px-5 py-3 font-hand text-[14px] text-plum-muted">the output that matters — a SOAP note ready to sign ✦</p>
               </div>
             </Reveal>
@@ -1337,8 +1348,13 @@ export default function ThetaCase() {
         </Reveal>
         <Reveal delay={0.06}>
           <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-            Don't take my word for it
+            The internship, in writing
           </h2>
+        </Reveal>
+        <Reveal delay={0.12}>
+          <p className="mt-3 font-hand text-[17px] text-plum-muted">
+            CMU's recap of my summer — <span className="text-orchid">and my own reflection ✦</span>
+          </p>
         </Reveal>
         <div className="mt-10 grid gap-8 lg:grid-cols-2">
           {/* CMU 报道：报纸剪报风格 */}
