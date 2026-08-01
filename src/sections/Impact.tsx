@@ -290,7 +290,7 @@ export function Impact() {
                   <div className="mb-5 flex items-center gap-3">
                     <img src="/logos/bosch-wordmark.png" alt="Bosch" className="h-6 w-auto" />
                     <span aria-hidden className="font-hand text-[17px] text-plum-faint">×</span>
-                    <img src="/logos/cmu.png" alt="Carnegie Mellon University" className="h-9 w-auto" />
+                    <img src="/logos/cmu-wordmark.png" alt="Carnegie Mellon University" className="h-9 w-auto rounded-lg" />
                   </div>
                   <h3 className="font-serif text-2xl font-light leading-snug text-plum md:text-[1.9rem]">
                     Making enterprise analytics easier to ask, explore, and reuse
