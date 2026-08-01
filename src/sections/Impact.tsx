@@ -4,7 +4,6 @@ import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { TiltCard } from '@/components/TiltCard'
 import { AskDataUI } from '@/components/AskDataUI'
-import { MiniArchCard } from '@/components/MiniArchCard'
 
 type Metric = {
   value: string
@@ -54,6 +53,8 @@ function Tag({ children }: { children: string }) {
 export function Impact() {
   /** Theta 主视觉上跟随光标的 Tap to view 胶囊 */
   const [viewCur, setViewCur] = useState<{ x: number; y: number } | null>(null)
+  /** AskData 演示区跟随光标的 Tap to explore 胶囊 */
+  const [askCur, setAskCur] = useState<{ x: number; y: number } | null>(null)
   return (
     <section id="impact" className="relative bg-white/50">
       {/* 顶部延续 Hero 的方格纸语言，向下淡出 */}
@@ -190,22 +191,71 @@ export function Impact() {
             <article id="case-askdata" className="group/card relative scroll-mt-24 rounded-[2rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-8 transition-transform duration-500 md:p-14">
               <div className="grid items-center gap-12 md:grid-cols-12">
                 {/* 视觉：AskData UI（移动端先展示），整块可点击直达详情页 */}
-                <div className="relative order-1 md:col-span-8">
+                <div className="order-1 md:col-span-8">
                   <Link
                     to="/work/askdata"
                     aria-label="Explore AskData"
-                    className="group/demo block rounded-2xl transition-transform duration-300 hover:scale-[1.01]"
+                    className="group/demo relative block cursor-none rounded-2xl transition-transform duration-300 hover:scale-[1.01]"
+                    onPointerMove={(e) => {
+                      if (e.pointerType === 'touch') return
+                      const r = e.currentTarget.getBoundingClientRect()
+                      setAskCur({ x: e.clientX - r.left, y: e.clientY - r.top })
+                    }}
+                    onPointerLeave={() => setAskCur(null)}
                   >
                     <AskDataUI />
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute -top-4 right-2 rotate-[2deg] font-hand text-[16px] text-[#4E6E96] opacity-0 transition-opacity duration-300 group-hover/demo:opacity-100"
-                    >
-                      tap to explore ↗
-                    </span>
+                    {/* 跟随光标的 Tap to explore 胶囊 */}
+                    {askCur && (
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute z-20 whitespace-nowrap rounded-full bg-[#4E6E96] px-4 py-1.5 font-hand text-[16px] font-semibold text-white shadow-[0_12px_28px_-8px_rgba(78,110,150,0.6)]"
+                        style={{
+                          left: askCur.x,
+                          top: askCur.y,
+                          transform: 'translate(12px, -130%) rotate(3deg)',
+                        }}
+                      >
+                        Tap to explore ↗
+                      </span>
+                    )}
                   </Link>
-                  {/* 桌面端：角落钉小架构卡（姊妹项目入口） */}
-                  <MiniArchCard className="absolute -bottom-8 -right-3 z-10 hidden md:block" />
+
+                  {/* 姊妹项目：窗口下方的轻量长条入口 */}
+                  <div className="mt-6 flex justify-center md:justify-start">
+                    <Link
+                      to="/work/bosch-schema"
+                      className="group/arch inline-flex max-w-full items-center gap-4 rounded-full border border-plum/10 bg-white/80 py-2.5 pl-5 pr-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#7FA3CC]/60 hover:bg-white hover:shadow-[0_16px_34px_-14px_rgba(78,110,150,0.45)]"
+                    >
+                      {/* 迷你管线图 */}
+                      <svg viewBox="0 0 116 34" className="hidden w-24 shrink-0 sm:block" aria-hidden>
+                        {[1, 12, 23].map((y, i) => (
+                          <rect key={i} x="1" y={y} width="20" height="8" rx="3" fill="#EFF5FB" stroke="#7FA3CC" strokeWidth="1" />
+                        ))}
+                        {[5, 16, 27].map((y, i) => (
+                          <path key={i} d={`M21 ${y} C 34 ${y}, 36 16, 46 16`} fill="none" stroke="#B9CDE4" strokeWidth="1.1" />
+                        ))}
+                        <circle cx="56" cy="16" r="9" fill="#DCE7F2" stroke="#4E6E96" strokeWidth="1.1" />
+                        <path d="M65 16 H76" fill="none" stroke="#B9CDE4" strokeWidth="1.1" />
+                        <path d="m76 16 4.5-2.7v5.4Z" fill="#B9CDE4" />
+                        <rect x="82" y="8" width="33" height="16" rx="5" fill="#F6EFE8" stroke="#D193A8" strokeWidth="1" />
+                        <text x="98" y="19" textAnchor="middle" fontSize="7.5" fill="#8A6E7E">✓</text>
+                      </svg>
+                      <span className="min-w-0">
+                        <span className="block text-[9px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+                          Also under this collaboration
+                        </span>
+                        <span className="block truncate font-serif text-[15px] leading-snug text-plum">
+                          Multi-agent schema extraction
+                        </span>
+                      </span>
+                      <span
+                        aria-hidden
+                        className="shrink-0 font-serif text-lg text-[#7FA3CC] transition-transform duration-300 group-hover/arch:translate-x-1"
+                      >
+                        ↗
+                      </span>
+                    </Link>
+                  </div>
                 </div>
 
                 {/* 文案 */}
@@ -252,10 +302,6 @@ export function Impact() {
                   </Link>
                 </div>
 
-                {/* 移动端：小架构卡内联展示 */}
-                <div className="order-3 flex justify-end md:hidden">
-                  <MiniArchCard />
-                </div>
               </div>
             </article>
           </TiltCard>
