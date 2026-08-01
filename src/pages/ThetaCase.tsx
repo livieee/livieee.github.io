@@ -723,11 +723,31 @@ export default function ThetaCase() {
                     ↗
                   </span>
                 </p>
-                <div aria-hidden className="mx-auto mt-3 h-px w-16 bg-plum/25" />
-                <p className="mt-3 font-serif text-[13.5px] italic leading-relaxed text-[#3d3d3d]">
+                <div aria-hidden className="mx-auto mt-4 h-px w-16 bg-plum/25" />
+                {/* 文章中的官方 profile 卡（按 CMU 页面原样重建） */}
+                <div className="mt-4 flex items-center gap-4">
+                  <img
+                    src="/theta/olivia-cmu-avatar.jpg"
+                    alt="Olivia Xiao at the Theta Health booth"
+                    loading="lazy"
+                    className="h-16 w-16 shrink-0 rounded-full border-2 border-white object-cover shadow-[0_6px_16px_-6px_rgba(58,36,64,0.4)]"
+                  />
+                  <div>
+                    <p className="font-serif text-[1.02rem] font-bold leading-tight text-[#A6192E]">Olivia Xiao</p>
+                    <p className="font-serif text-[13px] font-semibold text-[#1a1a1a]">MSSM ’25</p>
+                    <p className="mt-0.5 text-[12px] leading-snug text-[#3d3d3d]">
+                      Product Strategy &amp; Operations Intern, Theta Health
+                    </p>
+                  </div>
+                </div>
+                <p className="mt-3 text-[12.5px] leading-relaxed text-[#3d3d3d]">
+                  “Supported the launch of an AI healthcare platform, collaborating with engineers,
+                  designers and physicians to develop compliant clinical workflows and drive early
+                  adoption.”
+                </p>
+                <p className="mt-3 font-serif text-[13px] italic leading-relaxed text-[#3d3d3d]">
                   {CMU_PRESS.quote}
                 </p>
-                <p className="mt-3 text-right font-hand text-[14px] text-plum-muted">— Olivia Xiao, MSSM ’25, on Theta Health</p>
               </a>
             </Reveal>
             {/* LinkedIn 官方 embed：真实帖子 */}
