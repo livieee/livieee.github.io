@@ -253,10 +253,10 @@ export function Impact() {
                           Also under this collaboration
                         </span>
                         <span className="mt-0.5 block truncate font-serif text-[17px] leading-snug text-plum">
-                          Multi-agent schema extraction
+                          InterChat — schema extraction agents
                         </span>
                         <span className="mt-0.5 block text-[11.5px] text-plum-muted">
-                          Architecture + validation
+                          Solution Architect · trust layer · 56.6% → 97.2% accuracy
                         </span>
                       </span>
                       <span
