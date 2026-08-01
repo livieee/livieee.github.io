@@ -207,8 +207,11 @@ const CASE_CSS = `
 .theta-spin { transform-box: fill-box; transform-origin: center; animation: theta-spin 36s linear infinite; }
 .theta-pulse { transform-box: fill-box; transform-origin: center; animation: theta-pulse 2.4s ease-in-out infinite; }
 .theta-kb { animation: theta-kenburns 3.4s ease-out forwards; }
+@keyframes theta-marquee { to { transform: translateX(-50%); } }
+.theta-marquee { animation: theta-marquee 38s linear infinite; }
+.theta-marquee:hover { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
-  .theta-march, .theta-spin, .theta-pulse, .theta-kb { animation: none; }
+  .theta-march, .theta-spin, .theta-pulse, .theta-kb, .theta-marquee { animation: none; }
 }
 `
 
@@ -421,6 +424,29 @@ function WhoWantedItGraphic() {
   )
 }
 
+/** 圆桌需求排行（宽幅）：医生反复要什么 → 进 roadmap 和 demo */
+function RoadmapAsksGraphic() {
+  return (
+    <svg viewBox="0 0 640 216" className="w-full max-w-[660px]" fill="none" aria-label="What physicians kept asking for: EMR integration was the number-one ask, followed by follow-up document generation — both moved into the roadmap and the demo">
+      <text x="16" y="34" fontSize="11" fill="#8A6E84">what physicians kept asking for</text>
+      <rect x="16" y="52" width="392" height="34" rx="10" fill="#B98ACB" fillOpacity="0.16" stroke="#B98ACB" strokeOpacity="0.55" strokeWidth="1.2" />
+      <text x="32" y="73" fontSize="11.5" fontWeight="600" fill="#3A2440">EMR integration</text>
+      <text x="418" y="73" fontSize="10" fill="#8A6E84">the #1 ask, visit after visit</text>
+      <rect x="16" y="100" width="288" height="34" rx="10" fill="#D193A8" fillOpacity="0.16" stroke="#D193A8" strokeOpacity="0.55" strokeWidth="1.2" />
+      <text x="32" y="121" fontSize="11.5" fontWeight="600" fill="#3A2440">follow-up document generation</text>
+      <text x="314" y="121" fontSize="10" fill="#8A6E84">right behind it</text>
+      <path d="M408 69 Q 490 69 530 96 M304 117 Q 460 117 528 102" stroke="#8FAE8B" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+      <circle cx="572" cy="100" r="30" fill="#8FAE8B" fillOpacity="0.14" stroke="#8FAE8B" strokeWidth="1.4" strokeDasharray="2 4" />
+      <text x="572" y="96" textAnchor="middle" fontSize="10.5" fill="#3A2440" fontWeight="600">roadmap</text>
+      <text x="572" y="110" textAnchor="middle" fontSize="10.5" fill="#3A2440" fontWeight="600">&amp; demo ✦</text>
+      <text x="320" y="180" textAnchor="middle" fontSize="12.5" fill="#8FAE8B" className="font-hand" fontWeight="600">
+        heard in the roundtables → shipped into the demo ✦
+      </text>
+      <text x="320" y="200" textAnchor="middle" fontSize="10" fill="#8A6E84">as an intern, looped into the decisions that set these priorities</text>
+    </svg>
+  )
+}
+
 /** 竞品扫描核心：定位象限 + 我们找到的空白 */
 function QuadrantGraphic() {
   const dots = [
@@ -461,7 +487,7 @@ function QuadrantGraphic() {
 
 
 
-/** 圆桌照片轮播：横向滑动 + 自动前进 + 箭头/圆点 */
+/** 圆桌照片胶片流：连续左右滚动，无按钮，hover 暂停 */
 function RoundtableCarousel() {
   const photos = [
     { src: '/theta/rt-2414.jpg', cap: 'pitching a collaborative future' },
@@ -469,68 +495,32 @@ function RoundtableCarousel() {
     { src: '/theta/rt-2445.jpg', cap: 'demoing how patients collect their data' },
     { src: '/theta/rt-2452.jpg', cap: 'asking the room what to build next' },
   ]
-  const [idx, setIdx] = useState(0)
-  const [paused, setPaused] = useState(false)
-  useEffect(() => {
-    if (paused) return
-    const t = window.setInterval(() => setIdx((i) => (i + 1) % photos.length), 4200)
-    return () => window.clearInterval(t)
-  }, [paused, photos.length])
-  const go = (d: number) => setIdx((i) => (i + d + photos.length) % photos.length)
+  const strip = [...photos, ...photos]
   return (
     <div
-      className="relative mx-auto mt-6 max-w-3xl"
-      onPointerEnter={() => setPaused(true)}
-      onPointerLeave={() => setPaused(false)}
+      className="mt-6 overflow-hidden"
+      style={{
+        maskImage: 'linear-gradient(to right, transparent, black 7%, black 93%, transparent)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent, black 7%, black 93%, transparent)',
+      }}
     >
-      <div className="overflow-hidden rounded-2xl border border-plum/10 bg-white p-2.5 shadow-[0_28px_60px_-28px_rgba(90,63,86,0.5)]">
-        <div
-          className="flex transition-transform duration-700"
-          style={{ transform: `translateX(-${idx * 100}%)`, transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
-        >
-          {photos.map((ph) => (
+      <div className="theta-marquee flex w-max">
+        {strip.map((ph, i) => (
+          <figure
+            key={i}
+            aria-hidden={i >= photos.length}
+            className="mr-6 w-[300px] shrink-0 rounded-[12px] border border-plum/10 bg-white p-2 pb-3.5 shadow-[0_20px_44px_-24px_rgba(90,63,86,0.45)] md:w-[400px]"
+          >
             <img
-              key={ph.src}
               src={ph.src}
-              alt={`Clinical roundtable — ${ph.cap}`}
+              alt={i < photos.length ? `Clinical roundtable — ${ph.cap}` : ''}
               loading="lazy"
               draggable={false}
-              className="aspect-[4/3] w-full shrink-0 rounded-xl object-cover"
+              className="aspect-[4/3] w-full rounded-[8px] object-cover"
             />
-          ))}
-        </div>
-      </div>
-      {/* 箭头 */}
-      <button
-        type="button"
-        aria-label="Previous photo"
-        onClick={() => go(-1)}
-        className="absolute -left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-plum/15 bg-white text-plum shadow-[0_10px_24px_-8px_rgba(58,36,64,0.4)] transition-transform duration-300 hover:scale-110 md:-left-5"
-      >
-        ‹
-      </button>
-      <button
-        type="button"
-        aria-label="Next photo"
-        onClick={() => go(1)}
-        className="absolute -right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-plum/15 bg-white text-plum shadow-[0_10px_24px_-8px_rgba(58,36,64,0.4)] transition-transform duration-300 hover:scale-110 md:-right-5"
-      >
-        ›
-      </button>
-      {/* 手写标注 + 圆点 */}
-      <div className="mt-4 flex items-center justify-between gap-3 px-1">
-        <p className="min-h-[22px] font-hand text-[16px] text-plum-muted">{photos[idx].cap}</p>
-        <div className="flex shrink-0 gap-1.5">
-          {photos.map((ph, i) => (
-            <button
-              key={ph.src}
-              type="button"
-              aria-label={`Show photo ${i + 1}`}
-              onClick={() => setIdx(i)}
-              className={`h-2 rounded-full transition-all duration-300 ${i === idx ? 'w-5 bg-orchid' : 'w-2 bg-plum/20 hover:bg-plum/40'}`}
-            />
-          ))}
-        </div>
+            <figcaption className="mt-2.5 text-center font-hand text-[14px] text-plum-muted">{ph.cap}</figcaption>
+          </figure>
+        ))}
       </div>
     </div>
   )
@@ -882,7 +872,7 @@ export default function ThetaCase() {
         </Reveal>
         <Reveal delay={0.06}>
           <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-            Four insights from the work
+            Insights from the work
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
@@ -899,18 +889,23 @@ export default function ThetaCase() {
             </InsightCard>
           </Reveal>
           <Reveal delay={0.08}>
+            <InsightCard title="Who actually wanted it" source="from early outreach — the demand signal">
+              <WhoWantedItGraphic />
+            </InsightCard>
+          </Reveal>
+          <Reveal delay={0.12}>
             <InsightCard title="The MCP developer motion" source="from my Twitter AI & tech influencer research">
               <McpMotionGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.12}>
+          <Reveal delay={0.18}>
             <InsightCard title="The clinical B2B motion" source="from pilot outreach & the growth playbook">
               <PilotB2BGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.18}>
-            <InsightCard title="Who actually wanted it" source="from early outreach — the demand signal">
-              <WhoWantedItGraphic />
+          <Reveal delay={0.12} className="md:col-span-2">
+            <InsightCard title="The asks that set the roadmap" source="from the roundtables — my reflection, in writing">
+              <RoadmapAsksGraphic />
             </InsightCard>
           </Reveal>
         </div>
