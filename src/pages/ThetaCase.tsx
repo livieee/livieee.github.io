@@ -207,11 +207,13 @@ const CASE_CSS = `
 .theta-spin { transform-box: fill-box; transform-origin: center; animation: theta-spin 36s linear infinite; }
 .theta-pulse { transform-box: fill-box; transform-origin: center; animation: theta-pulse 2.4s ease-in-out infinite; }
 .theta-kb { animation: theta-kenburns 3.4s ease-out forwards; }
+@keyframes theta-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.theta-float { transform-box: fill-box; animation: theta-float 3s ease-in-out infinite; }
 @keyframes theta-marquee { to { transform: translateX(-50%); } }
 .theta-marquee { animation: theta-marquee 38s linear infinite; }
 .theta-marquee:hover { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
-  .theta-march, .theta-spin, .theta-pulse, .theta-kb, .theta-marquee { animation: none; }
+  .theta-march, .theta-spin, .theta-pulse, .theta-kb, .theta-marquee, .theta-float { animation: none; }
 }
 `
 
@@ -336,9 +338,9 @@ function InsightCard({ title, source, children }: { title: string; source: strin
 /** MCP 开发者动线（窄卡）：三渠道 → 30+ devs */
 function McpMotionGraphic() {
   const chips = [
-    { y: 44, label: 'tech influencers · 15+ mapped' },
-    { y: 84, label: 'media' },
-    { y: 124, label: 'hackathons' },
+    { y: 44, label: 'API & dev-community anchors' },
+    { y: 84, label: 'MCP newsletters · 1M+ readers' },
+    { y: 124, label: 'hands-on ML educators' },
   ]
   return (
     <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="MCP developer motion: tech influencers, media and hackathons drove 30+ developers engaged">
@@ -354,9 +356,9 @@ function McpMotionGraphic() {
       <text x="276" y="81" textAnchor="middle" fontSize="11" fill="#3A2440" fontWeight="600">30+ devs</text>
       <text x="276" y="95" textAnchor="middle" fontSize="10.5" fill="#3A2440">engaged</text>
       <text x="160" y="180" textAnchor="middle" fontSize="13" fill="#B98ACB" className="font-hand" fontWeight="600">
-        armed with the demo &amp; the one-pager ✦
+        show devs how to plug in — trust follows ✦
       </text>
-      <text x="160" y="200" textAnchor="middle" fontSize="10" fill="#8A6E84">GAIA Leaderboard #1 as the hook</text>
+      <text x="160" y="200" textAnchor="middle" fontSize="10" fill="#8A6E84">GAIA #1 · demo · one-pager as the toolkit</text>
     </svg>
   )
 }
@@ -398,28 +400,48 @@ function PilotB2BGraphic() {
   )
 }
 
-/** 用户分层洞察：谁真的需要它（源自实习反思的早期外呼发现） */
+/** 目标用户（icon 动画版）：低需求年轻人 vs 被数据淹没的慢病长者 */
 function WhoWantedItGraphic() {
   return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Who actually wanted it: younger users showed low pull; older adults managing chronic conditions felt immediate value — targeting and messaging refocused on high-need users">
-      {/* 左：年轻用户 */}
-      <rect x="14" y="30" width="140" height="98" rx="12" fill="white" stroke="#8A6E84" strokeOpacity="0.35" strokeWidth="1.2" strokeDasharray="3 5" />
-      <text x="84" y="50" textAnchor="middle" fontSize="10.5" fill="#8A6E84" fontWeight="600">younger users</text>
-      <text x="84" y="70" textAnchor="middle" fontSize="9.5" fill="#8A6E84">fewer health concerns</text>
-      <text x="84" y="87" textAnchor="middle" fontSize="9.5" fill="#8A6E84">data mostly in one place</text>
-      <text x="84" y="112" textAnchor="middle" fontSize="11" fill="#8A6E84">✗ low pull</text>
-      {/* 右：慢病长者 */}
-      <rect x="166" y="30" width="140" height="98" rx="12" fill="#8FAE8B" fillOpacity="0.08" stroke="#8FAE8B" strokeOpacity="0.6" strokeWidth="1.3" />
-      <text x="236" y="50" textAnchor="middle" fontSize="10.5" fill="#6B8E63" fontWeight="600">older adults · chronic care</text>
-      <text x="236" y="70" textAnchor="middle" fontSize="9.5" fill="#3A2440">records scattered everywhere</text>
-      <text x="236" y="87" textAnchor="middle" fontSize="9.5" fill="#3A2440">many portals, many devices</text>
-      <text x="236" y="112" textAnchor="middle" fontSize="11" fill="#6B8E63" fontWeight="600">✓ instant resonance</text>
-      {/* 汇聚 */}
-      <path d="M84 136 C 100 158, 220 158, 236 136" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
-      <text x="160" y="180" textAnchor="middle" fontSize="13" fill="#B98ACB" className="font-hand" fontWeight="600">
-        refocus on high-need users ✦
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Target user: younger users with tidy data showed low pull; older adults managing chronic conditions — records scattered across files, pills, vitals and wearables — felt instant value">
+      {/* 左：年轻用户（灰，低需求） */}
+      <g opacity="0.5" stroke="#8A6E84" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="82" cy="52" r="11" />
+        <path d="M60 92 c0 -14 10 -22 22 -22 s22 8 22 22" />
+        <rect x="64" y="106" width="36" height="24" rx="6" />
+        <path d="M72 114 h20 M72 122 h12" strokeWidth="1.3" />
+      </g>
+      <text x="82" y="152" textAnchor="middle" fontSize="10" fill="#8A6E84">20s · 30s</text>
+      <text x="82" y="170" textAnchor="middle" fontSize="13" fill="#8A6E84">✗</text>
+      {/* 中分隔 */}
+      <path d="M160 38 V 156" stroke="#3A2440" strokeOpacity="0.12" strokeWidth="1" strokeDasharray="3 6" />
+      {/* 右：慢病长者（彩，被数据环绕） */}
+      <g stroke="#6B8E63" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="theta-pulse">
+        <circle cx="238" cy="62" r="12" />
+        <path d="M214 104 c0 -15 11 -24 24 -24 s24 9 24 24" />
+      </g>
+      {/* 漂浮的数据碎片 icons */}
+      <g stroke="#D193A8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="theta-float">
+        <path d="M186 34 h12 l5 5 v13 h-17 Z M198 34 v5 h5" />
+      </g>
+      <g stroke="#B98ACB" strokeWidth="1.5" strokeLinecap="round" className="theta-float" style={{ animationDelay: '0.7s' }}>
+        <rect x="276" y="34" width="20" height="10" rx="5" transform="rotate(-24 286 39)" />
+        <path d="M282 42 l8 -6" transform="rotate(-24 286 39)" />
+      </g>
+      <g stroke="#C79A4B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="theta-float" style={{ animationDelay: '1.4s' }}>
+        <path d="M186 112 c-4 -5 2 -11 6 -7 c4 -4 10 2 6 7 l-6 6 Z" />
+      </g>
+      <g stroke="#8FAE8B" strokeWidth="1.5" strokeLinecap="round" className="theta-float" style={{ animationDelay: '2.1s' }}>
+        <circle cx="290" cy="116" r="7" />
+        <path d="M290 112 v4 l3 2 M287 105 h6 M287 127 h6" strokeWidth="1.3" />
+      </g>
+      {/* 碎片流向长者 */}
+      <path d="M204 46 Q 218 50 226 54 M272 44 Q 260 50 252 55 M200 108 Q 212 104 220 99 M280 112 Q 268 107 258 102" stroke="#8FAE8B" strokeOpacity="0.45" strokeWidth="1.2" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <text x="238" y="152" textAnchor="middle" fontSize="10" fill="#3A2440">60s+ · chronic care</text>
+      <text x="238" y="170" textAnchor="middle" fontSize="13" fill="#6B8E63" fontWeight="700">✓</text>
+      <text x="160" y="200" textAnchor="middle" fontSize="13" fill="#B98ACB" className="font-hand" fontWeight="600">
+        built for the ones drowning in data ✦
       </text>
-      <text x="160" y="200" textAnchor="middle" fontSize="9.5" fill="#8A6E84">messaging: data aggregation → intelligent preprocessing</text>
     </svg>
   )
 }
@@ -447,40 +469,40 @@ function RoadmapAsksGraphic() {
   )
 }
 
-/** 竞品扫描核心：定位象限 + 我们找到的空白 */
+/** 竞品扫描核心：定位象限 + 每个集群的痛点 + 我们的空白 */
 function QuadrantGraphic() {
   const dots = [
-    { x: 96, y: 158, label: 'scheduling' },
-    { x: 118, y: 168 },
-    { x: 148, y: 140, label: 'voice agents' },
-    { x: 166, y: 152 },
-    { x: 186, y: 112, label: 'doc review' },
-    { x: 204, y: 124 },
-    { x: 122, y: 104, label: 'wellness' },
+    { x: 96, y: 152, label: 'scheduling', pain: 'admin, not care' },
+    { x: 70, y: 166 },
+    { x: 150, y: 130, label: 'voice agents', pain: 'hears, no memory' },
+    { x: 126, y: 144 },
+    { x: 190, y: 100, label: 'doc review', pain: 'after the fact' },
+    { x: 166, y: 112 },
+    { x: 86, y: 72, label: 'wellness', pain: 'never reaches the clinic' },
   ]
   return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Competitive positioning: most products cluster as point solutions; Theta targets whole-patient context in clinical care">
-      {/* 坐标轴 */}
-      <path d="M56 184 H 296 M56 184 V 30" stroke="#3A2440" strokeOpacity="0.25" strokeWidth="1.2" strokeLinecap="round" />
-      <text x="296" y="202" textAnchor="end" fontSize="11" fill="#8A6E84">admin → clinical care</text>
-      <text x="52" y="20" textAnchor="start" fontSize="11" fill="#8A6E84">whole-patient ↑</text>
-      {/* 竞品散点 */}
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Competitive positioning with pain points: scheduling is admin not care, voice agents hear but keep no memory, doc review comes after the fact, wellness never reaches the clinic — Theta fills the whole-patient gap">
+      <path d="M56 178 H 296 M56 178 V 30" stroke="#3A2440" strokeOpacity="0.25" strokeWidth="1.2" strokeLinecap="round" />
+      <text x="296" y="194" textAnchor="end" fontSize="10.5" fill="#8A6E84">admin → clinical care</text>
+      <text x="52" y="20" textAnchor="start" fontSize="10.5" fill="#8A6E84">whole-patient ↑</text>
       {dots.map((d, i) => (
         <g key={i}>
           <circle cx={d.x} cy={d.y} r="5" fill="#3A2440" fillOpacity="0.18" />
           {d.label && (
-            <text x={d.x + 9} y={d.y + 4} fontSize="10.5" fill="#8A6E84">
-              {d.label}
-            </text>
+            <>
+              <text x={d.x + 9} y={d.y + 1} fontSize="10" fill="#3A2440">{d.label}</text>
+              <text x={d.x + 9} y={d.y + 12} fontSize="8.5" fill="#C87A8A">{d.pain}</text>
+            </>
           )}
         </g>
       ))}
-      {/* Theta 的空白点 */}
-      <path d="M196 96 Q 226 62 248 56" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
-      <path d="M262 56 l6.5 4 -7.5 2 2 7 -5.5 -5 -5.5 5 2 -7 -7.5 -2 6.5 -4 v-7 Z" fill="#B98ACB" transform="translate(0,-8)" className="theta-pulse" />
-      <text x="262" y="82" textAnchor="middle" fontSize="12.5" fill="#3A2440" fontWeight="600">Theta</text>
-      <text x="262" y="98" textAnchor="middle" fontSize="11.5" fill="#B98ACB" className="font-hand">the gap ✦</text>
-      <text x="56" y="202" fontSize="10.5" fill="#8A6E84">14 products scanned</text>
+      <path d="M212 92 Q 234 60 252 52" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+      <path d="M266 52 l6.5 4 -7.5 2 2 7 -5.5 -5 -5.5 5 2 -7 -7.5 -2 6.5 -4 v-7 Z" fill="#B98ACB" transform="translate(0,-8)" className="theta-pulse" />
+      <text x="266" y="78" textAnchor="middle" fontSize="12.5" fill="#3A2440" fontWeight="600">Theta</text>
+      <text x="266" y="93" textAnchor="middle" fontSize="11" fill="#B98ACB" className="font-hand">the gap ✦</text>
+      <text x="160" y="210" textAnchor="middle" fontSize="12" fill="#C87A8A" className="font-hand" fontWeight="600">
+        every tool solves a slice — the whole patient falls through ✦
+      </text>
     </svg>
   )
 }
