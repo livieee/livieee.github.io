@@ -846,6 +846,10 @@ export default function ThetaCase() {
                 </span>
               </div>
               <DemoFrameLoop />
+              <p className="mt-3 px-1 text-[12px] leading-snug text-plum-faint">
+                Product built by the Theta engineering team — my part was driving its developer
+                adoption: 30+ developers engaged, messaging, and roadmap input from the field.
+              </p>
             </div>
           </Reveal>
           <div className="flex flex-col gap-6">
