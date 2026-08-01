@@ -324,62 +324,79 @@ function InsightCard({ title, source, children }: { title: string; source: strin
   )
 }
 
-/** Influencer GTM：按产品分层的创作者地图（源自 Twitter GTM 调研） */
-function InfluencerMapGraphic() {
-  const pods = [
-    { x: 62, label1: 'productivity &', label2: 'longevity creators', target: 'Wellness App', c: '#D193A8' },
-    { x: 160, label1: 'dev educators &', label2: 'AI builders', target: 'Health MCP', c: '#B98ACB' },
-    { x: 258, label1: 'AI & digital-health', label2: 'authorities', target: 'brand trust', c: '#8FAE8B' },
-  ]
+
+
+
+
+/** Pilot 筛选漏斗：湾区诊所 → 实地验证的 ICP 筛选 → 首个 pilot */
+function PilotFunnelGraphic() {
+  const dots = [
+    [24, 46], [46, 36], [68, 50], [34, 68], [58, 74], [80, 40], [90, 64], [28, 94], [52, 98], [76, 90], [96, 82], [42, 116],
+  ] as const
+  const filters = ['independent practice', 'has EHR & website', 'holistic · TCM care', 'strong patient reviews']
   return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Influencer map: creators profiled and tiered by fit — wellness creators to the app, dev educators to the MCP, AI authorities for brand trust">
-      <text x="160" y="24" textAnchor="middle" fontSize="11.5" fill="#8A6E84">15+ creators profiled &amp; tiered by fit</text>
-      {pods.map((p) => (
-        <g key={p.target}>
-          {/* 创作者小簇 */}
-          <circle cx={p.x - 12} cy={54} r="4.5" fill={p.c} fillOpacity="0.55" />
-          <circle cx={p.x + 12} cy={54} r="4.5" fill={p.c} fillOpacity="0.4" />
-          <circle cx={p.x} cy={44} r="4.5" fill={p.c} fillOpacity="0.75" />
-          <text x={p.x} y={74} textAnchor="middle" fontSize="9.5" fill="#6B4E63">{p.label1}</text>
-          <text x={p.x} y={86} textAnchor="middle" fontSize="9.5" fill="#6B4E63">{p.label2}</text>
-          {/* 匹配箭头 */}
-          <path d={`M${p.x} 94 V 124`} stroke={p.c} strokeOpacity="0.55" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
-          <path d={`M${p.x} 128 l-3.5 -5 h7 Z`} fill={p.c} fillOpacity="0.7" />
-          {/* 目标胶囊 */}
-          <rect x={p.x - 44} y={136} width="88" height="26" rx="13" fill={`${p.c}18`} stroke={p.c} strokeOpacity="0.6" strokeWidth="1.2" />
-          <text x={p.x} y={153} textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#3A2440">{p.target}</text>
-        </g>
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Pilot targeting funnel: Bay Area clinics run through field-validated ICP filters down to the first pilot">
+      <text x="60" y="24" textAnchor="middle" fontSize="10.5" fill="#8A6E84">Bay Area clinics</text>
+      {dots.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r="4.5" fill="#3A2440" fillOpacity="0.16" />
       ))}
-      <text x="160" y="192" textAnchor="middle" fontSize="13" fill="#B98ACB" className="font-hand" fontWeight="600">
-        match the voice to the product ✦
-      </text>
+      <text x="60" y="140" textAnchor="middle" fontSize="10" fill="#8A6E84">shortlisted &amp; visited</text>
+      {/* ç­éé¸é¨ï¼å®å°éªè¯ç ICPï¼ */}
+      <rect x="118" y="34" width="152" height="120" rx="12" fill="white" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
+      <text x="194" y="54" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the filters, field-tested</text>
+      {filters.map((f, i) => (
+        <text key={f} x="194" y={76 + i * 20} textAnchor="middle" fontSize="10.5" fill="#3A2440">
+          {f}
+        </text>
+      ))}
+      <path d="M102 80 H 116" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <path d="M262 158 Q 278 164 282 172" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      {/* ç»æ */}
+      <circle cx="284" cy="182" r="15" fill="#B98ACB" fillOpacity="0.16" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
+      <circle cx="284" cy="182" r="4" fill="#B98ACB" />
+      <text x="234" y="200" textAnchor="middle" fontSize="11" fill="#3A2440" fontWeight="600">the first pilot</text>
+      <text x="234" y="188" textAnchor="middle" fontSize="11" fill="#B98ACB" className="font-hand">✦</text>
     </svg>
   )
 }
 
-
-/** 临床节奏：15 分钟就诊的 5-5-5 规则（源自实习反思） */
-function FiveFiveFiveGraphic() {
-  const segs = [
-    { x: 22, label: 'pre-chart', c: '#D193A8' },
-    { x: 117, label: 'the visit', c: '#B98ACB' },
-    { x: 212, label: 'finalize', c: '#8FAE8B' },
+/** GTM 引擎（宽幅）：创作者分层 → 五渠道 → 首个 pilot */
+function GtmEngineGraphic() {
+  const tiers = [
+    { y: 56, label: 'productivity & longevity creators', c: '#D193A8' },
+    { y: 102, label: 'dev educators & AI builders', c: '#B98ACB' },
+    { y: 148, label: 'AI & digital-health authorities', c: '#8FAE8B' },
+  ]
+  const channels = [
+    { y: 30, label: 'cold outreach · call scripts', c: '#C79A4B' },
+    { y: 66, label: 'media', c: '#D193A8' },
+    { y: 102, label: 'influencers · 15+ mapped', c: '#B98ACB' },
+    { y: 138, label: 'hackathons', c: '#8FAE8B' },
+    { y: 174, label: 'roundtables · 40+ MDs', c: '#C79A4B' },
   ]
   return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="The 5-5-5 rule: a 15-minute visit splits into five minutes each of pre-charting, the visit itself, and finalization">
-      <text x="160" y="34" textAnchor="middle" fontSize="12" fill="#8A6E84">one primary-care visit ≈ 15 minutes</text>
-      {segs.map((s) => (
-        <g key={s.label}>
-          <rect x={s.x} y="62" width="86" height="40" rx="11" fill={`${s.c}20`} stroke={s.c} strokeOpacity="0.65" strokeWidth="1.3" />
-          <text x={s.x + 43} y="88" textAnchor="middle" fontSize="16" fontWeight="700" fill="#3A2440">5’</text>
-          <text x={s.x + 43} y="122" textAnchor="middle" fontSize="11.5" fill="#6B4E63">{s.label}</text>
+    <svg viewBox="0 0 640 216" className="w-full max-w-[660px]" fill="none" aria-label="GTM engine: creator tiers feed the influencer channel; five channels converge into the first clinic pilot">
+      <text x="103" y="24" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the creator tiers I mapped</text>
+      {tiers.map((t) => (
+        <g key={t.label}>
+          <rect x="14" y={t.y - 13} width="178" height="26" rx="13" fill={`${t.c}14`} stroke={t.c} strokeOpacity="0.55" strokeWidth="1.2" />
+          <circle cx="29" cy={t.y} r="3" fill={t.c} />
+          <text x="40" y={t.y + 3.5} fontSize="10" fill="#3A2440">{t.label}</text>
+          <path d={`M194 ${t.y} Q 230 ${t.y} 252 ${102 + (t.y - 102) * 0.12}`} stroke={t.c} strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
         </g>
       ))}
-      <path d="M108 82 h 8 M203 82 h 8" stroke="#8A6E84" strokeOpacity="0.5" strokeWidth="1.3" strokeLinecap="round" />
-      <text x="160" y="162" textAnchor="middle" fontSize="14" fill="#B98ACB" className="font-hand" fontWeight="600">
-        if AI breaks this rhythm, it doesn’t ship ✦
-      </text>
-      <text x="160" y="192" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the 5-5-5 rule, learned from physician shadowing</text>
+      <text x="345" y="14" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the channels I ran</text>
+      {channels.map((ch) => (
+        <g key={ch.label}>
+          <rect x="258" y={ch.y - 13} width="174" height="26" rx="13" fill="white" stroke={ch.c} strokeOpacity="0.5" strokeWidth="1.2" />
+          <circle cx="273" cy={ch.y} r="3" fill={ch.c} />
+          <text x="284" y={ch.y + 3.5} fontSize="10" fill="#3A2440">{ch.label}</text>
+          <path d={`M434 ${ch.y} Q 500 ${ch.y} 534 ${102 + (ch.y - 102) * 0.16}`} stroke={ch.c} strokeOpacity="0.45" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+        </g>
+      ))}
+      <circle cx="574" cy="102" r="30" fill="#B98ACB" fillOpacity="0.14" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
+      <text x="574" y="98" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">1st clinic</text>
+      <text x="574" y="113" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">pilot ✦</text>
     </svg>
   )
 }
@@ -422,46 +439,6 @@ function QuadrantGraphic() {
   )
 }
 
-/** Pilot ICP：实地推翻假设（源自实习反思的冷启动外呼发现） */
-function PilotFlipGraphic() {
-  const assumed = ['low-tech clinics', 'no EHR, phone-first', 'minimal web presence']
-  const found = ['has EHR & website', 'holistic · TCM care', 'strong patient reviews']
-  return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Pilot targeting insight: we assumed low-tech clinics would adopt first; the field showed digitally-present, holistic-care clinics with strong reviews were the real ICP — 3 to 4 interested, 1 pilot signed">
-      {/* 左：假设（被推翻） */}
-      <rect x="12" y="30" width="140" height="108" rx="12" fill="white" stroke="#8A6E84" strokeOpacity="0.35" strokeWidth="1.2" strokeDasharray="3 5" />
-      <text x="82" y="50" textAnchor="middle" fontSize="11" fill="#8A6E84">we assumed</text>
-      {assumed.map((a, i) => (
-        <g key={a}>
-          <text x="82" y={72 + i * 22} textAnchor="middle" fontSize="10.5" fill="#8A6E84">
-            {a}
-          </text>
-          <path d={`M${82 - a.length * 2.7} ${68 + i * 22} l ${a.length * 5.4} 1.5`} stroke="#D193A8" strokeOpacity="0.75" strokeWidth="1.5" strokeLinecap="round" />
-        </g>
-      ))}
-      {/* 翻转箭头 */}
-      <path d="M155 84 h 10" stroke="#B98ACB" strokeOpacity="0.7" strokeWidth="1.4" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <path d="M165 84 l-4 -3 M165 84 l-4 3" stroke="#B98ACB" strokeOpacity="0.7" strokeWidth="1.4" strokeLinecap="round" />
-      {/* 右：实地发现 */}
-      <rect x="168" y="30" width="140" height="108" rx="12" fill="#8FAE8B" fillOpacity="0.08" stroke="#8FAE8B" strokeOpacity="0.6" strokeWidth="1.3" />
-      <text x="238" y="50" textAnchor="middle" fontSize="11" fill="#6B8E63">the field said</text>
-      {found.map((f, i) => (
-        <g key={f}>
-          <path d={`M180 ${68 + i * 22} l 3.2 3.2 6 -6.4`} stroke="#8FAE8B" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-          <text x="196" y={72 + i * 22} fontSize="10.5" fill="#3A2440">
-            {f}
-          </text>
-        </g>
-      ))}
-      {/* 结果 */}
-      <path d="M82 146 C 120 170, 200 170, 238 146" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
-      <text x="160" y="188" textAnchor="middle" fontSize="13.5" fill="#B98ACB" className="font-hand" fontWeight="600">
-        3–4 interested → 1 pilot signed ✦
-      </text>
-      <text x="160" y="206" textAnchor="middle" fontSize="10" fill="#8A6E84">cold calls · tailored scripts · bilingual pitch deck</text>
-    </svg>
-  )
-}
 
 
 /** MCP demo：关键帧轮播动画（自动交叉淡入，可点圆点切换） */
@@ -819,26 +796,21 @@ export default function ThetaCase() {
           </p>
         </Reveal>
 
-        {/* 提炼信息图：四种能力各一张 — 临床洞察 / 市场研究 / 实地学习 / GTM 策略 */}
+        {/* 提炼信息图：象限 + 漏斗一行，宽幅 GTM 引擎独占一行 */}
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           <Reveal>
-            <InsightCard title="The rhythm care runs on" source="the 5-5-5 rule · from physician shadowing">
-              <FiveFiveFiveGraphic />
-            </InsightCard>
-          </Reveal>
-          <Reveal delay={0.06}>
             <InsightCard title="The gap the research found" source="from my 14-product competitive scan">
               <QuadrantGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.12}>
-            <InsightCard title="The ICP the field taught us" source="from pilot outreach — our hypothesis, flipped">
-              <PilotFlipGraphic />
+          <Reveal delay={0.08}>
+            <InsightCard title="How we targeted the pilot" source="from Bay Area pilot-user research">
+              <PilotFunnelGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.18}>
-            <InsightCard title="The influencer map I built" source="from my Twitter AI & tech influencer research">
-              <InfluencerMapGraphic />
+          <Reveal delay={0.12} className="md:col-span-2">
+            <InsightCard title="The GTM engine — from creators to clinic" source="from my influencer research & the growth playbook">
+              <GtmEngineGraphic />
             </InsightCard>
           </Reveal>
         </div>
