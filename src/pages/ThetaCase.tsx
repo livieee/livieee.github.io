@@ -1186,6 +1186,26 @@ export default function ThetaCase() {
               </div>
             </Reveal>
           </div>
+
+          {/* Web 端 dashboard 实景 */}
+          <Reveal delay={0.1}>
+            <div className="mt-8 overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]">
+              <div aria-hidden className="flex items-center gap-1.5 border-b border-plum/10 bg-cream-soft/60 px-4 py-2.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-rose/60" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#DECDA6]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#8FAE8B]/70" />
+              </div>
+              <img
+                src="/theta/site-theta-product.png"
+                alt="Theta Wellness web dashboard — raw health data mapped to standardized indicators with confidence scores"
+                loading="lazy"
+                className="w-full"
+              />
+              <p className="px-5 py-3.5 font-hand text-[15px] text-plum-muted">
+                the web dashboard — raw data mapped to ~2,000 standardized indicators, live today ✦
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -1238,26 +1258,6 @@ export default function ThetaCase() {
               </div>
             </Reveal>
           </div>
-
-          {/* 数据注册表实景 */}
-          <Reveal delay={0.1}>
-            <div className="mt-10 overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]">
-              <div aria-hidden className="flex items-center gap-1.5 border-b border-plum/10 bg-cream-soft/60 px-4 py-2.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-rose/60" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#DECDA6]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#8FAE8B]/70" />
-              </div>
-              <img
-                src="/theta/site-theta-product.png"
-                alt="The live registry — raw health data mapped to standardized indicators with confidence scores"
-                loading="lazy"
-                className="w-full"
-              />
-              <p className="px-5 py-3.5 font-hand text-[15px] text-plum-muted">
-                the registry at work — raw data mapped to ~2,000 standardized indicators, live today ✦
-              </p>
-            </div>
-          </Reveal>
         </div>
       </section>
 
