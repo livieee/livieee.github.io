@@ -176,6 +176,120 @@ export function Impact() {
           </TiltCard>
         </Reveal>
 
+        {/* ── Case 2 · Enterprise AI Product — AskData (Bosch × CMU) ───────────── */}
+        <Reveal className="mt-10" y={36}>
+          <TiltCard max={2.5} className="h-full">
+            <style>{`
+              @keyframes askdata-light {
+                from { opacity: 0.3; transform: translateX(-8px); }
+                to { opacity: 1; transform: translateX(0); }
+              }
+              .askdata-step { opacity: 0.3; animation: askdata-light 0.55s ease-out forwards; }
+              @media (prefers-reduced-motion: reduce) { .askdata-step { opacity: 1; animation: none; } }
+            `}</style>
+            <span
+              aria-hidden
+              className="absolute -top-3 left-8 z-10 rotate-[-3deg] rounded-md bg-[#7A9CC6] px-2.5 py-0.5 font-hand text-[14px] font-semibold text-white shadow"
+            >
+              built with Bosch ✦
+            </span>
+            <article
+              id="case-askdata"
+              className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#E8EFF7] via-cream-soft to-blush/30 p-8 transition-transform duration-500 md:p-12"
+            >
+              <div className="grid gap-10 md:grid-cols-[13fr_7fr]">
+                {/* 左 65%：AskData 工作流可视化 */}
+                <div className="relative">
+                  <div className="overflow-hidden rounded-xl border border-plum/10 bg-white shadow-[0_26px_60px_-24px_rgba(58,74,94,0.45)]">
+                    <div aria-hidden className="flex items-center gap-1.5 border-b border-plum/10 bg-[#F3F7FB] px-4 py-2.5">
+                      <span className="h-2.5 w-2.5 rounded-full bg-rose/60" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#DECDA6]" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#8FAE8B]/70" />
+                      <span className="ml-3 text-[11px] font-medium text-plum-faint">AskData — analytics workspace</span>
+                    </div>
+                    <div className="space-y-2.5 p-4">
+                      {[
+                        { step: 'Ask', c: '#7A9CC6', body: '“Which plant had the highest scrap rate last quarter?”', mono: false },
+                        { step: 'SQL', c: '#B98ACB', body: 'SELECT plant, SUM(scrap_qty) … GROUP BY plant', mono: true },
+                        { step: 'Analyze', c: '#8FAE8B', body: 'python · outlier flagged: Plant 07, +23% vs. trend', mono: true },
+                        { step: 'Visualize', c: '#C79A4B', body: '▂▄▂▇▂ scrap rate by plant, Q2', mono: false },
+                        { step: 'Reuse', c: '#D193A8', body: 'saved to team library · reused 12×', mono: false },
+                      ].map((s, i) => (
+                        <div
+                          key={s.step}
+                          className="askdata-step flex items-center gap-3 rounded-lg border bg-white px-3.5 py-2.5"
+                          style={{ borderColor: `${s.c}55`, animationDelay: `${0.5 + i * 0.4}s` }}
+                        >
+                          <span
+                            className="shrink-0 rounded-full px-2.5 py-0.5 text-[10.5px] font-bold uppercase tracking-wide"
+                            style={{ backgroundColor: `${s.c}1e`, color: s.c }}
+                          >
+                            {s.step}
+                          </span>
+                          <span className={`min-w-0 truncate text-[12px] ${s.mono ? 'font-mono text-plum-muted' : 'text-plum'}`}>{s.body}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* 角落钉：技术底座小卡 → Bosch 架构项目 */}
+                  <Link
+                    to="/work/bosch-schema"
+                    className="group/arch mt-6 block w-full rotate-0 rounded-xl border border-plum/12 bg-white p-3.5 shadow-[0_16px_36px_-16px_rgba(58,74,94,0.45)] transition-all duration-300 hover:scale-[1.04] hover:rotate-0 md:absolute md:-bottom-5 md:right-3 md:mt-0 md:w-[38%] md:rotate-2"
+                  >
+                    <p className="text-[9.5px] font-medium uppercase tracking-[0.14em] text-[#7A9CC6]">Earlier technical foundation ↗</p>
+                    <svg viewBox="0 0 120 34" className="mt-2 h-8 w-full" fill="none" aria-hidden>
+                      {[0, 1, 2].map((i) => (
+                        <rect key={i} x={4 + i * 18} y="4" width="14" height="10" rx="3" stroke="#7A9CC6" strokeWidth="1.2" strokeOpacity="0.7" />
+                      ))}
+                      <path d="M11 14 Q 30 26 56 27 M29 14 Q 42 24 56 27 M47 14 Q 52 22 56 27" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.1" strokeDasharray="2 3" />
+                      <rect x="56" y="21" width="26" height="11" rx="3" stroke="#8FAE8B" strokeWidth="1.2" />
+                      <path d="M82 26 h 12" stroke="#C79A4B" strokeWidth="1.1" strokeDasharray="2 3" />
+                      <path d="m94 26 3.5-2.5v5Z" fill="#C79A4B" />
+                      <rect x="99" y="21" width="17" height="11" rx="3" stroke="#C79A4B" strokeWidth="1.2" strokeOpacity="0.8" />
+                    </svg>
+                    <p className="mt-1.5 text-[11.5px] font-semibold leading-tight text-plum">Multi-agent schema extraction</p>
+                    <p className="text-[10px] text-plum-muted">architecture + validation</p>
+                    <span className="mt-1 block font-hand text-[13px] text-orchid opacity-0 transition-opacity duration-300 group-hover/arch:opacity-100">
+                      View project ↗
+                    </span>
+                  </Link>
+                </div>
+                {/* 右 35%：文案 */}
+                <div className="flex flex-col justify-center">
+                  <p className="label-text mb-4">02 · Enterprise AI Product · Bosch × CMU</p>
+                  <h3 className="font-serif text-2xl font-light leading-snug text-plum md:text-[1.7rem]">
+                    Making enterprise analytics easier to ask, explore, and reuse
+                  </h3>
+                  <p className="mt-4 text-[14.5px] leading-relaxed text-plum-muted">
+                    Designed an AI-native analytics workspace unifying natural-language SQL, Python
+                    analysis, visualization, and reusable query knowledge into one end-to-end
+                    experience.
+                  </p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    <Tag>Product strategy</Tag>
+                    <Tag>Workflow design</Tag>
+                    <Tag>MVP definition</Tag>
+                    <Tag>PRDs</Tag>
+                  </div>
+                  <div className="mt-6">
+                    <p className="font-serif text-3xl font-light text-[#7A9CC6] md:text-4xl">
+                      <CountUp value={80} suffix="%+" />
+                    </p>
+                    <p className="mt-1 text-[12px] leading-snug text-plum-muted">manual analytics workflows streamlined</p>
+                  </div>
+                  <Link
+                    to="/work/askdata"
+                    className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#7A9CC6]"
+                  >
+                    Explore AskData
+                    <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
+                  </Link>
+                </div>
+              </div>
+            </article>
+          </TiltCard>
+        </Reveal>
+
         {/* ── Case 2 · Enterprise SaaS & Product Analytics — split / offset ────── */}
         <div className="mt-10 grid gap-10 md:grid-cols-12">
           <Reveal className="md:col-span-5" y={36} delay={0.05}>
@@ -196,7 +310,7 @@ export function Impact() {
                     loading="lazy"
                   />
                 </div>
-                <p className="label-text mb-4">02 · Enterprise SaaS & Analytics · People.ai</p>
+                <p className="label-text mb-4">03 · Enterprise SaaS & Analytics · People.ai</p>
                 <h3 className="font-serif text-2xl font-light leading-snug text-plum">
                   Turning product data into retention and renewal decisions
                 </h3>
@@ -240,7 +354,7 @@ export function Impact() {
                   loading="lazy"
                 />
               </div>
-              <p className="label-text mb-4">03 · AI GTM & Ecosystem Programs · AI Valley</p>
+              <p className="label-text mb-4">04 · AI GTM & Ecosystem Programs · AI Valley</p>
               <h3 className="font-serif text-2xl font-light leading-snug text-plum">
                 Running the programs where builders, labs, and investors meet
               </h3>
@@ -302,7 +416,7 @@ export function Impact() {
                   loading="lazy"
                 />
               </div>
-              <p className="label-text mb-4">04 · Strategic Industry Engagement · Yuto USA</p>
+              <p className="label-text mb-4">05 · Strategic Industry Engagement · Yuto USA</p>
               <h3 className="font-serif text-2xl font-light leading-snug text-plum">
                 Shipping AI the executive team uses daily — and the programs around it
               </h3>
