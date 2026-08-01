@@ -357,37 +357,6 @@ function InfluencerMapGraphic() {
   )
 }
 
-/** PRD 核心：Mirobody 数据飞轮（五节点循环，320 宽版） */
-function FlywheelGraphic() {
-  const nodes = [
-    { x: 160, y: 34, tx: 160, ty: 22, anchor: 'middle', label: 'Log daily', c: '#D193A8' },
-    { x: 234, y: 86, tx: 244, ty: 84, anchor: 'start', label: 'See value', c: '#B98ACB' },
-    { x: 206, y: 172, tx: 212, ty: 192, anchor: 'middle', label: 'Ask AI', c: '#8FAE8B' },
-    { x: 114, y: 172, tx: 108, ty: 192, anchor: 'middle', label: 'See doctor', c: '#C79A4B' },
-    { x: 86, y: 86, tx: 76, ty: 84, anchor: 'end', label: 'Richer data', c: '#B98ACB' },
-  ] as const
-  return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Mirobody data flywheel: log daily, see value, ask AI, see doctor, richer data — and around again">
-      <circle cx="160" cy="108" r="74" stroke="#B98ACB" strokeOpacity="0.4" strokeWidth="1.4" strokeDasharray="2 6" className="theta-spin" />
-      <path d="M228 72 l8 11 M228 72 l13 3" stroke="#B98ACB" strokeOpacity="0.7" strokeWidth="1.4" strokeLinecap="round" />
-      {nodes.map((n) => (
-        <g key={n.label}>
-          <circle cx={n.x} cy={n.y} r="7" fill="#FBF7F2" stroke={n.c} strokeWidth="1.4" strokeDasharray="2 3" />
-          <circle cx={n.x} cy={n.y} r="2.6" fill={n.c} />
-          <text x={n.tx} y={n.ty} textAnchor={n.anchor} fontSize="11.5" fill="#6B4E63">
-            {n.label}
-          </text>
-        </g>
-      ))}
-      <text x="160" y="102" textAnchor="middle" fontSize="13.5" fill="#3A2440" className="font-hand" fontWeight="600">
-        the Mirobody
-      </text>
-      <text x="160" y="120" textAnchor="middle" fontSize="13.5" fill="#3A2440" className="font-hand" fontWeight="600">
-        flywheel ↻
-      </text>
-    </svg>
-  )
-}
 
 /** 临床节奏：15 分钟就诊的 5-5-5 规则（源自实习反思） */
 function FiveFiveFiveGraphic() {
@@ -494,33 +463,6 @@ function PilotFlipGraphic() {
   )
 }
 
-/** Growth playbook 核心：五渠道汇成一个 pilot */
-function ChannelsGraphic() {
-  const channels = [
-    { y: 34, label: 'cold outreach · call scripts', c: '#D193A8' },
-    { y: 70, label: 'media & influencers', c: '#B98ACB' },
-    { y: 106, label: 'hackathons', c: '#8FAE8B' },
-    { y: 142, label: 'roundtables · 40+ MDs', c: '#C79A4B' },
-    { y: 178, label: 'medical associations', c: '#B98ACB' },
-  ]
-  return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Five growth channels converging into the first clinic pilot">
-      {channels.map((ch) => (
-        <g key={ch.label}>
-          <rect x="12" y={ch.y - 14} width="164" height="28" rx="14" fill="white" stroke={ch.c} strokeOpacity="0.5" strokeWidth="1.2" />
-          <circle cx="27" cy={ch.y} r="3" fill={ch.c} />
-          <text x="38" y={ch.y + 4} fontSize="10.5" fill="#3A2440">
-            {ch.label}
-          </text>
-          <path d={`M178 ${ch.y} Q 222 ${ch.y} 246 ${106 + (ch.y - 106) * 0.14}`} stroke={ch.c} strokeOpacity="0.45" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
-        </g>
-      ))}
-      <circle cx="272" cy="106" r="28" fill="#B98ACB" fillOpacity="0.14" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
-      <text x="272" y="102" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">1st clinic</text>
-      <text x="272" y="117" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">pilot ✦</text>
-    </svg>
-  )
-}
 
 /** MCP demo：关键帧轮播动画（自动交叉淡入，可点圆点切换） */
 function DemoFrameLoop() {
@@ -864,21 +806,21 @@ export default function ThetaCase() {
       {/* ── 证据墙 ── */}
       <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
         <Reveal>
-          <p className="label-text mb-4">Proof of work</p>
+          <p className="label-text mb-4">Field notes</p>
         </Reveal>
         <Reveal delay={0.06}>
           <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-            Evidence over adjectives
+            Four insights from the work
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
           <p className="mt-3 font-hand text-[17px] text-plum-muted">
-            distilled from the real documents — <span className="text-orchid">the thinking, not the paperwork ✦</span>
+            each one traces back to a real document — <span className="text-orchid">ask me about any of them ✦</span>
           </p>
         </Reveal>
 
-        {/* 提炼信息图 */}
-        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {/* 提炼信息图：四种能力各一张 — 临床洞察 / 市场研究 / 实地学习 / GTM 策略 */}
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
           <Reveal>
             <InsightCard title="The rhythm care runs on" source="the 5-5-5 rule · from physician shadowing">
               <FiveFiveFiveGraphic />
@@ -894,19 +836,9 @@ export default function ThetaCase() {
               <PilotFlipGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.06}>
+          <Reveal delay={0.18}>
             <InsightCard title="The influencer map I built" source="from my Twitter AI & tech influencer research">
               <InfluencerMapGraphic />
-            </InsightCard>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <InsightCard title="The channels that landed it" source="from the growth & GTM playbook">
-              <ChannelsGraphic />
-            </InsightCard>
-          </Reveal>
-          <Reveal delay={0.18}>
-            <InsightCard title="The product loop I spec’d" source="from the Theta Wellness PRD">
-              <FlywheelGraphic />
             </InsightCard>
           </Reveal>
         </div>
