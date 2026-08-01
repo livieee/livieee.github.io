@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { CompareSlider } from '@/components/CompareSlider'
 import { CountUp } from '@/components/CountUp'
 import { Reveal } from '@/components/Reveal'
+import { TiltCard } from '@/components/TiltCard'
 
 /** ── 页面数据 ─────────────────────────────────────────────────────────── */
 
@@ -74,7 +75,7 @@ const PHASES: Phase[] = [
 
 const FLOW = [
   { stage: 'Research', color: '#D193A8', chips: ['20+ user interviews', '10+ teardowns'] },
-  { stage: 'Define', color: '#B98ACB', chips: ['roadmap', '46-page PRD'] },
+  { stage: 'Define', color: '#B98ACB', chips: ['roadmap', 'PRDs'] },
   { stage: 'Design', color: '#8FAE8B', chips: ['Figma prototypes', 'prompt templates'] },
   { stage: 'Build', color: '#C79A4B', chips: ['STT + LLMs', 'HIPAA infra'] },
   { stage: 'Launch', color: '#D193A8', chips: ['GTM · roundtables', 'first clinic pilot'] },
@@ -85,29 +86,48 @@ const OWNED = [
     num: '01',
     heading: 'Co-led the 0→1 MVP',
     color: '#D193A8',
-    body: 'Roadmap, PRDs, Figma prototypes — coordinating design & engineering from zero to a working Scribe.',
     stat: '83% less documentation time',
+    chips: [
+      { icon: 'map', label: 'Roadmap' },
+      { icon: 'doc', label: 'PRDs' },
+      { icon: 'figma', label: 'Figma' },
+      { icon: 'gear', label: 'Eng & design collab' },
+    ],
   },
   {
     num: '02',
     heading: 'Designed the AI features',
     color: '#B98ACB',
-    body: 'Note Customization · AI Edit · Doc Generation — co-designed prompt templates with engineers.',
     stat: '20+ interviews · 10+ teardowns',
+    chips: [
+      { icon: 'sparkle', label: 'AI Edit' },
+      { icon: 'doc', label: 'Note Customization' },
+      { icon: 'doc', label: 'Doc Generation' },
+      { icon: 'chat', label: 'Prompt templates' },
+    ],
   },
   {
     num: '03',
     heading: 'Built the intake engine',
     color: '#8FAE8B',
-    body: 'HIPAA-compliant email workflow for intake, consent & data authorization — automated end to end.',
     stat: '+60% engagement',
+    chips: [
+      { icon: 'shield', label: 'HIPAA' },
+      { icon: 'mail', label: 'Trigger-based email workflow' },
+      { icon: 'doc', label: 'Consent & authorization' },
+    ],
   },
   {
     num: '04',
     heading: 'Drove GTM & adoption',
     color: '#C79A4B',
-    body: 'Media, hackathons & influencer partnerships; MCP developer community; clinical roundtables.',
     stat: '40+ physicians · 30+ developers',
+    chips: [
+      { icon: 'megaphone', label: 'Media & influencers' },
+      { icon: 'trophy', label: 'Hackathons' },
+      { icon: 'plug', label: 'Healthcare MCP' },
+      { icon: 'users', label: 'Clinical roundtables' },
+    ],
   },
 ]
 
@@ -177,6 +197,121 @@ const SUB_PROJECTS: SubProject[] = [
   },
 ]
 
+/** ── 页面级动画（虚线行进 / 慢转 / 星标脉冲 / Ken Burns） ─────────────── */
+const CASE_CSS = `
+@keyframes theta-dash-march { to { stroke-dashoffset: -22; } }
+@keyframes theta-spin { to { transform: rotate(360deg); } }
+@keyframes theta-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.22); } }
+@keyframes theta-kenburns { from { transform: scale(1); } to { transform: scale(1.06); } }
+.theta-march { animation: theta-dash-march 1.4s linear infinite; }
+.theta-spin { transform-box: fill-box; transform-origin: center; animation: theta-spin 36s linear infinite; }
+.theta-pulse { transform-box: fill-box; transform-origin: center; animation: theta-pulse 2.4s ease-in-out infinite; }
+.theta-kb { animation: theta-kenburns 3.4s ease-out forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .theta-march, .theta-spin, .theta-pulse, .theta-kb { animation: none; }
+}
+`
+
+/** ── 技术图标（stroke 线性 + Figma 彩标） ─────────────────────────────── */
+function TechIcon({ name }: { name: string }) {
+  const cls = 'h-[13px] w-[13px] shrink-0'
+  if (name === 'figma')
+    return (
+      <svg viewBox="0 0 24 24" className={cls} fill="none" aria-hidden>
+        <path d="M12 2H8.5a3.5 3.5 0 0 0 0 7H12V2Z" fill="#F24E1E" />
+        <path d="M12 2h3.5a3.5 3.5 0 0 1 0 7H12V2Z" fill="#FF7262" />
+        <path d="M12 9H8.5a3.5 3.5 0 0 0 0 7H12V9Z" fill="#A259FF" />
+        <circle cx="15.5" cy="12.5" r="3.5" fill="#1ABCFE" />
+        <path d="M8.5 23a3.5 3.5 0 0 0 3.5-3.5V16H8.5a3.5 3.5 0 0 0 0 7Z" fill="#0ACF83" />
+      </svg>
+    )
+  const paths: Record<string, React.ReactNode> = {
+    doc: (
+      <>
+        <path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z" />
+        <path d="M14 2.5v4h4M8.5 12h7M8.5 16h7" />
+      </>
+    ),
+    map: (
+      <>
+        <path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20V6.5Z" />
+        <path d="M9 4v13.5M15 6.5V20" />
+      </>
+    ),
+    gear: (
+      <>
+        <circle cx="12" cy="12" r="3.2" />
+        <path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1" />
+      </>
+    ),
+    sparkle: <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3ZM19 16l.9 2.1L22 19l-2.1.9L19 22l-.9-2.1L16 19l2.1-.9L19 16Z" />,
+    chat: (
+      <>
+        <path d="M4 5.5h16v10.5H9L4 20V5.5Z" />
+        <path d="M8 9.5h8M8 12.5h5" />
+      </>
+    ),
+    shield: (
+      <>
+        <path d="M12 2.5 20 6v6c0 5-3.5 8.2-8 9.5-4.5-1.3-8-4.5-8-9.5V6l8-3.5Z" />
+        <path d="m8.5 12 2.4 2.4L15.5 9.8" />
+      </>
+    ),
+    mail: (
+      <>
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m4 7.5 8 5.8 8-5.8" />
+      </>
+    ),
+    megaphone: (
+      <>
+        <path d="M3 10.5v3a1.5 1.5 0 0 0 1.5 1.5H7l9 5V4.5l-9 5H4.5A1.5 1.5 0 0 0 3 10.5Z" />
+        <path d="M19.5 9.5a4 4 0 0 1 0 5" />
+      </>
+    ),
+    plug: (
+      <>
+        <path d="M9 7V3M15 7V3M7 7h10v4a5 5 0 0 1-10 0V7Z" />
+        <path d="M12 16v5" />
+      </>
+    ),
+    users: (
+      <>
+        <circle cx="9" cy="8.5" r="3" />
+        <path d="M3.5 20a5.5 5.5 0 0 1 11 0M15.5 5.9a3 3 0 1 1 0 5.2M17 14.6a5.5 5.5 0 0 1 3.5 5.4" />
+      </>
+    ),
+    mic: (
+      <>
+        <rect x="9" y="3" width="6" height="11" rx="3" />
+        <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" />
+      </>
+    ),
+    trophy: (
+      <>
+        <path d="M8 4h8v6a4 4 0 0 1-8 0V4Z" />
+        <path d="M8 5H4.5a3.5 3.5 0 0 0 3.6 3.5M16 5h3.5a3.5 3.5 0 0 1-3.6 3.5M12 14v4M8.5 20.5h7M12 18a3.5 2.5 0 0 0-3.5 2.5h7A3.5 2.5 0 0 0 12 18Z" />
+      </>
+    ),
+  }
+  return (
+    <svg viewBox="0 0 24 24" className={cls} fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      {paths[name]}
+    </svg>
+  )
+}
+
+function TechChip({ icon, label, color }: { icon: string; label: string; color?: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-plum/10 bg-white/85 px-2.5 py-1 text-[11.5px] font-medium text-plum-muted shadow-sm">
+      <span style={color ? { color } : undefined} className={color ? '' : 'text-orchid'}>
+        <TechIcon name={icon} />
+      </span>
+      {label}
+    </span>
+  )
+}
+
 /** ── 证据信息图（从工作产物中提炼，非截图） ───────────────────────────── */
 
 function InsightCard({ title, source, children }: { title: string; source: string; children: React.ReactNode }) {
@@ -200,7 +335,7 @@ function FlywheelGraphic() {
   ] as const
   return (
     <svg viewBox="0 0 260 216" className="w-full max-w-[290px]" fill="none" aria-label="Mirobody data flywheel: log daily, see value, ask AI, see doctor, richer data — and around again">
-      <circle cx="130" cy="112" r="80" stroke="#B98ACB" strokeOpacity="0.4" strokeWidth="1.4" strokeDasharray="2 6" />
+      <circle cx="130" cy="112" r="80" stroke="#B98ACB" strokeOpacity="0.4" strokeWidth="1.4" strokeDasharray="2 6" className="theta-spin" />
       {/* 顺时针箭头 */}
       <path d="M204 78 l8 12 M204 78 l14 3" stroke="#B98ACB" strokeOpacity="0.7" strokeWidth="1.4" strokeLinecap="round" />
       {nodes.map((n) => (
@@ -253,7 +388,7 @@ function QuadrantGraphic() {
       ))}
       {/* Theta 的空白点 */}
       <path d="M150 92 Q 178 62 198 60" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" />
-      <path d="M208 62 l6.5 4 -7.5 2 2 7 -5.5 -5 -5.5 5 2 -7 -7.5 -2 6.5 -4 v-7 Z" fill="#B98ACB" transform="translate(0,-6)" />
+      <path d="M208 62 l6.5 4 -7.5 2 2 7 -5.5 -5 -5.5 5 2 -7 -7.5 -2 6.5 -4 v-7 Z" fill="#B98ACB" transform="translate(0,-6)" className="theta-pulse" />
       <text x="208" y="88" textAnchor="middle" fontSize="12" fill="#3A2440" fontWeight="600">Theta</text>
       <text x="208" y="102" textAnchor="middle" fontSize="11" fill="#B98ACB" className="font-hand">the gap ✦</text>
       <text x="52" y="180" fontSize="10.5" fill="#8A6E84">14 products scanned</text>
@@ -281,8 +416,8 @@ function PilotFunnelGraphic() {
           {f}
         </text>
       ))}
-      <path d="M88 90 H 102" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" />
-      <path d="M218 90 Q 232 90 236 110" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" />
+      <path d="M88 90 H 102" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <path d="M218 90 Q 232 90 236 110" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
       {/* 结果 */}
       <circle cx="228" cy="140" r="16" fill="#B98ACB" fillOpacity="0.16" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
       <circle cx="228" cy="140" r="4" fill="#B98ACB" />
@@ -311,7 +446,7 @@ function ChannelsGraphic() {
           <text x="34" y={ch.y + 4} fontSize="10.5" fill="#3A2440">
             {ch.label}
           </text>
-          <path d={`M130 ${ch.y} Q 168 ${ch.y} 192 ${106 + (ch.y - 106) * 0.12}`} stroke={ch.c} strokeOpacity="0.45" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" />
+          <path d={`M130 ${ch.y} Q 168 ${ch.y} 192 ${106 + (ch.y - 106) * 0.12}`} stroke={ch.c} strokeOpacity="0.45" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
         </g>
       ))}
       <circle cx="212" cy="106" r="26" fill="#B98ACB" fillOpacity="0.14" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
@@ -338,7 +473,7 @@ function DemoFrameLoop() {
             alt={f.cap}
             loading={i === 0 ? 'eager' : 'lazy'}
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-              i === idx ? 'opacity-100' : 'opacity-0'
+              i === idx ? 'theta-kb opacity-100' : 'opacity-0'
             }`}
           />
         ))}
@@ -380,6 +515,7 @@ export default function ThetaCase() {
 
   return (
     <main className="min-h-screen bg-cream text-plum">
+      <style>{CASE_CSS}</style>
       {/* ── 顶栏 ── */}
       <header className="fixed inset-x-0 top-0 z-50 bg-cream/85 shadow-[0_1px_0_0_rgba(58,36,64,0.06)] backdrop-blur-md">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Case study">
@@ -432,14 +568,13 @@ export default function ThetaCase() {
           <Reveal delay={0.24}>
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <span className="rounded-full border border-plum/15 bg-white/70 px-4 py-1.5 text-[13px] text-plum-muted">
-                Product Intern · AI Health Product
+                Product Strategy & Operations Intern
               </span>
-              <span className="rounded-full border border-plum/15 bg-white/70 px-4 py-1.5 text-[13px] text-plum-muted">
-                Roadmap · PRDs · Figma prototypes
-              </span>
-              <span className="rounded-full border border-plum/15 bg-white/70 px-4 py-1.5 text-[13px] text-plum-muted">
-                STT + LLM prompt design
-              </span>
+              <TechChip icon="figma" label="Figma" />
+              <TechChip icon="doc" label="PRDs" />
+              <TechChip icon="mic" label="Speech-to-Text" color="#D193A8" />
+              <TechChip icon="sparkle" label="LLM prompts" color="#B98ACB" />
+              <TechChip icon="shield" label="HIPAA" color="#8FAE8B" />
               <a
                 href="https://thetahealth.ai/"
                 target="_blank"
@@ -596,7 +731,13 @@ export default function ThetaCase() {
               <div aria-hidden className="absolute left-[7%] right-[7%] top-[9px] hidden border-t border-dashed border-plum/25 md:block" />
               <div className="grid gap-8 md:grid-cols-5 md:gap-4">
                 {FLOW.map((f, i) => (
-                  <div key={f.stage} className="relative flex items-start gap-3 md:flex-col md:items-center md:text-center">
+                  <motion.div
+                    key={f.stage}
+                    initial={{ opacity: 0, y: 16, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, margin: '-8% 0px' }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 20, delay: i * 0.12 }}
+                    className="relative flex items-start gap-3 md:flex-col md:items-center md:text-center">
                     <span
                       className="relative z-10 mt-1 flex h-[19px] w-[19px] shrink-0 items-center justify-center md:mt-0"
                       aria-hidden
@@ -621,7 +762,7 @@ export default function ThetaCase() {
                         ↓
                       </span>
                     )}
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -630,18 +771,24 @@ export default function ThetaCase() {
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {OWNED.map((s, i) => (
               <Reveal key={s.num} delay={i * 0.08}>
-                <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-7 md:p-8">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <p className="font-hand text-[20px] font-semibold" style={{ color: s.color }}>
-                      {s.num}
-                    </p>
-                    <p className="rounded-full px-3 py-1 font-hand text-[14px]" style={{ color: s.color, backgroundColor: `${s.color}18` }}>
-                      {s.stat}
-                    </p>
+                <TiltCard className="h-full">
+                  <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-7 md:p-8">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="font-hand text-[20px] font-semibold" style={{ color: s.color }}>
+                        {s.num}
+                      </p>
+                      <p className="rounded-full px-3 py-1 font-hand text-[14px]" style={{ color: s.color, backgroundColor: `${s.color}18` }}>
+                        {s.stat}
+                      </p>
+                    </div>
+                    <h3 className="mt-2 font-serif text-[1.3rem] font-medium text-plum">{s.heading}</h3>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {s.chips.map((c) => (
+                        <TechChip key={c.label} icon={c.icon} label={c.label} color={c.icon === 'figma' ? undefined : s.color} />
+                      ))}
+                    </div>
                   </div>
-                  <h3 className="mt-2 font-serif text-[1.3rem] font-medium text-plum">{s.heading}</h3>
-                  <p className="mt-3 text-[14px] leading-relaxed text-plum-muted">{s.body}</p>
-                </div>
+                </TiltCard>
               </Reveal>
             ))}
           </div>
@@ -667,7 +814,7 @@ export default function ThetaCase() {
         {/* 提炼信息图 */}
         <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           <Reveal>
-            <InsightCard title="The product loop I spec’d" source="from the 46-page Theta Wellness PRD">
+            <InsightCard title="The product loop I spec’d" source="from the Theta Wellness PRD">
               <FlywheelGraphic />
             </InsightCard>
           </Reveal>
