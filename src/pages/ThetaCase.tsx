@@ -146,56 +146,6 @@ const DEMO_FRAMES = [
   { src: '/theta/demo-frame-4.jpg', cap: 'Success criteria the user can track' },
 ]
 
-type SubProject = {
-  key: string
-  title: string
-  tagline: string
-  accent: string
-  img?: string
-  link?: { label: string; href: string }
-  bullets: string[]
-}
-
-const SUB_PROJECTS: SubProject[] = [
-  {
-    key: 'intake',
-    title: 'Patient Intake & Consent',
-    tagline: 'the quiet workflow that feeds everything',
-    accent: '#D193A8',
-    bullets: [
-      'Designed a HIPAA-compliant intake, consent and data-authorization experience',
-      'Trigger-based email workflow automates collection before every visit',
-      'Structured questionnaires via forms, chat, or call — balancing compliance, clinical needs and ease of use',
-      '60% engagement lift measured by email open and click-through rates',
-    ],
-  },
-  {
-    key: 'mcp',
-    title: 'Healthcare MCP · Developer Adoption',
-    tagline: 'open-source infrastructure needs users too',
-    accent: '#B98ACB',
-    link: { label: 'mirobody.ai ↗', href: 'https://mirobody.ai/' },
-    bullets: [
-      'World’s first HIPAA-compliant health-data MCP — #1 on the GAIA leaderboard',
-      'Owned GTM strategy: Twitter influencer outreach, offline MCP influencer events, and developer-community building',
-      'Created demo content and the launch one-pager; gathered feedback from 20+ developers in the field',
-      'Adoption barriers I diagnosed reshaped roadmap priorities — 30+ developers engaged overall',
-    ],
-  },
-  {
-    key: 'wellness',
-    title: 'Theta Wellness',
-    tagline: 'the patient side of the loop',
-    accent: '#8FAE8B',
-    img: '/theta/slide-9.jpg',
-    bullets: [
-      'Multimodal health input: wearables, food snaps, mood tags, medical reports',
-      'Health information explained in plain language — designed for older adults',
-      'Daily guidance and caregiver sharing keep families in the loop between visits',
-      'Shaped positioning, market sizing, business model and the investor pitch',
-    ],
-  },
-]
 
 /** ── 页面级动画（虚线行进 / 慢转 / 星标脉冲 / Ken Burns） ─────────────── */
 const CASE_CSS = `
@@ -364,46 +314,44 @@ function McpMotionGraphic() {
   )
 }
 
-/** 临床 B2B 动线（地图版）：湾区散点 → 极简筛选 → 渠道 → 首个 pilot */
+/** 临床 B2B 动线（清晰版）：湾区散点 → 筛选 → 首个 pilot；渠道横排 */
 function PilotB2BGraphic() {
   const dots = [
-    [22, 40], [42, 32], [62, 44], [30, 60], [52, 64], [74, 36], [82, 56], [26, 82], [48, 86], [70, 76], [88, 92], [38, 104],
+    [26, 44], [50, 34], [72, 48], [34, 68], [58, 72], [82, 60], [30, 94], [56, 98], [80, 86],
   ] as const
   const filters = ['independent', 'digital-ready', 'holistic care', 'patient-loved']
   const channels = [
-    { x: 14, label: 'cold outreach · scripts', c: '#C79A4B' },
-    { x: 114, label: 'roundtables · 40+ MDs', c: '#D193A8' },
-    { x: 214, label: 'medical associations', c: '#B98ACB' },
+    { x: 16, label: 'cold outreach', c: '#C79A4B' },
+    { x: 116, label: 'roundtables · 40+ MDs', c: '#D193A8' },
+    { x: 216, label: 'associations', c: '#B98ACB' },
   ]
   return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Clinical B2B motion: Bay Area clinics filtered down to independent, digital-ready, holistic-care and patient-loved practices, then worked via cold outreach, roundtables and medical associations into the first signed pilot">
-      <text x="55" y="18" textAnchor="middle" fontSize="9.5" fill="#8A6E84">Bay Area clinics</text>
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Clinical B2B motion: Bay Area clinics filtered to independent, digital-ready, holistic-care, patient-loved practices; worked via cold outreach, roundtables with 40+ physicians, and medical associations into the first signed pilot">
+      <text x="56" y="20" textAnchor="middle" fontSize="10" fill="#8A6E84">Bay Area clinics</text>
       {dots.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r="4" fill="#3A2440" fillOpacity="0.16" />
+        <circle key={i} cx={x} cy={y} r="4.5" fill="#3A2440" fillOpacity="0.17" />
       ))}
-      <text x="55" y="122" textAnchor="middle" fontSize="9" fill="#8A6E84">visited, one by one</text>
-      <rect x="118" y="26" width="96" height="100" rx="12" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
-      <text x="166" y="44" textAnchor="middle" fontSize="9" fill="#8A6E84">the filters</text>
+      <text x="56" y="118" textAnchor="middle" fontSize="9.5" fill="#8A6E84">visited, one by one</text>
+      <rect x="112" y="28" width="104" height="96" rx="12" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
+      <text x="164" y="46" textAnchor="middle" fontSize="9.5" fill="#8A6E84">the filters</text>
       {filters.map((f, i) => (
-        <text key={f} x="166" y={62 + i * 17} textAnchor="middle" fontSize="9" fill="#3A2440">
+        <text key={f} x="164" y={64 + i * 17} textAnchor="middle" fontSize="9.8" fill="#3A2440">
           {f}
         </text>
       ))}
-      {/* 结果预告 */}
-      <path d="M100 70 H 114" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <path d="M218 76 Q 250 76 262 76" stroke="#D193A8" strokeOpacity="0.55" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <circle cx="282" cy="76" r="14" fill="#D193A8" fillOpacity="0.18" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
-      <circle cx="282" cy="76" r="4" fill="#D193A8" />
-      <text x="282" y="102" textAnchor="middle" fontSize="9.5" fontWeight="600" fill="#3A2440">1st pilot ✦</text>
-      {/* 渠道横排 */}
-      <text x="160" y="148" textAnchor="middle" fontSize="9" fill="#8A6E84">worked through</text>
+      <path d="M96 70 H 108" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.4" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <path d="M220 72 H 248" stroke="#D193A8" strokeOpacity="0.6" strokeWidth="1.4" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <circle cx="276" cy="72" r="16" fill="#D193A8" fillOpacity="0.18" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
+      <circle cx="276" cy="72" r="4.5" fill="#D193A8" />
+      <text x="276" y="104" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#3A2440">1st pilot ✦</text>
+      <text x="160" y="146" textAnchor="middle" fontSize="9.5" fill="#8A6E84">worked through</text>
       {channels.map((c) => (
         <g key={c.label}>
-          <rect x={c.x} y="156" width="92" height="22" rx="11" fill="white" stroke={c.c} strokeOpacity="0.55" strokeWidth="1.1" />
-          <text x={c.x + 46} y="170" textAnchor="middle" fontSize="7.8" fill="#3A2440">{c.label}</text>
+          <rect x={c.x} y="154" width="92" height="24" rx="12" fill="white" stroke={c.c} strokeOpacity="0.55" strokeWidth="1.2" />
+          <text x={c.x + 46} y="169" textAnchor="middle" fontSize="8.6" fill="#3A2440">{c.label}</text>
         </g>
       ))}
-      <text x="160" y="204" textAnchor="middle" fontSize="12" fill="#C79A4B" className="font-hand" fontWeight="600">
+      <text x="160" y="206" textAnchor="middle" fontSize="12" fill="#C79A4B" className="font-hand" fontWeight="600">
         3–4 interested → 1 signed ✦
       </text>
     </svg>
@@ -579,7 +527,6 @@ function DemoFrameLoop() {
 
 export default function ThetaCase() {
   const [phase, setPhase] = useState(0)
-  const [openSub, setOpenSub] = useState<string | null>(null)
 
   useEffect(() => {
     document.title = 'Theta Health — Case Study · Olivia Xiao'
@@ -636,13 +583,14 @@ export default function ThetaCase() {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="mt-6 max-w-2xl text-[16px] leading-relaxed text-plum-muted">
-              At Theta Health I co-led the 0→1 development of an AI Scribe MVP — integrating
-              speech-to-text and LLMs — and shaped the intake workflow, developer ecosystem, and
-              patient app around it. One product philosophy held everything together: AI should
-              adapt to clinical reality, not the other way around.
+              At Theta Health I worked across all three product lines — the B2B clinical
+              assistant, the consumer wellness app, and the open-source health-data MCP —
+              co-leading the 0→1 AI Scribe MVP and owning GTM motions on every front. One
+              philosophy held it together: AI should adapt to clinical reality, not the other
+              way around.
             </p>
           </Reveal>
-          <Reveal delay={0.24}>
+          <Reveal delay={0.22}>
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <span className="rounded-full border border-plum/15 bg-white/70 px-4 py-1.5 text-[13px] text-plum-muted">
                 Product Strategy & Operations Intern
@@ -652,28 +600,74 @@ export default function ThetaCase() {
               <TechChip icon="mic" label="Speech-to-Text" color="#D193A8" />
               <TechChip icon="sparkle" label="LLM prompts" color="#B98ACB" />
               <TechChip icon="shield" label="HIPAA" color="#8FAE8B" />
-              <a
-                href="https://thetahealth.ai/"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-orchid/40 bg-lavender/30 px-4 py-1.5 text-[13px] font-medium text-plum transition-all hover:-translate-y-0.5 hover:border-orchid"
-              >
-                thetahealth.ai ↗
-              </a>
-              <a
-                href="https://mirobody.ai/"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-orchid/40 bg-lavender/30 px-4 py-1.5 text-[13px] font-medium text-plum transition-all hover:-translate-y-0.5 hover:border-orchid"
-              >
-                mirobody.ai ↗
-              </a>
+            </div>
+          </Reveal>
+
+          {/* 三条产品线导航（链接前置） */}
+          <Reveal delay={0.28}>
+            <div className="mt-10 grid gap-4 md:grid-cols-3">
+              {[
+                {
+                  href: '#care',
+                  ext: { label: 'thetahealth.ai ↗', url: 'https://thetahealth.ai/' },
+                  name: 'Theta Care',
+                  aud: 'for clinics · B2B',
+                  c: '#D193A8',
+                  desc: 'AI scribe & pre-charting for primary care',
+                },
+                {
+                  href: '#wellness',
+                  ext: null,
+                  name: 'Theta Wellness',
+                  aud: 'for patients · consumer',
+                  c: '#8FAE8B',
+                  desc: 'a lifelong health memory, in your pocket',
+                },
+                {
+                  href: '#mcp',
+                  ext: { label: 'mirobody.ai ↗', url: 'https://mirobody.ai/' },
+                  name: 'Theta MCP',
+                  aud: 'for developers · open source',
+                  c: '#B98ACB',
+                  desc: 'the first HIPAA-compliant health-data MCP',
+                },
+              ].map((pl) => (
+                <a
+                  key={pl.name}
+                  href={pl.href}
+                  className="group/pl rounded-2xl border border-plum/10 bg-white/75 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-orchid/40 hover:bg-white"
+                >
+                  <div className="flex items-baseline justify-between gap-2">
+                    <p className="font-serif text-[1.1rem] font-semibold text-plum">{pl.name}</p>
+                    <span className="font-hand text-[13px]" style={{ color: pl.c }}>
+                      {pl.aud}
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-[12.5px] leading-snug text-plum-muted">{pl.desc}</p>
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="text-[12px] font-medium text-plum-faint transition-colors group-hover/pl:text-orchid">
+                      jump to section ↓
+                    </span>
+                    {pl.ext && (
+                      <a
+                        href={pl.ext.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="rounded-full border border-orchid/40 bg-lavender/30 px-3 py-1 text-[11.5px] font-medium text-plum transition-all hover:border-orchid"
+                      >
+                        {pl.ext.label}
+                      </a>
+                    )}
+                  </div>
+                </a>
+              ))}
             </div>
           </Reveal>
 
           {/* 指标条 */}
-          <Reveal delay={0.3}>
-            <div className="mt-14 grid grid-cols-2 gap-6 rounded-[2rem] border border-plum/10 bg-white/70 p-8 backdrop-blur-sm md:grid-cols-4 md:p-10">
+          <Reveal delay={0.34}>
+            <div className="mt-10 grid grid-cols-2 gap-6 rounded-[2rem] border border-plum/10 bg-white/70 p-8 backdrop-blur-sm md:grid-cols-4 md:p-10">
               {METRICS.map((m, i) => (
                 <div key={m.label}>
                   <p className="font-serif text-[2.2rem] font-light leading-none text-plum md:text-[2.6rem]">
@@ -687,7 +681,7 @@ export default function ThetaCase() {
         </div>
       </section>
 
-      {/* ── The problem ── */}
+      {/* ── The problem（共同命题） ── */}
       <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
         <Reveal>
           <p className="label-text mb-4">The problem</p>
@@ -707,24 +701,32 @@ export default function ThetaCase() {
             </Reveal>
           ))}
         </div>
-        <Reveal delay={0.2}>
-          <p className="mt-8 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-            Existing AI scribes transcribe the visit but miss the person — patient recall is
-            unreliable, EHR data stops at the last visit, and nothing connects what happens in
-            between. That gap became our product thesis.
-          </p>
-        </Reveal>
+        <div className="mt-10 grid gap-8 lg:grid-cols-2">
+          <Reveal delay={0.1}>
+            <InsightCard title="The gap the research found" source="from my 14-product competitive scan">
+              <QuadrantGraphic />
+            </InsightCard>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <InsightCard title="Who we built for" source="from the Theta Care pitch deck">
+              <WhoWantedItGraphic />
+            </InsightCard>
+          </Reveal>
+        </div>
       </section>
 
-      {/* ── 产品：三阶段 Tabs + 拖动对比（合并区块） ── */}
-      <section className="bg-white/60 py-16 md:py-20">
+      {/* ══ 产品线 1 · Theta Care (B2B) ══ */}
+      <section id="care" className="scroll-mt-20 bg-white/60 py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
           <Reveal>
-            <p className="label-text mb-4">The product</p>
+            <p className="label-text mb-4 flex items-center gap-3">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-rose" />
+              Product line 01 · B2B
+            </p>
           </Reveal>
           <Reveal delay={0.06}>
             <h2 className="font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-              One assistant across the whole visit
+              Theta Care — for clinics
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
@@ -733,7 +735,7 @@ export default function ThetaCase() {
             </p>
           </Reveal>
 
-          {/* Tab 切换 */}
+          {/* 三阶段 Tabs + 对比滑块 */}
           <div className="mt-8 flex flex-wrap gap-2">
             {PHASES.map((p, i) => (
               <button
@@ -751,7 +753,6 @@ export default function ThetaCase() {
               </button>
             ))}
           </div>
-
           <div className="mt-8 grid items-center gap-10 lg:grid-cols-[5fr_6fr]">
             <AnimatePresence mode="wait">
               <motion.div
@@ -782,11 +783,151 @@ export default function ThetaCase() {
               />
             </div>
           </div>
+
+          {/* Care 还包含 intake 引擎 */}
+          <Reveal delay={0.1}>
+            <div className="mt-10 flex flex-wrap items-center gap-2 rounded-2xl border border-plum/10 bg-white/70 px-6 py-4">
+              <span className="font-hand text-[16px] font-semibold text-plum">also inside Care —</span>
+              <TechChip icon="mail" label="trigger-based intake & consent emails" color="#8FAE8B" />
+              <TechChip icon="shield" label="HIPAA end to end" color="#8FAE8B" />
+              <span className="rounded-full bg-[#8FAE8B]/15 px-3 py-1 font-hand text-[14px] text-[#5F7D5B]">+60% engagement ✦</span>
+            </div>
+          </Reveal>
+
+          {/* GTM 与实地研究 */}
+          <div className="mt-10 grid gap-8 lg:grid-cols-2">
+            <Reveal>
+              <InsightCard title="The clinical B2B motion" source="from pilot outreach & the growth playbook">
+                <PilotB2BGraphic />
+              </InsightCard>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-6">
+                <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">The interview trail</p>
+                <p className="mt-1 font-hand text-[14px] text-orchid">scripts, notes & recordings on file</p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <TechChip icon="users" label="primary-care duo, joint interview" color="#D193A8" />
+                  <TechChip icon="users" label="neurosurgeon" color="#B98ACB" />
+                  <TechChip icon="users" label="home-health operator" color="#8FAE8B" />
+                  <TechChip icon="users" label="ex-One Medical VP of Data" color="#C79A4B" />
+                  <TechChip icon="mic" label="recorded sessions" color="#D193A8" />
+                  <TechChip icon="doc" label="interview scripts I wrote" color="#B98ACB" />
+                </div>
+                <p className="mt-auto pt-5 font-hand text-[14px] text-plum-muted">
+                  every insight on this page traces to one of these conversations ✦
+                </p>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* 圆桌现场胶片流 */}
+          <Reveal delay={0.1}>
+            <p className="mt-12 text-center font-hand text-[18px] text-plum-muted">
+              field notes, literally — <span className="text-orchid">scenes from the clinical roundtables ✦</span>
+            </p>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <RoundtableCarousel />
+          </Reveal>
         </div>
       </section>
 
-      {/* ── 我负责的部分 ── */}
-      <section className="bg-white/60 py-16 md:py-20">
+      {/* ══ 产品线 2 · Theta Wellness (Consumer) ══ */}
+      <section id="wellness" className="scroll-mt-20 py-16 md:py-20">
+        <div className="mx-auto max-w-6xl px-6 md:px-10">
+          <Reveal>
+            <p className="label-text mb-4 flex items-center gap-3">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#8FAE8B]" />
+              Product line 02 · Consumer
+            </p>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <h2 className="font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
+              Theta Wellness — for patients & families
+            </h2>
+          </Reveal>
+          <div className="mt-10 grid items-stretch gap-8 lg:grid-cols-[5fr_6fr]">
+            <Reveal>
+              <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-6">
+                <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">What I shaped here</p>
+                <p className="mt-1 font-hand text-[14px] text-orchid">from the Theta Wellness PRD & GTM research</p>
+                <ul className="mt-5 space-y-3">
+                  {[
+                    'Multimodal health input: wearables, food snaps, mood tags, medical reports',
+                    'Health information explained in plain language — designed for older adults',
+                    'Daily guidance and caregiver sharing keep families in the loop between visits',
+                    'Positioning, market sizing, business model and the investor pitch',
+                  ].map((b) => (
+                    <li key={b} className="flex gap-2.5 text-[14px] leading-relaxed text-plum-muted">
+                      <span aria-hidden className="mt-[8px] h-1 w-1 shrink-0 rounded-full bg-[#8FAE8B]" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-auto pt-5 font-hand text-[15px] text-plum-muted">
+                  the demand signal: older adults, drowning in scattered records, got it instantly ✦
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <img
+                src="/theta/slide-9.jpg"
+                alt="Theta Wellness app — between-visit support with AI health chat, personalized insights and health reports"
+                loading="lazy"
+                className="h-full w-full rounded-[1.6rem] border border-plum/10 object-cover shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]"
+              />
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ 产品线 3 · Theta MCP (Developer) ══ */}
+      <section id="mcp" className="scroll-mt-20 bg-white/60 py-16 md:py-20">
+        <div className="mx-auto max-w-6xl px-6 md:px-10">
+          <Reveal>
+            <p className="label-text mb-4 flex items-center gap-3">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-orchid" />
+              Product line 03 · Developer
+            </p>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <h2 className="font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
+              Theta MCP — for developers
+            </h2>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <p className="mt-3 font-hand text-[17px] text-plum-muted">
+              world's first HIPAA-compliant health-data MCP — <span className="text-orchid">my part: the GTM ✦</span>
+            </p>
+          </Reveal>
+          <div className="mt-10 grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
+            <Reveal>
+              <div className="rounded-2xl border border-plum/10 bg-white p-4 shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)] sm:p-5">
+                <div className="mb-3 flex flex-wrap items-center gap-2 px-1">
+                  <span className="font-hand text-[17px] font-semibold text-plum">Theta Health MCP · product demo</span>
+                  <span className="ml-auto rounded-full bg-[#C79A4B]/15 px-3 py-1 font-hand text-[14px] text-[#9A7433]">
+                    🏆 GAIA Leaderboard #1
+                  </span>
+                </div>
+                <DemoFrameLoop />
+                <p className="mt-3 px-1 text-[12px] leading-snug text-plum-faint">
+                  Product built by the Theta engineering team — my part was its GTM: Twitter &amp;
+                  offline influencer outreach, developer-community building, demo content, and the
+                  launch one-pager. 30+ developers engaged.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <InsightCard title="The MCP developer motion" source="from my Twitter AI & tech influencer research">
+                <McpMotionGraphic />
+              </InsightCard>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 我负责的部分（跨产品线） ── */}
+      <section className="py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
           <Reveal>
             <p className="label-text mb-4">My role</p>
@@ -802,7 +943,6 @@ export default function ThetaCase() {
             </p>
           </Reveal>
 
-          {/* 工作流程图：五阶段管线 */}
           <Reveal delay={0.16}>
             <div className="relative mt-12">
               <div aria-hidden className="absolute left-[7%] right-[7%] top-[9px] hidden border-t border-dashed border-plum/25 md:block" />
@@ -814,11 +954,9 @@ export default function ThetaCase() {
                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true, margin: '-8% 0px' }}
                     transition={{ type: 'spring', stiffness: 260, damping: 20, delay: i * 0.12 }}
-                    className="relative flex items-start gap-3 md:flex-col md:items-center md:text-center">
-                    <span
-                      className="relative z-10 mt-1 flex h-[19px] w-[19px] shrink-0 items-center justify-center md:mt-0"
-                      aria-hidden
-                    >
+                    className="relative flex items-start gap-3 md:flex-col md:items-center md:text-center"
+                  >
+                    <span className="relative z-10 mt-1 flex h-[19px] w-[19px] shrink-0 items-center justify-center md:mt-0" aria-hidden>
                       <span className="absolute inset-0 rounded-full border border-dashed bg-cream" style={{ borderColor: f.color }} />
                       <span className="h-[7px] w-[7px] rounded-full" style={{ backgroundColor: f.color }} />
                     </span>
@@ -872,137 +1010,77 @@ export default function ThetaCase() {
         </div>
       </section>
 
-      {/* ── 证据墙 ── */}
-      <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
+      {/* ── 报道 ── */}
+      <section className="mx-auto max-w-6xl px-6 pb-16 md:px-10 md:pb-20">
         <Reveal>
-          <p className="label-text mb-4">Field notes</p>
+          <p className="label-text mb-4">In the wild</p>
         </Reveal>
         <Reveal delay={0.06}>
           <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-            Insights from the work
+            Don't take my word for it
           </h2>
         </Reveal>
-        <Reveal delay={0.12}>
-          <p className="mt-3 font-hand text-[17px] text-plum-muted">
-            each one traces back to a real document — <span className="text-orchid">ask me about any of them ✦</span>
-          </p>
-        </Reveal>
-
-        {/* 提炼信息图：象限 + 漏斗一行，宽幅 GTM 引擎独占一行 */}
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 grid gap-8 lg:grid-cols-2">
+          {/* CMU 报道：报纸剪报风格 */}
           <Reveal>
-            <InsightCard title="The gap the research found" source="from my 14-product competitive scan">
-              <QuadrantGraphic />
-            </InsightCard>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <InsightCard title="Who we built for" source="from the Theta Care pitch deck">
-              <WhoWantedItGraphic />
-            </InsightCard>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <InsightCard title="The clinical B2B motion" source="from pilot outreach & the growth playbook">
-              <PilotB2BGraphic />
-            </InsightCard>
-          </Reveal>
-          <Reveal delay={0.18}>
-            <InsightCard title="The MCP developer motion" source="from my Twitter AI & tech influencer research">
-              <McpMotionGraphic />
-            </InsightCard>
-          </Reveal>
-        </div>
-
-        {/* 圆桌现场：左右滑动轮播 */}
-        <Reveal delay={0.1}>
-          <p className="mt-12 text-center font-hand text-[18px] text-plum-muted">
-            field notes, literally — <span className="text-orchid">scenes from the clinical roundtables ✦</span>
-          </p>
-        </Reveal>
-        <Reveal delay={0.16}>
-          <RoundtableCarousel />
-        </Reveal>
-
-        {/* MCP demo 关键帧动画 + 报道引语卡 */}
-        <div className="mt-12 grid gap-8 lg:grid-cols-[3fr_2fr]">
-          <Reveal>
-            <div className="rounded-2xl border border-plum/10 bg-white p-4 shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)] sm:p-5">
-              <div className="mb-3 flex flex-wrap items-center gap-2 px-1">
-                <span className="font-hand text-[17px] font-semibold text-plum">Theta Health MCP · product demo</span>
-                <span className="ml-auto rounded-full bg-[#C79A4B]/15 px-3 py-1 font-hand text-[14px] text-[#9A7433]">
-                  🏆 GAIA Leaderboard #1
-                </span>
-              </div>
-              <DemoFrameLoop />
-              <p className="mt-3 px-1 text-[12px] leading-snug text-plum-faint">
-                Product built by the Theta engineering team — my part was its GTM: Twitter &amp;
-                offline influencer outreach, developer-community building, demo content, and the
-                launch one-pager. 30+ developers engaged.
+            <a
+              href={CMU_PRESS.href}
+              target="_blank"
+              rel="noreferrer"
+              className="group/press block -rotate-1 bg-[#FDFBF6] p-6 shadow-[0_20px_44px_-22px_rgba(58,36,64,0.4)] transition-all duration-500 hover:rotate-0 hover:-translate-y-1"
+              style={{ borderTop: '3px double rgba(58,36,64,0.5)', borderBottom: '3px double rgba(58,36,64,0.5)' }}
+            >
+              <p className="text-center text-[10px] uppercase tracking-[0.3em] text-[#A6192E]">
+                Carnegie Mellon University
               </p>
+              <p className="mt-0.5 text-center text-[10px] uppercase tracking-[0.18em] text-plum-faint">
+                Integrated Innovation Institute · 2025
+              </p>
+              <p className="mt-4 text-center font-serif text-[1.15rem] font-semibold leading-snug text-[#1a1a1a]">
+                Internships &amp; iii: Student Summer Internship Recap
+                <span aria-hidden className="ml-2 inline-block text-[#A6192E] transition-transform duration-300 group-hover/press:translate-x-0.5 group-hover/press:-translate-y-0.5">
+                  ↗
+                </span>
+              </p>
+              <div aria-hidden className="mx-auto mt-4 h-px w-16 bg-plum/25" />
+              <div className="mt-4 flex items-center gap-4">
+                <img
+                  src="/theta/olivia-cmu-avatar.jpg"
+                  alt="Olivia Xiao at the Theta Health booth"
+                  loading="lazy"
+                  className="h-16 w-16 shrink-0 rounded-full border-2 border-white object-cover shadow-[0_6px_16px_-6px_rgba(58,36,64,0.4)]"
+                />
+                <div>
+                  <p className="font-serif text-[1.02rem] font-bold leading-tight text-[#A6192E]">Olivia Xiao</p>
+                  <p className="font-serif text-[13px] font-semibold text-[#1a1a1a]">MSSM ’25</p>
+                  <p className="mt-0.5 text-[12px] leading-snug text-[#3d3d3d]">
+                    Product Strategy &amp; Operations Intern, Theta Health
+                  </p>
+                </div>
+              </div>
+              <p className="mt-3 text-[12.5px] leading-relaxed text-[#3d3d3d]">
+                “Supported the launch of an AI healthcare platform, collaborating with engineers,
+                designers and physicians to develop compliant clinical workflows and drive early
+                adoption.”
+              </p>
+              <p className="mt-3 font-serif text-[13px] italic leading-relaxed text-[#3d3d3d]">
+                {CMU_PRESS.quote}
+              </p>
+            </a>
+          </Reveal>
+          {/* LinkedIn 官方 embed */}
+          <Reveal delay={0.08}>
+            <div className="overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_18px_40px_-24px_rgba(90,63,86,0.35)]">
+              <iframe
+                src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7348943917221826562"
+                height="520"
+                title="LinkedIn — internship reflection at Theta Health"
+                className="block w-full"
+                style={{ border: 0 }}
+                loading="lazy"
+              />
             </div>
           </Reveal>
-          <div className="flex flex-col gap-6">
-            {/* CMU 报道：报纸剪报风格 */}
-            <Reveal>
-              <a
-                href={CMU_PRESS.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group/press block -rotate-1 bg-[#FDFBF6] p-6 shadow-[0_20px_44px_-22px_rgba(58,36,64,0.4)] transition-all duration-500 hover:rotate-0 hover:-translate-y-1"
-                style={{ borderTop: '3px double rgba(58,36,64,0.5)', borderBottom: '3px double rgba(58,36,64,0.5)' }}
-              >
-                <p className="text-center text-[10px] uppercase tracking-[0.3em] text-[#A6192E]">
-                  Carnegie Mellon University
-                </p>
-                <p className="mt-0.5 text-center text-[10px] uppercase tracking-[0.18em] text-plum-faint">
-                  Integrated Innovation Institute · 2025
-                </p>
-                <p className="mt-4 text-center font-serif text-[1.15rem] font-semibold leading-snug text-[#1a1a1a]">
-                  Internships &amp; iii: Student Summer Internship Recap
-                  <span aria-hidden className="ml-2 inline-block text-[#A6192E] transition-transform duration-300 group-hover/press:translate-x-0.5 group-hover/press:-translate-y-0.5">
-                    ↗
-                  </span>
-                </p>
-                <div aria-hidden className="mx-auto mt-4 h-px w-16 bg-plum/25" />
-                {/* 文章中的官方 profile 卡（按 CMU 页面原样重建） */}
-                <div className="mt-4 flex items-center gap-4">
-                  <img
-                    src="/theta/olivia-cmu-avatar.jpg"
-                    alt="Olivia Xiao at the Theta Health booth"
-                    loading="lazy"
-                    className="h-16 w-16 shrink-0 rounded-full border-2 border-white object-cover shadow-[0_6px_16px_-6px_rgba(58,36,64,0.4)]"
-                  />
-                  <div>
-                    <p className="font-serif text-[1.02rem] font-bold leading-tight text-[#A6192E]">Olivia Xiao</p>
-                    <p className="font-serif text-[13px] font-semibold text-[#1a1a1a]">MSSM ’25</p>
-                    <p className="mt-0.5 text-[12px] leading-snug text-[#3d3d3d]">
-                      Product Strategy &amp; Operations Intern, Theta Health
-                    </p>
-                  </div>
-                </div>
-                <p className="mt-3 text-[12.5px] leading-relaxed text-[#3d3d3d]">
-                  “Supported the launch of an AI healthcare platform, collaborating with engineers,
-                  designers and physicians to develop compliant clinical workflows and drive early
-                  adoption.”
-                </p>
-                <p className="mt-3 font-serif text-[13px] italic leading-relaxed text-[#3d3d3d]">
-                  {CMU_PRESS.quote}
-                </p>
-              </a>
-            </Reveal>
-            {/* LinkedIn 官方 embed：真实帖子 */}
-            <Reveal delay={0.08}>
-              <div className="overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_18px_40px_-24px_rgba(90,63,86,0.35)]">
-                <iframe
-                  src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7348943917221826562"
-                  height="420"
-                  title="LinkedIn — internship reflection at Theta Health"
-                  className="block w-full"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                />
-              </div>
-            </Reveal>
-          </div>
         </div>
       </section>
 
@@ -1044,7 +1122,7 @@ export default function ThetaCase() {
                   <span className="h-2.5 w-2.5 rounded-full bg-[#8FAE8B]/70" />
                 </div>
                 <img src="/theta/site-theta-product.png" alt="Theta Health live dashboard — standardized health indicators with mapping confidence" className="w-full" loading="lazy" />
-                <p className="px-5 py-3.5 font-hand text-[15px] text-plum-muted">
+                <p className="mt-auto px-5 py-3.5 font-hand text-[15px] text-plum-muted">
                   the live dashboard — raw data mapped to ~2,000 standardized indicators ✦
                 </p>
               </div>
@@ -1066,97 +1144,8 @@ export default function ThetaCase() {
         </div>
       </section>
 
-      {/* ── 子项目 ── */}
-      <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
-        <Reveal>
-          <p className="label-text mb-4">More at Theta</p>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-            Three more products I helped shape
-          </h2>
-        </Reveal>
-        <div className="mt-10 space-y-4">
-          {SUB_PROJECTS.map((sp, i) => {
-            const open = openSub === sp.key
-            return (
-              <Reveal key={sp.key} delay={i * 0.06}>
-                <div
-                  className={`overflow-hidden rounded-[1.6rem] border transition-colors duration-300 ${
-                    open ? 'border-orchid/40 bg-white' : 'border-plum/10 bg-white/70 hover:border-orchid/30'
-                  }`}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setOpenSub(open ? null : sp.key)}
-                    aria-expanded={open}
-                    className="flex w-full items-center justify-between gap-4 px-7 py-5 text-left"
-                  >
-                    <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <span className="font-serif text-[1.2rem] font-medium text-plum md:text-[1.35rem]">{sp.title}</span>
-                      <span className="font-hand text-[15px]" style={{ color: sp.accent }}>
-                        {sp.tagline}
-                      </span>
-                    </span>
-                    <span
-                      aria-hidden
-                      className={`shrink-0 text-[18px] text-plum-faint transition-transform duration-300 ${open ? 'rotate-45' : ''}`}
-                    >
-                      +
-                    </span>
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {open && (
-                      <motion.div
-                        key="body"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="overflow-hidden"
-                      >
-                        <div className={`grid gap-8 border-t border-dashed border-plum/15 px-7 py-6 ${sp.img ? 'lg:grid-cols-[3fr_2fr]' : ''}`}>
-                          <ul className="space-y-3">
-                            {sp.bullets.map((b) => (
-                              <li key={b} className="flex gap-2.5 text-[14.5px] leading-relaxed text-plum-muted">
-                                <span aria-hidden className="mt-[8px] h-1 w-1 shrink-0 rounded-full" style={{ backgroundColor: sp.accent }} />
-                                <span>{b}</span>
-                              </li>
-                            ))}
-                            {sp.link && (
-                              <li className="pt-1">
-                                <a
-                                  href={sp.link.href}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="inline-flex items-center gap-1.5 rounded-full border border-orchid/40 bg-lavender/30 px-4 py-1.5 text-[13px] font-medium text-plum transition-all hover:-translate-y-0.5 hover:border-orchid"
-                                >
-                                  {sp.link.label}
-                                </a>
-                              </li>
-                            )}
-                          </ul>
-                          {sp.img && (
-                            <img
-                              src={sp.img}
-                              alt={`${sp.title} product interface`}
-                              loading="lazy"
-                              className="w-full self-start rounded-xl border border-plum/10 shadow-[0_18px_40px_-20px_rgba(90,63,86,0.4)]"
-                            />
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </Reveal>
-            )
-          })}
-        </div>
-      </section>
-
       {/* ── 收尾：团队合照 + takeaway ── */}
-      <section className="mx-auto max-w-6xl px-6 pb-24 pt-4 md:px-10">
+      <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
         <Reveal>
           <div className="grid items-center gap-10 rounded-[2rem] bg-gradient-to-br from-lavender/50 to-blush/40 p-8 md:p-12 lg:grid-cols-[2fr_3fr] lg:gap-12">
             <figure className="mx-auto w-full max-w-[380px] -rotate-2 rounded-[12px] border border-plum/10 bg-white p-2.5 pb-5 shadow-[0_28px_60px_-26px_rgba(90,63,86,0.5)] transition-transform duration-500 hover:rotate-0">
@@ -1175,7 +1164,7 @@ export default function ThetaCase() {
                 “Adoption is a human problem before it is a technical one.”
               </p>
               <p className="mt-4 text-[14px] text-plum-muted">
-                — the lesson every track of this work kept teaching me
+                — the lesson every product line kept teaching me
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
                 <Link
