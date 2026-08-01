@@ -406,6 +406,38 @@ function PilotB2BGraphic() {
   )
 }
 
+/** Intake 触发流（宽幅）：预约 → 触发邮件 → 智能问卷 → pre-chart → +60% */
+function IntakeFlowGraphic() {
+  const steps = [
+    { x: 14, w: 108, l1: 'appointment', l2: 'booked', c: '#D193A8' },
+    { x: 148, w: 128, l1: 'consent & data-auth', l2: 'email · triggered', c: '#B98ACB' },
+    { x: 302, w: 122, l1: 'smart intake', l2: 'forms · chat · call', c: '#8FAE8B' },
+    { x: 450, w: 108, l1: 'pre-chart', l2: 'ready', c: '#C79A4B' },
+  ]
+  return (
+    <svg viewBox="0 0 640 216" className="w-full max-w-[660px]" fill="none" aria-label="Trigger-based intake workflow: appointment booked triggers consent and data-authorization email, smart intake via forms chat or call, feeding a ready pre-chart — plus 60 percent engagement lift">
+      {steps.map((s) => (
+        <g key={s.l1}>
+          <rect x={s.x} y="64" width={s.w} height="52" rx="14" fill={`${s.c}14`} stroke={s.c} strokeOpacity="0.6" strokeWidth="1.3" />
+          <text x={s.x + s.w / 2} y="86" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#3A2440">{s.l1}</text>
+          <text x={s.x + s.w / 2} y="102" textAnchor="middle" fontSize="9.5" fill="#6B4E63">{s.l2}</text>
+        </g>
+      ))}
+      <path d="M124 90 H 144" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <path d="M278 90 H 298" stroke="#8FAE8B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <path d="M426 90 H 446" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <path d="M560 90 Q 580 90 588 90" stroke="#D193A8" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <circle cx="606" cy="90" r="27" fill="#D193A8" fillOpacity="0.14" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
+      <text x="606" y="94" textAnchor="middle" fontSize="12" fill="#3A2440" fontWeight="600">+60%</text>
+      <text x="606" y="132" textAnchor="middle" fontSize="9.5" fill="#6B4E63">open &amp; click rates</text>
+      <text x="320" y="44" textAnchor="middle" fontSize="11" fill="#8A6E84">HIPAA-compliant end to end · no chasing, no clipboards</text>
+      <text x="320" y="164" textAnchor="middle" fontSize="12.5" fill="#8FAE8B" className="font-hand" fontWeight="600">
+        the visit starts before the visit ✦
+      </text>
+    </svg>
+  )
+}
+
 /** 竞品扫描核心：定位象限 + 我们找到的空白 */
 function QuadrantGraphic() {
   const dots = [
@@ -792,7 +824,7 @@ export default function ThetaCase() {
         </Reveal>
         <Reveal delay={0.06}>
           <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-            Four insights from the work
+            Five insights from the work
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
@@ -818,6 +850,32 @@ export default function ThetaCase() {
               <PilotB2BGraphic />
             </InsightCard>
           </Reveal>
+          <Reveal delay={0.16} className="md:col-span-2">
+            <InsightCard title="The intake engine, on triggers" source="from my Email Workflow PRD">
+              <IntakeFlowGraphic />
+            </InsightCard>
+          </Reveal>
+        </div>
+
+        {/* 圆桌现场照片条 */}
+        <Reveal delay={0.1}>
+          <p className="mt-12 text-center font-hand text-[18px] text-plum-muted">
+            field notes, literally — <span className="text-orchid">scenes from the clinical roundtables ✦</span>
+          </p>
+        </Reveal>
+        <div className="mt-6 grid gap-6 sm:grid-cols-3">
+          {[
+            { src: '/theta/rt-2414.jpg', cap: 'pitching a collaborative future', rot: '-rotate-2' },
+            { src: '/theta/rt-2433.jpg', cap: 'walking MDs through patient context', rot: 'rotate-1' },
+            { src: '/theta/rt-2452.jpg', cap: 'collecting what to build next', rot: '-rotate-1' },
+          ].map((ph, i) => (
+            <Reveal key={ph.src} delay={i * 0.08}>
+              <figure className={`${ph.rot} rounded-[10px] border border-plum/10 bg-white p-2 pb-4 shadow-[0_22px_48px_-24px_rgba(90,63,86,0.45)] transition-transform duration-500 hover:rotate-0 hover:-translate-y-1`}>
+                <img src={ph.src} alt={`Clinical roundtable — ${ph.cap}`} loading="lazy" className="w-full rounded-[6px]" />
+                <figcaption className="mt-2.5 text-center font-hand text-[14px] text-plum-muted">{ph.cap}</figcaption>
+              </figure>
+            </Reveal>
+          ))}
         </div>
 
         {/* MCP demo 关键帧动画 + 报道引语卡 */}
@@ -967,11 +1025,11 @@ export default function ThetaCase() {
       {/* ── 子项目 ── */}
       <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
         <Reveal>
-          <p className="label-text mb-4">Beyond the Scribe</p>
+          <p className="label-text mb-4">More at Theta</p>
         </Reveal>
         <Reveal delay={0.06}>
           <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-            Three more bets on the same thesis
+            Three more products I helped shape
           </h2>
         </Reveal>
         <div className="mt-10 space-y-4">
