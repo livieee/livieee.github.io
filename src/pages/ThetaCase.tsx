@@ -84,6 +84,7 @@ const FLOW = [
 const OWNED = [
   {
     num: '01',
+    line: 'Theta Care',
     heading: 'Co-led the 0→1 MVP',
     color: '#D193A8',
     stat: '83% less documentation time',
@@ -96,6 +97,7 @@ const OWNED = [
   },
   {
     num: '02',
+    line: 'Theta Care',
     heading: 'Designed the AI features',
     color: '#B98ACB',
     stat: '20+ interviews · 10+ teardowns',
@@ -108,6 +110,7 @@ const OWNED = [
   },
   {
     num: '03',
+    line: 'Theta Care',
     heading: 'Built the intake engine',
     color: '#8FAE8B',
     stat: '+60% engagement',
@@ -119,6 +122,7 @@ const OWNED = [
   },
   {
     num: '04',
+    line: 'MCP · cross-line',
     heading: 'Drove GTM & adoption',
     color: '#C79A4B',
     stat: '40+ physicians · 30+ developers',
@@ -240,6 +244,24 @@ function TechIcon({ name }: { name: string }) {
       <>
         <rect x="9" y="3" width="6" height="11" rx="3" />
         <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" />
+      </>
+    ),
+    watch: (
+      <>
+        <circle cx="12" cy="12" r="6" />
+        <path d="M12 9v3l2 1.5M9.5 3h5M9.5 21h5" />
+      </>
+    ),
+    camera: (
+      <>
+        <path d="M4 8h3l2-2.5h6L17 8h3v11H4V8Z" />
+        <circle cx="12" cy="13" r="3.2" />
+      </>
+    ),
+    chart: (
+      <>
+        <path d="M4 20V4M4 20h16" />
+        <path d="M8 15l3.5-4 3 2.5L19 8" />
       </>
     ),
     trophy: (
@@ -609,7 +631,7 @@ export default function ThetaCase() {
               {[
                 {
                   href: '#care',
-                  ext: { label: 'thetahealth.ai ↗', url: 'https://thetahealth.ai/' },
+                  ext: { label: 'thetahealth.ai/care ↗', url: 'https://www.thetahealth.ai/care' },
                   name: 'Theta Care',
                   aud: 'for clinics · B2B',
                   c: '#D193A8',
@@ -681,40 +703,6 @@ export default function ThetaCase() {
         </div>
       </section>
 
-      {/* ── The problem（共同命题） ── */}
-      <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
-        <Reveal>
-          <p className="label-text mb-4">The problem</p>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-            Doctors became data clerks. Patients became strangers between visits.
-          </h2>
-        </Reveal>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {PROBLEM_STATS.map((s, i) => (
-            <Reveal key={s.big} delay={i * 0.08}>
-              <div className="rounded-[1.6rem] bg-gradient-to-br from-cream-soft to-blush/40 p-7">
-                <p className="font-serif text-[2rem] font-light text-plum">{s.big}</p>
-                <p className="mt-2 text-[14px] leading-relaxed text-plum-muted">{s.small}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-        <div className="mt-10 grid gap-8 lg:grid-cols-2">
-          <Reveal delay={0.1}>
-            <InsightCard title="The gap the research found" source="from my 14-product competitive scan">
-              <QuadrantGraphic />
-            </InsightCard>
-          </Reveal>
-          <Reveal delay={0.16}>
-            <InsightCard title="Who we built for" source="from the Theta Care pitch deck">
-              <WhoWantedItGraphic />
-            </InsightCard>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ══ 产品线 1 · Theta Care (B2B) ══ */}
       <section id="care" className="scroll-mt-20 bg-white/60 py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
@@ -731,6 +719,54 @@ export default function ThetaCase() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mt-3 font-hand text-[17px] text-plum-muted">
+              the B2B line I drove end to end — <span className="text-orchid">
+                <a href="https://www.thetahealth.ai/care" target="_blank" rel="noreferrer" className="underline decoration-dashed underline-offset-4 hover:text-plum">thetahealth.ai/care ↗</a>
+              </span>
+            </p>
+          </Reveal>
+
+          {/* B2B 痛点（从全局 Problem 移入） */}
+          <Reveal delay={0.16}>
+            <p className="mt-8 max-w-2xl font-serif text-[1.3rem] font-light italic leading-snug text-plum md:text-[1.5rem]">
+              “Doctors became data clerks. Patients became strangers between visits.”
+            </p>
+          </Reveal>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {PROBLEM_STATS.map((s, i) => (
+              <Reveal key={s.big} delay={i * 0.08}>
+                <div className="rounded-[1.6rem] bg-gradient-to-br from-cream-soft to-blush/40 p-7">
+                  <p className="font-serif text-[2rem] font-light text-plum">{s.big}</p>
+                  <p className="mt-2 text-[14px] leading-relaxed text-plum-muted">{s.small}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <div className="mt-8 grid gap-8 lg:grid-cols-2">
+            <Reveal delay={0.1}>
+              <InsightCard title="The gap the research found" source="from my 14-product competitive scan">
+                <QuadrantGraphic />
+              </InsightCard>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <InsightCard title="Who we built for" source="from the Theta Care pitch deck">
+                <WhoWantedItGraphic />
+              </InsightCard>
+            </Reveal>
+          </div>
+
+          {/* /care 页的产品能力 */}
+          <Reveal delay={0.1}>
+            <div className="mt-10 flex flex-wrap items-center gap-2">
+              <span className="font-hand text-[16px] font-semibold text-plum">the product, in one line —</span>
+              <TechChip icon="doc" label="AI intake & pre-charting" color="#D193A8" />
+              <TechChip icon="sparkle" label="in-visit AI assistant" color="#B98ACB" />
+              <TechChip icon="mic" label="AI medical scribe" color="#8FAE8B" />
+              <span className="rounded-full bg-orchid/12 px-3 py-1 font-hand text-[14px] text-orchid">10x easier documentation ✦</span>
+              <span className="rounded-full border border-plum/15 bg-white/70 px-3 py-1 text-[11.5px] text-plum-muted">free pilot → $99/mo</span>
+            </div>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="mt-6 font-hand text-[16px] text-plum-muted">
               pick a phase, then <span className="text-orchid">drag the handle — without vs. with Theta ⇄</span>
             </p>
           </Reveal>
@@ -803,15 +839,25 @@ export default function ThetaCase() {
             </Reveal>
             <Reveal delay={0.08}>
               <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-6">
-                <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">The interview trail</p>
-                <p className="mt-1 font-hand text-[14px] text-orchid">scripts, notes & recordings on file</p>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  <TechChip icon="users" label="primary-care duo, joint interview" color="#D193A8" />
-                  <TechChip icon="users" label="neurosurgeon" color="#B98ACB" />
-                  <TechChip icon="users" label="home-health operator" color="#8FAE8B" />
-                  <TechChip icon="users" label="ex-One Medical VP of Data" color="#C79A4B" />
-                  <TechChip icon="mic" label="recorded sessions" color="#D193A8" />
-                  <TechChip icon="doc" label="interview scripts I wrote" color="#B98ACB" />
+                <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">The people behind the research</p>
+                <p className="mt-1 font-hand text-[14px] text-orchid">personas from my interviews — scripts, notes & recordings on file</p>
+                <div className="mt-5 space-y-4">
+                  {[
+                    { icon: 'users', c: '#D193A8', role: 'The spine neurosurgeon', line: '30-min paper intake, repetitive HPI — wants intake-to-note, in any language' },
+                    { icon: 'users', c: '#B98ACB', role: 'The veteran family physician & the psychiatrist', line: '40 years in practice — the adoption bar an AI scribe must clear' },
+                    { icon: 'users', c: '#8FAE8B', role: 'The home-health sales director', line: 'would pay for notes that pass PDGM billing — and handed us our channel map' },
+                    { icon: 'users', c: '#C79A4B', role: 'The ex-One Medical VP of Data', line: 'EHR integration and clean data decide whether a scribe lives or dies' },
+                  ].map((per) => (
+                    <div key={per.role} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: `${per.c}1c`, color: per.c }}>
+                        <TechIcon name={per.icon} />
+                      </span>
+                      <div>
+                        <p className="text-[13px] font-semibold text-plum">{per.role}</p>
+                        <p className="mt-0.5 text-[12px] leading-snug text-plum-muted">{per.line}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
                 <p className="mt-auto pt-5 font-hand text-[14px] text-plum-muted">
                   every insight on this page traces to one of these conversations ✦
@@ -849,23 +895,39 @@ export default function ThetaCase() {
           <div className="mt-10 grid items-stretch gap-8 lg:grid-cols-[5fr_6fr]">
             <Reveal>
               <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-6">
-                <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">What I shaped here</p>
-                <p className="mt-1 font-hand text-[14px] text-orchid">from the Theta Wellness PRD & GTM research</p>
-                <ul className="mt-5 space-y-3">
+                <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">A health companion for seniors</p>
+                <p className="mt-1 font-hand text-[14px] text-orchid">from the Theta Wellness deck</p>
+                {/* 三支柱 icon 块 */}
+                <div className="mt-5 grid grid-cols-3 gap-3">
                   {[
-                    'Multimodal health input: wearables, food snaps, mood tags, medical reports',
-                    'Health information explained in plain language — designed for older adults',
-                    'Daily guidance and caregiver sharing keep families in the loop between visits',
-                    'Positioning, market sizing, business model and the investor pitch',
-                  ].map((b) => (
-                    <li key={b} className="flex gap-2.5 text-[14px] leading-relaxed text-plum-muted">
-                      <span aria-hidden className="mt-[8px] h-1 w-1 shrink-0 rounded-full bg-[#8FAE8B]" />
-                      <span>{b}</span>
-                    </li>
+                    { icon: 'mic', c: '#D193A8', label: 'effortless input' },
+                    { icon: 'sparkle', c: '#B98ACB', label: 'plain-language insights' },
+                    { icon: 'users', c: '#8FAE8B', label: 'caregiver sharing' },
+                  ].map((pl, i) => (
+                    <div key={pl.label} className="rounded-xl border border-plum/10 bg-white/80 p-3 text-center">
+                      <span className="theta-float mx-auto flex h-9 w-9 items-center justify-center rounded-full" style={{ backgroundColor: `${pl.c}1c`, color: pl.c, animationDelay: `${i * 0.6}s` }}>
+                        <TechIcon name={pl.icon} />
+                      </span>
+                      <p className="mt-2 text-[11px] font-medium leading-tight text-plum">{pl.label}</p>
+                    </div>
                   ))}
-                </ul>
+                </div>
+                {/* 输入模态 icon chips */}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <TechChip icon="mic" label="voice notes" color="#D193A8" />
+                  <TechChip icon="chat" label="symptom check-ins" color="#B98ACB" />
+                  <TechChip icon="camera" label="photos & docs" color="#C79A4B" />
+                  <TechChip icon="watch" label="wearables · 300+ devices" color="#8FAE8B" />
+                  <TechChip icon="doc" label="EHR records" color="#B98ACB" />
+                </div>
+                {/* 市场信号 */}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="rounded-full bg-[#8FAE8B]/14 px-3 py-1 font-hand text-[13.5px] text-[#5F7D5B]">1 in 5 Americans 65+ by 2030</span>
+                  <span className="rounded-full bg-[#D193A8]/14 px-3 py-1 font-hand text-[13.5px] text-[#B06A80]">93% of 65+ live with chronic conditions</span>
+                  <span className="rounded-full bg-[#B98ACB]/14 px-3 py-1 font-hand text-[13.5px] text-[#8A5F9E]">63M caregivers in the loop</span>
+                </div>
                 <p className="mt-auto pt-5 font-hand text-[15px] text-plum-muted">
-                  the demand signal: older adults, drowning in scattered records, got it instantly ✦
+                  my part: the PRD, positioning &amp; the investor pitch ✦
                 </p>
               </div>
             </Reveal>
@@ -989,8 +1051,11 @@ export default function ThetaCase() {
                 <TiltCard className="h-full">
                   <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-7 md:p-8">
                     <div className="flex items-baseline justify-between gap-3">
-                      <p className="font-hand text-[20px] font-semibold" style={{ color: s.color }}>
+                      <p className="flex items-baseline gap-2.5 font-hand text-[20px] font-semibold" style={{ color: s.color }}>
                         {s.num}
+                        <span className="rounded-full border border-plum/12 bg-white/80 px-2.5 py-0.5 font-sans text-[10.5px] font-medium tracking-wide text-plum-muted">
+                          {s.line}
+                        </span>
                       </p>
                       <p className="rounded-full px-3 py-1 font-hand text-[14px]" style={{ color: s.color, backgroundColor: `${s.color}18` }}>
                         {s.stat}
