@@ -338,9 +338,10 @@ function InsightCard({ title, source, children }: { title: string; source: strin
 /** MCP 开发者动线（channel 式，依 Twitter GTM 调研三支柱） */
 function McpMotionGraphic() {
   const channels = [
-    { y: 44, label: 'MCP & LLM newsletters · 1M+', c: '#B98ACB' },
-    { y: 84, label: 'API & dev-community educators', c: '#8FAE8B' },
-    { y: 124, label: 'hands-on ML teachers · teardowns', c: '#C79A4B' },
+    { y: 36, label: 'tech influencers · 1M+ reach', c: '#B98ACB' },
+    { y: 68, label: 'media & newsletters', c: '#D193A8' },
+    { y: 100, label: 'hackathons · offline events', c: '#C79A4B' },
+    { y: 132, label: 'dev-community educators', c: '#8FAE8B' },
   ]
   return (
     <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="MCP developer motion: MCP and LLM newsletters with over a million readers, API and dev-community educators, and hands-on ML teachers converge into 30+ developers engaged">
@@ -363,59 +364,39 @@ function McpMotionGraphic() {
   )
 }
 
-/** Pilot 定位地图：湾区诊所散点 → 精进后的筛选 → 首个 pilot */
-function PilotMapGraphic() {
-  const dots = [
-    [26, 52], [48, 42], [70, 56], [34, 74], [56, 80], [78, 46], [90, 70], [30, 100], [52, 104], [74, 96], [94, 88], [44, 122],
-  ] as const
-  const filters = ['small independent clinics', 'already digital — EHR & site', 'whole-person & TCM care', 'loved by their patients']
+/** 临床 B2B 动线（合并版）：field-tested 筛选 + 渠道 → 首个 pilot */
+function PilotB2BGraphic() {
+  const filters = ['small independent', 'digital-ready · EHR & site', 'whole-person · TCM care', 'loved by patients']
+  const channels = [
+    { y: 40, label: 'cold outreach · scripts', c: '#C79A4B' },
+    { y: 76, label: 'roundtables · 40+ MDs', c: '#D193A8' },
+    { y: 112, label: 'medical associations', c: '#B98ACB' },
+  ]
   return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Pilot targeting map: Bay Area clinics filtered by field-tested criteria — small independent clinics, already digital with EHR and website, whole-person and TCM care, loved by their patients — down to the first pilot">
-      <text x="60" y="28" textAnchor="middle" fontSize="10" fill="#8A6E84">Bay Area clinics</text>
-      {dots.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r="4.5" fill="#3A2440" fillOpacity="0.16" />
-      ))}
-      <text x="60" y="146" textAnchor="middle" fontSize="9.5" fill="#8A6E84">visited, one by one</text>
-      <rect x="116" y="38" width="158" height="112" rx="12" fill="white" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
-      <text x="195" y="58" textAnchor="middle" fontSize="9.5" fill="#8A6E84">what actually predicted a yes</text>
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Clinical B2B motion: Bay Area clinics passed through field-tested filters — small independent, digital-ready, whole-person and TCM care, loved by patients — worked via cold outreach, roundtables and medical associations into the first signed pilot">
+      <text x="80" y="18" textAnchor="middle" fontSize="9.5" fill="#8A6E84">Bay Area clinics ↓</text>
+      <rect x="14" y="26" width="132" height="106" rx="12" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
+      <text x="80" y="44" textAnchor="middle" fontSize="9" fill="#8A6E84">field-tested filters</text>
       {filters.map((f, i) => (
-        <text key={f} x="195" y={78 + i * 19} textAnchor="middle" fontSize="9.5" fill="#3A2440">
+        <text key={f} x="80" y={62 + i * 18} textAnchor="middle" fontSize="8.8" fill="#3A2440">
           {f}
         </text>
       ))}
-      <path d="M100 92 H 114" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <path d="M262 152 Q 274 158 278 166" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <circle cx="282" cy="178" r="14" fill="#D193A8" fillOpacity="0.18" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
-      <circle cx="282" cy="178" r="4" fill="#D193A8" />
-      <text x="230" y="196" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#3A2440">the first pilot ✦</text>
-    </svg>
-  )
-}
-
-/** 临床 B2B 渠道（channel 式，与 MCP 卡同构） */
-function PilotB2BGraphic() {
-  const channels = [
-    { y: 44, label: 'cold outreach · tailored scripts', c: '#C79A4B' },
-    { y: 84, label: 'clinical roundtables · 40+ MDs', c: '#D193A8' },
-    { y: 124, label: 'medical associations', c: '#B98ACB' },
-  ]
-  return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Clinical B2B motion: cold outreach with tailored scripts, clinical roundtables with 40+ physicians, and medical associations converge into the first clinic pilot">
+      <path d="M148 78 H 160" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
       {channels.map((c) => (
         <g key={c.label}>
-          <rect x="14" y={c.y - 13} width="188" height="26" rx="13" fill="white" stroke={c.c} strokeOpacity="0.55" strokeWidth="1.2" />
-          <circle cx="28" cy={c.y} r="3" fill={c.c} />
-          <text x="38" y={c.y + 3.5} fontSize="9.5" fill="#3A2440">{c.label}</text>
-          <path d={`M204 ${c.y} Q 238 ${c.y} 252 ${84 + (c.y - 84) * 0.2}`} stroke={c.c} strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+          <rect x="164" y={c.y - 12} width="142" height="24" rx="12" fill="white" stroke={c.c} strokeOpacity="0.55" strokeWidth="1.2" />
+          <circle cx="177" cy={c.y} r="2.6" fill={c.c} />
+          <text x="186" y={c.y + 3.5} fontSize="8.8" fill="#3A2440">{c.label}</text>
         </g>
       ))}
-      <circle cx="278" cy="84" r="26" fill="#D193A8" fillOpacity="0.16" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
-      <text x="278" y="81" textAnchor="middle" fontSize="10.5" fontWeight="700" fill="#3A2440">1st clinic</text>
-      <text x="278" y="95" textAnchor="middle" fontSize="10" fill="#3A2440">pilot ✦</text>
-      <text x="160" y="176" textAnchor="middle" fontSize="12.5" fill="#C79A4B" className="font-hand" fontWeight="600">
-        3–4 interested → 1 signed ✦
+      <path d="M235 124 V 148" stroke="#D193A8" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <circle cx="235" cy="164" r="15" fill="#D193A8" fillOpacity="0.18" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
+      <circle cx="235" cy="164" r="4" fill="#D193A8" />
+      <text x="272" y="168" textAnchor="start" fontSize="10" fontWeight="600" fill="#3A2440">1st ✦</text>
+      <text x="160" y="204" textAnchor="middle" fontSize="12" fill="#C79A4B" className="font-hand" fontWeight="600">
+        3–4 interested → 1st pilot signed ✦
       </text>
-      <text x="160" y="198" textAnchor="middle" fontSize="10" fill="#8A6E84">bilingual pitch deck · front-desk call scripts</text>
     </svg>
   )
 }
@@ -942,23 +923,18 @@ export default function ThetaCase() {
             </InsightCard>
           </Reveal>
           <Reveal delay={0.12}>
-            <InsightCard title="The product loop I spec’d" source="from the Theta Wellness PRD">
-              <FlywheelGraphic />
+            <InsightCard title="The clinical B2B motion" source="from pilot outreach & the growth playbook">
+              <PilotB2BGraphic />
             </InsightCard>
           </Reveal>
           <Reveal delay={0.18}>
-            <InsightCard title="How we targeted the pilot" source="from Bay Area pilot outreach, field-tested">
-              <PilotMapGraphic />
-            </InsightCard>
-          </Reveal>
-          <Reveal delay={0.12}>
             <InsightCard title="The MCP developer motion" source="from my Twitter AI & tech influencer research">
               <McpMotionGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.18}>
-            <InsightCard title="The clinical B2B motion" source="from pilot outreach & the growth playbook">
-              <PilotB2BGraphic />
+          <Reveal delay={0.12} className="md:col-span-2">
+            <InsightCard title="The product loop I spec’d" source="from the Theta Wellness PRD">
+              <FlywheelGraphic />
             </InsightCard>
           </Reveal>
         </div>
