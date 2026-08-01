@@ -177,9 +177,9 @@ const SUB_PROJECTS: SubProject[] = [
     link: { label: 'mirobody.ai ↗', href: 'https://mirobody.ai/' },
     bullets: [
       'World’s first HIPAA-compliant health-data MCP — #1 on the GAIA leaderboard',
-      'Gathered feedback from 20+ developers through events and community outreach',
-      'Diagnosed integration and adoption barriers; findings reshaped roadmap priorities',
-      'Crafted developer messaging and an open-source adoption strategy — 30+ developers engaged',
+      'Owned GTM strategy: Twitter influencer outreach, offline MCP influencer events, and developer-community building',
+      'Created demo content and the launch one-pager; gathered feedback from 20+ developers in the field',
+      'Adoption barriers I diagnosed reshaped roadmap priorities — 30+ developers engaged overall',
     ],
   },
   {
@@ -848,8 +848,9 @@ export default function ThetaCase() {
               </div>
               <DemoFrameLoop />
               <p className="mt-3 px-1 text-[12px] leading-snug text-plum-faint">
-                Product built by the Theta engineering team — my part was driving its developer
-                adoption: 30+ developers engaged, messaging, and roadmap input from the field.
+                Product built by the Theta engineering team — my part was its GTM: Twitter &amp;
+                offline influencer outreach, developer-community building, demo content, and the
+                launch one-pager. 30+ developers engaged.
               </p>
             </div>
           </Reveal>
