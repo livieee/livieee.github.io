@@ -4,7 +4,6 @@ import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { TiltCard } from '@/components/TiltCard'
 import { AskDataUI } from '@/components/AskDataUI'
-import { MiniArchCard } from '@/components/MiniArchCard'
 
 type Metric = {
   value: string
@@ -192,8 +191,6 @@ export function Impact() {
                 {/* 视觉：AskData UI（移动端先展示） */}
                 <div className="relative order-1 md:col-span-8">
                   <AskDataUI />
-                  {/* 角落钉一张小架构图 → 另一个 Bosch 项目页 */}
-                  <MiniArchCard className="absolute -top-7 right-1 z-10 hidden md:block lg:-right-3" />
                 </div>
 
                 {/* 文案 */}
@@ -234,9 +231,44 @@ export function Impact() {
                   </Link>
                 </div>
 
-                {/* 移动端：技术项目附注 */}
-                <MiniArchCard className="order-3 mx-auto md:hidden" />
               </div>
+
+              {/* 同一合作下的第二个项目：平级入口 */}
+              <Link
+                to="/work/bosch-schema"
+                className="group/proj2 mt-10 flex flex-col items-start gap-5 rounded-2xl border border-[#7FA3CC]/30 bg-white/70 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#4E6E96]/50 hover:bg-white hover:shadow-[0_18px_40px_-18px_rgba(78,110,150,0.35)] sm:flex-row sm:items-center md:p-6"
+              >
+                <svg viewBox="0 0 150 56" className="w-36 shrink-0 sm:w-40" aria-hidden>
+                  {[8, 24, 40].map((y, i) => (
+                    <rect key={i} x="4" y={y} width="26" height="10" rx="3" fill="#EFF5FB" stroke="#7FA3CC" strokeWidth="1" />
+                  ))}
+                  {[13, 29, 45].map((y, i) => (
+                    <path key={i} d={`M30 ${y} C 46 ${y}, 48 28, 60 28`} fill="none" stroke="#B9CDE4" strokeWidth="1.2" />
+                  ))}
+                  <circle cx="72" cy="28" r="12" fill="#DCE7F2" stroke="#4E6E96" strokeWidth="1.2" />
+                  <path d="M84 28 H100" fill="none" stroke="#B9CDE4" strokeWidth="1.2" />
+                  <path d="m100 28 5-3v6Z" fill="#B9CDE4" />
+                  <rect x="106" y="19" width="40" height="18" rx="5" fill="#F6EFE8" stroke="#D193A8" strokeWidth="1" />
+                  <text x="126" y="31" textAnchor="middle" fontSize="8.5" fill="#8A6E7E">validate ✓</text>
+                </svg>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[#7A9CC6]">
+                    Second project · same collaboration
+                  </p>
+                  <p className="mt-1.5 font-serif text-[1.15rem] font-medium leading-tight text-plum md:text-[1.3rem]">
+                    Multi-agent schema extraction
+                  </p>
+                  <p className="mt-1 text-[13px] leading-snug text-plum-muted">
+                    the validated schema layer AskData's SQL stands on — architecture + validation
+                  </p>
+                </div>
+                <span
+                  aria-hidden
+                  className="ml-auto hidden shrink-0 font-serif text-2xl text-[#7FA3CC] transition-transform duration-300 group-hover/proj2:translate-x-1.5 sm:block"
+                >
+                  →
+                </span>
+              </Link>
             </article>
           </TiltCard>
         </Reveal>
