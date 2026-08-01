@@ -195,8 +195,8 @@ export function Impact() {
                 {/* 视觉：AskData UI（移动端先展示），整块可点击直达详情页 */}
                 <div className="order-1 md:col-span-8">
                   <Link
-                    to="/work/askdata"
-                    aria-label="Explore AskData"
+                    to="/work/genai-analytics"
+                    aria-label="Explore the platform"
                     className="group/demo relative block cursor-none rounded-2xl transition-transform duration-300 hover:scale-[1.01]"
                     onPointerMove={(e) => {
                       if (e.pointerType === 'touch') return
@@ -253,7 +253,7 @@ export function Impact() {
                           Also under this collaboration
                         </span>
                         <span className="mt-0.5 block truncate font-serif text-[17px] leading-snug text-plum">
-                          InterChat — schema extraction agents
+                          Schema Extraction Agents
                         </span>
                         <span className="mt-0.5 block text-[11.5px] text-plum-muted">
                           Solution Architect · trust layer · 56.6% → 97.2% accuracy
@@ -319,10 +319,10 @@ export function Impact() {
                     </dd>
                   </div>
                   <Link
-                    to="/work/askdata"
+                    to="/work/genai-analytics"
                     className="group/cta mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#4E6E96]"
                   >
-                    Explore AskData
+                    Explore the platform
                     <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
                   </Link>
                 </div>

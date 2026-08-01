@@ -4,13 +4,13 @@ import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 
 /**
- * Bosch × CMU 项目一：InterChat 多智能体 schema 抽取。
+ * Bosch × CMU 项目一：多智能体 schema 抽取（对外名 Schema Extraction Agents）。
  * Olivia = Solution Architect；页面核心是她设计的架构的步进式动画走查。
  */
 
 /* ── 架构走查的步骤脚本（对应真实 16 步流程的精简版） ────────── */
 const WALK_STEPS = [
-  { id: 'upload', caption: 'A user drops a messy PDF into InterChat — tables, footnotes, inconsistent types.' },
+  { id: 'upload', caption: 'A user drops a messy PDF into the analytics tool — tables, footnotes, inconsistent types.' },
   { id: 'parse', caption: 'The parsing layer (PyMuPDF + OCR) turns pages into raw text and tabular content.' },
   { id: 'generator', caption: 'The Schema Generator agent drafts column names, data types, and descriptions.' },
   { id: 'draft', caption: 'A schema draft exists — but drafts from a one-shot LLM can be vague or wrong.' },
@@ -19,7 +19,7 @@ const WALK_STEPS = [
   { id: 'human', caption: 'Still ambiguous? A human-in-the-loop agent asks the user — only the questions that matter.' },
   { id: 'validated', caption: 'The best-scoring YAML wins. Nothing ships below the confidence threshold.' },
   { id: 'formatter', caption: 'The Formatter agent emits the final structured schema — name, type, description.' },
-  { id: 'ui', caption: 'Trusted schema lands back in InterChat, ready to ground every downstream chart.' },
+  { id: 'ui', caption: 'Trusted schema lands back in the tool, ready to ground every downstream chart.' },
 ] as const
 
 type NodeSpec = {
@@ -34,7 +34,7 @@ type NodeSpec = {
 }
 
 const NODES: NodeSpec[] = [
-  { id: 'upload', x: 8, y: 60, w: 118, h: 64, label: 'PDF upload', sub: 'InterChat UI' },
+  { id: 'upload', x: 8, y: 60, w: 118, h: 64, label: 'PDF upload', sub: 'analytics tool UI' },
   { id: 'parse', x: 8, y: 168, w: 118, h: 64, label: 'Parsing layer', sub: 'PyMuPDF · OCR' },
   { id: 'generator', x: 178, y: 34, w: 150, h: 64, label: 'Schema Generator', sub: 'agent · LLM', accent: 'blue' },
   { id: 'draft', x: 178, y: 134, w: 150, h: 52, label: 'Schema draft', sub: 'candidate YAML' },
@@ -43,7 +43,7 @@ const NODES: NodeSpec[] = [
   { id: 'human', x: 178, y: 322, w: 150, h: 58, label: 'Human-in-the-loop', sub: 'only if ambiguous', accent: 'sand' },
   { id: 'validated', x: 380, y: 254, w: 132, h: 58, label: 'Best YAML', sub: 'threshold-gated' },
   { id: 'formatter', x: 380, y: 348, w: 132, h: 58, label: 'Formatter agent', sub: 'final schema' },
-  { id: 'ui', x: 8, y: 348, w: 118, h: 58, label: 'Back to InterChat', sub: 'trusted schema ✓' },
+  { id: 'ui', x: 8, y: 348, w: 118, h: 58, label: 'Back to the tool', sub: 'trusted schema ✓' },
 ]
 
 const EDGES: Array<[string, string, boolean?]> = [
@@ -94,7 +94,7 @@ function ArchWalkthrough() {
           viewBox="0 0 524 420"
           className="w-full"
           role="img"
-          aria-label="InterChat schema extraction architecture: PDF parsing feeds a schema generator agent, a validation agent scores every field, LangGraph routes retries, a human-in-the-loop agent resolves ambiguity, and a formatter emits trusted schema back to InterChat"
+          aria-label="Schema extraction architecture: PDF parsing feeds a schema generator agent, a validation agent scores every field, LangGraph routes retries, a human-in-the-loop agent resolves ambiguity, and a formatter emits trusted schema back to the analytics tool"
         >
           <defs>
             <marker id="wk-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto">
@@ -263,7 +263,7 @@ export function BoschSchemaCase() {
           <p className="label-text mb-5 text-[#4E6E96]">Bosch × CMU · Project 01 · Solution Architect</p>
         </Reveal>
         <h1 className="max-w-3xl font-serif text-[clamp(2rem,5.4vw,3.6rem)] font-light leading-[1.08] text-plum">
-          <WordReveal text="InterChat schema extraction" />
+          <WordReveal text="Schema Extraction Agents" />
         </h1>
         <Reveal delay={0.15}>
           <p className="mt-4 font-serif text-xl font-light leading-snug text-plum-muted md:text-2xl">
@@ -272,10 +272,10 @@ export function BoschSchemaCase() {
         </Reveal>
         <Reveal delay={0.25}>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-            InterChat, Bosch's conversational data-visualization tool, is only as good as the schema
-            underneath it. Extracting that schema from real documents was manual and error-prone. We
-            built an agentic pipeline with a trust layer at its core — my part was designing the
-            system architecture.
+A conversational data-visualization tool is only as good as the schema underneath it —
+            and extracting that schema from real enterprise documents was manual and error-prone. We
+            built an agentic pipeline with a trust layer at its core, so the tool could ground every
+            chart in structure it had reason to trust. My part was designing the system architecture.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {['System Architecture', 'Multi-Agent Design', 'LangGraph', 'FastAPI + Docker', 'Evaluation'].map((s) => (
@@ -295,6 +295,32 @@ export function BoschSchemaCase() {
         {/* ── 交互式架构走查 ──────────────────────────────────── */}
         <Reveal className="mt-14" y={32}>
           <ArchWalkthrough />
+        </Reveal>
+
+        {/* ── 原始设计图（真实工件） ───────────────────────────── */}
+        <Reveal className="mt-16">
+          <div className="relative mx-auto max-w-4xl">
+            <span
+              aria-hidden
+              className="absolute -top-3 left-1/2 z-10 h-6 w-24 -translate-x-1/2 rotate-[-3deg] rounded-[3px] bg-[#DCE7F2]/90 shadow-sm"
+            />
+            <figure className="rotate-[-0.6deg] rounded-[1.4rem] border border-plum/10 bg-white p-4 shadow-[0_28px_60px_-30px_rgba(78,110,150,0.5)] transition-transform duration-500 hover:rotate-0 md:p-6">
+              <img
+                src="/bosch/interchat-architecture.jpg"
+                alt="The original 16-step architecture I designed: application layer with the tool UI and PDF parsing, a multi-agent orchestrator with schema generator, validation/enrichment, human-in-the-loop and evaluation agents, and an AI layer with the LLM API and LangGraph"
+                loading="lazy"
+                className="w-full rounded-lg"
+              />
+              <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-2 px-1">
+                <span className="text-[11.5px] text-plum-faint">
+                  The original design doc — all 16 steps, from PDF upload to trusted YAML
+                </span>
+                <span className="font-hand text-[15px] text-[#4E6E96]">
+                  drawn by me — the walkthrough above is its distilled version ✦
+                </span>
+              </figcaption>
+            </figure>
+          </div>
         </Reveal>
 
         {/* ── 信任层 ───────────────────────────────────────────── */}
@@ -397,7 +423,7 @@ export function BoschSchemaCase() {
         {/* ── 它后来长成了什么 ──────────────────────────────────── */}
         <Reveal className="mt-20">
           <Link
-            to="/work/askdata"
+            to="/work/genai-analytics"
             className="group/x flex items-center justify-between gap-6 rounded-[1.6rem] border border-plum/10 bg-white/70 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#7FA3CC]/50 hover:bg-white hover:shadow-[0_18px_40px_-18px_rgba(78,110,150,0.35)] md:p-8"
           >
             <div>
@@ -405,7 +431,7 @@ export function BoschSchemaCase() {
                 Project 02 · What the schema layer made possible ↗
               </p>
               <p className="mt-2 font-serif text-xl font-light text-plum md:text-2xl">
-                AskData — AI-native analytics workspace
+                GenAI Analytics Suite — AI-native analytics workspace
               </p>
               <p className="mt-1 text-[13px] text-plum-muted">
                 Natural-language SQL · Python analysis · Visualization · Reusable knowledge

@@ -100,7 +100,7 @@ export function AskDataUI() {
           </span>
           <span className="flex flex-1 items-center justify-center">
             <span className="rounded-full bg-plum/[0.05] px-4 py-1 text-[10px] tracking-wide text-plum-faint">
-              askdata · analytics workspace
+              genai analytics suite · workspace
             </span>
           </span>
           <span className="w-10" aria-hidden />

@@ -21,7 +21,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/work/theta" element={<ThetaCase />} />
-        <Route path="/work/askdata" element={<AskDataCase />} />
+        <Route path="/work/genai-analytics" element={<AskDataCase />} />
         <Route path="/work/bosch-schema" element={<BoschSchemaCase />} />
       </Routes>
     </>

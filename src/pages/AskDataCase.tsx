@@ -5,7 +5,7 @@ import { CountUp } from '@/components/CountUp'
 import { AskDataUI } from '@/components/AskDataUI'
 
 /**
- * Bosch × CMU 项目二：AskData —— Olivia = Product Lead。
+ * Bosch × CMU 项目二：GenAI Analytics Suite —— Olivia = Product Lead。
  * 叙事：真实约束 → 产品决策（PRD 证据）→ 交付方式 → 价值。
  */
 
@@ -211,7 +211,7 @@ const SHIP_CARDS = [
   {
     tag: 'PRD',
     color: '#7A9CC6',
-    title: 'AskData MVP requirements',
+    title: 'MVP product requirements',
     body: 'Five-layer architecture, three modes, session persistence, offline states — every behavior written down before it was built.',
   },
   {
@@ -222,7 +222,7 @@ const SHIP_CARDS = [
   },
 ]
 
-/* ── 价值指标（来自 AskData deck） ────────────────────────────── */
+/* ── 价值指标（来自产品 deck） ─────────────────────────────────── */
 const VALUE = [
   { n: 5, suffix: '–10×', label: 'faster time-to-insight — 10+ minute workflows become a 1–3 minute pipeline' },
   { n: 80, suffix: '%+', label: 'of manual analytics workflows streamlined end-to-end' },
@@ -254,7 +254,7 @@ export function AskDataCase() {
           <p className="label-text mb-5 text-[#4E6E96]">Bosch × CMU · Project 02 · Product Lead</p>
         </Reveal>
         <h1 className="font-serif text-[clamp(2.4rem,6vw,4.2rem)] font-light leading-[1.05] text-plum">
-          <WordReveal text="AskData" />
+          <WordReveal text="GenAI Analytics Suite" />
         </h1>
         <Reveal delay={0.15}>
           <p className="mt-4 max-w-2xl font-serif text-xl font-light leading-snug text-plum-muted md:text-2xl">
@@ -284,6 +284,47 @@ export function AskDataCase() {
         <Reveal className="mt-14" y={32}>
           <div className="rounded-[2rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-6 md:p-12">
             <AskDataUI />
+            {/* 真实产品截图（身份信息已打码） */}
+            <div className="mt-8 overflow-hidden rounded-xl border border-plum/15 bg-white shadow-[0_24px_54px_-24px_rgba(78,110,150,0.5)]">
+              <div className="flex items-center gap-1.5 border-b border-plum/10 bg-cream-soft/70 px-4 py-2.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#E8B4B4]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#E8D5A8]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#B5CBB7]" />
+                <span className="mx-auto rounded-md bg-white px-3 py-0.5 text-[10.5px] text-plum-faint">
+                  the shipped product · internal deployment
+                </span>
+              </div>
+              <img
+                src="/bosch/askdata-ui.png"
+                alt="The suite in production — SQL workspace with session history, mode switcher (SQL / Analytics / InterChat), table selector and AI auto-select"
+                loading="lazy"
+                className="w-full"
+              />
+            </div>
+            <p className="mt-3 text-center font-hand text-[15px] text-plum-muted">
+              the real thing, running inside Bosch — user identity masked ✦
+            </p>
+          </div>
+        </Reveal>
+
+        {/* ── 全流程泳道图（真实工件） ──────────────────────────── */}
+        <Reveal className="mt-20">
+          <p className="label-text mb-3">The journey, mapped</p>
+          <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
+            Six lanes, one thread — the workflow I mapped
+          </h2>
+          <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-plum-muted">
+            Every route a user can take — sessions, SQL, analytics, visualization, results — including
+            the failure path where SQL can't execute and the product guides users through the manual
+            CSV hop instead of dead-ending.
+          </p>
+          <div className="mt-8 overflow-hidden rounded-[1.6rem] border border-plum/10 bg-white shadow-[0_24px_54px_-28px_rgba(78,110,150,0.4)]">
+            <img
+              src="/bosch/askdata-workflow.png"
+              alt="Workflow diagram across six swimlanes: User, Session/Data, SQL Agent, Analytics, InterChat, and Results Explorer"
+              loading="lazy"
+              className="w-full"
+            />
           </div>
         </Reveal>
 
@@ -349,6 +390,38 @@ export function AskDataCase() {
           </div>
         </Reveal>
 
+        {/* ── 系统真身：架构图 + 模式流（真实工件） ─────────────── */}
+        <Reveal className="mt-20">
+          <p className="label-text mb-3">Under the hood</p>
+          <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
+            One workspace, four services underneath
+          </h2>
+          <div className="mt-8 grid items-start gap-6 md:grid-cols-[3fr_2fr]">
+            <figure className="overflow-hidden rounded-[1.6rem] border border-plum/10 bg-white p-4 shadow-[0_20px_46px_-26px_rgba(78,110,150,0.4)] md:p-6">
+              <img
+                src="/bosch/askdata-architecture.png"
+                alt="System architecture: React frontend with SQL / Analytics / InterChat / Schema modules, Nginx reverse proxy, FastAPI backend intelligence layer, and services — KB-Engine, SQL Agent, SQL Executor, InterChat — on PostgreSQL, Redis and Azure OpenAI"
+                loading="eager"
+                className="w-full"
+              />
+              <figcaption className="mt-3 text-center text-[11.5px] text-plum-faint">
+                The system architecture — one frontend, an orchestration layer, four services
+              </figcaption>
+            </figure>
+            <figure className="overflow-hidden rounded-[1.6rem] border border-plum/10 bg-white p-4 shadow-[0_20px_46px_-26px_rgba(78,110,150,0.4)] md:p-6">
+              <img
+                src="/bosch/askdata-modes.png"
+                alt="Data flow across modes: a new session starts by loading a database or uploading a CSV; SQL, Analytics and InterChat modes share datasets through the CSV Manager"
+                loading="eager"
+                className="w-full"
+              />
+              <figcaption className="mt-3 text-center text-[11.5px] text-plum-faint">
+                How data moves between the three modes
+              </figcaption>
+            </figure>
+          </div>
+        </Reveal>
+
         {/* ── SQL cell 解剖 ────────────────────────────────────── */}
         <Reveal className="mt-20">
           <p className="label-text mb-3">Inside the spec</p>
@@ -387,8 +460,50 @@ export function AskDataCase() {
               </div>
             ))}
           </div>
+          {/* 学期 roadmap（真实工件） */}
+          <figure className="mt-8 overflow-hidden rounded-[1.6rem] border border-plum/10 shadow-[0_20px_46px_-26px_rgba(78,110,150,0.4)]">
+            <img
+              src="/bosch/askdata-roadmap.png"
+              alt="Product roadmap I ran: Sprint 4 foundation — conversational core and basic UI; Sprint 5 database context and session management; Sprint 6 midterm delivery — SQL generation MVP, each with objectives, activities and expected outcomes"
+              loading="eager"
+              className="w-full"
+            />
+          </figure>
+
+          {/* 每周 sprint 节奏（Notion 文档脱敏摘要） */}
+          <div className="mt-8 rounded-[1.6rem] border border-plum/10 bg-white/70 p-7 md:p-8">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+                The weekly cadence · sprint docs I wrote
+              </p>
+              <p className="font-hand text-[14px] text-plum-faint">internal details masked — NDA ✦</p>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              {[
+                'Sprint 4 — foundation: conversational core',
+                'Sprint 5 — database context & sessions',
+                'Sprint 6 — midterm: SQL generation MVP',
+                'UI enhancement · data intelligence · Python insights',
+                'Visualization cell redesign — P0/P1 specs, owner-assigned',
+                'Feature categorization — MoSCoW roadmap',
+              ].map((s) => (
+                <span
+                  key={s}
+                  className="rounded-full border border-[#7FA3CC]/35 bg-[#EFF5FB]/60 px-4 py-2 text-[12.5px] text-[#4E6E96]"
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
+            <p className="mt-4 text-[13px] leading-relaxed text-plum-muted">
+              Every week of the GenAI analytics suite ran on a planning doc: goal, scope cut into
+              P0/P1, layouts specced section by section, and an owner on every task before the
+              sprint started.
+            </p>
+          </div>
+
           <p className="mt-5 font-hand text-[15px] text-plum-muted">
-            two PRDs, weekly sprints, QA passes filed as specs — the unglamorous loop that ships ✦
+            two PRDs, weekly sprint docs, QA passes filed as specs — the unglamorous loop that ships ✦
           </p>
         </Reveal>
 
@@ -436,7 +551,7 @@ export function AskDataCase() {
                 Project 01 · The schema layer it stands on ↗
               </p>
               <p className="mt-2 font-serif text-xl font-light text-plum md:text-2xl">
-                InterChat schema extraction
+                Schema Extraction Agents
               </p>
               <p className="mt-1 text-[13px] text-plum-muted">
                 Multi-agent pipeline · trust layer · 56.6% → 97.2% accuracy
