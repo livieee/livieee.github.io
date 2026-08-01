@@ -360,43 +360,54 @@ function PilotFunnelGraphic() {
   )
 }
 
-/** GTM 引擎（宽幅）：创作者分层 → 五渠道 → 首个 pilot */
+/** GTM 引擎（宽幅双轨）：MCP 开发者向 vs Theta Care B 端临床向 */
 function GtmEngineGraphic() {
-  const tiers = [
-    { y: 56, label: 'productivity & longevity creators', c: '#D193A8' },
-    { y: 102, label: 'dev educators & AI builders', c: '#B98ACB' },
-    { y: 148, label: 'AI & digital-health authorities', c: '#8FAE8B' },
+  const laneA = [
+    { x: 14, w: 172, label: 'tech influencers · 15+ mapped' },
+    { x: 194, w: 70, label: 'media' },
+    { x: 272, w: 100, label: 'hackathons' },
   ]
-  const channels = [
-    { y: 30, label: 'cold outreach · call scripts', c: '#C79A4B' },
-    { y: 66, label: 'media', c: '#D193A8' },
-    { y: 102, label: 'influencers · 15+ mapped', c: '#B98ACB' },
-    { y: 138, label: 'hackathons', c: '#8FAE8B' },
-    { y: 174, label: 'roundtables · 40+ MDs', c: '#C79A4B' },
+  const laneB = [
+    { x: 14, w: 164, label: 'cold outreach · call scripts' },
+    { x: 186, w: 172, label: 'clinical roundtables · 40+ MDs' },
+    { x: 366, w: 126, label: 'medical associations' },
   ]
   return (
-    <svg viewBox="0 0 640 216" className="w-full max-w-[660px]" fill="none" aria-label="GTM engine: creator tiers feed the influencer channel; five channels converge into the first clinic pilot">
-      <text x="103" y="24" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the creator tiers I mapped</text>
-      {tiers.map((t) => (
-        <g key={t.label}>
-          <rect x="14" y={t.y - 13} width="178" height="26" rx="13" fill={`${t.c}14`} stroke={t.c} strokeOpacity="0.55" strokeWidth="1.2" />
-          <circle cx="29" cy={t.y} r="3" fill={t.c} />
-          <text x="40" y={t.y + 3.5} fontSize="10" fill="#3A2440">{t.label}</text>
-          <path d={`M194 ${t.y} Q 230 ${t.y} 252 ${102 + (t.y - 102) * 0.12}`} stroke={t.c} strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+    <svg viewBox="0 0 640 216" className="w-full max-w-[660px]" fill="none" aria-label="Two GTM motions: developer channels (tech influencers, media, hackathons) drove MCP adoption with 30+ developers; clinical B2B channels (cold outreach, roundtables, medical associations) landed the first clinic pilot">
+      {/* 轨道 A：MCP 开发者向 */}
+      <text x="14" y="30" fontSize="11" fontWeight="600" fill="#B98ACB">MCP · developer motion</text>
+      {laneA.map((c) => (
+        <g key={c.label}>
+          <rect x={c.x} y="44" width={c.w} height="26" rx="13" fill="white" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.2" />
+          <circle cx={c.x + 14} cy="57" r="3" fill="#B98ACB" />
+          <text x={c.x + 25} y="61" fontSize="10" fill="#3A2440">{c.label}</text>
         </g>
       ))}
-      <text x="345" y="14" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the channels I ran</text>
-      {channels.map((ch) => (
-        <g key={ch.label}>
-          <rect x="258" y={ch.y - 13} width="174" height="26" rx="13" fill="white" stroke={ch.c} strokeOpacity="0.5" strokeWidth="1.2" />
-          <circle cx="273" cy={ch.y} r="3" fill={ch.c} />
-          <text x="284" y={ch.y + 3.5} fontSize="10" fill="#3A2440">{ch.label}</text>
-          <path d={`M434 ${ch.y} Q 500 ${ch.y} 534 ${102 + (ch.y - 102) * 0.16}`} stroke={ch.c} strokeOpacity="0.45" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+      <path d="M380 57 H 524" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+      <circle cx="566" cy="57" r="26" fill="#B98ACB" fillOpacity="0.14" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
+      <text x="566" y="54" textAnchor="middle" fontSize="11" fill="#3A2440" fontWeight="600">30+ devs</text>
+      <text x="566" y="68" textAnchor="middle" fontSize="10.5" fill="#3A2440">engaged</text>
+
+      {/* 分隔线 */}
+      <path d="M14 104 H 626" stroke="#3A2440" strokeOpacity="0.12" strokeWidth="1" strokeDasharray="4 7" />
+
+      {/* 轨道 B：Theta Care B 端临床向 */}
+      <text x="14" y="132" fontSize="11" fontWeight="600" fill="#C79A4B">Theta Care · clinical B2B motion</text>
+      {laneB.map((c) => (
+        <g key={c.label}>
+          <rect x={c.x} y="146" width={c.w} height="26" rx="13" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" />
+          <circle cx={c.x + 14} cy="159" r="3" fill="#C79A4B" />
+          <text x={c.x + 25} y="163" fontSize="10" fill="#3A2440">{c.label}</text>
         </g>
       ))}
-      <circle cx="574" cy="102" r="30" fill="#B98ACB" fillOpacity="0.14" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
-      <text x="574" y="98" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">1st clinic</text>
-      <text x="574" y="113" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">pilot ✦</text>
+      <path d="M500 159 H 524" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+      <circle cx="566" cy="159" r="26" fill="#D193A8" fillOpacity="0.14" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
+      <text x="566" y="156" textAnchor="middle" fontSize="11" fill="#3A2440" fontWeight="600">1st clinic</text>
+      <text x="566" y="170" textAnchor="middle" fontSize="10.5" fill="#3A2440">pilot ✦</text>
+
+      <text x="320" y="204" textAnchor="middle" fontSize="12.5" fill="#B98ACB" className="font-hand" fontWeight="600">
+        same playbook muscle, two very different audiences ✦
+      </text>
     </svg>
   )
 }
@@ -809,7 +820,7 @@ export default function ThetaCase() {
             </InsightCard>
           </Reveal>
           <Reveal delay={0.12} className="md:col-span-2">
-            <InsightCard title="The GTM engine — from creators to clinic" source="from my influencer research & the growth playbook">
+            <InsightCard title="The GTM engine — two products, two motions" source="from my influencer research & the growth playbook">
               <GtmEngineGraphic />
             </InsightCard>
           </Reveal>
