@@ -61,19 +61,16 @@ export function Impact() {
         {/* ── Case 1 · AI Product Development — full-width feature ─────────────── */}
         <Reveal className="mt-20" y={36}>
           <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-cream-soft to-blush/40 p-8 transition-transform duration-500 hover:-translate-y-1.5 md:p-14">
-            <div className="grid gap-10 md:grid-cols-12">
-              <div className="md:col-span-7">
+            <div className="grid gap-10 md:grid-cols-[48fr_52fr]">
+              <div className="flex flex-col justify-center">
                 <p className="label-text mb-4">01 · AI Product Development · Theta Health</p>
                 <h3 className="font-serif text-2xl font-light leading-snug text-plum md:text-[2rem]">
                   Giving clinicians their time back with a 0-to-1 AI Scribe
                 </h3>
                 <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-plum-muted">
-                  Clinical documentation was consuming hours of physicians' days. I grounded the
-                  product in 5+ physician interviews and 10+ competitive analyses, translated
-                  real clinical workflows into feature scope and prompt design, and helped launch
-                  a HIPAA-compliant AI Scribe MVP — then diagnosed the adoption barriers of an
-                  open-source Healthcare MCP server, reshaping roadmap priorities and landing the
-                  first clinic pilot.
+                  Clinical documentation was eating physicians' days. From 5+ physician
+                  interviews to prompt design and workflow mapping, I helped ship a
+                  HIPAA-compliant AI Scribe MVP — and land its first clinic pilot.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   <Tag>Product discovery</Tag>
@@ -83,21 +80,35 @@ export function Impact() {
                 </div>
                 <Link
                   to="/work/theta"
-                  className="group/cta mt-7 inline-flex items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
+                  className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
                 >
                   Read the full case study
                   <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
                 </Link>
               </div>
-              <div className="flex flex-col justify-center gap-8 md:col-span-5">
-                <div className="overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
+              <div className="flex flex-col justify-center gap-7">
+                {/* 产品主视觉：医生工作台 + SOAP note 叠放（淡插画作背景） */}
+                <Link to="/work/theta" className="group/visual relative block pb-12 pr-6" data-cursor="VIEW" aria-label="Theta Care product interface — open the case study">
                   <img
                     src="/images/case-scribe.jpg"
-                    alt="Abstract editorial illustration — clinical documentation dissolving into data points"
-                    className="aspect-[3/2] w-full object-cover saturate-[0.8] transition-all duration-700 hover:scale-[1.03] group-hover/card:saturate-100"
+                    alt=""
+                    aria-hidden
+                    className="absolute -inset-1 h-full w-full rounded-[1.6rem] object-cover opacity-45 blur-[1.5px] saturate-[0.65]"
                     loading="lazy"
                   />
-                </div>
+                  <img
+                    src="/theta/ui-dashboard.jpg"
+                    alt="Theta Care pre-chart summary — the physician workspace"
+                    loading="lazy"
+                    className="relative w-[86%] rounded-xl border border-plum/15 shadow-[0_26px_60px_-24px_rgba(90,63,86,0.55)] transition-transform duration-500 group-hover/visual:-translate-y-1"
+                  />
+                  <img
+                    src="/theta/ui-soap.jpg"
+                    alt="AI-generated SOAP note, ready to sign in minutes"
+                    loading="lazy"
+                    className="absolute bottom-0 right-0 w-[40%] rotate-2 rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] transition-transform duration-500 group-hover/visual:-translate-y-1.5 group-hover/visual:rotate-[3deg]"
+                  />
+                </Link>
                 <Metrics
                   accent="text-rose"
                   items={[
