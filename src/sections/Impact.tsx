@@ -233,42 +233,54 @@ export function Impact() {
 
               </div>
 
-              {/* 同一合作下的第二个项目：平级入口 */}
-              <Link
-                to="/work/bosch-schema"
-                className="group/proj2 mt-10 flex flex-col items-start gap-5 rounded-2xl border border-[#7FA3CC]/30 bg-white/70 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#4E6E96]/50 hover:bg-white hover:shadow-[0_18px_40px_-18px_rgba(78,110,150,0.35)] sm:flex-row sm:items-center md:p-6"
-              >
-                <svg viewBox="0 0 150 56" className="w-36 shrink-0 sm:w-40" aria-hidden>
-                  {[8, 24, 40].map((y, i) => (
-                    <rect key={i} x="4" y={y} width="26" height="10" rx="3" fill="#EFF5FB" stroke="#7FA3CC" strokeWidth="1" />
-                  ))}
-                  {[13, 29, 45].map((y, i) => (
-                    <path key={i} d={`M30 ${y} C 46 ${y}, 48 28, 60 28`} fill="none" stroke="#B9CDE4" strokeWidth="1.2" />
-                  ))}
-                  <circle cx="72" cy="28" r="12" fill="#DCE7F2" stroke="#4E6E96" strokeWidth="1.2" />
-                  <path d="M84 28 H100" fill="none" stroke="#B9CDE4" strokeWidth="1.2" />
-                  <path d="m100 28 5-3v6Z" fill="#B9CDE4" />
-                  <rect x="106" y="19" width="40" height="18" rx="5" fill="#F6EFE8" stroke="#D193A8" strokeWidth="1" />
-                  <text x="126" y="31" textAnchor="middle" fontSize="8.5" fill="#8A6E7E">validate ✓</text>
-                </svg>
-                <div className="min-w-0">
-                  <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[#7A9CC6]">
-                    Second project · same collaboration
-                  </p>
-                  <p className="mt-1.5 font-serif text-[1.15rem] font-medium leading-tight text-plum md:text-[1.3rem]">
+              {/* 同一合作下的第二个项目：歪贴便签式入口 */}
+              <div className="mt-12 flex justify-center md:justify-end md:pr-10">
+                <Link
+                  to="/work/bosch-schema"
+                  className="group/proj2 relative block w-full max-w-[400px] rotate-[-2deg] rounded-2xl border border-plum/10 bg-white p-5 pt-6 shadow-[0_18px_44px_-18px_rgba(78,110,150,0.45)] transition-all duration-300 hover:rotate-0 hover:scale-[1.03] hover:shadow-[0_26px_56px_-20px_rgba(78,110,150,0.55)]"
+                >
+                  {/* 胶带 */}
+                  <span
+                    aria-hidden
+                    className="absolute -top-2.5 left-1/2 h-5 w-16 -translate-x-1/2 rotate-[-4deg] rounded-[3px] bg-[#DCE7F2]/90 shadow-sm"
+                  />
+                  {/* Bosch × CMU 双 logo */}
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-plum/10 bg-white shadow-sm">
+                      <img src="/logos/bosch.png" alt="Bosch" className="h-7 w-7 object-contain" />
+                    </span>
+                    <span aria-hidden className="font-hand text-[18px] text-plum-faint">×</span>
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-plum/10 bg-white shadow-sm">
+                      <img src="/logos/cmu.png" alt="CMU" className="h-7 w-7 object-contain" />
+                    </span>
+                    <span className="ml-auto font-hand text-[14px] text-[#7A9CC6]">project no.2 ✦</span>
+                  </div>
+                  <p className="mt-3.5 font-serif text-[1.2rem] font-medium leading-tight text-plum">
                     Multi-agent schema extraction
                   </p>
-                  <p className="mt-1 text-[13px] leading-snug text-plum-muted">
-                    the validated schema layer AskData's SQL stands on — architecture + validation
+                  <p className="mt-1 text-[12.5px] leading-snug text-plum-muted">
+                    the validated schema layer AskData stands on
                   </p>
-                </div>
-                <span
-                  aria-hidden
-                  className="ml-auto hidden shrink-0 font-serif text-2xl text-[#7FA3CC] transition-transform duration-300 group-hover/proj2:translate-x-1.5 sm:block"
-                >
-                  →
-                </span>
-              </Link>
+                  <div className="mt-3 flex items-center justify-between">
+                    <svg viewBox="0 0 150 40" className="w-32" aria-hidden>
+                      {[2, 15, 28].map((y, i) => (
+                        <rect key={i} x="2" y={y} width="24" height="9" rx="3" fill="#EFF5FB" stroke="#7FA3CC" strokeWidth="1" />
+                      ))}
+                      {[6, 19, 32].map((y, i) => (
+                        <path key={i} d={`M26 ${y} C 42 ${y}, 44 19, 56 19`} fill="none" stroke="#B9CDE4" strokeWidth="1.1" />
+                      ))}
+                      <circle cx="68" cy="19" r="10" fill="#DCE7F2" stroke="#4E6E96" strokeWidth="1.1" />
+                      <path d="M78 19 H94" fill="none" stroke="#B9CDE4" strokeWidth="1.1" />
+                      <path d="m94 19 4.5-2.7v5.4Z" fill="#B9CDE4" />
+                      <rect x="100" y="11" width="44" height="16" rx="5" fill="#F6EFE8" stroke="#D193A8" strokeWidth="1" />
+                      <text x="122" y="22" textAnchor="middle" fontSize="8" fill="#8A6E7E">validate ✓</text>
+                    </svg>
+                    <span className="font-hand text-[15px] text-orchid opacity-0 transition-opacity duration-300 group-hover/proj2:opacity-100">
+                      View project ↗
+                    </span>
+                  </div>
+                </Link>
+              </div>
             </article>
           </TiltCard>
         </Reveal>
