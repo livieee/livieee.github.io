@@ -324,35 +324,28 @@ function InsightCard({ title, source, children }: { title: string; source: strin
   )
 }
 
-/** PRD 核心：Mirobody 数据飞轮（五节点循环） */
-function FlywheelGraphic() {
-  const nodes = [
-    { x: 130, y: 34, tx: 130, ty: 22, anchor: 'middle', label: 'Log daily', c: '#D193A8' },
-    { x: 208, y: 92, tx: 216, ty: 88, anchor: 'start', label: 'See value', c: '#B98ACB' },
-    { x: 178, y: 182, tx: 182, ty: 202, anchor: 'middle', label: 'Ask AI', c: '#8FAE8B' },
-    { x: 82, y: 182, tx: 78, ty: 202, anchor: 'middle', label: 'See doctor', c: '#C79A4B' },
-    { x: 52, y: 92, tx: 44, ty: 88, anchor: 'end', label: 'Richer data', c: '#B98ACB' },
-  ] as const
+/** 临床节奏：15 分钟就诊的 5-5-5 规则（源自实习反思） */
+function FiveFiveFiveGraphic() {
+  const segs = [
+    { x: 22, label: 'pre-chart', c: '#D193A8' },
+    { x: 117, label: 'the visit', c: '#B98ACB' },
+    { x: 212, label: 'finalize', c: '#8FAE8B' },
+  ]
   return (
-    <svg viewBox="0 0 260 216" className="w-full max-w-[290px]" fill="none" aria-label="Mirobody data flywheel: log daily, see value, ask AI, see doctor, richer data — and around again">
-      <circle cx="130" cy="112" r="80" stroke="#B98ACB" strokeOpacity="0.4" strokeWidth="1.4" strokeDasharray="2 6" className="theta-spin" />
-      {/* 顺时针箭头 */}
-      <path d="M204 78 l8 12 M204 78 l14 3" stroke="#B98ACB" strokeOpacity="0.7" strokeWidth="1.4" strokeLinecap="round" />
-      {nodes.map((n) => (
-        <g key={n.label}>
-          <circle cx={n.x} cy={n.y} r="7" fill="#FBF7F2" stroke={n.c} strokeWidth="1.4" strokeDasharray="2 3" />
-          <circle cx={n.x} cy={n.y} r="2.6" fill={n.c} />
-          <text x={n.tx} y={n.ty} textAnchor={n.anchor} fontSize="12" fill="#6B4E63" fontFamily="inherit">
-            {n.label}
-          </text>
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="The 5-5-5 rule: a 15-minute visit splits into five minutes each of pre-charting, the visit itself, and finalization">
+      <text x="160" y="34" textAnchor="middle" fontSize="12" fill="#8A6E84">one primary-care visit ≈ 15 minutes</text>
+      {segs.map((s) => (
+        <g key={s.label}>
+          <rect x={s.x} y="62" width="86" height="40" rx="11" fill={`${s.c}20`} stroke={s.c} strokeOpacity="0.65" strokeWidth="1.3" />
+          <text x={s.x + 43} y="88" textAnchor="middle" fontSize="16" fontWeight="700" fill="#3A2440">5’</text>
+          <text x={s.x + 43} y="122" textAnchor="middle" fontSize="11.5" fill="#6B4E63">{s.label}</text>
         </g>
       ))}
-      <text x="130" y="106" textAnchor="middle" fontSize="14" fill="#3A2440" className="font-hand" fontWeight="600">
-        the Mirobody
+      <path d="M108 82 h 8 M203 82 h 8" stroke="#8A6E84" strokeOpacity="0.5" strokeWidth="1.3" strokeLinecap="round" />
+      <text x="160" y="162" textAnchor="middle" fontSize="14" fill="#B98ACB" className="font-hand" fontWeight="600">
+        if AI breaks this rhythm, it doesn’t ship ✦
       </text>
-      <text x="130" y="124" textAnchor="middle" fontSize="14" fill="#3A2440" className="font-hand" fontWeight="600">
-        flywheel ↻
-      </text>
+      <text x="160" y="192" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the 5-5-5 rule, learned from physician shadowing</text>
     </svg>
   )
 }
@@ -360,70 +353,78 @@ function FlywheelGraphic() {
 /** 竞品扫描核心：定位象限 + 我们找到的空白 */
 function QuadrantGraphic() {
   const dots = [
-    { x: 70, y: 158, label: 'scheduling' },
-    { x: 92, y: 168 },
-    { x: 118, y: 142, label: 'voice agents' },
-    { x: 136, y: 152 },
-    { x: 158, y: 112, label: 'doc review' },
-    { x: 174, y: 124 },
-    { x: 96, y: 108, label: 'wellness' },
+    { x: 96, y: 158, label: 'scheduling' },
+    { x: 118, y: 168 },
+    { x: 148, y: 140, label: 'voice agents' },
+    { x: 166, y: 152 },
+    { x: 186, y: 112, label: 'doc review' },
+    { x: 204, y: 124 },
+    { x: 122, y: 104, label: 'wellness' },
   ]
   return (
-    <svg viewBox="0 0 260 216" className="w-full max-w-[290px]" fill="none" aria-label="Competitive positioning: most products cluster as point solutions; Theta targets whole-patient context in clinical care">
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Competitive positioning: most products cluster as point solutions; Theta targets whole-patient context in clinical care">
       {/* 坐标轴 */}
-      <path d="M40 188 H 236 M40 188 V 28" stroke="#3A2440" strokeOpacity="0.25" strokeWidth="1.2" strokeLinecap="round" />
-      <text x="236" y="204" textAnchor="end" fontSize="10.5" fill="#8A6E84">admin → clinical care</text>
-      <text x="28" y="30" textAnchor="start" fontSize="10.5" fill="#8A6E84" transform="rotate(-90 28 30)" />
-      <text x="34" y="24" textAnchor="start" fontSize="10.5" fill="#8A6E84">whole-patient ↑</text>
+      <path d="M56 184 H 296 M56 184 V 30" stroke="#3A2440" strokeOpacity="0.25" strokeWidth="1.2" strokeLinecap="round" />
+      <text x="296" y="202" textAnchor="end" fontSize="11" fill="#8A6E84">admin → clinical care</text>
+      <text x="52" y="20" textAnchor="start" fontSize="11" fill="#8A6E84">whole-patient ↑</text>
       {/* 竞品散点 */}
       {dots.map((d, i) => (
         <g key={i}>
           <circle cx={d.x} cy={d.y} r="5" fill="#3A2440" fillOpacity="0.18" />
           {d.label && (
-            <text x={d.x + 9} y={d.y + 4} fontSize="10" fill="#8A6E84">
+            <text x={d.x + 9} y={d.y + 4} fontSize="10.5" fill="#8A6E84">
               {d.label}
             </text>
           )}
         </g>
       ))}
       {/* Theta 的空白点 */}
-      <path d="M150 92 Q 178 62 198 60" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" />
-      <path d="M208 62 l6.5 4 -7.5 2 2 7 -5.5 -5 -5.5 5 2 -7 -7.5 -2 6.5 -4 v-7 Z" fill="#B98ACB" transform="translate(0,-6)" className="theta-pulse" />
-      <text x="208" y="88" textAnchor="middle" fontSize="12" fill="#3A2440" fontWeight="600">Theta</text>
-      <text x="208" y="102" textAnchor="middle" fontSize="11" fill="#B98ACB" className="font-hand">the gap ✦</text>
-      <text x="52" y="180" fontSize="10.5" fill="#8A6E84">14 products scanned</text>
+      <path d="M196 96 Q 226 62 248 56" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+      <path d="M262 56 l6.5 4 -7.5 2 2 7 -5.5 -5 -5.5 5 2 -7 -7.5 -2 6.5 -4 v-7 Z" fill="#B98ACB" transform="translate(0,-8)" className="theta-pulse" />
+      <text x="262" y="82" textAnchor="middle" fontSize="12.5" fill="#3A2440" fontWeight="600">Theta</text>
+      <text x="262" y="98" textAnchor="middle" fontSize="11.5" fill="#B98ACB" className="font-hand">the gap ✦</text>
+      <text x="56" y="202" fontSize="10.5" fill="#8A6E84">14 products scanned</text>
     </svg>
   )
 }
 
-/** Pilot 研究核心：湾区诊所筛选漏斗 */
-function PilotFunnelGraphic() {
-  const dots = [
-    [22, 36], [40, 26], [58, 40], [30, 58], [52, 62], [70, 28], [76, 52], [24, 80], [46, 84], [66, 76], [84, 68], [38, 100],
-  ] as const
-  const filters = ['independent practice', 'no big EHR', 'phone-first, low-tech', 'charting-heavy days']
+/** Pilot ICP：实地推翻假设（源自实习反思的冷启动外呼发现） */
+function PilotFlipGraphic() {
+  const assumed = ['low-tech clinics', 'no EHR, phone-first', 'minimal web presence']
+  const found = ['has EHR & website', 'holistic · TCM care', 'strong patient reviews']
   return (
-    <svg viewBox="0 0 260 216" className="w-full max-w-[290px]" fill="none" aria-label="Pilot targeting funnel: Bay Area clinics filtered down to the first pilot">
-      <text x="52" y="14" textAnchor="middle" fontSize="10.5" fill="#8A6E84">Bay Area clinics</text>
-      {dots.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y + 18} r="4.5" fill="#3A2440" fillOpacity="0.16" />
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Pilot targeting insight: we assumed low-tech clinics would adopt first; the field showed digitally-present, holistic-care clinics with strong reviews were the real ICP — 3 to 4 interested, 1 pilot signed">
+      {/* 左：假设（被推翻） */}
+      <rect x="12" y="30" width="140" height="108" rx="12" fill="white" stroke="#8A6E84" strokeOpacity="0.35" strokeWidth="1.2" strokeDasharray="3 5" />
+      <text x="82" y="50" textAnchor="middle" fontSize="11" fill="#8A6E84">we assumed</text>
+      {assumed.map((a, i) => (
+        <g key={a}>
+          <text x="82" y={72 + i * 22} textAnchor="middle" fontSize="10.5" fill="#8A6E84">
+            {a}
+          </text>
+          <path d={`M${82 - a.length * 2.7} ${68 + i * 22} l ${a.length * 5.4} 1.5`} stroke="#D193A8" strokeOpacity="0.75" strokeWidth="1.5" strokeLinecap="round" />
+        </g>
       ))}
-      {/* 筛选闸门 */}
-      <rect x="104" y="34" width="112" height="112" rx="12" fill="white" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
-      <text x="160" y="52" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the filters</text>
-      {filters.map((f, i) => (
-        <text key={f} x="160" y={72 + i * 20} textAnchor="middle" fontSize="10.5" fill="#3A2440">
-          {f}
-        </text>
+      {/* 翻转箭头 */}
+      <path d="M155 84 h 10" stroke="#B98ACB" strokeOpacity="0.7" strokeWidth="1.4" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <path d="M165 84 l-4 -3 M165 84 l-4 3" stroke="#B98ACB" strokeOpacity="0.7" strokeWidth="1.4" strokeLinecap="round" />
+      {/* 右：实地发现 */}
+      <rect x="168" y="30" width="140" height="108" rx="12" fill="#8FAE8B" fillOpacity="0.08" stroke="#8FAE8B" strokeOpacity="0.6" strokeWidth="1.3" />
+      <text x="238" y="50" textAnchor="middle" fontSize="11" fill="#6B8E63">the field said</text>
+      {found.map((f, i) => (
+        <g key={f}>
+          <path d={`M180 ${68 + i * 22} l 3.2 3.2 6 -6.4`} stroke="#8FAE8B" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+          <text x="196" y={72 + i * 22} fontSize="10.5" fill="#3A2440">
+            {f}
+          </text>
+        </g>
       ))}
-      <path d="M88 90 H 102" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <path d="M218 90 Q 232 90 236 110" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
       {/* 结果 */}
-      <circle cx="228" cy="140" r="16" fill="#B98ACB" fillOpacity="0.16" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
-      <circle cx="228" cy="140" r="4" fill="#B98ACB" />
-      <text x="228" y="176" textAnchor="middle" fontSize="11" fill="#3A2440" fontWeight="600">the first pilot</text>
-      <text x="228" y="190" textAnchor="middle" fontSize="11" fill="#B98ACB" className="font-hand">✦</text>
-      <text x="52" y="152" textAnchor="middle" fontSize="10" fill="#8A6E84">shortlisted &amp; visited</text>
+      <path d="M82 146 C 120 170, 200 170, 238 146" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+      <text x="160" y="188" textAnchor="middle" fontSize="13.5" fill="#B98ACB" className="font-hand" fontWeight="600">
+        3–4 interested → 1 pilot signed ✦
+      </text>
+      <text x="160" y="206" textAnchor="middle" fontSize="10" fill="#8A6E84">cold calls · tailored scripts · bilingual pitch deck</text>
     </svg>
   )
 }
@@ -431,27 +432,27 @@ function PilotFunnelGraphic() {
 /** Growth playbook 核心：五渠道汇成一个 pilot */
 function ChannelsGraphic() {
   const channels = [
-    { y: 38, label: 'media', c: '#D193A8' },
-    { y: 72, label: 'hackathons', c: '#B98ACB' },
-    { y: 106, label: 'influencers', c: '#8FAE8B' },
-    { y: 140, label: 'roundtables · 40+ MDs', c: '#C79A4B' },
-    { y: 174, label: 'medical associations', c: '#D193A8' },
+    { y: 34, label: 'cold outreach · call scripts', c: '#D193A8' },
+    { y: 70, label: 'media & influencers', c: '#B98ACB' },
+    { y: 106, label: 'hackathons', c: '#8FAE8B' },
+    { y: 142, label: 'roundtables · 40+ MDs', c: '#C79A4B' },
+    { y: 178, label: 'medical associations', c: '#B98ACB' },
   ]
   return (
-    <svg viewBox="0 0 260 216" className="w-full max-w-[290px]" fill="none" aria-label="Five growth channels converging into the first clinic pilot">
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Five growth channels converging into the first clinic pilot">
       {channels.map((ch) => (
         <g key={ch.label}>
-          <rect x="10" y={ch.y - 13} width="118" height="26" rx="13" fill="white" stroke={ch.c} strokeOpacity="0.5" strokeWidth="1.2" />
-          <circle cx="24" cy={ch.y} r="3" fill={ch.c} />
-          <text x="34" y={ch.y + 4} fontSize="10.5" fill="#3A2440">
+          <rect x="12" y={ch.y - 14} width="164" height="28" rx="14" fill="white" stroke={ch.c} strokeOpacity="0.5" strokeWidth="1.2" />
+          <circle cx="27" cy={ch.y} r="3" fill={ch.c} />
+          <text x="38" y={ch.y + 4} fontSize="10.5" fill="#3A2440">
             {ch.label}
           </text>
-          <path d={`M130 ${ch.y} Q 168 ${ch.y} 192 ${106 + (ch.y - 106) * 0.12}`} stroke={ch.c} strokeOpacity="0.45" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+          <path d={`M178 ${ch.y} Q 222 ${ch.y} 246 ${106 + (ch.y - 106) * 0.14}`} stroke={ch.c} strokeOpacity="0.45" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
         </g>
       ))}
-      <circle cx="212" cy="106" r="26" fill="#B98ACB" fillOpacity="0.14" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
-      <text x="212" y="102" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">1st clinic</text>
-      <text x="212" y="116" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">pilot</text>
+      <circle cx="272" cy="106" r="28" fill="#B98ACB" fillOpacity="0.14" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
+      <text x="272" y="102" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">1st clinic</text>
+      <text x="272" y="117" textAnchor="middle" fontSize="11.5" fill="#3A2440" fontWeight="600">pilot ✦</text>
     </svg>
   )
 }
@@ -814,8 +815,8 @@ export default function ThetaCase() {
         {/* 提炼信息图 */}
         <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           <Reveal>
-            <InsightCard title="The product loop I spec’d" source="from the Theta Wellness PRD">
-              <FlywheelGraphic />
+            <InsightCard title="The rhythm care runs on" source="the 5-5-5 rule · from physician shadowing">
+              <FiveFiveFiveGraphic />
             </InsightCard>
           </Reveal>
           <Reveal delay={0.06}>
@@ -824,8 +825,8 @@ export default function ThetaCase() {
             </InsightCard>
           </Reveal>
           <Reveal delay={0.12}>
-            <InsightCard title="How we targeted the pilot" source="from Bay Area pilot-user research">
-              <PilotFunnelGraphic />
+            <InsightCard title="The ICP the field taught us" source="from pilot outreach — our hypothesis, flipped">
+              <PilotFlipGraphic />
             </InsightCard>
           </Reveal>
           <Reveal delay={0.18}>
