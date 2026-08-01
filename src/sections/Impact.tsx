@@ -55,6 +55,8 @@ export function Impact() {
   const [viewCur, setViewCur] = useState<{ x: number; y: number } | null>(null)
   /** AskData 演示区跟随光标的 Tap to explore 胶囊 */
   const [askCur, setAskCur] = useState<{ x: number; y: number } | null>(null)
+  /** Multi-agent 长条入口跟随光标的 View project 胶囊 */
+  const [archCur, setArchCur] = useState<{ x: number; y: number } | null>(null)
   return (
     <section id="impact" className="relative bg-white/50">
       {/* 顶部延续 Hero 的方格纸语言，向下淡出 */}
@@ -224,10 +226,16 @@ export function Impact() {
                   <div className="mt-6 flex justify-center md:justify-start">
                     <Link
                       to="/work/bosch-schema"
-                      className="group/arch inline-flex max-w-full items-center gap-4 rounded-full border border-plum/10 bg-white/80 py-2.5 pl-5 pr-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#7FA3CC]/60 hover:bg-white hover:shadow-[0_16px_34px_-14px_rgba(78,110,150,0.45)]"
+                      className="group/arch relative inline-flex max-w-full cursor-none items-center gap-5 rounded-full border border-plum/10 bg-white/80 py-3.5 pl-6 pr-8 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#7FA3CC]/60 hover:bg-white hover:shadow-[0_16px_34px_-14px_rgba(78,110,150,0.45)]"
+                      onPointerMove={(e) => {
+                        if (e.pointerType === 'touch') return
+                        const r = e.currentTarget.getBoundingClientRect()
+                        setArchCur({ x: e.clientX - r.left, y: e.clientY - r.top })
+                      }}
+                      onPointerLeave={() => setArchCur(null)}
                     >
                       {/* 迷你管线图 */}
-                      <svg viewBox="0 0 116 34" className="hidden w-24 shrink-0 sm:block" aria-hidden>
+                      <svg viewBox="0 0 116 34" className="hidden w-32 shrink-0 sm:block" aria-hidden>
                         {[1, 12, 23].map((y, i) => (
                           <rect key={i} x="1" y={y} width="20" height="8" rx="3" fill="#EFF5FB" stroke="#7FA3CC" strokeWidth="1" />
                         ))}
@@ -241,19 +249,36 @@ export function Impact() {
                         <text x="98" y="19" textAnchor="middle" fontSize="7.5" fill="#8A6E7E">✓</text>
                       </svg>
                       <span className="min-w-0">
-                        <span className="block text-[9px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+                        <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
                           Also under this collaboration
                         </span>
-                        <span className="block truncate font-serif text-[15px] leading-snug text-plum">
+                        <span className="mt-0.5 block truncate font-serif text-[17px] leading-snug text-plum">
                           Multi-agent schema extraction
+                        </span>
+                        <span className="mt-0.5 block text-[11.5px] text-plum-muted">
+                          Architecture + validation
                         </span>
                       </span>
                       <span
                         aria-hidden
-                        className="shrink-0 font-serif text-lg text-[#7FA3CC] transition-transform duration-300 group-hover/arch:translate-x-1"
+                        className="shrink-0 font-serif text-xl text-[#7FA3CC] transition-transform duration-300 group-hover/arch:translate-x-1"
                       >
                         ↗
                       </span>
+                      {/* 跟随光标的 View project 胶囊 */}
+                      {archCur && (
+                        <span
+                          aria-hidden
+                          className="pointer-events-none absolute z-20 whitespace-nowrap rounded-full bg-[#4E6E96] px-4 py-1.5 font-hand text-[16px] font-semibold text-white shadow-[0_12px_28px_-8px_rgba(78,110,150,0.6)]"
+                          style={{
+                            left: archCur.x,
+                            top: archCur.y,
+                            transform: 'translate(12px, -130%) rotate(3deg)',
+                          }}
+                        >
+                          View project ↗
+                        </span>
+                      )}
                     </Link>
                   </div>
                 </div>
