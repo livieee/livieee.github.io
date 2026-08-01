@@ -227,10 +227,10 @@ export function Impact() {
                   </div>
                   <Link
                     to="/work/askdata"
-                    className="group/cta mt-8 inline-flex items-center gap-2 border-b-2 border-[#7FA3CC]/50 pb-1 text-[15px] font-medium text-[#4E6E96] transition-colors duration-300 hover:border-[#4E6E96]"
+                    className="group/cta mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#4E6E96]"
                   >
                     Explore AskData
-                    <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
+                    <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
                   </Link>
                 </div>
 
