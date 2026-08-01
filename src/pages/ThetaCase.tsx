@@ -324,6 +324,71 @@ function InsightCard({ title, source, children }: { title: string; source: strin
   )
 }
 
+/** Influencer GTM：按产品分层的创作者地图（源自 Twitter GTM 调研） */
+function InfluencerMapGraphic() {
+  const pods = [
+    { x: 62, label1: 'productivity &', label2: 'longevity creators', target: 'Wellness App', c: '#D193A8' },
+    { x: 160, label1: 'dev educators &', label2: 'AI builders', target: 'Health MCP', c: '#B98ACB' },
+    { x: 258, label1: 'AI & digital-health', label2: 'authorities', target: 'brand trust', c: '#8FAE8B' },
+  ]
+  return (
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Influencer map: creators profiled and tiered by fit — wellness creators to the app, dev educators to the MCP, AI authorities for brand trust">
+      <text x="160" y="24" textAnchor="middle" fontSize="11.5" fill="#8A6E84">15+ creators profiled &amp; tiered by fit</text>
+      {pods.map((p) => (
+        <g key={p.target}>
+          {/* 创作者小簇 */}
+          <circle cx={p.x - 12} cy={54} r="4.5" fill={p.c} fillOpacity="0.55" />
+          <circle cx={p.x + 12} cy={54} r="4.5" fill={p.c} fillOpacity="0.4" />
+          <circle cx={p.x} cy={44} r="4.5" fill={p.c} fillOpacity="0.75" />
+          <text x={p.x} y={74} textAnchor="middle" fontSize="9.5" fill="#6B4E63">{p.label1}</text>
+          <text x={p.x} y={86} textAnchor="middle" fontSize="9.5" fill="#6B4E63">{p.label2}</text>
+          {/* 匹配箭头 */}
+          <path d={`M${p.x} 94 V 124`} stroke={p.c} strokeOpacity="0.55" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+          <path d={`M${p.x} 128 l-3.5 -5 h7 Z`} fill={p.c} fillOpacity="0.7" />
+          {/* 目标胶囊 */}
+          <rect x={p.x - 44} y={136} width="88" height="26" rx="13" fill={`${p.c}18`} stroke={p.c} strokeOpacity="0.6" strokeWidth="1.2" />
+          <text x={p.x} y={153} textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#3A2440">{p.target}</text>
+        </g>
+      ))}
+      <text x="160" y="192" textAnchor="middle" fontSize="13" fill="#B98ACB" className="font-hand" fontWeight="600">
+        match the voice to the product ✦
+      </text>
+    </svg>
+  )
+}
+
+/** PRD 核心：Mirobody 数据飞轮（五节点循环，320 宽版） */
+function FlywheelGraphic() {
+  const nodes = [
+    { x: 160, y: 34, tx: 160, ty: 22, anchor: 'middle', label: 'Log daily', c: '#D193A8' },
+    { x: 234, y: 86, tx: 244, ty: 84, anchor: 'start', label: 'See value', c: '#B98ACB' },
+    { x: 206, y: 172, tx: 212, ty: 192, anchor: 'middle', label: 'Ask AI', c: '#8FAE8B' },
+    { x: 114, y: 172, tx: 108, ty: 192, anchor: 'middle', label: 'See doctor', c: '#C79A4B' },
+    { x: 86, y: 86, tx: 76, ty: 84, anchor: 'end', label: 'Richer data', c: '#B98ACB' },
+  ] as const
+  return (
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Mirobody data flywheel: log daily, see value, ask AI, see doctor, richer data — and around again">
+      <circle cx="160" cy="108" r="74" stroke="#B98ACB" strokeOpacity="0.4" strokeWidth="1.4" strokeDasharray="2 6" className="theta-spin" />
+      <path d="M228 72 l8 11 M228 72 l13 3" stroke="#B98ACB" strokeOpacity="0.7" strokeWidth="1.4" strokeLinecap="round" />
+      {nodes.map((n) => (
+        <g key={n.label}>
+          <circle cx={n.x} cy={n.y} r="7" fill="#FBF7F2" stroke={n.c} strokeWidth="1.4" strokeDasharray="2 3" />
+          <circle cx={n.x} cy={n.y} r="2.6" fill={n.c} />
+          <text x={n.tx} y={n.ty} textAnchor={n.anchor} fontSize="11.5" fill="#6B4E63">
+            {n.label}
+          </text>
+        </g>
+      ))}
+      <text x="160" y="102" textAnchor="middle" fontSize="13.5" fill="#3A2440" className="font-hand" fontWeight="600">
+        the Mirobody
+      </text>
+      <text x="160" y="120" textAnchor="middle" fontSize="13.5" fill="#3A2440" className="font-hand" fontWeight="600">
+        flywheel ↻
+      </text>
+    </svg>
+  )
+}
+
 /** 临床节奏：15 分钟就诊的 5-5-5 规则（源自实习反思） */
 function FiveFiveFiveGraphic() {
   const segs = [
@@ -813,14 +878,14 @@ export default function ThetaCase() {
         </Reveal>
 
         {/* 提炼信息图 */}
-        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           <Reveal>
             <InsightCard title="The rhythm care runs on" source="the 5-5-5 rule · from physician shadowing">
               <FiveFiveFiveGraphic />
             </InsightCard>
           </Reveal>
           <Reveal delay={0.06}>
-            <InsightCard title="The gap the research found" source="from a 14-product competitive scan">
+            <InsightCard title="The gap the research found" source="from my 14-product competitive scan">
               <QuadrantGraphic />
             </InsightCard>
           </Reveal>
@@ -829,9 +894,19 @@ export default function ThetaCase() {
               <PilotFlipGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.18}>
+          <Reveal delay={0.06}>
+            <InsightCard title="The influencer map I built" source="from my Twitter AI & tech influencer research">
+              <InfluencerMapGraphic />
+            </InsightCard>
+          </Reveal>
+          <Reveal delay={0.12}>
             <InsightCard title="The channels that landed it" source="from the growth & GTM playbook">
               <ChannelsGraphic />
+            </InsightCard>
+          </Reveal>
+          <Reveal delay={0.18}>
+            <InsightCard title="The product loop I spec’d" source="from the Theta Wellness PRD">
+              <FlywheelGraphic />
             </InsightCard>
           </Reveal>
         </div>
