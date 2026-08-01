@@ -4,6 +4,7 @@ import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { TiltCard } from '@/components/TiltCard'
 import { AskDataUI } from '@/components/AskDataUI'
+import { MiniArchCard } from '@/components/MiniArchCard'
 
 type Metric = {
   value: string
@@ -188,14 +189,34 @@ export function Impact() {
             </span>
             <article id="case-askdata" className="group/card relative scroll-mt-24 rounded-[2rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-8 transition-transform duration-500 md:p-14">
               <div className="grid items-center gap-12 md:grid-cols-12">
-                {/* 视觉：AskData UI（移动端先展示） */}
+                {/* 视觉：AskData UI（移动端先展示），整块可点击直达详情页 */}
                 <div className="relative order-1 md:col-span-8">
-                  <AskDataUI />
+                  <Link
+                    to="/work/askdata"
+                    aria-label="Explore AskData"
+                    className="group/demo block rounded-2xl transition-transform duration-300 hover:scale-[1.01]"
+                  >
+                    <AskDataUI />
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute -top-4 right-2 rotate-[2deg] font-hand text-[16px] text-[#4E6E96] opacity-0 transition-opacity duration-300 group-hover/demo:opacity-100"
+                    >
+                      tap to explore ↗
+                    </span>
+                  </Link>
+                  {/* 桌面端：角落钉小架构卡（姊妹项目入口） */}
+                  <MiniArchCard className="absolute -bottom-8 -right-3 z-10 hidden md:block" />
                 </div>
 
                 {/* 文案 */}
                 <div className="order-2 md:col-span-4">
-                  <p className="label-text mb-4">02 · Enterprise AI Product · Bosch × CMU</p>
+                  <p className="label-text mb-3">02 · Enterprise AI Product</p>
+                  {/* 合作双方 logo */}
+                  <div className="mb-5 flex items-center gap-3">
+                    <img src="/logos/bosch-wordmark.png" alt="Bosch" className="h-6 w-auto" />
+                    <span aria-hidden className="font-hand text-[17px] text-plum-faint">×</span>
+                    <img src="/logos/cmu.png" alt="Carnegie Mellon University" className="h-9 w-auto" />
+                  </div>
                   <h3 className="font-serif text-2xl font-light leading-snug text-plum md:text-[1.9rem]">
                     Making enterprise analytics easier to ask, explore, and reuse
                   </h3>
@@ -231,55 +252,10 @@ export function Impact() {
                   </Link>
                 </div>
 
-              </div>
-
-              {/* 同一合作下的第二个项目：歪贴便签式入口 */}
-              <div className="mt-12 flex justify-center md:justify-end md:pr-10">
-                <Link
-                  to="/work/bosch-schema"
-                  className="group/proj2 relative block w-full max-w-[400px] rotate-[-2deg] rounded-2xl border border-plum/10 bg-white p-5 pt-6 shadow-[0_18px_44px_-18px_rgba(78,110,150,0.45)] transition-all duration-300 hover:rotate-0 hover:scale-[1.03] hover:shadow-[0_26px_56px_-20px_rgba(78,110,150,0.55)]"
-                >
-                  {/* 胶带 */}
-                  <span
-                    aria-hidden
-                    className="absolute -top-2.5 left-1/2 h-5 w-16 -translate-x-1/2 rotate-[-4deg] rounded-[3px] bg-[#DCE7F2]/90 shadow-sm"
-                  />
-                  {/* Bosch × CMU 双 logo */}
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-plum/10 bg-white shadow-sm">
-                      <img src="/logos/bosch.png" alt="Bosch" className="h-7 w-7 object-contain" />
-                    </span>
-                    <span aria-hidden className="font-hand text-[18px] text-plum-faint">×</span>
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-plum/10 bg-white shadow-sm">
-                      <img src="/logos/cmu.png" alt="CMU" className="h-7 w-7 object-contain" />
-                    </span>
-                    <span className="ml-auto font-hand text-[14px] text-[#7A9CC6]">project no.2 ✦</span>
-                  </div>
-                  <p className="mt-3.5 font-serif text-[1.2rem] font-medium leading-tight text-plum">
-                    Multi-agent schema extraction
-                  </p>
-                  <p className="mt-1 text-[12.5px] leading-snug text-plum-muted">
-                    the validated schema layer AskData stands on
-                  </p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <svg viewBox="0 0 150 40" className="w-32" aria-hidden>
-                      {[2, 15, 28].map((y, i) => (
-                        <rect key={i} x="2" y={y} width="24" height="9" rx="3" fill="#EFF5FB" stroke="#7FA3CC" strokeWidth="1" />
-                      ))}
-                      {[6, 19, 32].map((y, i) => (
-                        <path key={i} d={`M26 ${y} C 42 ${y}, 44 19, 56 19`} fill="none" stroke="#B9CDE4" strokeWidth="1.1" />
-                      ))}
-                      <circle cx="68" cy="19" r="10" fill="#DCE7F2" stroke="#4E6E96" strokeWidth="1.1" />
-                      <path d="M78 19 H94" fill="none" stroke="#B9CDE4" strokeWidth="1.1" />
-                      <path d="m94 19 4.5-2.7v5.4Z" fill="#B9CDE4" />
-                      <rect x="100" y="11" width="44" height="16" rx="5" fill="#F6EFE8" stroke="#D193A8" strokeWidth="1" />
-                      <text x="122" y="22" textAnchor="middle" fontSize="8" fill="#8A6E7E">validate ✓</text>
-                    </svg>
-                    <span className="font-hand text-[15px] text-orchid opacity-0 transition-opacity duration-300 group-hover/proj2:opacity-100">
-                      View project ↗
-                    </span>
-                  </div>
-                </Link>
+                {/* 移动端：小架构卡内联展示 */}
+                <div className="order-3 flex justify-end md:hidden">
+                  <MiniArchCard />
+                </div>
               </div>
             </article>
           </TiltCard>
