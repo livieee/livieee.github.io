@@ -836,6 +836,16 @@ export default function ThetaCase() {
               “Doctors became data clerks. Patients became strangers between visits.”
             </p>
           </Reveal>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {PROBLEM_STATS.map((s, i) => (
+              <Reveal key={s.big} delay={i * 0.08}>
+                <div className="rounded-[1.6rem] bg-gradient-to-br from-cream-soft to-blush/40 p-7">
+                  <p className="font-serif text-[2rem] font-light text-plum">{s.big}</p>
+                  <p className="mt-2 text-[14px] leading-relaxed text-plum-muted">{s.small}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
 
           {/* 研究先行：访谈画像 */}
           <Reveal delay={0.16}>
@@ -860,26 +870,18 @@ export default function ThetaCase() {
                   </div>
                 ))}
               </div>
-              <div className="mt-5 rounded-xl bg-orchid/8 px-4 py-3">
-                <p className="font-hand text-[15px] leading-snug text-plum">
-                  <span className="font-semibold text-orchid">what it added up to —</span> four different
-                  seats, one demand: notes that write themselves — compliant for billing, fluent in the
-                  patient's language, living inside the EHR ✦
-                </p>
+              <div className="mt-5 rounded-xl bg-orchid/8 px-4 py-3.5">
+                <p className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-orchid">What they spec’d, combined</p>
+                <div className="mt-2.5 flex flex-wrap gap-2">
+                  <span className="rounded-full px-3 py-1 text-[12px] font-medium" style={{ backgroundColor: '#D193A820', color: '#B06A80' }}>→ billing-ready notes</span>
+                  <span className="rounded-full px-3 py-1 text-[12px] font-medium" style={{ backgroundColor: '#B98ACB20', color: '#8A5F9E' }}>→ intake in any language</span>
+                  <span className="rounded-full px-3 py-1 text-[12px] font-medium" style={{ backgroundColor: '#8FAE8B20', color: '#5F7D5B' }}>→ lives inside the EHR</span>
+                </div>
+                <p className="mt-2.5 font-hand text-[14px] text-plum-muted">four seats, one spec — that became the MVP bar ✦</p>
               </div>
             </div>
           </Reveal>
 
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {PROBLEM_STATS.map((s, i) => (
-              <Reveal key={s.big} delay={i * 0.08}>
-                <div className="rounded-[1.6rem] bg-gradient-to-br from-cream-soft to-blush/40 p-7">
-                  <p className="font-serif text-[2rem] font-light text-plum">{s.big}</p>
-                  <p className="mt-2 text-[14px] leading-relaxed text-plum-muted">{s.small}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
           <div className="mt-8 grid gap-8 md:grid-cols-2">
             <Reveal delay={0.1}>
               <InsightCard title="The gap the research found" source="from my 14-product competitive scan">
@@ -999,8 +1001,8 @@ export default function ThetaCase() {
                   <span className="h-2.5 w-2.5 rounded-full bg-[#DECDA6]" />
                   <span className="h-2.5 w-2.5 rounded-full bg-[#8FAE8B]/70" />
                 </div>
-                <img src="/theta/ui-previsit.jpg" alt="Theta Care Pre-Visit summary — alerts first, AI summary, activity levels" loading="lazy" className="w-full flex-1 object-cover object-top" />
-                <p className="px-5 py-3 font-hand text-[14px] text-plum-muted">the real pre-chart surface — alerts first, summary second ✦</p>
+                <img src="/theta/ui-soap.jpg" alt="Theta Care output — an AI-drafted SOAP note ready to sign" loading="lazy" className="w-full flex-1 object-cover object-top" />
+                <p className="px-5 py-3 font-hand text-[14px] text-plum-muted">the output that matters — a SOAP note ready to sign ✦</p>
               </div>
             </Reveal>
           </div>
@@ -1066,6 +1068,36 @@ export default function ThetaCase() {
                   <TechChip icon="doc" label="EHR records" color="#B98ACB" />
                 </div>
                 {/* 产品事实（可视化） */}
+                <p className="mt-5 text-[10.5px] font-medium uppercase tracking-[0.14em] text-plum-faint">The market</p>
+                <div className="mt-2 grid grid-cols-3 gap-3">
+                  <div className="rounded-xl border border-plum/10 bg-white/80 p-3 text-center">
+                    <svg viewBox="0 0 90 26" className="mx-auto h-6 w-[84px]" aria-hidden>
+                      {[0, 1, 2, 3, 4].map((i) => (
+                        <g key={i} transform={`translate(${i * 18}, 0)`} fill={i === 0 ? '#8FAE8B' : '#3A2440'} fillOpacity={i === 0 ? 1 : 0.15}>
+                          <circle cx="7" cy="6" r="4.5" />
+                          <path d="M0 24 c0 -7 3.5 -11 7 -11 s7 4 7 11 Z" />
+                        </g>
+                      ))}
+                    </svg>
+                    <p className="mt-1.5 font-serif text-[1.15rem] font-semibold leading-none text-plum">1 in 5</p>
+                    <p className="mt-1 text-[10px] leading-tight text-plum-muted">Americans 65+ by 2030</p>
+                  </div>
+                  <div className="rounded-xl border border-plum/10 bg-white/80 p-3 text-center">
+                    <svg viewBox="0 0 36 36" className="mx-auto h-9 w-9" aria-hidden>
+                      <circle cx="18" cy="18" r="14" fill="none" stroke="#3A2440" strokeOpacity="0.12" strokeWidth="5" />
+                      <circle cx="18" cy="18" r="14" fill="none" stroke="#D193A8" strokeWidth="5" strokeLinecap="round" strokeDasharray="81.8 88" transform="rotate(-90 18 18)" />
+                    </svg>
+                    <p className="mt-1 font-serif text-[1.15rem] font-semibold leading-none text-plum">93%</p>
+                    <p className="mt-1 text-[10px] leading-tight text-plum-muted">of 65+ manage chronic conditions</p>
+                  </div>
+                  <div className="rounded-xl border border-plum/10 bg-white/80 p-3 text-center">
+                    <span className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-[#C79A4B]/15 text-[#C79A4B]">
+                      <TechIcon name="users" />
+                    </span>
+                    <p className="mt-1 font-serif text-[1.15rem] font-semibold leading-none text-plum">63M</p>
+                    <p className="mt-1 text-[10px] leading-tight text-plum-muted">family caregivers in the loop</p>
+                  </div>
+                </div>
                 <p className="mt-5 text-[10.5px] font-medium uppercase tracking-[0.14em] text-plum-faint">By the numbers</p>
                 <div className="mt-2 grid grid-cols-3 gap-3">
                   <div className="rounded-xl border border-plum/10 bg-white/80 p-3 text-center">
@@ -1097,20 +1129,26 @@ export default function ThetaCase() {
             </Reveal>
             <Reveal delay={0.08}>
               <div className="grid h-full grid-cols-[5fr_7fr] gap-5">
-                <div className="flex items-center justify-center rounded-[1.6rem] border border-plum/10 bg-white p-3 shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]">
-                  <img
-                    src="/theta/wellness-app-1.png"
-                    alt="Theta Wellness app — Conditions screen with custom trackers synced from Apple Health"
-                    loading="lazy"
-                    className="max-h-[460px] w-auto rounded-xl"
-                  />
-                </div>
-                <img
-                  src="/theta/wellness-app-2.png"
-                  alt="Theta Wellness — the live product experience"
-                  loading="lazy"
-                  className="h-full w-full rounded-[1.6rem] border border-plum/10 object-cover shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]"
-                />
+                <TiltCard className="h-full" max={4}>
+                  <div className="group/wimg flex h-full items-center justify-center overflow-hidden rounded-[1.6rem] border border-plum/10 bg-white p-3 shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]">
+                    <img
+                      src="/theta/wellness-app-1.png"
+                      alt="Theta Wellness app — Conditions screen with custom trackers synced from Apple Health"
+                      loading="lazy"
+                      className="max-h-[460px] w-auto rounded-xl transition-transform duration-700 group-hover/wimg:scale-[1.05]"
+                    />
+                  </div>
+                </TiltCard>
+                <TiltCard className="h-full" max={4}>
+                  <div className="group/wimg2 h-full overflow-hidden rounded-[1.6rem] border border-plum/10 shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]">
+                    <img
+                      src="/theta/wellness-app-2.png"
+                      alt="Theta Wellness — the live product experience"
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover/wimg2:scale-[1.05]"
+                    />
+                  </div>
+                </TiltCard>
               </div>
             </Reveal>
           </div>
@@ -1234,16 +1272,18 @@ export default function ThetaCase() {
                     <div className="flex items-baseline justify-between gap-3">
                       <p className="flex items-baseline gap-2.5 font-hand text-[20px] font-semibold" style={{ color: s.color }}>
                         {s.num}
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-plum/12 bg-white/80 px-2.5 py-0.5 font-sans text-[10.5px] font-medium tracking-wide text-plum-muted">
+                        <span className="inline-flex items-center gap-1.5 font-sans text-[10.5px] font-medium tracking-wide text-plum-muted">
                           {'logos' in s ? (
                             (s as unknown as { logos: string[] }).logos.map((lg) => (
-                              <span key={lg} className="flex h-5 w-5 items-center justify-center rounded-md border border-plum/10 bg-white shadow-sm">
-                                <img src={lg} alt="" aria-hidden className="h-3.5 w-3.5 object-contain" />
+                              <span key={lg} className="flex h-6 w-6 items-center justify-center rounded-lg border border-plum/10 bg-white shadow-sm">
+                                <img src={lg} alt="" aria-hidden className="h-4 w-4 object-contain" />
                               </span>
                             ))
                           ) : (
                             <>
-                              <img src="/theta/logo-care.png" alt="" aria-hidden className="h-3 w-3 rounded-[3px] object-contain" />
+                              <span className="flex h-6 w-6 items-center justify-center rounded-lg border border-plum/10 bg-white shadow-sm">
+                                <img src="/theta/logo-care.png" alt="" aria-hidden className="h-4 w-4 object-contain" />
+                              </span>
                               {s.line}
                             </>
                           )}
