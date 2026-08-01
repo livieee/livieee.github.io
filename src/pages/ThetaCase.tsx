@@ -327,22 +327,74 @@ function SiteLink({ href, label, color = '#B98ACB', small = false }: { href: str
   )
 }
 
-/** Live 徽章：脉冲绿点 + 可点跳转 */
-function LiveBadge({ href }: { href: string }) {
+/** 开发者 pulse-check 卡：点击在百分比与票数间切换 */
+function PulseCheckCard() {
+  const [mode, setMode] = useState<'pct' | 'votes'>('pct')
+  const toggle = () => setMode((m) => (m === 'pct' ? 'votes' : 'pct'))
+  const reactions = [
+    { e: '😍', label: 'love it', n: 2, pct: 14, c: '#8FAE8B' },
+    { e: '🤔', label: 'curious', n: 10, pct: 72, c: '#B98ACB' },
+    { e: '😐', label: 'pass', n: 2, pct: 14, c: '#8A6E84' },
+  ]
+  const concerns = [
+    { label: 'data privacy & security', n: 8, pct: 57, c: '#D193A8' },
+    { label: 'does it solve my problem?', n: 7, pct: 50, c: '#B98ACB' },
+    { label: 'accuracy of insights', n: 6, pct: 43, c: '#C79A4B' },
+    { label: 'setup & integration', n: 5, pct: 36, c: '#8FAE8B' },
+  ]
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      className="group/lv inline-flex items-center gap-1.5 rounded-full border border-[#8FAE8B]/50 bg-[#8FAE8B]/10 px-3 py-1 text-[11.5px] font-semibold text-[#5F7D5B] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#8FAE8B]"
-    >
-      <span className="relative flex h-2 w-2">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#8FAE8B] opacity-60" />
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-[#8FAE8B]" />
-      </span>
-      Live
-      <span aria-hidden className="transition-transform duration-300 group-hover/lv:translate-x-0.5">↗</span>
-    </a>
+    <div className="flex flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-6">
+      <div className="flex items-baseline justify-between gap-3">
+        <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">The developer pulse-check</p>
+        <button
+          type="button"
+          onClick={toggle}
+          aria-pressed={mode === 'votes'}
+          className="rounded-full border border-orchid/40 bg-white px-2.5 py-0.5 text-[11px] font-semibold text-orchid transition-all hover:bg-lavender/40"
+        >
+          {mode === 'pct' ? '% → #' : '# → %'}
+        </button>
+      </div>
+      <p className="mt-1 font-hand text-[14px] text-orchid">first reactions from my dev survey — tap the bars ✦</p>
+      {/* 反应堆叠条（可点） */}
+      <button type="button" onClick={toggle} className="mt-5 flex h-[16px] w-full cursor-pointer overflow-hidden rounded-full outline-none focus-visible:ring-2 focus-visible:ring-orchid/50" aria-label="Toggle between percentages and vote counts">
+        {reactions.map((r) => (
+          <span key={r.e} className="flex items-center justify-center text-[9px] font-bold text-white" style={{ width: `${r.pct}%`, backgroundColor: r.c, opacity: r.e === '😐' ? 0.45 : 0.85 }}>
+            {mode === 'votes' ? r.n : `${r.pct}%`}
+          </span>
+        ))}
+      </button>
+      <div className="mt-2.5 flex justify-between text-[11px] text-plum-muted">
+        {reactions.map((r) => (
+          <span key={r.e}>
+            {r.e} {r.label}
+            {mode === 'votes' ? ` · ${r.n}` : ''}
+          </span>
+        ))}
+      </div>
+      <div className="mt-4 flex items-center justify-between">
+        <p className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-plum-faint">what they worry about</p>
+        <span className="rounded-full bg-[#B98ACB]/14 px-2.5 py-0.5 font-hand text-[13px] text-[#8A5F9E]">avg 6.6 / 10</span>
+      </div>
+      <div className="mt-2.5 space-y-2.5">
+        {concerns.map((b) => (
+          <button key={b.label} type="button" onClick={toggle} className="block w-full cursor-pointer text-left outline-none focus-visible:ring-2 focus-visible:ring-orchid/40">
+            <div className="flex items-baseline justify-between text-[11.5px]">
+              <span className="text-plum">{b.label}</span>
+              <span className="font-hand text-[13px] transition-all" style={{ color: b.c }}>
+                {mode === 'pct' ? `${b.pct}%` : `${b.n} votes`}
+              </span>
+            </div>
+            <div className="mt-1 h-[7px] w-full overflow-hidden rounded-full bg-plum/8">
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${b.pct}%`, backgroundColor: `${b.c}99` }} />
+            </div>
+          </button>
+        ))}
+      </div>
+      <p className="mt-5 font-hand text-[14px] text-plum-muted">
+        these barriers went straight into the roadmap ✦
+      </p>
+    </div>
   )
 }
 
@@ -393,44 +445,44 @@ function McpMotionGraphic() {
   )
 }
 
-/** 临床 B2B 动线（清晰版）：湾区散点 → 筛选 → 首个 pilot；渠道横排 */
+/** 临床 B2B 动线（大字版）：湾区散点 → 筛选 → 首个 pilot；渠道横排 */
 function PilotB2BGraphic() {
   const dots = [
-    [26, 44], [50, 34], [72, 48], [34, 68], [58, 72], [82, 60], [30, 94], [56, 98], [80, 86],
+    [26, 46], [50, 36], [72, 50], [34, 70], [58, 74], [82, 62], [32, 96], [58, 100],
   ] as const
   const filters = ['independent', 'digital-ready', 'holistic care', 'patient-loved']
   const channels = [
-    { x: 16, label: 'cold outreach', c: '#C79A4B' },
-    { x: 116, label: 'roundtables · 40+ MDs', c: '#D193A8' },
-    { x: 216, label: 'associations', c: '#B98ACB' },
+    { x: 12, w: 96, label: 'cold outreach', c: '#C79A4B' },
+    { x: 112, w: 110, label: 'roundtables · 40+', c: '#D193A8' },
+    { x: 226, w: 82, label: 'associations', c: '#B98ACB' },
   ]
   return (
     <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Clinical B2B motion: Bay Area clinics filtered to independent, digital-ready, holistic-care, patient-loved practices; worked via cold outreach, roundtables with 40+ physicians, and medical associations into the first signed pilot">
-      <text x="56" y="20" textAnchor="middle" fontSize="10" fill="#8A6E84">Bay Area clinics</text>
+      <text x="56" y="20" textAnchor="middle" fontSize="11" fill="#8A6E84">Bay Area clinics</text>
       {dots.map(([x, y], i) => (
         <circle key={i} cx={x} cy={y} r="4.5" fill="#3A2440" fillOpacity="0.17" />
       ))}
-      <text x="56" y="118" textAnchor="middle" fontSize="9.5" fill="#8A6E84">visited, one by one</text>
-      <rect x="112" y="28" width="104" height="96" rx="12" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
-      <text x="164" y="46" textAnchor="middle" fontSize="9.5" fill="#8A6E84">the filters</text>
+      <text x="56" y="120" textAnchor="middle" fontSize="10.5" fill="#8A6E84">visited, one by one</text>
+      <rect x="112" y="28" width="112" height="98" rx="12" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
+      <text x="168" y="47" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the filters</text>
       {filters.map((f, i) => (
-        <text key={f} x="164" y={64 + i * 17} textAnchor="middle" fontSize="9.8" fill="#3A2440">
+        <text key={f} x="168" y={66 + i * 18} textAnchor="middle" fontSize="11" fill="#3A2440">
           {f}
         </text>
       ))}
-      <path d="M96 70 H 108" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.4" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <path d="M220 72 H 248" stroke="#D193A8" strokeOpacity="0.6" strokeWidth="1.4" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <circle cx="276" cy="72" r="16" fill="#D193A8" fillOpacity="0.18" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
-      <circle cx="276" cy="72" r="4.5" fill="#D193A8" />
-      <text x="276" y="104" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#3A2440">1st pilot ✦</text>
-      <text x="160" y="146" textAnchor="middle" fontSize="9.5" fill="#8A6E84">worked through</text>
+      <path d="M96 72 H 108" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.4" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <path d="M228 74 H 252" stroke="#D193A8" strokeOpacity="0.6" strokeWidth="1.4" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <circle cx="279" cy="74" r="17" fill="#D193A8" fillOpacity="0.18" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
+      <circle cx="279" cy="74" r="4.5" fill="#D193A8" />
+      <text x="279" y="108" textAnchor="middle" fontSize="11.5" fontWeight="600" fill="#3A2440">1st pilot ✦</text>
+      <text x="160" y="146" textAnchor="middle" fontSize="10.5" fill="#8A6E84">worked through</text>
       {channels.map((c) => (
         <g key={c.label}>
-          <rect x={c.x} y="154" width="92" height="24" rx="12" fill="white" stroke={c.c} strokeOpacity="0.55" strokeWidth="1.2" />
-          <text x={c.x + 46} y="169" textAnchor="middle" fontSize="8.6" fill="#3A2440">{c.label}</text>
+          <rect x={c.x} y="154" width={c.w} height="26" rx="13" fill="white" stroke={c.c} strokeOpacity="0.55" strokeWidth="1.2" />
+          <text x={c.x + c.w / 2} y="170" textAnchor="middle" fontSize="9.5" fill="#3A2440">{c.label}</text>
         </g>
       ))}
-      <text x="160" y="206" textAnchor="middle" fontSize="12" fill="#C79A4B" className="font-hand" fontWeight="600">
+      <text x="160" y="208" textAnchor="middle" fontSize="13" fill="#C79A4B" className="font-hand" fontWeight="600">
         3–4 interested → 1 signed ✦
       </text>
     </svg>
@@ -843,7 +895,7 @@ export default function ThetaCase() {
 
           {/* /care 页的产品能力（瓷片化） */}
           <Reveal delay={0.1}>
-            <p className="label-text mb-4 mt-12">The product</p>
+            <p className="label-text mb-4 mt-12">The features</p>
             <div className="grid gap-4 md:grid-cols-3">
               {[
                 { icon: 'doc', c: '#D193A8', label: 'AI intake & pre-charting', sub: 'know the patient before they walk in' },
@@ -865,7 +917,11 @@ export default function ThetaCase() {
             </p>
           </Reveal>
           <Reveal delay={0.16}>
-            <p className="mt-6 font-hand text-[16px] text-plum-muted">
+            <p className="label-text mb-3 mt-14">The walkthrough</p>
+            <h3 className="font-serif text-[1.4rem] font-light leading-snug text-plum md:text-[1.6rem]">
+              Three phases, one assistant
+            </h3>
+            <p className="mt-2 font-hand text-[18px] text-plum-muted">
               pick a phase, then <span className="text-orchid">drag the handle — without vs. with Theta ⇄</span>
             </p>
           </Reveal>
@@ -985,7 +1041,7 @@ export default function ThetaCase() {
             <Reveal>
               <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-6">
                 <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">A lifelong health memory, in your pocket</p>
-                <div className="mt-1.5"><LiveBadge href="https://thetahealth.ai/" /></div>
+                <p className="mt-1 font-hand text-[14px] text-orchid">the consumer product, shipping today ✦</p>
                 {/* 三支柱 icon 块 */}
                 <div className="mt-5 grid grid-cols-3 gap-3">
                   {[
@@ -1105,48 +1161,8 @@ export default function ThetaCase() {
                 <InsightCard title="The MCP developer motion" source="from my Twitter AI & tech influencer research">
                   <McpMotionGraphic />
                 </InsightCard>
-                {/* 开发者初印象调研（Typeform 真数据，重设计） */}
-                <div className="flex flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-6">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">The developer pulse-check</p>
-                    <span className="rounded-full bg-[#B98ACB]/14 px-2.5 py-0.5 font-hand text-[13px] text-[#8A5F9E]">avg 6.6 / 10</span>
-                  </div>
-                  <p className="mt-1 font-hand text-[14px] text-orchid">first reactions from my dev survey ✦</p>
-                  {/* 反应堆叠条 */}
-                  <div className="mt-5 flex h-[14px] w-full overflow-hidden rounded-full">
-                    <div className="bg-[#8FAE8B]" style={{ width: '14.3%' }} />
-                    <div className="bg-[#B98ACB]/70" style={{ width: '71.4%' }} />
-                    <div className="bg-plum/15" style={{ width: '14.3%' }} />
-                  </div>
-                  <div className="mt-2.5 flex justify-between text-[11px] text-plum-muted">
-                    <span>😍 love it</span>
-                    <span>🤔 curious — the majority</span>
-                    <span>😐 pass</span>
-                  </div>
-                  {/* 顾虑排行 */}
-                  <p className="mt-5 text-[10.5px] font-medium uppercase tracking-[0.14em] text-plum-faint">what they worry about</p>
-                  <div className="mt-2.5 space-y-2.5">
-                    {[
-                      { label: 'data privacy & security', n: 8, pct: 57, c: '#D193A8' },
-                      { label: 'does it solve my problem?', n: 7, pct: 50, c: '#B98ACB' },
-                      { label: 'accuracy of insights', n: 6, pct: 43, c: '#C79A4B' },
-                      { label: 'setup & integration', n: 5, pct: 36, c: '#8FAE8B' },
-                    ].map((b) => (
-                      <div key={b.label}>
-                        <div className="flex items-baseline justify-between text-[11.5px]">
-                          <span className="text-plum">{b.label}</span>
-                          <span className="font-hand text-[13px]" style={{ color: b.c }}>{b.pct}%</span>
-                        </div>
-                        <div className="mt-1 h-[7px] w-full overflow-hidden rounded-full bg-plum/8">
-                          <div className="h-full rounded-full" style={{ width: `${(b.n / 14) * 100}%`, backgroundColor: `${b.c}99` }} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="mt-5 font-hand text-[14px] text-plum-muted">
-                    these barriers went straight into the roadmap ✦
-                  </p>
-                </div>
+                {/* 开发者初印象调研（可交互） */}
+                <PulseCheckCard />
               </div>
             </Reveal>
           </div>
@@ -1221,7 +1237,9 @@ export default function ThetaCase() {
                         <span className="inline-flex items-center gap-1.5 rounded-full border border-plum/12 bg-white/80 px-2.5 py-0.5 font-sans text-[10.5px] font-medium tracking-wide text-plum-muted">
                           {'logos' in s ? (
                             (s as unknown as { logos: string[] }).logos.map((lg) => (
-                              <img key={lg} src={lg} alt="" aria-hidden className="h-3.5 w-3.5 rounded-[3px] object-contain" />
+                              <span key={lg} className="flex h-5 w-5 items-center justify-center rounded-md border border-plum/10 bg-white shadow-sm">
+                                <img src={lg} alt="" aria-hidden className="h-3.5 w-3.5 object-contain" />
+                              </span>
                             ))
                           ) : (
                             <>
