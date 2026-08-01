@@ -24,7 +24,8 @@ type Phase = {
   key: string
   tab: string
   title: string
-  img: string
+  before: string
+  after: string
   points: string[]
   note: string
 }
@@ -34,7 +35,8 @@ const PHASES: Phase[] = [
     key: 'pre',
     tab: 'Pre-Visit',
     title: 'Know the patient before they walk in',
-    img: '/theta/slide-6.jpg',
+    before: '/theta/compare-12-without.jpg',
+    after: '/theta/compare-12-with.jpg',
     points: [
       'Context-rich patient overview assembled from EHR, wearables, intake and chat history',
       'Risk stratification alerts surface what needs attention first',
@@ -46,7 +48,8 @@ const PHASES: Phase[] = [
     key: 'in',
     tab: 'In-Visit',
     title: 'Stay with the patient, not the screen',
-    img: '/theta/slide-7.jpg',
+    before: '/theta/compare-13-without.jpg',
+    after: '/theta/compare-13-with.jpg',
     points: [
       'Ambient AI Scribe transcribes the conversation in real time, any language',
       'Data dashboard surfaces vitals, lifestyle patterns and history on demand',
@@ -58,7 +61,8 @@ const PHASES: Phase[] = [
     key: 'post',
     tab: 'Post-Visit',
     title: 'Notes ready to sign in minutes',
-    img: '/theta/slide-8.jpg',
+    before: '/theta/compare-14-without.jpg',
+    after: '/theta/compare-14-with.jpg',
     points: [
       'AI-drafted SOAP notes with Magic Edit — instruct, refine, approve side-by-side',
       'Multi-modal context: attach labs and imaging to complete the picture',
@@ -253,6 +257,38 @@ function QuadrantGraphic() {
       <text x="208" y="88" textAnchor="middle" fontSize="12" fill="#3A2440" fontWeight="600">Theta</text>
       <text x="208" y="102" textAnchor="middle" fontSize="11" fill="#B98ACB" className="font-hand">the gap ✦</text>
       <text x="52" y="180" fontSize="10.5" fill="#8A6E84">14 products scanned</text>
+    </svg>
+  )
+}
+
+/** Pilot 研究核心：湾区诊所筛选漏斗 */
+function PilotFunnelGraphic() {
+  const dots = [
+    [22, 36], [40, 26], [58, 40], [30, 58], [52, 62], [70, 28], [76, 52], [24, 80], [46, 84], [66, 76], [84, 68], [38, 100],
+  ] as const
+  const filters = ['independent practice', 'no big EHR', 'phone-first, low-tech', 'charting-heavy days']
+  return (
+    <svg viewBox="0 0 260 216" className="w-full max-w-[290px]" fill="none" aria-label="Pilot targeting funnel: Bay Area clinics filtered down to the first pilot">
+      <text x="52" y="14" textAnchor="middle" fontSize="10.5" fill="#8A6E84">Bay Area clinics</text>
+      {dots.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y + 18} r="4.5" fill="#3A2440" fillOpacity="0.16" />
+      ))}
+      {/* 筛选闸门 */}
+      <rect x="104" y="34" width="112" height="112" rx="12" fill="white" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
+      <text x="160" y="52" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the filters</text>
+      {filters.map((f, i) => (
+        <text key={f} x="160" y={72 + i * 20} textAnchor="middle" fontSize="10.5" fill="#3A2440">
+          {f}
+        </text>
+      ))}
+      <path d="M88 90 H 102" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" />
+      <path d="M218 90 Q 232 90 236 110" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" />
+      {/* 结果 */}
+      <circle cx="228" cy="140" r="16" fill="#B98ACB" fillOpacity="0.16" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
+      <circle cx="228" cy="140" r="4" fill="#B98ACB" />
+      <text x="228" y="176" textAnchor="middle" fontSize="11" fill="#3A2440" fontWeight="600">the first pilot</text>
+      <text x="228" y="190" textAnchor="middle" fontSize="11" fill="#B98ACB" className="font-hand">✦</text>
+      <text x="52" y="152" textAnchor="middle" fontSize="10" fill="#8A6E84">shortlisted &amp; visited</text>
     </svg>
   )
 }
@@ -468,16 +504,21 @@ export default function ThetaCase() {
         </Reveal>
       </section>
 
-      {/* ── 三阶段产品 Tabs ── */}
+      {/* ── 产品：三阶段 Tabs + 拖动对比（合并区块） ── */}
       <section className="bg-white/60 py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6 md:px-10">
           <Reveal>
-            <p className="label-text mb-4">What we shipped</p>
+            <p className="label-text mb-4">The product</p>
           </Reveal>
           <Reveal delay={0.06}>
             <h2 className="font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
               One assistant across the whole visit
             </h2>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <p className="mt-3 font-hand text-[17px] text-plum-muted">
+              pick a phase, then <span className="text-orchid">drag the handle — without vs. with Theta ⇄</span>
+            </p>
           </Reveal>
 
           {/* Tab 切换 */}
@@ -499,7 +540,7 @@ export default function ThetaCase() {
             ))}
           </div>
 
-          <div className="mt-8 grid items-start gap-8 lg:grid-cols-[7fr_5fr]">
+          <div className="mt-8 grid items-center gap-10 lg:grid-cols-[5fr_6fr]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active.key}
@@ -507,60 +548,28 @@ export default function ThetaCase() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]"
               >
-                <img src={active.img} alt={`Theta Care — ${active.tab} product interface`} className="w-full" loading="lazy" />
+                <h3 className="font-serif text-[1.5rem] font-light leading-snug text-plum md:text-[1.7rem]">{active.title}</h3>
+                <ul className="mt-5 space-y-3">
+                  {active.points.map((pt) => (
+                    <li key={pt} className="flex gap-2.5 text-[14.5px] leading-relaxed text-plum-muted">
+                      <span aria-hidden className="mt-[8px] h-1 w-1 shrink-0 rounded-full bg-orchid" />
+                      <span>{pt}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-6 font-hand text-[17px] text-orchid">✦ {active.note}</p>
               </motion.div>
             </AnimatePresence>
-            <div>
-              <h3 className="font-serif text-[1.5rem] font-light leading-snug text-plum md:text-[1.7rem]">{active.title}</h3>
-              <ul className="mt-5 space-y-3">
-                {active.points.map((pt) => (
-                  <li key={pt} className="flex gap-2.5 text-[14.5px] leading-relaxed text-plum-muted">
-                    <span aria-hidden className="mt-[8px] h-1 w-1 shrink-0 rounded-full bg-orchid" />
-                    <span>{pt}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-6 font-hand text-[17px] text-orchid">✦ {active.note}</p>
+            <div className="mx-auto w-full max-w-[440px]">
+              <CompareSlider
+                key={active.key}
+                before={active.before}
+                after={active.after}
+                alt={`${active.tab} — without vs. with Theta`}
+              />
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ── Before / After 拖动对比 ── */}
-      <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
-        <Reveal>
-          <p className="label-text mb-4">Drag to compare</p>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-            The same visit, with and without Theta
-          </h2>
-        </Reveal>
-        <Reveal delay={0.12}>
-          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-            Three moments from the clinical day — drag the handle to see what changes.{' '}
-            <span className="font-hand text-[16px] text-orchid">give it a pull ⇄</span>
-          </p>
-        </Reveal>
-        <div className="mt-10 grid gap-8 md:grid-cols-3">
-          {[
-            { n: 12, cap: 'Pre-visit — chasing records vs. one pre-chart summary' },
-            { n: 13, cap: 'In-visit — fragmented tabs vs. co-pilot with context' },
-            { n: 14, cap: 'Post-visit — pajama-time notes vs. sign-in-minutes' },
-          ].map((c, i) => (
-            <Reveal key={c.n} delay={i * 0.08}>
-              <div>
-                <CompareSlider
-                  before={`/theta/compare-${c.n}-without.jpg`}
-                  after={`/theta/compare-${c.n}-with.jpg`}
-                  alt={c.cap}
-                />
-                <p className="mt-3 text-center text-[13px] text-plum-muted">{c.cap}</p>
-              </div>
-            </Reveal>
-          ))}
         </div>
       </section>
 
@@ -656,19 +665,24 @@ export default function ThetaCase() {
         </Reveal>
 
         {/* 提炼信息图 */}
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           <Reveal>
             <InsightCard title="The product loop I spec’d" source="from the 46-page Theta Wellness PRD">
               <FlywheelGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.08}>
+          <Reveal delay={0.06}>
             <InsightCard title="The gap the research found" source="from a 14-product competitive scan">
               <QuadrantGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.16}>
-            <InsightCard title="The channels that landed the pilot" source="from the growth & GTM playbook">
+          <Reveal delay={0.12}>
+            <InsightCard title="How we targeted the pilot" source="from Bay Area pilot-user research">
+              <PilotFunnelGraphic />
+            </InsightCard>
+          </Reveal>
+          <Reveal delay={0.18}>
+            <InsightCard title="The channels that landed it" source="from the growth & GTM playbook">
               <ChannelsGraphic />
             </InsightCard>
           </Reveal>
@@ -679,7 +693,7 @@ export default function ThetaCase() {
           <Reveal>
             <div className="rounded-2xl border border-plum/10 bg-white p-4 shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)] sm:p-5">
               <div className="mb-3 flex flex-wrap items-center gap-2 px-1">
-                <span className="font-hand text-[17px] font-semibold text-plum">Theta Health MCP — the demo, distilled</span>
+                <span className="font-hand text-[17px] font-semibold text-plum">Theta Health MCP · product demo</span>
                 <span className="ml-auto rounded-full bg-[#C79A4B]/15 px-3 py-1 font-hand text-[14px] text-[#9A7433]">
                   🏆 GAIA Leaderboard #1
                 </span>
@@ -688,23 +702,32 @@ export default function ThetaCase() {
             </div>
           </Reveal>
           <div className="flex flex-col gap-6">
+            {/* CMU 报道：报纸剪报风格 */}
             <Reveal>
               <a
                 href={CMU_PRESS.href}
                 target="_blank"
                 rel="noreferrer"
-                className="group/press flex flex-col justify-center rounded-2xl border border-plum/10 bg-white/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-orchid/40 hover:bg-white"
+                className="group/press block -rotate-1 bg-[#FDFBF6] p-6 shadow-[0_20px_44px_-22px_rgba(58,36,64,0.4)] transition-all duration-500 hover:rotate-0 hover:-translate-y-1"
+                style={{ borderTop: '3px double rgba(58,36,64,0.5)', borderBottom: '3px double rgba(58,36,64,0.5)' }}
               >
-                <p className="label-text !text-[10px]">{CMU_PRESS.label}</p>
-                <p className="mt-2 font-serif text-[1.05rem] font-medium leading-snug text-plum">
-                  {CMU_PRESS.title}
-                  <span aria-hidden className="ml-2 inline-block text-orchid transition-transform duration-300 group-hover/press:translate-x-0.5 group-hover/press:-translate-y-0.5">
+                <p className="text-center text-[10px] uppercase tracking-[0.3em] text-[#A6192E]">
+                  Carnegie Mellon University
+                </p>
+                <p className="mt-0.5 text-center text-[10px] uppercase tracking-[0.18em] text-plum-faint">
+                  Integrated Innovation Institute · 2025
+                </p>
+                <p className="mt-4 text-center font-serif text-[1.15rem] font-semibold leading-snug text-[#1a1a1a]">
+                  Internships &amp; iii: Student Summer Internship Recap
+                  <span aria-hidden className="ml-2 inline-block text-[#A6192E] transition-transform duration-300 group-hover/press:translate-x-0.5 group-hover/press:-translate-y-0.5">
                     ↗
                   </span>
                 </p>
-                <p className="mt-3 border-l-2 border-orchid/30 pl-3 font-serif text-[13.5px] italic leading-relaxed text-plum-muted">
+                <div aria-hidden className="mx-auto mt-3 h-px w-16 bg-plum/25" />
+                <p className="mt-3 font-serif text-[13.5px] italic leading-relaxed text-[#3d3d3d]">
                   {CMU_PRESS.quote}
                 </p>
+                <p className="mt-3 text-right font-hand text-[14px] text-plum-muted">— Olivia Xiao, MSSM ’25, on Theta Health</p>
               </a>
             </Reveal>
             {/* LinkedIn 官方 embed：真实帖子 */}
