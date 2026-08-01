@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 
@@ -80,6 +81,13 @@ export function Impact() {
                   <Tag>HIPAA-compliant infra</Tag>
                   <Tag>Clinical workflow</Tag>
                 </div>
+                <Link
+                  to="/work/theta"
+                  className="group/cta mt-7 inline-flex items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
+                >
+                  Read the full case study
+                  <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
+                </Link>
               </div>
               <div className="flex flex-col justify-center gap-8 md:col-span-5">
                 <div className="overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
