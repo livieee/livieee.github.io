@@ -358,82 +358,65 @@ function McpMotionGraphic() {
   )
 }
 
-/** 临床 B2B 动线（宽幅）：湾区诊所 → 实地筛选 → B2B 渠道 → 首个 pilot */
+/** 临床 B2B 动线（窄版）：实地筛选 → B2B 渠道 → 首个 pilot */
 function PilotB2BGraphic() {
-  const dots = [
-    [22, 62], [42, 50], [62, 66], [30, 86], [52, 92], [74, 56], [86, 80], [26, 112], [48, 118], [70, 108], [90, 100], [40, 136],
-  ] as const
   const filters = ['independent practice', 'has EHR & website', 'holistic · TCM care', 'strong patient reviews']
   const channels = [
-    { y: 52, label: 'cold outreach · call scripts' },
-    { y: 92, label: 'clinical roundtables · 40+ MDs' },
-    { y: 132, label: 'medical associations' },
+    { y: 46, label: 'cold outreach · scripts' },
+    { y: 84, label: 'roundtables · 40+ MDs' },
+    { y: 122, label: 'medical associations' },
   ]
   return (
-    <svg viewBox="0 0 640 216" className="w-full max-w-[660px]" fill="none" aria-label="Clinical B2B motion: Bay Area clinics run through field-tested ICP filters, worked through cold outreach, roundtables and medical associations, landing the first clinic pilot">
-      <text x="58" y="36" textAnchor="middle" fontSize="10.5" fill="#8A6E84">Bay Area clinics</text>
-      {dots.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r="4.5" fill="#3A2440" fillOpacity="0.16" />
-      ))}
-      <text x="58" y="160" textAnchor="middle" fontSize="10" fill="#8A6E84">shortlisted &amp; visited</text>
-      {/* 实地验证的筛选 */}
-      <rect x="118" y="44" width="150" height="116" rx="12" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
-      <text x="193" y="64" textAnchor="middle" fontSize="10.5" fill="#8A6E84">the filters, field-tested</text>
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Clinical B2B motion: field-tested filters, worked through cold outreach, roundtables and medical associations, landing the first clinic pilot">
+      <text x="78" y="22" textAnchor="middle" fontSize="9.5" fill="#8A6E84">Bay Area clinics ↓</text>
+      <rect x="14" y="30" width="128" height="106" rx="12" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
+      <text x="78" y="48" textAnchor="middle" fontSize="9.5" fill="#8A6E84">the filters, field-tested</text>
       {filters.map((f, i) => (
-        <text key={f} x="193" y={84 + i * 19} textAnchor="middle" fontSize="10" fill="#3A2440">
+        <text key={f} x="78" y={66 + i * 17} textAnchor="middle" fontSize="9" fill="#3A2440">
           {f}
         </text>
       ))}
-      <path d="M100 96 H 116" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <path d="M270 96 H 292" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      {/* B2B 渠道 */}
+      <path d="M144 84 H 156" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
       {channels.map((c) => (
         <g key={c.label}>
-          <rect x="296" y={c.y - 13} width="182" height="26" rx="13" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" />
-          <circle cx="311" cy={c.y} r="3" fill="#C79A4B" />
-          <text x="322" y={c.y + 3.5} fontSize="10" fill="#3A2440">{c.label}</text>
-          <path d={`M480 ${c.y} Q 520 ${c.y} 540 ${92 + (c.y - 92) * 0.18}`} stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+          <rect x="160" y={c.y - 12} width="146" height="24" rx="12" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" />
+          <circle cx="173" cy={c.y} r="2.6" fill="#C79A4B" />
+          <text x="182" y={c.y + 3.5} fontSize="9" fill="#3A2440">{c.label}</text>
+          <path d={`M${233} ${c.y + 12} Q 233 ${150 + (c.y - 84) * 0.1} 233 154`} stroke="#C79A4B" strokeOpacity="0.35" strokeWidth="1.2" strokeDasharray="2 4" strokeLinecap="round" />
         </g>
       ))}
-      {/* 结果 */}
-      <circle cx="576" cy="92" r="28" fill="#D193A8" fillOpacity="0.14" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
-      <text x="576" y="89" textAnchor="middle" fontSize="11" fill="#3A2440" fontWeight="600">1st clinic</text>
-      <text x="576" y="103" textAnchor="middle" fontSize="10.5" fill="#3A2440">pilot ✦</text>
-      <text x="435" y="196" textAnchor="middle" fontSize="12.5" fill="#C79A4B" className="font-hand" fontWeight="600">
-        3–4 interested → 1 signed · bilingual deck &amp; tailored scripts ✦
+      <circle cx="233" cy="172" r="16" fill="#D193A8" fillOpacity="0.16" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
+      <circle cx="233" cy="172" r="4" fill="#D193A8" />
+      <text x="278" y="176" textAnchor="start" fontSize="10.5" fontWeight="600" fill="#3A2440"></text>
+      <text x="160" y="206" textAnchor="middle" fontSize="12" fill="#C79A4B" className="font-hand" fontWeight="600">
+        3–4 interested → 1st pilot signed ✦
       </text>
     </svg>
   )
 }
 
-/** Intake 触发流（宽幅）：预约 → 触发邮件 → 智能问卷 → pre-chart → +60% */
-function IntakeFlowGraphic() {
-  const steps = [
-    { x: 14, w: 108, l1: 'appointment', l2: 'booked', c: '#D193A8' },
-    { x: 148, w: 128, l1: 'consent & data-auth', l2: 'email · triggered', c: '#B98ACB' },
-    { x: 302, w: 122, l1: 'smart intake', l2: 'forms · chat · call', c: '#8FAE8B' },
-    { x: 450, w: 108, l1: 'pre-chart', l2: 'ready', c: '#C79A4B' },
-  ]
+/** 用户分层洞察：谁真的需要它（源自实习反思的早期外呼发现） */
+function WhoWantedItGraphic() {
   return (
-    <svg viewBox="0 0 640 216" className="w-full max-w-[660px]" fill="none" aria-label="Trigger-based intake workflow: appointment booked triggers consent and data-authorization email, smart intake via forms chat or call, feeding a ready pre-chart — plus 60 percent engagement lift">
-      {steps.map((s) => (
-        <g key={s.l1}>
-          <rect x={s.x} y="64" width={s.w} height="52" rx="14" fill={`${s.c}14`} stroke={s.c} strokeOpacity="0.6" strokeWidth="1.3" />
-          <text x={s.x + s.w / 2} y="86" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#3A2440">{s.l1}</text>
-          <text x={s.x + s.w / 2} y="102" textAnchor="middle" fontSize="9.5" fill="#6B4E63">{s.l2}</text>
-        </g>
-      ))}
-      <path d="M124 90 H 144" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <path d="M278 90 H 298" stroke="#8FAE8B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <path d="M426 90 H 446" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <path d="M560 90 Q 580 90 588 90" stroke="#D193A8" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <circle cx="606" cy="90" r="27" fill="#D193A8" fillOpacity="0.14" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
-      <text x="606" y="94" textAnchor="middle" fontSize="12" fill="#3A2440" fontWeight="600">+60%</text>
-      <text x="606" y="132" textAnchor="middle" fontSize="9.5" fill="#6B4E63">open &amp; click rates</text>
-      <text x="320" y="44" textAnchor="middle" fontSize="11" fill="#8A6E84">HIPAA-compliant end to end · no chasing, no clipboards</text>
-      <text x="320" y="164" textAnchor="middle" fontSize="12.5" fill="#8FAE8B" className="font-hand" fontWeight="600">
-        the visit starts before the visit ✦
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Who actually wanted it: younger users showed low pull; older adults managing chronic conditions felt immediate value — targeting and messaging refocused on high-need users">
+      {/* 左：年轻用户 */}
+      <rect x="14" y="30" width="140" height="98" rx="12" fill="white" stroke="#8A6E84" strokeOpacity="0.35" strokeWidth="1.2" strokeDasharray="3 5" />
+      <text x="84" y="50" textAnchor="middle" fontSize="10.5" fill="#8A6E84" fontWeight="600">younger users</text>
+      <text x="84" y="70" textAnchor="middle" fontSize="9.5" fill="#8A6E84">fewer health concerns</text>
+      <text x="84" y="87" textAnchor="middle" fontSize="9.5" fill="#8A6E84">data mostly in one place</text>
+      <text x="84" y="112" textAnchor="middle" fontSize="11" fill="#8A6E84">✗ low pull</text>
+      {/* 右：慢病长者 */}
+      <rect x="166" y="30" width="140" height="98" rx="12" fill="#8FAE8B" fillOpacity="0.08" stroke="#8FAE8B" strokeOpacity="0.6" strokeWidth="1.3" />
+      <text x="236" y="50" textAnchor="middle" fontSize="10.5" fill="#6B8E63" fontWeight="600">older adults · chronic care</text>
+      <text x="236" y="70" textAnchor="middle" fontSize="9.5" fill="#3A2440">records scattered everywhere</text>
+      <text x="236" y="87" textAnchor="middle" fontSize="9.5" fill="#3A2440">many portals, many devices</text>
+      <text x="236" y="112" textAnchor="middle" fontSize="11" fill="#6B8E63" fontWeight="600">✓ instant resonance</text>
+      {/* 汇聚 */}
+      <path d="M84 136 C 100 158, 220 158, 236 136" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+      <text x="160" y="180" textAnchor="middle" fontSize="13" fill="#B98ACB" className="font-hand" fontWeight="600">
+        refocus on high-need users ✦
       </text>
+      <text x="160" y="200" textAnchor="middle" fontSize="9.5" fill="#8A6E84">messaging: data aggregation → intelligent preprocessing</text>
     </svg>
   )
 }
@@ -477,6 +460,81 @@ function QuadrantGraphic() {
 }
 
 
+
+/** 圆桌照片轮播：横向滑动 + 自动前进 + 箭头/圆点 */
+function RoundtableCarousel() {
+  const photos = [
+    { src: '/theta/rt-2414.jpg', cap: 'pitching a collaborative future' },
+    { src: '/theta/rt-2433.jpg', cap: 'walking MDs through patient context' },
+    { src: '/theta/rt-2445.jpg', cap: 'demoing how patients collect their data' },
+    { src: '/theta/rt-2452.jpg', cap: 'asking the room what to build next' },
+  ]
+  const [idx, setIdx] = useState(0)
+  const [paused, setPaused] = useState(false)
+  useEffect(() => {
+    if (paused) return
+    const t = window.setInterval(() => setIdx((i) => (i + 1) % photos.length), 4200)
+    return () => window.clearInterval(t)
+  }, [paused, photos.length])
+  const go = (d: number) => setIdx((i) => (i + d + photos.length) % photos.length)
+  return (
+    <div
+      className="relative mx-auto mt-6 max-w-3xl"
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}
+    >
+      <div className="overflow-hidden rounded-2xl border border-plum/10 bg-white p-2.5 shadow-[0_28px_60px_-28px_rgba(90,63,86,0.5)]">
+        <div
+          className="flex transition-transform duration-700"
+          style={{ transform: `translateX(-${idx * 100}%)`, transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
+        >
+          {photos.map((ph) => (
+            <img
+              key={ph.src}
+              src={ph.src}
+              alt={`Clinical roundtable — ${ph.cap}`}
+              loading="lazy"
+              draggable={false}
+              className="aspect-[4/3] w-full shrink-0 rounded-xl object-cover"
+            />
+          ))}
+        </div>
+      </div>
+      {/* 箭头 */}
+      <button
+        type="button"
+        aria-label="Previous photo"
+        onClick={() => go(-1)}
+        className="absolute -left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-plum/15 bg-white text-plum shadow-[0_10px_24px_-8px_rgba(58,36,64,0.4)] transition-transform duration-300 hover:scale-110 md:-left-5"
+      >
+        ‹
+      </button>
+      <button
+        type="button"
+        aria-label="Next photo"
+        onClick={() => go(1)}
+        className="absolute -right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-plum/15 bg-white text-plum shadow-[0_10px_24px_-8px_rgba(58,36,64,0.4)] transition-transform duration-300 hover:scale-110 md:-right-5"
+      >
+        ›
+      </button>
+      {/* 手写标注 + 圆点 */}
+      <div className="mt-4 flex items-center justify-between gap-3 px-1">
+        <p className="min-h-[22px] font-hand text-[16px] text-plum-muted">{photos[idx].cap}</p>
+        <div className="flex shrink-0 gap-1.5">
+          {photos.map((ph, i) => (
+            <button
+              key={ph.src}
+              type="button"
+              aria-label={`Show photo ${i + 1}`}
+              onClick={() => setIdx(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${i === idx ? 'w-5 bg-orchid' : 'w-2 bg-plum/20 hover:bg-plum/40'}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 /** MCP demo：关键帧轮播动画（自动交叉淡入，可点圆点切换） */
 function DemoFrameLoop() {
@@ -824,7 +882,7 @@ export default function ThetaCase() {
         </Reveal>
         <Reveal delay={0.06}>
           <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-            Five insights from the work
+            Four insights from the work
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
@@ -845,38 +903,27 @@ export default function ThetaCase() {
               <McpMotionGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.12} className="md:col-span-2">
-            <InsightCard title="How we landed the first pilot — the clinical B2B motion" source="from pilot outreach & the growth playbook">
+          <Reveal delay={0.12}>
+            <InsightCard title="The clinical B2B motion" source="from pilot outreach & the growth playbook">
               <PilotB2BGraphic />
             </InsightCard>
           </Reveal>
-          <Reveal delay={0.16} className="md:col-span-2">
-            <InsightCard title="The intake engine, on triggers" source="from my Email Workflow PRD">
-              <IntakeFlowGraphic />
+          <Reveal delay={0.18}>
+            <InsightCard title="Who actually wanted it" source="from early outreach — the demand signal">
+              <WhoWantedItGraphic />
             </InsightCard>
           </Reveal>
         </div>
 
-        {/* 圆桌现场照片条 */}
+        {/* 圆桌现场：左右滑动轮播 */}
         <Reveal delay={0.1}>
           <p className="mt-12 text-center font-hand text-[18px] text-plum-muted">
             field notes, literally — <span className="text-orchid">scenes from the clinical roundtables ✦</span>
           </p>
         </Reveal>
-        <div className="mt-6 grid gap-6 sm:grid-cols-3">
-          {[
-            { src: '/theta/rt-2414.jpg', cap: 'pitching a collaborative future', rot: '-rotate-2' },
-            { src: '/theta/rt-2433.jpg', cap: 'walking MDs through patient context', rot: 'rotate-1' },
-            { src: '/theta/rt-2452.jpg', cap: 'collecting what to build next', rot: '-rotate-1' },
-          ].map((ph, i) => (
-            <Reveal key={ph.src} delay={i * 0.08}>
-              <figure className={`${ph.rot} rounded-[10px] border border-plum/10 bg-white p-2 pb-4 shadow-[0_22px_48px_-24px_rgba(90,63,86,0.45)] transition-transform duration-500 hover:rotate-0 hover:-translate-y-1`}>
-                <img src={ph.src} alt={`Clinical roundtable — ${ph.cap}`} loading="lazy" className="w-full rounded-[6px]" />
-                <figcaption className="mt-2.5 text-center font-hand text-[14px] text-plum-muted">{ph.cap}</figcaption>
-              </figure>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal delay={0.16}>
+          <RoundtableCarousel />
+        </Reveal>
 
         {/* MCP demo 关键帧动画 + 报道引语卡 */}
         <div className="mt-12 grid gap-8 lg:grid-cols-[3fr_2fr]">
