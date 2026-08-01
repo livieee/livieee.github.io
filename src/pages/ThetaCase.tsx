@@ -335,30 +335,29 @@ function InsightCard({ title, source, children }: { title: string; source: strin
 
 
 
-/** MCP 开发者动线（窄卡）：三渠道 → 30+ devs */
+/** MCP 开发者动线（GTM 漏斗版）：reach → teach → convert，依 Twitter 调研分层 */
 function McpMotionGraphic() {
-  const chips = [
-    { y: 44, label: 'API & dev-community anchors' },
-    { y: 84, label: 'MCP newsletters · 1M+ readers' },
-    { y: 124, label: 'hands-on ML educators' },
+  const bands = [
+    { x: 22, w: 276, y: 30, label: 'reach — MCP & LLM newsletters · 1M+ readers', c: '#B98ACB' },
+    { x: 56, w: 208, y: 78, label: 'teach — API educators · hands-on teardowns', c: '#8FAE8B' },
+    { x: 90, w: 140, y: 126, label: 'convert — demos & events', c: '#C79A4B' },
   ]
   return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="MCP developer motion: tech influencers, media and hackathons drove 30+ developers engaged">
-      {chips.map((c) => (
-        <g key={c.label}>
-          <rect x="14" y={c.y - 13} width="182" height="26" rx="13" fill="white" stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.2" />
-          <circle cx="29" cy={c.y} r="3" fill="#B98ACB" />
-          <text x="40" y={c.y + 3.5} fontSize="10" fill="#3A2440">{c.label}</text>
-          <path d={`M198 ${c.y} Q 232 ${c.y} 248 ${84 + (c.y - 84) * 0.18}`} stroke="#B98ACB" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="MCP developer funnel from my influencer research: reach via MCP and LLM newsletters with over a million readers, teach via API educators and hands-on teardowns, convert via demos and community events — 30+ developers engaged">
+      {bands.map((b) => (
+        <g key={b.label}>
+          <rect x={b.x} y={b.y} width={b.w} height="30" rx="10" fill={`${b.c}16`} stroke={b.c} strokeOpacity="0.6" strokeWidth="1.3" />
+          <text x="160" y={b.y + 19} textAnchor="middle" fontSize="9.5" fontWeight="600" fill="#3A2440">{b.label}</text>
         </g>
       ))}
-      <circle cx="276" cy="84" r="27" fill="#B98ACB" fillOpacity="0.14" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
-      <text x="276" y="81" textAnchor="middle" fontSize="11" fill="#3A2440" fontWeight="600">30+ devs</text>
-      <text x="276" y="95" textAnchor="middle" fontSize="10.5" fill="#3A2440">engaged</text>
-      <text x="160" y="180" textAnchor="middle" fontSize="13" fill="#B98ACB" className="font-hand" fontWeight="600">
+      <path d="M160 60 V 76 M160 108 V 124" stroke="#8A6E84" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <path d="M160 156 V 166" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <circle cx="160" cy="182" r="15" fill="#B98ACB" fillOpacity="0.16" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 4" />
+      <text x="160" y="186" textAnchor="middle" fontSize="10" fontWeight="700" fill="#3A2440">30+</text>
+      <text x="216" y="186" textAnchor="start" fontSize="10" fill="#6B4E63">devs engaged</text>
+      <text x="160" y="212" textAnchor="middle" fontSize="12" fill="#B98ACB" className="font-hand" fontWeight="600">
         show devs how to plug in — trust follows ✦
       </text>
-      <text x="160" y="200" textAnchor="middle" fontSize="10" fill="#8A6E84">GAIA #1 · demo · one-pager as the toolkit</text>
     </svg>
   )
 }
@@ -400,106 +399,80 @@ function PilotB2BGraphic() {
   )
 }
 
-/** 目标用户（icon 动画版）：低需求年轻人 vs 被数据淹没的慢病长者 */
+/** 目标用户（deck 版）：被文书淹没的医生 + 被数据淹没的患者，Theta 连成闭环 */
 function WhoWantedItGraphic() {
   return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Target user: younger users with tidy data showed low pull; older adults managing chronic conditions — records scattered across files, pills, vitals and wearables — felt instant value">
-      {/* 左：年轻用户（灰，低需求） */}
-      <g opacity="0.5" stroke="#8A6E84" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="82" cy="52" r="11" />
-        <path d="M60 92 c0 -14 10 -22 22 -22 s22 8 22 22" />
-        <rect x="64" y="106" width="36" height="24" rx="6" />
-        <path d="M72 114 h20 M72 122 h12" strokeWidth="1.3" />
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Who we built for: primary-care physicians buried in charting, and data-rich patients buried in trackers — Theta closes the loop between them">
+      {/* 左：医生（被文书环绕） */}
+      <g stroke="#D193A8" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="84" cy="58" r="12" />
+        <path d="M60 100 c0 -15 11 -24 24 -24 s24 9 24 24" />
+        <path d="M72 84 c-6 8 -6 16 2 18 M96 84 c6 8 6 16 -2 18" strokeWidth="1.4" />
+        <circle cx="84" cy="106" r="3.5" strokeWidth="1.4" />
       </g>
-      <text x="82" y="152" textAnchor="middle" fontSize="10" fill="#8A6E84">20s · 30s</text>
-      <text x="82" y="170" textAnchor="middle" fontSize="13" fill="#8A6E84">✗</text>
-      {/* 中分隔 */}
-      <path d="M160 38 V 156" stroke="#3A2440" strokeOpacity="0.12" strokeWidth="1" strokeDasharray="3 6" />
-      {/* 右：慢病长者（彩，被数据环绕） */}
-      <g stroke="#6B8E63" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="theta-pulse">
-        <circle cx="238" cy="62" r="12" />
-        <path d="M214 104 c0 -15 11 -24 24 -24 s24 9 24 24" />
+      <g stroke="#C79A4B" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="theta-float">
+        <path d="M34 40 h16 v20 h-16 Z M38 46 h8 M38 52 h8" />
       </g>
-      {/* 漂浮的数据碎片 icons */}
-      <g stroke="#D193A8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="theta-float">
-        <path d="M186 34 h12 l5 5 v13 h-17 Z M198 34 v5 h5" />
+      <g stroke="#B98ACB" strokeWidth="1.4" strokeLinecap="round" className="theta-float" style={{ animationDelay: '1s' }}>
+        <circle cx="130" cy="46" r="8" />
+        <path d="M130 41 v5 l3.5 2.5" />
       </g>
-      <g stroke="#B98ACB" strokeWidth="1.5" strokeLinecap="round" className="theta-float" style={{ animationDelay: '0.7s' }}>
-        <rect x="276" y="34" width="20" height="10" rx="5" transform="rotate(-24 286 39)" />
-        <path d="M282 42 l8 -6" transform="rotate(-24 286 39)" />
+      <text x="84" y="140" textAnchor="middle" fontSize="10" fontWeight="600" fill="#3A2440">primary-care MDs</text>
+      <text x="84" y="154" textAnchor="middle" fontSize="9" fill="#C87A8A">4–6h a day buried in charts</text>
+      {/* 右：数据型患者（被设备环绕） */}
+      <g stroke="#8FAE8B" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="238" cy="58" r="12" />
+        <path d="M214 100 c0 -15 11 -24 24 -24 s24 9 24 24" />
       </g>
-      <g stroke="#C79A4B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="theta-float" style={{ animationDelay: '1.4s' }}>
-        <path d="M186 112 c-4 -5 2 -11 6 -7 c4 -4 10 2 6 7 l-6 6 Z" />
+      <g stroke="#8FAE8B" strokeWidth="1.4" strokeLinecap="round" className="theta-float" style={{ animationDelay: '0.5s' }}>
+        <circle cx="188" cy="44" r="7" />
+        <path d="M188 40 v4 l3 2 M185 34 h6 M185 54 h6" strokeWidth="1.2" />
       </g>
-      <g stroke="#8FAE8B" strokeWidth="1.5" strokeLinecap="round" className="theta-float" style={{ animationDelay: '2.1s' }}>
-        <circle cx="290" cy="116" r="7" />
-        <path d="M290 112 v4 l3 2 M287 105 h6 M287 127 h6" strokeWidth="1.3" />
+      <g stroke="#B98ACB" strokeWidth="1.4" strokeLinecap="round" className="theta-float" style={{ animationDelay: '1.5s' }}>
+        <circle cx="288" cy="44" r="6.5" />
+        <circle cx="288" cy="44" r="3" strokeWidth="1.2" />
       </g>
-      {/* 碎片流向长者 */}
-      <path d="M204 46 Q 218 50 226 54 M272 44 Q 260 50 252 55 M200 108 Q 212 104 220 99 M280 112 Q 268 107 258 102" stroke="#8FAE8B" strokeOpacity="0.45" strokeWidth="1.2" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <text x="238" y="152" textAnchor="middle" fontSize="10" fill="#3A2440">60s+ · chronic care</text>
-      <text x="238" y="170" textAnchor="middle" fontSize="13" fill="#6B8E63" fontWeight="700">✓</text>
-      <text x="160" y="200" textAnchor="middle" fontSize="13" fill="#B98ACB" className="font-hand" fontWeight="600">
-        built for the ones drowning in data ✦
+      <g stroke="#D193A8" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="theta-float" style={{ animationDelay: '2.2s' }}>
+        <path d="M282 96 c-4 -5 2 -11 6 -7 c4 -4 10 2 6 7 l-6 6 Z" />
+      </g>
+      <text x="238" y="140" textAnchor="middle" fontSize="10" fontWeight="600" fill="#3A2440">data-rich patients</text>
+      <text x="238" y="154" textAnchor="middle" fontSize="9" fill="#C87A8A">wearables & goals, unconnected</text>
+      {/* Theta 闭环 */}
+      <path d="M92 162 Q 126 186 152 188 M230 162 Q 196 186 168 188" stroke="#B98ACB" strokeOpacity="0.55" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+      <circle cx="160" cy="188" r="9" fill="#B98ACB" fillOpacity="0.18" stroke="#B98ACB" strokeWidth="1.4" strokeDasharray="2 3" />
+      <circle cx="160" cy="188" r="3" fill="#B98ACB" />
+      <text x="160" y="212" textAnchor="middle" fontSize="12.5" fill="#B98ACB" className="font-hand" fontWeight="600">
+        Theta closes the loop ✦
       </text>
     </svg>
   )
 }
 
-/** 圆桌需求排行（宽幅）：医生反复要什么 → 进 roadmap 和 demo */
-function RoadmapAsksGraphic() {
-  return (
-    <svg viewBox="0 0 640 216" className="w-full max-w-[660px]" fill="none" aria-label="What physicians kept asking for: EMR integration was the number-one ask, followed by follow-up document generation — both moved into the roadmap and the demo">
-      <text x="16" y="34" fontSize="11" fill="#8A6E84">what physicians kept asking for</text>
-      <rect x="16" y="52" width="392" height="34" rx="10" fill="#B98ACB" fillOpacity="0.16" stroke="#B98ACB" strokeOpacity="0.55" strokeWidth="1.2" />
-      <text x="32" y="73" fontSize="11.5" fontWeight="600" fill="#3A2440">EMR integration</text>
-      <text x="418" y="73" fontSize="10" fill="#8A6E84">the #1 ask, visit after visit</text>
-      <rect x="16" y="100" width="288" height="34" rx="10" fill="#D193A8" fillOpacity="0.16" stroke="#D193A8" strokeOpacity="0.55" strokeWidth="1.2" />
-      <text x="32" y="121" fontSize="11.5" fontWeight="600" fill="#3A2440">follow-up document generation</text>
-      <text x="314" y="121" fontSize="10" fill="#8A6E84">right behind it</text>
-      <path d="M408 69 Q 490 69 530 96 M304 117 Q 460 117 528 102" stroke="#8FAE8B" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
-      <circle cx="572" cy="100" r="30" fill="#8FAE8B" fillOpacity="0.14" stroke="#8FAE8B" strokeWidth="1.4" strokeDasharray="2 4" />
-      <text x="572" y="96" textAnchor="middle" fontSize="10.5" fill="#3A2440" fontWeight="600">roadmap</text>
-      <text x="572" y="110" textAnchor="middle" fontSize="10.5" fill="#3A2440" fontWeight="600">&amp; demo ✦</text>
-      <text x="320" y="180" textAnchor="middle" fontSize="12.5" fill="#8FAE8B" className="font-hand" fontWeight="600">
-        heard in the roundtables → shipped into the demo ✦
-      </text>
-      <text x="320" y="200" textAnchor="middle" fontSize="10" fill="#8A6E84">as an intern, looped into the decisions that set these priorities</text>
-    </svg>
-  )
-}
-
-/** 竞品扫描核心：定位象限 + 每个集群的痛点 + 我们的空白 */
+/** 竞品扫描核心：四类点状方案的痛点 + Theta 的空白（箭头避让文字） */
 function QuadrantGraphic() {
   const dots = [
-    { x: 96, y: 152, label: 'scheduling', pain: 'admin, not care' },
-    { x: 70, y: 166 },
-    { x: 150, y: 130, label: 'voice agents', pain: 'hears, no memory' },
-    { x: 126, y: 144 },
-    { x: 190, y: 100, label: 'doc review', pain: 'after the fact' },
-    { x: 166, y: 112 },
-    { x: 86, y: 72, label: 'wellness', pain: 'never reaches the clinic' },
+    { x: 88, y: 64, label: 'wellness', pain: 'never reaches the clinic' },
+    { x: 176, y: 96, label: 'doc review', pain: 'after the fact' },
+    { x: 128, y: 128, label: 'voice agents', pain: 'hears, no memory' },
+    { x: 84, y: 160, label: 'scheduling', pain: 'admin, not care' },
   ]
   return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Competitive positioning with pain points: scheduling is admin not care, voice agents hear but keep no memory, doc review comes after the fact, wellness never reaches the clinic — Theta fills the whole-patient gap">
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Competitive positioning with pain points: wellness never reaches the clinic, doc review comes after the fact, voice agents hear but keep no memory, scheduling is admin not care — Theta fills the whole-patient gap">
       <path d="M56 178 H 296 M56 178 V 30" stroke="#3A2440" strokeOpacity="0.25" strokeWidth="1.2" strokeLinecap="round" />
       <text x="296" y="194" textAnchor="end" fontSize="10.5" fill="#8A6E84">admin → clinical care</text>
       <text x="52" y="20" textAnchor="start" fontSize="10.5" fill="#8A6E84">whole-patient ↑</text>
-      {dots.map((d, i) => (
-        <g key={i}>
-          <circle cx={d.x} cy={d.y} r="5" fill="#3A2440" fillOpacity="0.18" />
-          {d.label && (
-            <>
-              <text x={d.x + 9} y={d.y + 1} fontSize="10" fill="#3A2440">{d.label}</text>
-              <text x={d.x + 9} y={d.y + 12} fontSize="8.5" fill="#C87A8A">{d.pain}</text>
-            </>
-          )}
+      {dots.map((d) => (
+        <g key={d.label}>
+          <circle cx={d.x} cy={d.y} r="5" fill="#3A2440" fillOpacity="0.2" />
+          <text x={d.x + 10} y={d.y + 1} fontSize="10" fill="#3A2440">{d.label}</text>
+          <text x={d.x + 10} y={d.y + 12} fontSize="8.5" fill="#C87A8A">{d.pain}</text>
         </g>
       ))}
-      <path d="M212 92 Q 234 60 252 52" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
-      <path d="M266 52 l6.5 4 -7.5 2 2 7 -5.5 -5 -5.5 5 2 -7 -7.5 -2 6.5 -4 v-7 Z" fill="#B98ACB" transform="translate(0,-8)" className="theta-pulse" />
-      <text x="266" y="78" textAnchor="middle" fontSize="12.5" fill="#3A2440" fontWeight="600">Theta</text>
-      <text x="266" y="93" textAnchor="middle" fontSize="11" fill="#B98ACB" className="font-hand">the gap ✦</text>
+      {/* 箭头走顶部空区，避开所有标签 */}
+      <path d="M134 52 Q 196 26 246 42" stroke="#B98ACB" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 5" strokeLinecap="round" className="theta-march" />
+      <path d="M262 52 l6.5 4 -7.5 2 2 7 -5.5 -5 -5.5 5 2 -7 -7.5 -2 6.5 -4 v-7 Z" fill="#B98ACB" transform="translate(0,-8)" className="theta-pulse" />
+      <text x="262" y="78" textAnchor="middle" fontSize="12.5" fill="#3A2440" fontWeight="600">Theta</text>
+      <text x="262" y="93" textAnchor="middle" fontSize="11" fill="#B98ACB" className="font-hand">the gap ✦</text>
       <text x="160" y="210" textAnchor="middle" fontSize="12" fill="#C87A8A" className="font-hand" fontWeight="600">
         every tool solves a slice — the whole patient falls through ✦
       </text>
@@ -911,7 +884,7 @@ export default function ThetaCase() {
             </InsightCard>
           </Reveal>
           <Reveal delay={0.08}>
-            <InsightCard title="Who actually wanted it" source="from early outreach — the demand signal">
+            <InsightCard title="Who we built for" source="from the Theta Care pitch deck">
               <WhoWantedItGraphic />
             </InsightCard>
           </Reveal>
@@ -923,11 +896,6 @@ export default function ThetaCase() {
           <Reveal delay={0.18}>
             <InsightCard title="The clinical B2B motion" source="from pilot outreach & the growth playbook">
               <PilotB2BGraphic />
-            </InsightCard>
-          </Reveal>
-          <Reveal delay={0.12} className="md:col-span-2">
-            <InsightCard title="The asks that set the roadmap" source="from the roundtables — my reflection, in writing">
-              <RoadmapAsksGraphic />
             </InsightCard>
           </Reveal>
         </div>
