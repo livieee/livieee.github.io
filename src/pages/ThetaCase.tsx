@@ -364,74 +364,52 @@ function McpMotionGraphic() {
   )
 }
 
-/** 临床 B2B 动线（合并版）：field-tested 筛选 + 渠道 → 首个 pilot */
+/** 临床 B2B 动线（地图版）：湾区散点 → 极简筛选 → 渠道 → 首个 pilot */
 function PilotB2BGraphic() {
-  const filters = ['small independent', 'digital-ready · EHR & site', 'whole-person · TCM care', 'loved by patients']
+  const dots = [
+    [22, 40], [42, 32], [62, 44], [30, 60], [52, 64], [74, 36], [82, 56], [26, 82], [48, 86], [70, 76], [88, 92], [38, 104],
+  ] as const
+  const filters = ['independent', 'digital-ready', 'holistic care', 'patient-loved']
   const channels = [
-    { y: 40, label: 'cold outreach · scripts', c: '#C79A4B' },
-    { y: 76, label: 'roundtables · 40+ MDs', c: '#D193A8' },
-    { y: 112, label: 'medical associations', c: '#B98ACB' },
+    { x: 14, label: 'cold outreach · scripts', c: '#C79A4B' },
+    { x: 114, label: 'roundtables · 40+ MDs', c: '#D193A8' },
+    { x: 214, label: 'medical associations', c: '#B98ACB' },
   ]
   return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Clinical B2B motion: Bay Area clinics passed through field-tested filters — small independent, digital-ready, whole-person and TCM care, loved by patients — worked via cold outreach, roundtables and medical associations into the first signed pilot">
-      <text x="80" y="18" textAnchor="middle" fontSize="9.5" fill="#8A6E84">Bay Area clinics ↓</text>
-      <rect x="14" y="26" width="132" height="106" rx="12" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
-      <text x="80" y="44" textAnchor="middle" fontSize="9" fill="#8A6E84">field-tested filters</text>
+    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Clinical B2B motion: Bay Area clinics filtered down to independent, digital-ready, holistic-care and patient-loved practices, then worked via cold outreach, roundtables and medical associations into the first signed pilot">
+      <text x="55" y="18" textAnchor="middle" fontSize="9.5" fill="#8A6E84">Bay Area clinics</text>
+      {dots.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r="4" fill="#3A2440" fillOpacity="0.16" />
+      ))}
+      <text x="55" y="122" textAnchor="middle" fontSize="9" fill="#8A6E84">visited, one by one</text>
+      <rect x="118" y="26" width="96" height="100" rx="12" fill="white" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.2" strokeDasharray="3 5" />
+      <text x="166" y="44" textAnchor="middle" fontSize="9" fill="#8A6E84">the filters</text>
       {filters.map((f, i) => (
-        <text key={f} x="80" y={62 + i * 18} textAnchor="middle" fontSize="8.8" fill="#3A2440">
+        <text key={f} x="166" y={62 + i * 17} textAnchor="middle" fontSize="9" fill="#3A2440">
           {f}
         </text>
       ))}
-      <path d="M148 78 H 160" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      {/* 结果预告 */}
+      <path d="M100 70 H 114" stroke="#C79A4B" strokeOpacity="0.6" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <path d="M218 76 Q 250 76 262 76" stroke="#D193A8" strokeOpacity="0.55" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
+      <circle cx="282" cy="76" r="14" fill="#D193A8" fillOpacity="0.18" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
+      <circle cx="282" cy="76" r="4" fill="#D193A8" />
+      <text x="282" y="102" textAnchor="middle" fontSize="9.5" fontWeight="600" fill="#3A2440">1st pilot ✦</text>
+      {/* 渠道横排 */}
+      <text x="160" y="148" textAnchor="middle" fontSize="9" fill="#8A6E84">worked through</text>
       {channels.map((c) => (
         <g key={c.label}>
-          <rect x="164" y={c.y - 12} width="142" height="24" rx="12" fill="white" stroke={c.c} strokeOpacity="0.55" strokeWidth="1.2" />
-          <circle cx="177" cy={c.y} r="2.6" fill={c.c} />
-          <text x="186" y={c.y + 3.5} fontSize="8.8" fill="#3A2440">{c.label}</text>
+          <rect x={c.x} y="156" width="92" height="22" rx="11" fill="white" stroke={c.c} strokeOpacity="0.55" strokeWidth="1.1" />
+          <text x={c.x + 46} y="170" textAnchor="middle" fontSize="7.8" fill="#3A2440">{c.label}</text>
         </g>
       ))}
-      <path d="M235 124 V 148" stroke="#D193A8" strokeOpacity="0.5" strokeWidth="1.3" strokeDasharray="2 4" strokeLinecap="round" className="theta-march" />
-      <circle cx="235" cy="164" r="15" fill="#D193A8" fillOpacity="0.18" stroke="#D193A8" strokeWidth="1.4" strokeDasharray="2 4" />
-      <circle cx="235" cy="164" r="4" fill="#D193A8" />
-      <text x="272" y="168" textAnchor="start" fontSize="10" fontWeight="600" fill="#3A2440">1st ✦</text>
       <text x="160" y="204" textAnchor="middle" fontSize="12" fill="#C79A4B" className="font-hand" fontWeight="600">
-        3–4 interested → 1st pilot signed ✦
+        3–4 interested → 1 signed ✦
       </text>
     </svg>
   )
 }
 
-/** PRD 核心：Mirobody 数据飞轮（五节点循环） */
-function FlywheelGraphic() {
-  const nodes = [
-    { x: 160, y: 34, tx: 160, ty: 22, anchor: 'middle', label: 'Log daily', c: '#D193A8' },
-    { x: 234, y: 86, tx: 244, ty: 84, anchor: 'start', label: 'See value', c: '#B98ACB' },
-    { x: 206, y: 172, tx: 212, ty: 192, anchor: 'middle', label: 'Ask AI', c: '#8FAE8B' },
-    { x: 114, y: 172, tx: 108, ty: 192, anchor: 'middle', label: 'See doctor', c: '#C79A4B' },
-    { x: 86, y: 86, tx: 76, ty: 84, anchor: 'end', label: 'Richer data', c: '#B98ACB' },
-  ] as const
-  return (
-    <svg viewBox="0 0 320 216" className="w-full max-w-[300px]" fill="none" aria-label="Mirobody data flywheel: log daily, see value, ask AI, see doctor, richer data — and around again">
-      <circle cx="160" cy="108" r="74" stroke="#B98ACB" strokeOpacity="0.4" strokeWidth="1.4" strokeDasharray="2 6" className="theta-spin" />
-      <path d="M228 72 l8 11 M228 72 l13 3" stroke="#B98ACB" strokeOpacity="0.7" strokeWidth="1.4" strokeLinecap="round" />
-      {nodes.map((n) => (
-        <g key={n.label}>
-          <circle cx={n.x} cy={n.y} r="7" fill="#FBF7F2" stroke={n.c} strokeWidth="1.4" strokeDasharray="2 3" />
-          <circle cx={n.x} cy={n.y} r="2.6" fill={n.c} />
-          <text x={n.tx} y={n.ty} textAnchor={n.anchor} fontSize="11.5" fill="#6B4E63">
-            {n.label}
-          </text>
-        </g>
-      ))}
-      <text x="160" y="102" textAnchor="middle" fontSize="13.5" fill="#3A2440" className="font-hand" fontWeight="600">
-        the Mirobody
-      </text>
-      <text x="160" y="120" textAnchor="middle" fontSize="13.5" fill="#3A2440" className="font-hand" fontWeight="600">
-        flywheel ↻
-      </text>
-    </svg>
-  )
-}
 
 /** 目标用户（deck 版）：被文书淹没的医生 + 被数据淹没的患者，Theta 连成闭环 */
 function WhoWantedItGraphic() {
@@ -930,11 +908,6 @@ export default function ThetaCase() {
           <Reveal delay={0.18}>
             <InsightCard title="The MCP developer motion" source="from my Twitter AI & tech influencer research">
               <McpMotionGraphic />
-            </InsightCard>
-          </Reveal>
-          <Reveal delay={0.12} className="md:col-span-2">
-            <InsightCard title="The product loop I spec’d" source="from the Theta Wellness PRD">
-              <FlywheelGraphic />
             </InsightCard>
           </Reveal>
         </div>
