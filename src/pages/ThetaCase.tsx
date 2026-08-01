@@ -264,6 +264,12 @@ function TechIcon({ name }: { name: string }) {
         <path d="M8 15l3.5-4 3 2.5L19 8" />
       </>
     ),
+    globe: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18M12 3c2.8 2.6 4 5.6 4 9s-1.2 6.4-4 9c-2.8-2.6-4-5.6-4-9s1.2-6.4 4-9Z" />
+      </>
+    ),
     trophy: (
       <>
         <path d="M8 4h8v6a4 4 0 0 1-8 0V4Z" />
@@ -286,6 +292,37 @@ function TechChip({ icon, label, color }: { icon: string; label: string; color?:
       </span>
       {label}
     </span>
+  )
+}
+
+/** 站点链接按钮：图标圆徽 + 悬停滑动箭头（替代裸网址） */
+function SiteLink({ href, label, color = '#B98ACB', small = false }: { href: string; label: string; color?: string; small?: boolean }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      className={`group/sl inline-flex items-center rounded-full border bg-white shadow-[0_8px_20px_-10px_rgba(58,36,64,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_28px_-12px_rgba(58,36,64,0.4)] ${
+        small ? 'gap-1.5 px-2.5 py-1' : 'gap-2 px-3.5 py-1.5'
+      }`}
+      style={{ borderColor: `${color}55` }}
+    >
+      <span
+        className={`flex items-center justify-center rounded-full ${small ? 'h-5 w-5' : 'h-6 w-6'}`}
+        style={{ backgroundColor: `${color}1c`, color }}
+      >
+        <TechIcon name="globe" />
+      </span>
+      <span className={`font-medium text-plum ${small ? 'text-[11px]' : 'text-[12.5px]'}`}>{label}</span>
+      <span
+        aria-hidden
+        className="text-[13px] transition-transform duration-300 group-hover/sl:translate-x-0.5 group-hover/sl:-translate-y-0.5"
+        style={{ color }}
+      >
+        ↗
+      </span>
+    </a>
   )
 }
 
@@ -631,7 +668,7 @@ export default function ThetaCase() {
               {[
                 {
                   href: '#care',
-                  ext: { label: 'thetahealth.ai/care ↗', url: 'https://www.thetahealth.ai/care' },
+                  ext: { label: 'thetahealth.ai/care', url: 'https://www.thetahealth.ai/care' },
                   name: 'Theta Care',
                   aud: 'for clinics · B2B',
                   c: '#D193A8',
@@ -639,7 +676,7 @@ export default function ThetaCase() {
                 },
                 {
                   href: '#wellness',
-                  ext: null,
+                  ext: { label: 'thetahealth.ai', url: 'https://thetahealth.ai/' },
                   name: 'Theta Wellness',
                   aud: 'for patients · consumer',
                   c: '#8FAE8B',
@@ -647,7 +684,7 @@ export default function ThetaCase() {
                 },
                 {
                   href: '#mcp',
-                  ext: { label: 'mirobody.ai ↗', url: 'https://mirobody.ai/' },
+                  ext: { label: 'mirobody.ai', url: 'https://mirobody.ai/' },
                   name: 'Theta MCP',
                   aud: 'for developers · open source',
                   c: '#B98ACB',
@@ -670,17 +707,7 @@ export default function ThetaCase() {
                     <span className="text-[12px] font-medium text-plum-faint transition-colors group-hover/pl:text-orchid">
                       jump to section ↓
                     </span>
-                    {pl.ext && (
-                      <a
-                        href={pl.ext.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="rounded-full border border-orchid/40 bg-lavender/30 px-3 py-1 text-[11.5px] font-medium text-plum transition-all hover:border-orchid"
-                      >
-                        {pl.ext.label}
-                      </a>
-                    )}
+                    {pl.ext && <SiteLink href={pl.ext.url} label={pl.ext.label} color={pl.c} small />}
                   </div>
                 </a>
               ))}
@@ -718,11 +745,10 @@ export default function ThetaCase() {
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
-            <p className="mt-3 font-hand text-[17px] text-plum-muted">
-              the B2B line I drove end to end — <span className="text-orchid">
-                <a href="https://www.thetahealth.ai/care" target="_blank" rel="noreferrer" className="underline decoration-dashed underline-offset-4 hover:text-plum">thetahealth.ai/care ↗</a>
-              </span>
-            </p>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <p className="font-hand text-[17px] text-plum-muted">the B2B line I drove end to end ✦</p>
+              <SiteLink href="https://www.thetahealth.ai/care" label="thetahealth.ai/care" color="#D193A8" />
+            </div>
           </Reveal>
 
           {/* B2B 痛点（从全局 Problem 移入） */}
@@ -866,6 +892,66 @@ export default function ThetaCase() {
             </Reveal>
           </div>
 
+          {/* 思考过程：决策日志 */}
+          <Reveal delay={0.1}>
+            <div className="mt-10 rounded-[1.6rem] border border-plum/10 bg-cream p-7 md:p-8">
+              <p className="font-serif text-[1.05rem] font-medium leading-snug text-plum">The decision log</p>
+              <p className="mt-1 font-hand text-[14px] text-orchid">how I thought about it — options weighed, calls made ✦</p>
+              <div className="mt-6 grid gap-8 lg:grid-cols-3">
+                {[
+                  {
+                    q: 'Where does patient data live?',
+                    opts: [
+                      { label: 'own EHR integration', chosen: false },
+                      { label: 'SMART on FHIR', chosen: false },
+                      { label: 'consumer records first (Apple CDA)', chosen: true },
+                    ],
+                    why: 'layered path: start where patients can grant access today, FHIR & health-info exchanges next — shaped by the ex-One Medical data leader',
+                    c: '#B98ACB',
+                  },
+                  {
+                    q: 'What do we automate first?',
+                    opts: [
+                      { label: 'scheduling', chosen: false },
+                      { label: 'the whole visit', chosen: false },
+                      { label: 'intake → structured HPI note', chosen: true },
+                    ],
+                    why: "the neurosurgeon's 30-minute paper intake and copy-paste HPI made the first domino obvious",
+                    c: '#D193A8',
+                  },
+                  {
+                    q: 'Charge from day one?',
+                    opts: [
+                      { label: 'paid-only', chosen: false },
+                      { label: 'free pilot → $99/mo', chosen: true },
+                    ],
+                    why: 'trust before revenue: clinics try it on a real week of visits, then pricing follows the saved hours',
+                    c: '#C79A4B',
+                  },
+                ].map((d) => (
+                  <div key={d.q}>
+                    <p className="font-hand text-[16px] font-semibold text-plum">{d.q}</p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {d.opts.map((o) => (
+                        <span
+                          key={o.label}
+                          className={`rounded-full border px-3 py-1 text-[11.5px] font-medium transition-colors ${
+                            o.chosen ? 'text-plum' : 'border-plum/12 bg-white/60 text-plum-faint line-through decoration-plum/30'
+                          }`}
+                          style={o.chosen ? { borderColor: `${d.c}88`, backgroundColor: `${d.c}16` } : undefined}
+                        >
+                          {o.chosen ? '✓ ' : ''}
+                          {o.label}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="mt-3 text-[12.5px] leading-relaxed text-plum-muted">{d.why}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+
           {/* 圆桌现场胶片流 */}
           <Reveal delay={0.1}>
             <p className="mt-12 text-center font-hand text-[18px] text-plum-muted">
@@ -891,6 +977,12 @@ export default function ThetaCase() {
             <h2 className="font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
               Theta Wellness — for patients & families
             </h2>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <p className="font-hand text-[17px] text-plum-muted">the consumer companion ✦</p>
+              <SiteLink href="https://thetahealth.ai/" label="thetahealth.ai" color="#8FAE8B" />
+            </div>
           </Reveal>
           <div className="mt-10 grid items-stretch gap-8 lg:grid-cols-[5fr_6fr]">
             <Reveal>
@@ -958,9 +1050,12 @@ export default function ThetaCase() {
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
-            <p className="mt-3 font-hand text-[17px] text-plum-muted">
-              world's first HIPAA-compliant health-data MCP — <span className="text-orchid">my part: the GTM ✦</span>
-            </p>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <p className="font-hand text-[17px] text-plum-muted">
+                world's first HIPAA-compliant health-data MCP — <span className="text-orchid">my part: the GTM ✦</span>
+              </p>
+              <SiteLink href="https://mirobody.ai/" label="mirobody.ai" color="#B98ACB" />
+            </div>
           </Reveal>
           <div className="mt-10 grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
             <Reveal>
