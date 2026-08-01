@@ -68,34 +68,61 @@ const PHASES: Phase[] = [
   },
 ]
 
+const FLOW = [
+  { stage: 'Research', color: '#D193A8', chips: ['20+ user interviews', '10+ teardowns'] },
+  { stage: 'Define', color: '#B98ACB', chips: ['roadmap', '46-page PRD'] },
+  { stage: 'Design', color: '#8FAE8B', chips: ['Figma prototypes', 'prompt templates'] },
+  { stage: 'Build', color: '#C79A4B', chips: ['STT + LLMs', 'HIPAA infra'] },
+  { stage: 'Launch', color: '#D193A8', chips: ['GTM · roundtables', 'first clinic pilot'] },
+]
+
 const OWNED = [
   {
     num: '01',
     heading: 'Co-led the 0→1 MVP',
     color: '#D193A8',
-    body: 'Defined the roadmap, authored PRDs, and built Figma prototypes — coordinating design and engineering to keep technical feasibility and business goals aligned, from zero to a working Scribe integrating speech-to-text and LLMs.',
+    body: 'Roadmap, PRDs, Figma prototypes — coordinating design & engineering from zero to a working Scribe.',
     stat: '83% less documentation time',
   },
   {
     num: '02',
     heading: 'Designed the AI features',
     color: '#B98ACB',
-    body: 'Note Customization, AI Edit, and Doc Generation — grounded in 20+ user interviews and 10+ competitor analyses, then co-designed prompt templates with engineers, iterating for LLM accuracy and reliability.',
+    body: 'Note Customization · AI Edit · Doc Generation — co-designed prompt templates with engineers.',
     stat: '20+ interviews · 10+ teardowns',
   },
   {
     num: '03',
     heading: 'Built the intake engine',
     color: '#8FAE8B',
-    body: 'Launched a HIPAA-compliant email workflow for patient intake, consent, and data authorization — automating collection before every visit and lifting engagement measured by open and click rates.',
+    body: 'HIPAA-compliant email workflow for intake, consent & data authorization — automated end to end.',
     stat: '+60% engagement',
   },
   {
     num: '04',
     heading: 'Drove GTM & adoption',
     color: '#C79A4B',
-    body: 'Defined GTM across media, hackathons, and influencer partnerships; engaged 30+ developers behind the healthcare MCP, and ran clinical roundtables with 40+ physicians — live demos and medical-association partnerships that fed insights back into the roadmap.',
+    body: 'Media, hackathons & influencer partnerships; MCP developer community; clinical roundtables.',
     stat: '40+ physicians · 30+ developers',
+  },
+]
+
+const ARTIFACTS = [
+  { img: '/theta/artifact-prd.jpg', caption: 'Theta Wellness PRD — 46 pages, four closed loops', rotate: '-rotate-2' },
+  { img: '/theta/artifact-research.jpg', caption: 'Competitive scan — 14 healthcare AI products mapped', rotate: 'rotate-1' },
+  { img: '/theta/artifact-growth.jpg', caption: 'Growth & GTM playbook — 10 pages of channel plays', rotate: '-rotate-1' },
+]
+
+const PRESS = [
+  {
+    label: 'CMU Integrated Innovation Institute',
+    title: 'Featured in “Summer Internships 2025”',
+    href: 'https://www.cmu.edu/iii/about/news/2025/summer-internships-2025.html',
+  },
+  {
+    label: 'LinkedIn',
+    title: 'My internship reflection — #healthcareai',
+    href: 'https://www.linkedin.com/posts/olivia-zerun-xiao_productmanagement-internshipreflection-healthcareai-ugcPost-7348943917221826562-dkWk/',
   },
 ]
 
@@ -129,10 +156,10 @@ const SUB_PROJECTS: SubProject[] = [
     accent: '#B98ACB',
     link: { label: 'mirobody.ai ↗', href: 'https://mirobody.ai/' },
     bullets: [
+      'World’s first HIPAA-compliant health-data MCP — #1 on the GAIA leaderboard',
       'Gathered feedback from 20+ developers through events and community outreach',
       'Diagnosed integration and adoption barriers; findings reshaped roadmap priorities',
-      'Crafted developer messaging and an open-source adoption strategy',
-      'Engaged 30+ developers total to drive initial adoption of the healthcare MCP server',
+      'Crafted developer messaging and an open-source adoption strategy — 30+ developers engaged',
     ],
   },
   {
@@ -403,7 +430,45 @@ export default function ThetaCase() {
               from the PRD to the pilot — <span className="text-orchid">the parts with my fingerprints on them ✦</span>
             </p>
           </Reveal>
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
+
+          {/* 工作流程图：五阶段管线 */}
+          <Reveal delay={0.16}>
+            <div className="relative mt-12">
+              <div aria-hidden className="absolute left-[7%] right-[7%] top-[9px] hidden border-t border-dashed border-plum/25 md:block" />
+              <div className="grid gap-8 md:grid-cols-5 md:gap-4">
+                {FLOW.map((f, i) => (
+                  <div key={f.stage} className="relative flex items-start gap-3 md:flex-col md:items-center md:text-center">
+                    <span
+                      className="relative z-10 mt-1 flex h-[19px] w-[19px] shrink-0 items-center justify-center md:mt-0"
+                      aria-hidden
+                    >
+                      <span className="absolute inset-0 rounded-full border border-dashed bg-cream" style={{ borderColor: f.color }} />
+                      <span className="h-[7px] w-[7px] rounded-full" style={{ backgroundColor: f.color }} />
+                    </span>
+                    <div className="md:mt-3">
+                      <p className="font-hand text-[19px] font-semibold leading-none" style={{ color: f.color }}>
+                        {f.stage}
+                      </p>
+                      <div className="mt-2 flex flex-wrap gap-1.5 md:justify-center">
+                        {f.chips.map((c) => (
+                          <span key={c} className="rounded-full bg-white/80 px-2.5 py-0.5 text-[11.5px] text-plum-muted shadow-sm">
+                            {c}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    {i < FLOW.length - 1 && (
+                      <span aria-hidden className="absolute -bottom-6 left-[9px] text-[13px] text-plum-faint md:hidden">
+                        ↓
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
             {OWNED.map((s, i) => (
               <Reveal key={s.num} delay={i * 0.08}>
                 <div className="flex h-full flex-col rounded-[1.6rem] border border-plum/10 bg-cream p-7 md:p-8">
@@ -418,6 +483,81 @@ export default function ThetaCase() {
                   <h3 className="mt-2 font-serif text-[1.3rem] font-medium text-plum">{s.heading}</h3>
                   <p className="mt-3 text-[14px] leading-relaxed text-plum-muted">{s.body}</p>
                 </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 证据墙 ── */}
+      <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
+        <Reveal>
+          <p className="label-text mb-4">Proof of work</p>
+        </Reveal>
+        <Reveal delay={0.06}>
+          <h2 className="max-w-3xl font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
+            Evidence over adjectives
+          </h2>
+        </Reveal>
+        <Reveal delay={0.12}>
+          <p className="mt-3 font-hand text-[17px] text-plum-muted">
+            the actual artifacts — <span className="text-orchid">blurred on purpose, internal docs stay internal ✦</span>
+          </p>
+        </Reveal>
+
+        {/* 文档拍立得 */}
+        <div className="mt-10 grid gap-8 sm:grid-cols-3">
+          {ARTIFACTS.map((a, i) => (
+            <Reveal key={a.img} delay={i * 0.08}>
+              <figure className={`${a.rotate} rounded-[10px] border border-plum/10 bg-white p-2 pb-4 shadow-[0_22px_48px_-22px_rgba(90,63,86,0.45)] transition-transform duration-500 hover:rotate-0 hover:-translate-y-1`}>
+                <div className="overflow-hidden rounded-[6px]">
+                  <img src={a.img} alt={a.caption} loading="lazy" className="w-full blur-[2.5px] saturate-[0.9]" />
+                </div>
+                <figcaption className="mt-3 px-1 text-center font-hand text-[15px] leading-snug text-plum-muted">
+                  {a.caption}
+                </figcaption>
+              </figure>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Demo 视频 + 报道 */}
+        <div className="mt-12 grid gap-8 lg:grid-cols-[3fr_2fr]">
+          <Reveal>
+            <div className="overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]">
+              <div className="flex flex-wrap items-center gap-2 px-5 py-3.5">
+                <span className="font-hand text-[17px] font-semibold text-plum">Theta Health MCP — 82-second demo</span>
+                <span className="ml-auto rounded-full bg-[#C79A4B]/15 px-3 py-1 font-hand text-[14px] text-[#9A7433]">
+                  🏆 GAIA Leaderboard #1
+                </span>
+              </div>
+              <video
+                controls
+                preload="none"
+                poster="/theta/mcp-demo-poster.jpg"
+                className="aspect-video w-full bg-plum/5"
+              >
+                <source src="/theta/mcp-demo.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </Reveal>
+          <div className="flex flex-col gap-6">
+            {PRESS.map((p, i) => (
+              <Reveal key={p.href} delay={i * 0.08}>
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group/press flex h-full flex-col justify-center rounded-2xl border border-plum/10 bg-white/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-orchid/40 hover:bg-white"
+                >
+                  <p className="label-text !text-[10px]">{p.label}</p>
+                  <p className="mt-2 font-serif text-[1.1rem] font-medium leading-snug text-plum">
+                    {p.title}
+                    <span aria-hidden className="ml-2 inline-block text-orchid transition-transform duration-300 group-hover/press:translate-x-0.5 group-hover/press:-translate-y-0.5">
+                      ↗
+                    </span>
+                  </p>
+                </a>
               </Reveal>
             ))}
           </div>
