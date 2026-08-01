@@ -768,26 +768,31 @@ export default function ThetaCase() {
               ].map((pl) => (
                 <div
                   key={pl.name}
-                  className="group/pl rounded-2xl border border-plum/10 bg-white/75 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-orchid/40 hover:bg-white"
+                  className="group/pl overflow-hidden rounded-2xl border border-plum/10 bg-white/75 transition-all duration-300 hover:-translate-y-1 hover:border-orchid/40 hover:bg-white hover:shadow-[0_20px_44px_-22px_rgba(90,63,86,0.35)]"
                 >
-                  <a href={pl.href} className="block">
-                    <div className="flex items-center gap-2.5">
-                      <img src={pl.logo} alt="" aria-hidden className="h-6 w-6 rounded-md object-contain" />
-                      <p className="font-serif text-[1.1rem] font-semibold text-plum">{pl.name}</p>
-                      <span className="ml-auto font-hand text-[13px]" style={{ color: pl.c }}>
-                        {pl.aud}
+                  <span aria-hidden className="block h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${pl.c}, ${pl.c}44)` }} />
+                  <a href={pl.href} className="block px-5 pb-2 pt-4">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-plum/10 bg-white shadow-sm">
+                        <img src={pl.logo} alt="" aria-hidden className="h-6 w-6 object-contain" />
                       </span>
+                      <div>
+                        <p className="font-serif text-[1.1rem] font-semibold leading-tight text-plum">{pl.name}</p>
+                        <p className="font-hand text-[13px] leading-tight" style={{ color: pl.c }}>{pl.aud}</p>
+                      </div>
                     </div>
-                    <p className="mt-2 text-[12.5px] leading-snug text-plum-muted">{pl.desc}</p>
-                    <p className="mt-2 text-[12px] font-medium text-plum-faint transition-colors group-hover/pl:text-orchid">
-                      jump to section ↓
-                    </p>
+                    <p className="mt-3 text-[12.5px] leading-snug text-plum-muted">{pl.desc}</p>
                   </a>
-                  {pl.ext && (
-                    <div className="mt-3 border-t border-dashed border-plum/10 pt-3">
-                      <SiteLink href={pl.ext.url} label={pl.ext.label} color={pl.c} small />
-                    </div>
-                  )}
+                  <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-5 pb-4">
+                    <a
+                      href={pl.href}
+                      className="inline-flex items-center gap-1.5 whitespace-nowrap text-[12.5px] font-semibold text-plum transition-colors group-hover/pl:text-orchid"
+                    >
+                      see the work
+                      <span aria-hidden className="transition-transform duration-300 group-hover/pl:translate-y-0.5">↓</span>
+                    </a>
+                    {pl.ext && <SiteLink href={pl.ext.url} label={pl.ext.label} color={pl.c} small />}
+                  </div>
                 </div>
               ))}
             </div>
@@ -870,14 +875,32 @@ export default function ThetaCase() {
                   </div>
                 ))}
               </div>
-              <div className="mt-5 rounded-xl bg-orchid/8 px-4 py-3.5">
-                <p className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-orchid">What they spec’d, combined</p>
-                <div className="mt-2.5 flex flex-wrap gap-2">
-                  <span className="rounded-full px-3 py-1 text-[12px] font-medium" style={{ backgroundColor: '#D193A820', color: '#B06A80' }}>→ billing-ready notes</span>
-                  <span className="rounded-full px-3 py-1 text-[12px] font-medium" style={{ backgroundColor: '#B98ACB20', color: '#8A5F9E' }}>→ intake in any language</span>
-                  <span className="rounded-full px-3 py-1 text-[12px] font-medium" style={{ backgroundColor: '#8FAE8B20', color: '#5F7D5B' }}>→ lives inside the EHR</span>
+              <div className="mt-5 rounded-xl bg-orchid/8 px-4 py-4">
+                <p className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-orchid">Every conversation pointed to the same three must-haves</p>
+                <div className="mt-3 space-y-2.5">
+                  <div className="flex items-start gap-2.5">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D193A8]/20 text-[11px] font-bold text-[#B06A80]">1</span>
+                    <p className="text-[13px] leading-snug text-plum">
+                      <span className="font-semibold">Notes that pass insurance billing</span>
+                      <span className="text-plum-muted"> — the home-health director said she'd pay for this</span>
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#B98ACB]/20 text-[11px] font-bold text-[#8A5F9E]">2</span>
+                    <p className="text-[13px] leading-snug text-plum">
+                      <span className="font-semibold">Intake in the patient's own language</span>
+                      <span className="text-plum-muted"> — the neurosurgeon's #1 blocker</span>
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#8FAE8B]/20 text-[11px] font-bold text-[#5F7D5B]">3</span>
+                    <p className="text-[13px] leading-snug text-plum">
+                      <span className="font-semibold">Works inside the EHR they already use</span>
+                      <span className="text-plum-muted"> — the data leader's make-or-break</span>
+                    </p>
+                  </div>
                 </div>
-                <p className="mt-2.5 font-hand text-[14px] text-plum-muted">four seats, one spec — that became the MVP bar ✦</p>
+                <p className="mt-3 font-hand text-[15px] text-orchid">these three became the bar for the MVP ✦</p>
               </div>
             </div>
           </Reveal>
