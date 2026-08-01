@@ -1238,6 +1238,26 @@ export default function ThetaCase() {
               </div>
             </Reveal>
           </div>
+
+          {/* 数据注册表实景 */}
+          <Reveal delay={0.1}>
+            <div className="mt-10 overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]">
+              <div aria-hidden className="flex items-center gap-1.5 border-b border-plum/10 bg-cream-soft/60 px-4 py-2.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-rose/60" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#DECDA6]" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#8FAE8B]/70" />
+              </div>
+              <img
+                src="/theta/site-theta-product.png"
+                alt="The live registry — raw health data mapped to standardized indicators with confidence scores"
+                loading="lazy"
+                className="w-full"
+              />
+              <p className="px-5 py-3.5 font-hand text-[15px] text-plum-muted">
+                the registry at work — raw data mapped to ~2,000 standardized indicators, live today ✦
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -1417,66 +1437,6 @@ export default function ThetaCase() {
               />
             </div>
           </Reveal>
-        </div>
-      </section>
-
-      {/* ── 上线中的产品 ── */}
-      <section className="bg-white/60 py-16 md:py-20">
-        <div className="mx-auto max-w-6xl px-6 md:px-10">
-          <Reveal>
-            <p className="label-text mb-4">Shipped & live</p>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 className="font-serif text-[clamp(1.7rem,3.6vw,2.6rem)] font-light leading-[1.15] text-plum">
-              You can click these today
-            </h2>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <p className="mt-3 font-hand text-[17px] text-plum-muted">
-              not mockups — <span className="text-orchid">production, in the wild ✦</span>
-            </p>
-          </Reveal>
-          <div className="mt-10 grid items-stretch gap-6 lg:grid-cols-[1fr_1.5fr_1fr]">
-            <Reveal>
-              <a
-                href="https://thetahealth.ai/"
-                target="_blank"
-                rel="noreferrer"
-                className="group/live flex h-full flex-col overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_18px_40px_-24px_rgba(90,63,86,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-orchid/40"
-              >
-                <img src="/theta/site-theta.png" alt="Theta — Before doctors, beyond records." className="w-full transition-transform duration-500 group-hover/live:scale-[1.02]" loading="lazy" />
-                <p className="mt-auto px-5 py-3.5 text-[13px] font-medium text-plum-muted">
-                  thetahealth.ai <span aria-hidden className="text-orchid">↗</span> — the clinician product
-                </p>
-              </a>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_24px_56px_-28px_rgba(90,63,86,0.4)]">
-                <div aria-hidden className="flex items-center gap-1.5 border-b border-plum/10 bg-cream-soft/60 px-4 py-2.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-rose/60" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#DECDA6]" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#8FAE8B]/70" />
-                </div>
-                <img src="/theta/site-theta-product.png" alt="Theta Health live dashboard — standardized health indicators with mapping confidence" className="w-full" loading="lazy" />
-                <p className="mt-auto px-5 py-3.5 font-hand text-[15px] text-plum-muted">
-                  the live dashboard — raw data mapped to ~2,000 standardized indicators ✦
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={0.16}>
-              <a
-                href="https://mirobody.ai/"
-                target="_blank"
-                rel="noreferrer"
-                className="group/live flex h-full flex-col overflow-hidden rounded-2xl border border-plum/10 bg-white shadow-[0_18px_40px_-24px_rgba(90,63,86,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-orchid/40"
-              >
-                <img src="/theta/site-mirobody.png" alt="Mirobody — Mirror Your Body in Data" className="w-full transition-transform duration-500 group-hover/live:scale-[1.02]" loading="lazy" />
-                <p className="mt-auto px-5 py-3.5 text-[13px] font-medium text-plum-muted">
-                  mirobody.ai <span aria-hidden className="text-orchid">↗</span> — the health-data registry
-                </p>
-              </a>
-            </Reveal>
-          </div>
         </div>
       </section>
 
