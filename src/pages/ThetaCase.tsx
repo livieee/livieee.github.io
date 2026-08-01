@@ -873,29 +873,42 @@ export default function ThetaCase() {
         </div>
       </section>
 
-      {/* ── 收尾 ── */}
+      {/* ── 收尾：团队合照 + takeaway ── */}
       <section className="mx-auto max-w-6xl px-6 pb-24 pt-4 md:px-10">
         <Reveal>
-          <div className="rounded-[2rem] bg-gradient-to-br from-lavender/50 to-blush/40 p-10 text-center md:p-14">
-            <p className="mx-auto max-w-2xl font-hand text-[22px] leading-snug text-plum md:text-[26px]">
-              “Adoption is a human problem before it is a technical one.”
-            </p>
-            <p className="mt-4 text-[14px] text-plum-muted">
-              — the lesson every track of this work kept teaching me
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                to="/#impact"
-                className="inline-flex items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
-              >
-                ← Back to all work
-              </Link>
-              <a
-                href="mailto:olivia.zxiao@gmail.com"
-                className="inline-flex items-center gap-2 rounded-full border border-plum/25 bg-white/60 px-6 py-3 text-sm font-medium text-plum transition-all duration-300 hover:-translate-y-0.5 hover:border-orchid"
-              >
-                Talk about this project
-              </a>
+          <div className="grid items-center gap-10 rounded-[2rem] bg-gradient-to-br from-lavender/50 to-blush/40 p-8 md:p-12 lg:grid-cols-[2fr_3fr] lg:gap-12">
+            <figure className="mx-auto w-full max-w-[380px] -rotate-2 rounded-[12px] border border-plum/10 bg-white p-2.5 pb-5 shadow-[0_28px_60px_-26px_rgba(90,63,86,0.5)] transition-transform duration-500 hover:rotate-0">
+              <img
+                src="/theta/team-aias.jpg"
+                alt="Olivia with the Theta Health team at the AIAS conference booth in San Francisco"
+                loading="lazy"
+                className="w-full rounded-[8px]"
+              />
+              <figcaption className="mt-3 text-center font-hand text-[16px] text-plum-muted">
+                the Theta crew, AIAS · San Francisco ✦
+              </figcaption>
+            </figure>
+            <div className="text-center lg:text-left">
+              <p className="font-hand text-[22px] leading-snug text-plum md:text-[26px]">
+                “Adoption is a human problem before it is a technical one.”
+              </p>
+              <p className="mt-4 text-[14px] text-plum-muted">
+                — the lesson every track of this work kept teaching me
+              </p>
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+                <Link
+                  to="/#impact"
+                  className="inline-flex items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
+                >
+                  ← Back to all work
+                </Link>
+                <a
+                  href="mailto:olivia.zxiao@gmail.com"
+                  className="inline-flex items-center gap-2 rounded-full border border-plum/25 bg-white/60 px-6 py-3 text-sm font-medium text-plum transition-all duration-300 hover:-translate-y-0.5 hover:border-orchid"
+                >
+                  Talk about this project
+                </a>
+              </div>
             </div>
           </div>
         </Reveal>
