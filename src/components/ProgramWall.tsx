@@ -31,7 +31,7 @@ const PINS: Pin[] = [
     delay: '.18s',
   },
   {
-    src: '/events/luma/agent-recall.jpg',
+    src: '/events/gmi-perk.jpg',
     type: 'agent hackathon',
     name: 'Total Agent Recall',
     role: 'Partner Coordination',
@@ -79,24 +79,24 @@ export function ProgramWall() {
         <path
           d="M126 62C160 54 196 62 220 80"
           stroke="#3A2440"
-          strokeOpacity="0.2"
-          strokeWidth="1.3"
+          strokeOpacity="0.3"
+          strokeWidth="1.6"
           strokeLinecap="round"
           strokeDasharray="4 5"
         />
         <path
           d="M316 88C336 124 330 168 306 196"
           stroke="#3A2440"
-          strokeOpacity="0.2"
-          strokeWidth="1.3"
+          strokeOpacity="0.3"
+          strokeWidth="1.6"
           strokeLinecap="round"
           strokeDasharray="4 5"
         />
         <path
           d="M244 234C214 248 176 246 148 232"
           stroke="#3A2440"
-          strokeOpacity="0.2"
-          strokeWidth="1.3"
+          strokeOpacity="0.3"
+          strokeWidth="1.6"
           strokeLinecap="round"
           strokeDasharray="4 5"
         />
@@ -104,13 +104,13 @@ export function ProgramWall() {
 
       {/* 中央：旗舰项目的页面局部 */}
       <div
-        className="flagship group/flag absolute left-1/2 top-[49%] w-[42%] -translate-x-1/2 -translate-y-1/2 -rotate-1 overflow-hidden rounded-xl bg-white shadow-[0_22px_48px_-20px_rgba(58,36,64,0.5)] ring-1 ring-plum/10 transition-transform duration-500 hover:scale-[1.03]"
+        className="flagship group/flag absolute left-1/2 top-[49%] w-[42%] -translate-x-1/2 -translate-y-1/2 -rotate-1 overflow-hidden rounded-xl bg-white shadow-[0_22px_48px_-20px_rgba(58,36,64,0.5)] ring-1 ring-rose/30 transition-transform duration-500 hover:scale-[1.03]"
         style={{ animation: 'annot-in .6s .05s ease-out both' }}
       >
-        <div className="flex items-center gap-1 bg-plum/[0.06] px-2.5 py-1.5">
-          <span className="h-[5px] w-[5px] rounded-full bg-plum/20" />
-          <span className="h-[5px] w-[5px] rounded-full bg-plum/20" />
-          <span className="h-[5px] w-[5px] rounded-full bg-plum/20" />
+        <div className="flex items-center gap-1 bg-rose/[0.14] px-2.5 py-1.5">
+          <span className="h-[5px] w-[5px] rounded-full bg-rose/40" />
+          <span className="h-[5px] w-[5px] rounded-full bg-rose/30" />
+          <span className="h-[5px] w-[5px] rounded-full bg-rose/20" />
         </div>
 
         <div className="px-3 pb-3 pt-2.5">
@@ -124,25 +124,20 @@ export function ProgramWall() {
           </div>
 
           <div className="mt-1.5 flex items-baseline gap-1.5">
-            <span className="font-serif text-[19px] leading-none text-rose">221</span>
+            <span className="font-serif text-[23px] leading-none text-rose">221</span>
             <span className="text-[7.5px] leading-tight text-plum-faint">builders · one week</span>
           </div>
 
-          {/* 提交列表的示意 */}
-          <ul className="mt-2.5 space-y-1.5">
-            {[72, 58, 64].map((w, i) => (
-              <li key={w} className="flex items-center gap-1.5 rounded-md bg-plum/[0.035] px-1.5 py-1">
-                <span
-                  className="h-[13px] w-[13px] shrink-0 rounded-[3px]"
-                  style={{ backgroundColor: ['#D193A8', '#7A9CC6', '#8FAE8B'][i], opacity: 0.35 }}
-                />
-                <span className="flex-1">
-                  <span className="block h-[3px] rounded-full bg-plum/15" style={{ width: `${w}%` }} />
-                  <span className="mt-[3px] block h-[2px] w-[38%] rounded-full bg-plum/10" />
-                </span>
-              </li>
+          {/* 提交进度 */}
+          <div className="mt-2 h-[4px] w-full overflow-hidden rounded-full bg-plum/10">
+            <span className="block h-full w-[86%] rounded-full bg-rose/55" />
+          </div>
+          <div className="mt-1.5 flex items-center gap-1">
+            {['#D193A8', '#B98ACB', '#7A9CC6', '#8FAE8B'].map((c) => (
+              <span key={c} className="h-[9px] w-[9px] rounded-[2px]" style={{ backgroundColor: c, opacity: 0.4 }} />
             ))}
-          </ul>
+            <span className="ml-0.5 text-[6.5px] text-plum-faint">submissions in review</span>
+          </div>
 
           {/* 合作印章 */}
           <div className="mt-2.5 flex items-center gap-1.5 border-t border-plum/8 pt-2">
@@ -172,13 +167,13 @@ export function ProgramWall() {
           className={`group/pin absolute ${p.cls} rounded-[6px] bg-white p-[4px] pb-[3px] shadow-[0_12px_28px_-14px_rgba(58,36,64,0.55)] transition-all duration-500 hover:z-20 hover:-translate-y-1.5 hover:rotate-0 hover:scale-[1.05] hover:bg-white/80 hover:backdrop-blur-[1px] hover:shadow-[0_20px_40px_-16px_rgba(58,36,64,0.55)]`}
           style={{ animation: `annot-in .6s ${p.delay} ease-out both` }}
         >
-          <span className="relative block overflow-hidden rounded-[4px]">
+          <span className="relative block overflow-hidden rounded-[4px] bg-[#C9A8B4]">
             <img
               src={p.src}
               alt=""
               aria-hidden
               loading="lazy"
-              className="aspect-[3/2] w-full object-cover saturate-[0.82] transition-all duration-500 group-hover/pin:scale-[1.03] group-hover/pin:opacity-[0.72] group-hover/pin:saturate-[0.7]"
+              className="aspect-[3/2] w-full object-cover mix-blend-luminosity opacity-90 transition-all duration-500 group-hover/pin:scale-[1.03] group-hover/pin:opacity-100 group-hover/pin:mix-blend-normal"
             />
 
             {/* hover 才出现的事实层 */}
@@ -199,16 +194,16 @@ export function ProgramWall() {
       ))}
 
       {/* 路线上的四个阶段 */}
-      <span className="absolute left-[33%] top-[10%] font-hand text-[10.5px] text-plum-muted">
+      <span className="absolute left-[33%] top-[10%] font-hand text-[9px] text-plum-muted">
         partner goal
       </span>
-      <span className="absolute right-[1%] top-[46%] max-w-[20%] text-right font-hand text-[10.5px] leading-tight text-plum-muted">
+      <span className="absolute right-[1%] top-[46%] max-w-[20%] text-right font-hand text-[9px] leading-tight text-plum-muted">
         program design
       </span>
-      <span className="absolute bottom-[3%] left-[34%] font-hand text-[10.5px] text-plum-muted">
+      <span className="absolute bottom-[3%] left-[34%] font-hand text-[9px] text-plum-muted">
         people come together
       </span>
-      <span className="absolute left-[1.5%] top-[40%] max-w-[20%] font-hand text-[10.5px] leading-tight text-plum-muted">
+      <span className="absolute left-[1.5%] top-[40%] max-w-[20%] font-hand text-[9px] leading-tight text-plum-muted">
         momentum after
       </span>
 
