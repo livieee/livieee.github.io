@@ -237,9 +237,7 @@ function ForkSketch({ className = '' }: { className?: string }) {
 }
 
 export function HowICreateValue() {
-  const [drawn, setDrawn] = useState<number[]>([])
-  const toggle = (i: number) =>
-    setDrawn((d) => (d.includes(i) ? d.filter((n) => n !== i) : [...d, i]))
+  const [active, setActive] = useState<number | null>(null)
 
   return (
     <section id="capabilities" className="mx-auto max-w-6xl px-6 py-28 md:px-10 md:py-36">
@@ -312,94 +310,137 @@ export function HowICreateValue() {
         </div>
       </Reveal>
 
-      {/* ── ② 抽牌 ────────────────────────────────────────────── */}
+      {/* ── ② 抽牌：扇面 + 法阵 + 升起翻面 ────────────────────── */}
       <Reveal className="mt-20">
         <p className="text-center font-hand text-[17px] text-plum-muted">
-          {drawn.length === 0
-            ? 'so — pick a card ✦'
-            : drawn.length === HAND.length
-              ? 'that’s the whole hand ✦'
-              : 'keep going ✦'}
+          {active === null ? 'so — pick a card ✦' : 'tap it again to put it back ✦'}
         </p>
       </Reveal>
 
-      <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {HAND.map((c, i) => {
-          const isUp = drawn.includes(i)
-          return (
-            <Reveal key={c.rank} delay={i * 0.07}>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => toggle(i)}
-                  aria-pressed={isUp}
-                  aria-label={isUp ? `${c.title} — tap to turn back` : 'Turn over a card'}
-                  className={`group/card block h-[330px] w-full text-left outline-none transition-transform duration-500 ${
-                    isUp ? 'rotate-0' : `${c.tilt} hover:-translate-y-2 hover:rotate-0`
-                  }`}
-                  style={{ perspective: '1200px' }}
+      <Reveal className="mt-6" y={30}>
+        <div
+          className="relative mx-auto h-[520px] w-full max-w-4xl select-none"
+          style={{ perspective: '1400px' }}
+        >
+          {/* 法阵 */}
+          <svg
+            viewBox="0 0 400 160"
+            className="pointer-events-none absolute bottom-[8%] left-1/2 w-[78%] -translate-x-1/2"
+            fill="none"
+            aria-hidden
+          >
+            <ellipse cx="200" cy="80" rx="182" ry="58" stroke="#C79A4B" strokeOpacity="0.3" strokeWidth="1.1" />
+            <ellipse cx="200" cy="80" rx="150" ry="46" stroke="#C79A4B" strokeOpacity="0.18" strokeWidth="0.9" />
+            <ellipse cx="200" cy="80" rx="112" ry="34" stroke="#B98ACB" strokeOpacity="0.22" strokeWidth="0.9" />
+            {Array.from({ length: 24 }).map((_, i) => {
+              const a2 = (i / 24) * Math.PI * 2
+              return (
+                <line
+                  key={i}
+                  x1={200 + Math.cos(a2) * 150}
+                  y1={80 + Math.sin(a2) * 46}
+                  x2={200 + Math.cos(a2) * 182}
+                  y2={80 + Math.sin(a2) * 58}
+                  stroke="#C79A4B"
+                  strokeOpacity="0.22"
+                  strokeWidth="0.8"
+                />
+              )
+            })}
+          </svg>
+
+          {/* 飘落的碎光 */}
+          {[12, 28, 46, 63, 81, 92].map((left, i) => (
+            <span
+              key={left}
+              aria-hidden
+              className="pointer-events-none absolute top-0 h-1 w-1 rounded-full bg-lavender-deep/45"
+              style={{
+                left: `${left}%`,
+                animation: `petal-fall ${9 + i * 1.7}s ${i * 1.4}s linear infinite`,
+              }}
+            />
+          ))}
+
+          {HAND.map((c, i) => {
+            const isUp = active === i
+            const dimmed = active !== null && !isUp
+            const angle = -21 + i * 14
+            const lift = Math.abs(i - 1.5) * 14
+            return (
+              <button
+                key={c.rank}
+                type="button"
+                onClick={() => setActive(isUp ? null : i)}
+                aria-pressed={isUp}
+                aria-label={isUp ? `${c.title} — tap to put back` : `Draw the ${c.rank} card`}
+                className="group/card absolute left-1/2 top-[10%] h-[330px] w-[208px] outline-none"
+                style={{
+                  transformOrigin: '50% 130%',
+                  transition: 'transform .8s cubic-bezier(.2,.75,.2,1), opacity .5s',
+                  transform: isUp
+                    ? 'translateX(-50%) translateY(24px) rotate(0deg) scale(1.16)'
+                    : `translateX(-50%) rotate(${angle}deg) translateY(${lift}px)`,
+                  opacity: dimmed ? 0.32 : 1,
+                  zIndex: isUp ? 30 : 10 + i,
+                  filter: isUp ? 'drop-shadow(0 22px 44px rgba(199,154,75,0.32))' : undefined,
+                }}
+              >
+                <span
+                  className="relative block h-full w-full"
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    transition: 'transform .8s cubic-bezier(.2,.75,.2,1)',
+                    transform: isUp ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                  }}
                 >
+                  {/* 牌背 */}
                   <span
-                    className="relative block h-full w-full"
-                    style={{
-                      transformStyle: 'preserve-3d',
-                      transition: 'transform .75s cubic-bezier(.2,.7,.2,1)',
-                      transform: isUp ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                    }}
+                    className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_16px_36px_-18px_rgba(58,36,64,0.55)] transition-transform duration-500 group-hover/card:-translate-y-2"
+                    style={{ backfaceVisibility: 'hidden' }}
                   >
-                    {/* 牌背 */}
-                    <span
-                      className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_14px_32px_-18px_rgba(58,36,64,0.5)]"
-                      style={{ backfaceVisibility: 'hidden' }}
-                    >
-                      <CardBack />
-                      <span className="absolute inset-x-0 bottom-6 text-center font-hand text-[13px] text-plum/45 transition-opacity duration-300 group-hover/card:opacity-0">
-                        tap to draw
+                    <CardBack />
+                  </span>
+
+                  {/* 牌面 */}
+                  <span
+                    className="absolute inset-0 flex flex-col rounded-[1.1rem] border border-champagne-deep/40 bg-cream-soft px-5 py-5 shadow-[0_24px_52px_-20px_rgba(58,36,64,0.5)]"
+                    style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                  >
+                    <span className="flex items-center justify-between">
+                      <span className="flex flex-col items-center gap-0.5 text-plum">
+                        <span className="font-serif text-[20px] leading-none">{c.rank}</span>
+                        <Suit name={c.suit} className="h-3.5 w-3.5" />
                       </span>
+                      <span aria-hidden className="h-px w-10 bg-plum/15" />
                     </span>
 
-                    {/* 牌面 */}
-                    <span
-                      className="absolute inset-0 flex flex-col rounded-[1.1rem] border border-plum/15 bg-cream-soft px-5 py-5 shadow-[0_20px_44px_-20px_rgba(58,36,64,0.5)]"
-                      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-                    >
-                      <span className="flex items-center justify-between">
-                        <span className="flex flex-col items-center gap-0.5 text-plum">
-                          <span className="font-serif text-[20px] leading-none">{c.rank}</span>
-                          <Suit name={c.suit} className="h-3.5 w-3.5" />
-                        </span>
-                        <span aria-hidden className="h-px w-10 bg-plum/15" />
-                      </span>
+                    <span className="mt-5 block font-serif text-[17px] font-light leading-snug text-plum">
+                      {c.title}
+                    </span>
 
-                      <span className="mt-5 block font-serif text-[17px] font-light leading-snug text-plum">
-                        {c.title}
-                      </span>
+                    <span className="mt-3 block font-hand text-[15px] leading-snug text-plum-muted">
+                      “{c.quote}”
+                    </span>
 
-                      <span className="mt-3 block font-hand text-[15px] leading-snug text-plum-muted">
-                        “{c.quote}”
-                      </span>
-
-                      <span className="mt-auto block space-y-1 pt-4">
-                        {c.skills.map((s) => (
-                          <span
-                            key={s}
-                            className="flex items-baseline gap-1.5 text-[12px] text-plum-muted"
-                          >
-                            <span aria-hidden className="text-lavender-deep">
-                              ·
-                            </span>
-                            {s}
+                    <span className="mt-auto block space-y-1 pt-4">
+                      {c.skills.map((sk) => (
+                        <span key={sk} className="flex items-baseline gap-1.5 text-[12px] text-plum-muted">
+                          <span aria-hidden className="text-lavender-deep">
+                            ·
                           </span>
-                        ))}
-                      </span>
+                          {sk}
+                        </span>
+                      ))}
                     </span>
                   </span>
-                </button>
-              </li>
-            </Reveal>
-          )
-        })}
-      </ul>
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      </Reveal>
+
     </section>
   )
 }
