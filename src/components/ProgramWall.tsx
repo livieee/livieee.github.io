@@ -230,14 +230,14 @@ export function ProgramWall() {
 
       {/* 便签 */}
       <span
-        className="absolute bottom-[2%] left-[1.5%] w-[34%] -rotate-2 rounded-md border border-dashed border-rose/50 bg-white/95 px-2 py-1.5 shadow-sm"
+        className="absolute bottom-[2%] left-[1.5%] w-[38%] -rotate-2 rounded-md border border-dashed border-rose/50 bg-white/95 px-2 py-1.5 shadow-sm"
         style={{ animation: 'annot-in .6s .54s ease-out both' }}
       >
         <span className="block font-hand text-[13px] leading-tight text-plum">
           make the room work ✦
         </span>
-        <span className="mt-[3px] block text-[8px] leading-tight text-plum-faint">
-          partner goal → program design → people together → momentum
+        <span className="mt-[3px] block text-[9px] leading-tight text-plum-faint">
+          partners → people → momentum
         </span>
       </span>
 
