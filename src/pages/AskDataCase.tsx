@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
@@ -171,6 +171,125 @@ function BeforeAfterFlow() {
           </text>
         </g>
       </svg>
+    </div>
+  )
+}
+
+/* ── 01b · 真实产品演示：三段管线视频 ───────────────────────── */
+const CLIPS = [
+  {
+    id: 'connect',
+    step: '01',
+    tab: 'Connect',
+    src: '/bosch/demo-1-connect.mp4',
+    note: 'Pick a database, browse its tables, load the schema. From here on the session knows what data it is holding — nobody has to re-explain it downstream.',
+  },
+  {
+    id: 'query',
+    step: '02',
+    tab: 'Ask',
+    src: '/bosch/demo-2-query.mp4',
+    note: 'A question in plain language becomes an editable query, runs, and returns a table — with two exits already attached: send it to analytics, or send it to visualization.',
+  },
+  {
+    id: 'analyze',
+    step: '03',
+    tab: 'Analyze & visualize',
+    src: '/bosch/demo-3-analyze.mp4',
+    note: 'The same result flows into Python analysis and then an interactive chart — with the interaction timeline logging every refinement and an explain panel saying what just happened. No re-upload, no re-explaining.',
+  },
+]
+
+function PipelineDemo() {
+  const [i, setI] = useState(0)
+  const clip = CLIPS[i]
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  /* 只在进入视口时播放，离开就暂停 */
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) el.play().catch(() => {})
+        else el.pause()
+      },
+      { threshold: 0.35 },
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [i])
+
+  return (
+    <div className="rounded-[2rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-6 md:p-10">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <p className="label-text text-[#4E6E96]">The thread, actually holding</p>
+        <p className="font-hand text-[15px] text-plum-muted">
+          recorded in the real product — names and identity masked ✦
+        </p>
+      </div>
+
+      {/* 管线步骤条 */}
+      <div className="mb-5 flex flex-wrap items-center gap-2">
+        {CLIPS.map((c, n) => (
+          <div key={c.id} className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setI(n)}
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12.5px] font-medium transition-all duration-300 ${
+                n === i
+                  ? 'bg-[#4E6E96] text-white shadow-[0_10px_22px_-12px_rgba(78,110,150,0.8)]'
+                  : 'border border-plum/15 bg-white/60 text-plum-muted hover:border-[#7FA3CC] hover:text-[#4E6E96]'
+              }`}
+            >
+              <span className={n === i ? 'text-white/65' : 'text-plum-faint'}>{c.step}</span>
+              {c.tab}
+            </button>
+            {n < CLIPS.length - 1 && (
+              <span aria-hidden className="text-[#7FA3CC]">→</span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+        {/* 浏览器框内的视频 */}
+        <div className="overflow-hidden rounded-xl border border-plum/15 bg-white shadow-[0_28px_60px_-28px_rgba(78,110,150,0.55)]">
+          <div className="flex items-center gap-1.5 border-b border-plum/10 bg-cream-soft/70 px-4 py-2.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#E8B4B4]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#E8D5A8]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#B5CBB7]" />
+            <span className="mx-auto rounded-md bg-white px-3 py-0.5 text-[10.5px] text-plum-faint">
+              genai analytics suite · internal deployment
+            </span>
+          </div>
+          <video
+            key={clip.id}
+            ref={videoRef}
+            src={clip.src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-label={`${clip.tab} — recorded demo`}
+            className="block w-full bg-white"
+          />
+        </div>
+
+        {/* 说明 */}
+        <div className="lg:sticky lg:top-32">
+          <div className="rounded-2xl border border-plum/10 bg-white/80 p-6 backdrop-blur-sm">
+            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+              Step {clip.step} · {clip.tab}
+            </p>
+            <p className="mt-3 min-h-[132px] text-[14px] leading-relaxed text-plum">{clip.note}</p>
+          </div>
+          <p className="mt-3 font-hand text-[15px] text-plum-muted">
+            three stages, one session — nothing gets carried by hand ✦
+          </p>
+        </div>
+      </div>
     </div>
   )
 }
@@ -929,6 +1048,19 @@ export function AskDataCase() {
           <Reveal className="mt-8" y={28}>
             <BeforeAfterFlow />
           </Reveal>
+
+          <Reveal className="mt-14">
+            <p className="font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
+              And here is the right-hand side, running.
+            </p>
+            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
+              The same question travelling through all three stages without a single manual handoff.
+              Step through it.
+            </p>
+          </Reveal>
+          <Reveal className="mt-7" y={28}>
+            <PipelineDemo />
+          </Reveal>
         </section>
 
         {/* ── 02 约束 ──────────────────────────────────────────── */}
@@ -1055,10 +1187,10 @@ export function AskDataCase() {
 
           <Reveal className="mt-16">
             <p className="font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
-              …and here it is, running.
+              Spec, meet shipped screen
             </p>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              The shipped workspace. Tap a marker to read the decision behind it.
+              Six places where a written decision became a visible one. Tap a marker.
             </p>
           </Reveal>
           <Reveal className="mt-7" y={28}>
