@@ -60,7 +60,7 @@ export function ProgramWall() {
     <Link
       to="/work/ai-valley"
       aria-label="AI Valley programs — open the case study"
-      className="group/wall relative block aspect-[16/10] w-full cursor-none overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-lavender/45 via-cream-soft to-blush/30"
+      className="group/wall relative block aspect-[4/3] w-full cursor-none overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-lavender/45 via-cream-soft to-blush/30"
       onPointerMove={(e) => {
         if (e.pointerType === 'touch') return
         const r = e.currentTarget.getBoundingClientRect()
