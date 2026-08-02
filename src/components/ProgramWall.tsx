@@ -48,6 +48,13 @@ const PINS: Pin[] = [
   },
 ]
 
+const SHEET = [
+  { t: '6:10', k: 'Opening keynotes' },
+  { t: '6:30', k: 'The distribution challenge' },
+  { t: '7:10', k: 'Building in the age of AI' },
+  { t: '7:50', k: 'Beyond the horizon' },
+]
+
 const STAMPS = [
   { src: '/logos/partners/zai.jpg', alt: 'Z.ai' },
   { src: '/logos/partners/devpost.jpg', alt: 'Devpost' },
@@ -193,17 +200,34 @@ export function ProgramWall() {
         </span>
       ))}
 
+      {/* program design —— 当晚的流程表 */}
+      <span
+        className="absolute left-[2%] top-[38%] w-[26%] -rotate-2 rounded-md bg-white/95 px-2 py-1.5 shadow-[0_10px_24px_-14px_rgba(58,36,64,0.5)] ring-1 ring-plum/8"
+        style={{ animation: 'annot-in .6s .5s ease-out both' }}
+      >
+        <span className="block text-[6px] uppercase tracking-[0.16em] text-plum-faint">run of show</span>
+        <span className="mt-1 block space-y-[3px]">
+          {SHEET.map((r) => (
+            <span key={r.t} className="flex items-center gap-1">
+              <span className="font-serif text-[7px] leading-none text-rose">{r.t}</span>
+              <span className="h-[1px] flex-1 bg-plum/12" />
+              <span className="max-w-[58%] truncate text-[5.5px] leading-none text-plum-muted">{r.k}</span>
+            </span>
+          ))}
+        </span>
+      </span>
+
       {/* 路线上的四个阶段 */}
       <span className="absolute left-[33%] top-[10%] font-hand text-[9px] text-plum-muted">
         partner goal
       </span>
-      <span className="absolute right-[1%] top-[46%] max-w-[20%] text-right font-hand text-[9px] leading-tight text-plum-muted">
+      <span className="absolute left-[3%] top-[32%] max-w-[24%] font-hand text-[9px] leading-tight text-plum-muted">
         program design
       </span>
       <span className="absolute bottom-[3%] left-[34%] font-hand text-[9px] text-plum-muted">
         people come together
       </span>
-      <span className="absolute left-[1.5%] top-[40%] max-w-[20%] font-hand text-[9px] leading-tight text-plum-muted">
+      <span className="absolute left-[29%] top-[62%] max-w-[22%] font-hand text-[9px] leading-tight text-plum-muted">
         momentum after
       </span>
 
