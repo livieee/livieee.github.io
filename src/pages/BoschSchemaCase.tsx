@@ -392,7 +392,7 @@ export function BoschSchemaCase() {
             ships, what retries, and what goes to a human.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            {['System Architecture', 'Multi-Agent Design', 'LangGraph', 'FastAPI + Docker', 'Evaluation'].map((s) => (
+            {['System Architecture', 'Multi-Agent Design', 'Confidence Scoring', 'Evaluation'].map((s) => (
               <span
                 key={s}
                 className="rounded-full border border-[#7FA3CC]/40 bg-[#EFF5FB]/70 px-3.5 py-1.5 text-[11.5px] font-medium text-[#4E6E96]"
@@ -529,8 +529,9 @@ export function BoschSchemaCase() {
                   { src: '/bosch/stack/openai.png', alt: 'OpenAI' },
                   { src: '/bosch/stack/langchain.svg', alt: 'LangGraph' },
                   { src: '/bosch/stack/fastapi.svg', alt: 'FastAPI' },
-                  { src: '/bosch/stack/docker.svg', alt: 'Docker' },
                   { src: '/bosch/stack/python.svg', alt: 'Python' },
+                  { src: '/bosch/stack/tesseract.png', alt: 'Tesseract OCR' },
+                  { src: '/bosch/stack/docker.svg', alt: 'Docker' },
                 ].map((t) => (
                   <li key={t.alt} className="flex items-center gap-1.5">
                     <img src={t.src} alt="" aria-hidden loading="lazy" className="h-[18px] w-[18px] object-contain" />
@@ -539,7 +540,7 @@ export function BoschSchemaCase() {
                 ))}
               </ul>
               <p className="mt-4 border-t border-plum/10 pt-3.5 text-[12.5px] leading-relaxed text-plum-muted">
-                Tesseract OCR for image-heavy pages · containerised for deployment
+                OCR for image-heavy pages · containerised for deployment
               </p>
             </div>
 
