@@ -27,7 +27,7 @@ const PINS: Pin[] = [
     type: 'founder conversation',
     name: '2026 GTC Fireside Talk',
     role: 'Host',
-    cls: 'left-[0.5%] top-[1%] w-[26%] -rotate-2',
+    cls: 'left-[0%] top-[0%] w-[24%] -rotate-2',
     delay: '.18s',
   },
   {
@@ -35,7 +35,7 @@ const PINS: Pin[] = [
     type: 'agent hackathon',
     name: 'AI Valley Hackathon',
     role: '',
-    cls: 'right-[0.5%] top-[0.5%] w-[25%] rotate-2',
+    cls: 'right-[0%] top-[0%] w-[23%] rotate-2',
     delay: '.3s',
   },
   {
@@ -43,7 +43,7 @@ const PINS: Pin[] = [
     type: 'build day',
     name: 'Build What You Love',
     role: 'Program Team',
-    cls: 'right-[1%] bottom-[2%] w-[26%] -rotate-2',
+    cls: 'right-[0%] bottom-[1%] w-[24%] -rotate-2',
     delay: '.42s',
   },
 ]
@@ -111,7 +111,7 @@ export function ProgramWall() {
 
       {/* 中央：旗舰项目的页面局部 */}
       <div
-        className="flagship group/flag absolute left-1/2 top-[50%] w-[47%] -translate-x-1/2 -translate-y-1/2 -rotate-1 overflow-hidden rounded-xl bg-white shadow-[0_22px_48px_-20px_rgba(58,36,64,0.5)] ring-1 ring-rose/30 transition-transform duration-500 hover:scale-[1.03]"
+        className="flagship group/flag absolute left-1/2 top-[47%] w-[48%] -translate-x-1/2 -translate-y-1/2 -rotate-1 overflow-hidden rounded-xl bg-white shadow-[0_22px_48px_-20px_rgba(58,36,64,0.5)] ring-1 ring-rose/30 transition-transform duration-500 hover:scale-[1.03]"
         style={{ animation: 'annot-in .6s .05s ease-out both' }}
       >
         <div className="flex items-center gap-1 bg-rose/[0.14] px-2.5 py-1.5">
@@ -213,7 +213,7 @@ export function ProgramWall() {
 
       {/* program design —— 当晚的流程表 */}
       <span
-        className="absolute left-[1%] top-[37%] w-[24%] -rotate-2 rounded-md bg-white/95 px-2 py-1.5 shadow-[0_10px_24px_-14px_rgba(58,36,64,0.5)] ring-1 ring-plum/8"
+        className="absolute left-[1.5%] top-[38%] w-[22%] -rotate-2 rounded-md bg-white/95 px-2 py-1.5 shadow-[0_10px_24px_-14px_rgba(58,36,64,0.5)] ring-1 ring-plum/8"
         style={{ animation: 'annot-in .6s .5s ease-out both' }}
       >
         <span className="block text-[8px] uppercase tracking-[0.14em] text-plum-faint">run of show</span>
@@ -228,30 +228,16 @@ export function ProgramWall() {
         </span>
       </span>
 
-      {/* 路线上的四个阶段 */}
-      <span className="absolute left-[30%] top-[2%] font-hand text-[10.5px] leading-none text-plum-muted">
-        partner goal
-      </span>
-      <span className="absolute left-[2%] top-[62%] font-hand text-[10.5px] leading-none text-plum-muted">
-        program design
-      </span>
-      <span className="absolute bottom-[2%] left-[36%] font-hand text-[10.5px] leading-none text-plum-muted">
-        people come together
-      </span>
-      <span className="absolute right-[2%] top-[46%] max-w-[24%] text-right font-hand text-[10.5px] leading-tight text-plum-muted">
-        momentum after
-      </span>
-
       {/* 便签 */}
       <span
-        className="absolute bottom-[3%] left-[1%] w-[29%] -rotate-2 rounded-md border border-dashed border-rose/50 bg-white/95 px-2 py-1.5 shadow-sm"
+        className="absolute bottom-[2%] left-[1.5%] w-[34%] -rotate-2 rounded-md border border-dashed border-rose/50 bg-white/95 px-2 py-1.5 shadow-sm"
         style={{ animation: 'annot-in .6s .54s ease-out both' }}
       >
         <span className="block font-hand text-[13px] leading-tight text-plum">
           make the room work ✦
         </span>
         <span className="mt-[3px] block text-[8px] leading-tight text-plum-faint">
-          align partners · welcome builders · follow through
+          partner goal → program design → people together → momentum
         </span>
       </span>
 
