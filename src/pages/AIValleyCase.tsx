@@ -167,6 +167,8 @@ type Program = {
   partners: string
   caps: string[]
   href: string
+  /** 她自己写的公开记录 */
+  post?: string
   lead?: boolean
 }
 
@@ -188,6 +190,7 @@ const PROGRAMS: Program[] = [
     partners: 'Z.ai · AI Valley · Devpost',
     caps: ['Program ownership', 'Developer relations', 'GTM', 'Strategic partnerships'],
     href: 'https://luma.com/32jfoybh',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256',
     lead: true,
   },
   {
@@ -209,6 +212,7 @@ const PROGRAMS: Program[] = [
     partners: 'AI Valley · Bond AI · Replit · Vercel · Daytona · MiniMax · BEM',
     caps: ['Program ownership', 'Community'],
     href: 'https://luma.com/ic3l89gi',
+    post: 'https://www.linkedin.com/posts/courtneythko_womenintech-buildwhatyoulove-aivalley-activity-7429241914459303938-4MG5',
   },
   {
     name: '2026 GTC AI Demo Day',
@@ -225,7 +229,7 @@ const PROGRAMS: Program[] = [
     where: 'Palo Alto',
     size: '100 builders hosted',
     n: 100,
-    role: 'Host',
+    role: 'Lead organiser',
     partners: 'AI Valley · Molly Tea',
     caps: ['Community', 'GTM'],
     href: 'https://luma.com/puy9vbok',
@@ -241,35 +245,22 @@ const PROGRAMS: Program[] = [
     href: 'https://luma.com/wkolq6uc',
   },
   {
-    name: 'MiniMax AI Founder Day @ GTC',
-    where: 'San Francisco',
-    size: '839 attendees · 9 speakers',
-    n: 839,
-    role: null,
-    partners: 'The AI Collective · AI Valley · MiniMax',
-    caps: [],
-    href: 'https://luma.com/aic-sf-3-21?tk=C8DbIO',
-  },
-  {
     name: 'Total Agent Recall Hackathon',
     where: 'Sky9 Capital, San Francisco',
     size: '358 registered · 50 engineers, 8 hours',
     n: 358,
-    role: null,
+    role: 'Marketing and sponsor coordination — and on the day, running judging across Dify, GMI Cloud and HydraDB',
     partners: 'GMI Cloud · Photon · HydraDB · Dify',
-    caps: [],
+    caps: ['GTM', 'Strategic partnerships', 'Community'],
     href: 'https://luma.com/snixr7yb',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7443396471057485824',
   },
-  {
-    name: 'Global Builders Salon — private mixer',
-    where: 'San Francisco',
-    size: '100 seats, approval only',
-    n: 100,
-    role: null,
-    partners: 'AI Valley · HAC.ai · Boundless Immigration',
-    caps: [],
-    href: 'https://luma.com/6re61lly',
-  },
+]
+
+/* 参与过、但角色不由我替她认领的两场 —— 只留链接 */
+const ALSO = [
+  { name: 'MiniMax AI Founder Day @ GTC', href: 'https://luma.com/aic-sf-3-21?tk=C8DbIO' },
+  { name: 'Global Builders Salon', href: 'https://luma.com/6re61lly' },
 ]
 
 function ProgramMatrix() {
@@ -308,52 +299,81 @@ function ProgramMatrix() {
 
       <ul className="mt-6 space-y-3">
         {shown.map((p, i) => (
-          <li key={p.name}>
-            <a
-              href={p.href}
-              target="_blank"
-              rel="noreferrer"
-              style={{ animation: `annot-in .4s ${i * 0.04}s ease-out both` }}
-              className={`group/p flex flex-col gap-3 rounded-[1.4rem] border p-5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white md:flex-row md:items-center md:gap-6 md:p-6 ${
-                p.lead
-                  ? 'border-rose/35 bg-rose/[0.06] hover:border-rose/55'
-                  : 'border-plum/10 bg-white/60 hover:border-plum/25'
-              }`}
-            >
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                  <h3 className="font-serif text-[17px] font-light leading-snug text-plum">
-                    {p.name}
-                  </h3>
-                  {p.lead && (
-                    <span className="rounded-full bg-rose px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
-                      led
-                    </span>
-                  )}
-                </div>
-                <p className="mt-1 text-[12.5px] text-plum-faint">
-                  {p.where} · {p.partners}
-                </p>
-                {p.role && <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>}
+          <li
+            key={p.name}
+            style={{ animation: `annot-in .4s ${i * 0.04}s ease-out both` }}
+            className={`group/p flex flex-col gap-3 rounded-[1.4rem] border p-5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white md:flex-row md:items-center md:gap-6 md:p-6 ${
+              p.lead
+                ? 'border-rose/35 bg-rose/[0.06] hover:border-rose/55'
+                : 'border-plum/10 bg-white/60 hover:border-plum/25'
+            }`}
+          >
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-serif text-[17px] font-light leading-snug text-plum transition-colors hover:text-rose"
+                >
+                  {p.name}
+                  <span aria-hidden className="ml-1 text-[13px] text-plum-faint">↗</span>
+                </a>
+                {p.lead && (
+                  <span className="rounded-full bg-rose px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
+                    led
+                  </span>
+                )}
               </div>
-              <div className="flex shrink-0 items-baseline gap-2 md:w-52 md:flex-col md:items-end md:gap-0.5">
-                <span className="font-serif text-2xl font-light leading-none text-rose">
-                  {p.n?.toLocaleString()}
-                </span>
-                <span className="text-[11.5px] leading-snug text-plum-faint md:text-right">
-                  {p.size.replace(/^[\d,]+\s*/, '')}
-                </span>
-              </div>
-              <span
-                aria-hidden
-                className="hidden shrink-0 text-plum-faint transition-transform duration-300 group-hover/p:translate-x-0.5 md:block"
-              >
-                ↗
+              <p className="mt-1 text-[12.5px] text-plum-faint">
+                {p.where} · {p.partners}
+              </p>
+              {p.role && <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>}
+              {p.post && (
+                <a
+                  href={p.post}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
+                >
+                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
+                    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
+                  </svg>
+                  Written up
+                </a>
+              )}
+            </div>
+            <div className="flex shrink-0 items-baseline gap-2 md:w-52 md:flex-col md:items-end md:gap-0.5">
+              <span className="font-serif text-2xl font-light leading-none text-rose">
+                {p.n?.toLocaleString()}
               </span>
-            </a>
+              <span className="text-[11.5px] leading-snug text-plum-faint md:text-right">
+                {p.size.replace(/^[\d,]+\s*/, '')}
+              </span>
+            </div>
           </li>
         ))}
       </ul>
+
+      {!cap && (
+        <p className="mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[12.5px] text-plum-faint">
+          <span>Also on the calendar:</span>
+          {ALSO.map((a, i) => (
+            <span key={a.name}>
+              <a
+                href={a.href}
+                target="_blank"
+                rel="noreferrer"
+                className="text-plum-muted underline decoration-plum/20 underline-offset-4 transition-colors hover:text-rose"
+              >
+                {a.name}
+              </a>
+              {i < ALSO.length - 1 && <span aria-hidden> ·</span>}
+            </span>
+          ))}
+        </p>
+      )}
+
       {shown.length === 0 && (
         <p className="mt-6 font-hand text-[15px] text-plum-muted">nothing tagged with that yet ✦</p>
       )}
@@ -362,12 +382,18 @@ function ProgramMatrix() {
 }
 
 /* ── 现场照：确认后再填，空数组时整段不渲染 ────────────────────── */
-const PHOTOS: Array<{ src: string; alt: string; cap: string }> = []
+const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
+  {
+    src: '/events/women-hackathon.jpg',
+    alt: 'The full cohort of Build What You Love — Women in Tech Hackathon, on stage after demos',
+    cap: 'Build What You Love · Women in Tech Hackathon — San Francisco, 14 February 2026',
+  },
+]
 
 function EventPhotos() {
   if (PHOTOS.length === 0) return null
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className={`grid gap-4 ${PHOTOS.length > 1 ? 'sm:grid-cols-2' : ''}`}>
       {PHOTOS.map((ph) => (
         <figure key={ph.src} className="overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white p-3">
           <img src={ph.src} alt={ph.alt} loading="lazy" className="w-full rounded-[1rem]" />
