@@ -2,10 +2,13 @@ import { useState } from 'react'
 import { Reveal, WordReveal } from '@/components/Reveal'
 
 /**
- * How I Create Value —— 借了 scrapbook 的三段叙事（桌子 → 手牌 → 桌上的工具），
- * 但视觉留在站点原有的米色 + 衬线体里：道具全部 SVG 手绘，不引照片素材。
+ * How I Create Value —— 两段：
+ *   ① What I bring to the table：手绘桌子 + 桌面上摆着的工具
+ *   ② The hand I'd bring：四张牌背朝上，点一下抽开
  *
- * 牌面只写有据可查的东西：每张牌的引文都来自她自己页面上的说法或她做过的事。
+ * 视觉留在站点原有的米色 + 衬线体里；道具与牌背全部 SVG 手绘，
+ * 不引照片素材，也不复刻任何既有牌面美术。
+ * 牌面引文都有出处，来自她自己页面上的说法或她做过的事。
  */
 
 type Card = {
@@ -52,7 +55,6 @@ const HAND: Card[] = [
   },
 ]
 
-/** 牌面花色 —— 手绘线条，不用扑克的黑桃 */
 function Suit({ name, className = '' }: { name: Card['suit']; className?: string }) {
   const p = {
     spark: (
@@ -100,69 +102,144 @@ function Suit({ name, className = '' }: { name: Card['suit']; className?: string
   )
 }
 
+/** 牌背：原创的对称纹样，不复刻任何既有牌面 */
+function CardBack() {
+  return (
+    <svg viewBox="0 0 160 230" className="h-full w-full" aria-hidden>
+      <rect x="6" y="6" width="148" height="218" rx="14" fill="#F3EDF4" />
+      <rect
+        x="13"
+        y="13"
+        width="134"
+        height="204"
+        rx="10"
+        fill="none"
+        stroke="#7A4A85"
+        strokeOpacity="0.3"
+        strokeWidth="1.2"
+      />
+      <rect
+        x="18"
+        y="18"
+        width="124"
+        height="194"
+        rx="8"
+        fill="none"
+        stroke="#7A4A85"
+        strokeOpacity="0.16"
+        strokeWidth="0.8"
+      />
+      {/* 中心徽记 */}
+      <g stroke="#7A4A85" strokeOpacity="0.42" fill="none" strokeLinecap="round">
+        <circle cx="80" cy="115" r="27" strokeWidth="1.1" />
+        <circle cx="80" cy="115" r="18" strokeWidth="0.8" strokeOpacity="0.3" />
+        {Array.from({ length: 12 }).map((_, i) => {
+          const a = (i * Math.PI) / 6
+          return (
+            <line
+              key={i}
+              x1={80 + Math.cos(a) * 30}
+              y1={115 + Math.sin(a) * 30}
+              x2={80 + Math.cos(a) * 37}
+              y2={115 + Math.sin(a) * 37}
+              strokeWidth="1"
+            />
+          )
+        })}
+        <path
+          d="M80 101c1.7 6.2 3.6 9 8.8 11-5.2 2-7.1 4.8-8.8 11-1.7-6.2-3.6-9-8.8-11 5.2-2 7.1-4.8 8.8-11Z"
+          strokeWidth="1.1"
+        />
+      </g>
+      {/* 四角小花饰 */}
+      {[
+        [30, 36],
+        [130, 36],
+        [30, 194],
+        [130, 194],
+      ].map(([x, y]) => (
+        <path
+          key={`${x}-${y}`}
+          d={`M${x} ${y - 5}c.6 2.3 1.4 3.3 3.3 4.1-1.9.8-2.7 1.8-3.3 4.1-.6-2.3-1.4-3.3-3.3-4.1 1.9-.8 2.7-1.8 3.3-4.1Z`}
+          fill="none"
+          stroke="#7A4A85"
+          strokeOpacity="0.3"
+          strokeWidth="0.9"
+        />
+      ))}
+    </svg>
+  )
+}
+
 /* ── 桌上的工具：只列有据可查的 ──────────────────────────────── */
-const TOOLBOX = [
-  {
-    k: 'Design & prototyping',
-    v: [
-      { n: 'Figma', l: '/logos/tools/figma.jpg' },
-      { n: 'Miro', l: '/logos/tools/miro.jpg' },
-    ],
-  },
-  {
-    k: 'AI & agentic coding',
-    v: [
-      { n: 'Claude', l: '/logos/tools/claude.jpg' },
-      { n: 'OpenAI', l: '/logos/tools/openai.png' },
-      { n: 'Playwright', l: '/logos/tools/playwright.svg' },
-      { n: 'GitHub Actions', l: '/logos/tools/github.jpg' },
-    ],
-  },
-  {
-    k: 'Specs, data & reporting',
-    v: [
-      { n: 'Notion', l: '/logos/tools/notion.jpg' },
-      { n: 'Tableau', l: '/logos/tools/tableau.jpg' },
-    ],
-  },
-  {
-    k: 'Programs & community',
-    v: [
-      { n: 'Luma', l: '/logos/tools/luma.jpg' },
-      { n: 'Devpost', l: '/logos/tools/devpost.jpg' },
-      { n: 'Discord', l: '/logos/tools/discord.jpg' },
-    ],
-  },
+const LINES = [
+  { k: 'Design & prototyping', v: 'Figma, Miro' },
+  { k: 'AI & agentic coding', v: 'Claude, OpenAI, Playwright, GitHub Actions' },
+  { k: 'Specs, data & reporting', v: 'Notion, Tableau' },
+  { k: 'Programs & community', v: 'Luma, Devpost, Discord' },
 ]
 
-/** 手绘的桌子 —— 纯 SVG，和站上其它手绘图标同一路数 */
-function TableSketch({ className = '' }: { className?: string }) {
+/** 盘子上的摆法：外圈 7 个、内圈 4 个，坐标是百分比 */
+const PLATE = [
+  { n: 'Figma', l: '/logos/tools/figma.jpg', x: 50, y: 15 },
+  { n: 'Claude', l: '/logos/tools/claude.jpg', x: 77, y: 27 },
+  { n: 'Notion', l: '/logos/tools/notion.jpg', x: 86, y: 55 },
+  { n: 'Luma', l: '/logos/tools/luma.jpg', x: 69, y: 81 },
+  { n: 'Devpost', l: '/logos/tools/devpost.jpg', x: 38, y: 86 },
+  { n: 'Miro', l: '/logos/tools/miro.jpg', x: 14, y: 62 },
+  { n: 'GitHub Actions', l: '/logos/tools/github.jpg', x: 18, y: 30 },
+  { n: 'OpenAI', l: '/logos/tools/openai.png', x: 41, y: 42 },
+  { n: 'Playwright', l: '/logos/tools/playwright.svg', x: 63, y: 46 },
+  { n: 'Tableau', l: '/logos/tools/tableau.jpg', x: 39, y: 66 },
+  { n: 'Discord', l: '/logos/tools/discord.jpg', x: 62, y: 68 },
+]
+
+/** 手绘的盘子 + 叉子 —— 纯 SVG */
+function PlateSketch({ className = '' }: { className?: string }) {
+  const scallops = Array.from({ length: 28 }).map((_, i) => {
+    const a = (i / 28) * Math.PI * 2
+    const a2 = ((i + 1) / 28) * Math.PI * 2
+    const r = 96
+    return `M${100 + Math.cos(a) * r} ${100 + Math.sin(a) * r} A6 6 0 0 1 ${100 + Math.cos(a2) * r} ${100 + Math.sin(a2) * r}`
+  })
+  return (
+    <svg viewBox="0 0 200 200" className={className} fill="none" aria-hidden>
+      <circle cx="100" cy="100" r="94" fill="#FFFFFF" fillOpacity="0.85" />
+      <circle cx="100" cy="100" r="94" stroke="#3A2440" strokeOpacity="0.13" strokeWidth="1.1" />
+      <circle cx="100" cy="100" r="80" stroke="#3A2440" strokeOpacity="0.09" strokeWidth="0.9" />
+      <circle cx="100" cy="100" r="72" stroke="#3A2440" strokeOpacity="0.06" strokeWidth="0.8" />
+      {scallops.map((d, i) => (
+        <path key={i} d={d} stroke="#3A2440" strokeOpacity="0.1" strokeWidth="0.9" />
+      ))}
+    </svg>
+  )
+}
+
+function ForkSketch({ className = '' }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 200 120"
+      viewBox="0 0 40 150"
       className={className}
       fill="none"
       stroke="currentColor"
-      strokeWidth={2.2}
+      strokeWidth={1.6}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden
     >
-      <path d="M18 44h164l-16 12H34z" />
-      <path d="M40 56v50" />
-      <path d="M160 56v50" />
-      <path d="M52 56v38" />
-      <path d="M148 56v38" />
-      <path
-        d="M96 24c1.2 4 2.6 6 6 7.4-3.4 1.4-4.8 3.4-6 7.4-1.2-4-2.6-6-6-7.4 3.4-1.4 4.8-3.4 6-7.4Z"
-        strokeWidth={1.6}
-      />
+      <path d="M12 6v34" />
+      <path d="M20 6v34" />
+      <path d="M28 6v34" />
+      <path d="M8 40c0 8 4 12 12 12s12-4 12-12" />
+      <path d="M20 52v92" />
     </svg>
   )
 }
 
 export function HowICreateValue() {
-  const [open, setOpen] = useState<number | null>(null)
+  const [drawn, setDrawn] = useState<number[]>([])
+  const toggle = (i: number) =>
+    setDrawn((d) => (d.includes(i) ? d.filter((n) => n !== i) : [...d, i]))
 
   return (
     <section id="capabilities" className="mx-auto max-w-6xl px-6 py-28 md:px-10 md:py-36">
@@ -176,135 +253,153 @@ export function HowICreateValue() {
         </span>
       </h2>
 
-      {/* ── 开场：一张桌子 ─────────────────────────────────────── */}
-      <div className="mt-14 grid items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-        <Reveal y={28}>
-          <div className="relative">
-            <TableSketch className="w-[74%] text-plum/30" />
-            <span
-              aria-hidden
-              className="absolute right-0 top-[14%] w-[52%] rotate-[3deg] rounded-md border border-dashed border-rose/50 bg-white/95 px-3 py-2 font-hand text-[15px] leading-snug text-plum shadow-sm"
-            >
-              so — what do I bring to it?
-            </span>
-          </div>
-        </Reveal>
-
-        <Reveal y={28} delay={0.1}>
-          <p className="max-w-xl text-[15px] leading-relaxed text-plum-muted">
-            Every “complex system” I’ve worked on turned out to be people trying to get something
-            done. I start by understanding how they actually work, then build the structure —
-            specs, programs, partnerships — that makes the work feel lighter rather than heavier.
-          </p>
-        </Reveal>
-      </div>
-
-      {/* ── 手牌 ──────────────────────────────────────────────── */}
-      <Reveal className="mt-20">
-        <p className="text-center font-hand text-[17px] text-plum-muted">
-          so — here’s the hand I’d bring ↓
-        </p>
-      </Reveal>
-
-      <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {HAND.map((c, i) => {
-          const isOpen = open === i
-          return (
-            <Reveal key={c.rank} delay={i * 0.07}>
-              <li
-                onMouseEnter={() => setOpen(i)}
-                onMouseLeave={() => setOpen(null)}
-                onFocus={() => setOpen(i)}
-                onBlur={() => setOpen(null)}
-                tabIndex={0}
-                className={`group/card relative flex h-full min-h-[310px] cursor-default flex-col rounded-[1.1rem] border border-plum/15 bg-cream-soft px-5 py-5 shadow-[0_14px_32px_-18px_rgba(58,36,64,0.45)] outline-none transition-all duration-500 ${c.tilt} hover:-translate-y-2 hover:rotate-0 hover:border-lavender-deep/50 hover:shadow-[0_26px_52px_-22px_rgba(58,36,64,0.5)] focus-visible:-translate-y-2 focus-visible:rotate-0`}
-              >
-                <span className="flex items-center justify-between">
-                  <span className="flex flex-col items-center gap-0.5 text-plum">
-                    <span className="font-serif text-[20px] leading-none">{c.rank}</span>
-                    <Suit name={c.suit} className="h-3.5 w-3.5" />
-                  </span>
-                  <span aria-hidden className="h-px w-10 bg-plum/15" />
-                </span>
-
-                <h3 className="mt-5 font-serif text-[17px] font-light leading-snug text-plum">
-                  {c.title}
-                </h3>
-
-                <p className="mt-3 font-hand text-[15px] leading-snug text-plum-muted">
-                  “{c.quote}”
-                </p>
-
-                {/* hover 才展开的技能点 */}
-                <ul
-                  className={`mt-auto space-y-1 overflow-hidden transition-all duration-500 ${
-                    isOpen ? 'max-h-32 pt-4 opacity-100' : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  {c.skills.map((s) => (
-                    <li key={s} className="flex items-baseline gap-1.5 text-[12px] text-plum-muted">
-                      <span aria-hidden className="text-lavender-deep">
-                        ·
-                      </span>
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-
-                <span
-                  aria-hidden
-                  className={`mt-4 flex items-center justify-end text-plum/30 transition-opacity duration-500 ${
-                    isOpen ? 'opacity-0' : 'opacity-100'
-                  }`}
-                >
-                  <Suit name={c.suit} className="h-3.5 w-3.5 rotate-180" />
-                </span>
-              </li>
-            </Reveal>
-          )
-        })}
-      </ul>
-
-      {/* ── 桌上的工具 ────────────────────────────────────────── */}
-      <Reveal className="mt-20">
-        <div className="rounded-[1.6rem] border border-plum/10 bg-white/60 p-7 md:p-9">
+      {/* ── ① What I bring to the table ───────────────────────── */}
+      <Reveal className="mt-14" y={28}>
+        <div className="relative overflow-hidden rounded-[1.6rem] border border-plum/10 bg-white/55 px-6 pb-8 pt-7 md:px-9 md:pb-10">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
             <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-              And the tools on the table
+              What I bring to the table
             </p>
             <p className="font-hand text-[15px] text-plum-muted">
               what I actually open on a weekday ✦
             </p>
           </div>
 
-          <div className="mt-7 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
-            {TOOLBOX.map((g) => (
-              <div key={g.k}>
-                <p className="text-[12px] font-medium text-plum">{g.k}</p>
-                <ul className="mt-3 flex flex-wrap gap-1.5">
-                  {g.v.map((t) => (
-                    <li
-                      key={t.n}
-                      className="flex items-center gap-1.5 rounded-full border border-plum/12 bg-white/70 py-1 pl-1 pr-2.5 text-[11.5px] text-plum-muted"
-                    >
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white ring-1 ring-plum/10">
-                        <img
-                          src={t.l}
-                          alt=""
-                          aria-hidden
-                          loading="lazy"
-                          className="h-full w-full object-contain"
-                        />
-                      </span>
-                      {t.n}
-                    </li>
-                  ))}
-                </ul>
+          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
+            Every “complex system” I’ve worked on turned out to be people trying to get something
+            done. I start by understanding how they actually work, then build the structure —
+            specs, programs, partnerships — that makes the work feel lighter rather than heavier.
+          </p>
+
+          <div className="mt-8 grid items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
+            {/* 左：分类清单 */}
+            <ul className="space-y-3">
+              {LINES.map((r) => (
+                <li key={r.k}>
+                  <span className="block font-hand text-[15px] text-plum-muted">{r.k}</span>
+                  <span className="mt-0.5 block text-[14px] leading-snug text-plum">{r.v}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* 右：盘子 + logo 摆成一圈 */}
+            <div className="relative mx-auto w-full max-w-[380px]">
+              <div className="relative aspect-square">
+                <PlateSketch className="absolute inset-0 h-full w-full drop-shadow-[0_18px_38px_rgba(58,36,64,0.16)]" />
+                {PLATE.map((t, i) => (
+                  <span
+                    key={t.n}
+                    title={t.n}
+                    style={{
+                      left: `${t.x}%`,
+                      top: `${t.y}%`,
+                      animation: `annot-in .55s ${0.08 * i}s ease-out both`,
+                    }}
+                    className="group/tool absolute z-10 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-[10px] bg-white shadow-[0_6px_14px_-6px_rgba(58,36,64,0.5)] ring-1 ring-plum/10 transition-transform duration-300 hover:-translate-y-[calc(50%+4px)] hover:scale-110"
+                  >
+                    <img
+                      src={t.l}
+                      alt={t.n}
+                      loading="lazy"
+                      className="h-full w-full object-contain"
+                    />
+                  </span>
+                ))}
               </div>
-            ))}
+              <ForkSketch className="absolute -left-6 bottom-2 h-[62%] w-auto text-plum/25" />
+            </div>
           </div>
         </div>
       </Reveal>
+
+      {/* ── ② 抽牌 ────────────────────────────────────────────── */}
+      <Reveal className="mt-20">
+        <p className="text-center font-hand text-[17px] text-plum-muted">
+          {drawn.length === 0
+            ? 'so — pick a card ✦'
+            : drawn.length === HAND.length
+              ? 'that’s the whole hand ✦'
+              : 'keep going ✦'}
+        </p>
+      </Reveal>
+
+      <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {HAND.map((c, i) => {
+          const isUp = drawn.includes(i)
+          return (
+            <Reveal key={c.rank} delay={i * 0.07}>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => toggle(i)}
+                  aria-pressed={isUp}
+                  aria-label={isUp ? `${c.title} — tap to turn back` : 'Turn over a card'}
+                  className={`group/card block h-[330px] w-full text-left outline-none transition-transform duration-500 ${
+                    isUp ? 'rotate-0' : `${c.tilt} hover:-translate-y-2 hover:rotate-0`
+                  }`}
+                  style={{ perspective: '1200px' }}
+                >
+                  <span
+                    className="relative block h-full w-full"
+                    style={{
+                      transformStyle: 'preserve-3d',
+                      transition: 'transform .75s cubic-bezier(.2,.7,.2,1)',
+                      transform: isUp ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                    }}
+                  >
+                    {/* 牌背 */}
+                    <span
+                      className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_14px_32px_-18px_rgba(58,36,64,0.5)]"
+                      style={{ backfaceVisibility: 'hidden' }}
+                    >
+                      <CardBack />
+                      <span className="absolute inset-x-0 bottom-6 text-center font-hand text-[13px] text-plum/45 transition-opacity duration-300 group-hover/card:opacity-0">
+                        tap to draw
+                      </span>
+                    </span>
+
+                    {/* 牌面 */}
+                    <span
+                      className="absolute inset-0 flex flex-col rounded-[1.1rem] border border-plum/15 bg-cream-soft px-5 py-5 shadow-[0_20px_44px_-20px_rgba(58,36,64,0.5)]"
+                      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                    >
+                      <span className="flex items-center justify-between">
+                        <span className="flex flex-col items-center gap-0.5 text-plum">
+                          <span className="font-serif text-[20px] leading-none">{c.rank}</span>
+                          <Suit name={c.suit} className="h-3.5 w-3.5" />
+                        </span>
+                        <span aria-hidden className="h-px w-10 bg-plum/15" />
+                      </span>
+
+                      <span className="mt-5 block font-serif text-[17px] font-light leading-snug text-plum">
+                        {c.title}
+                      </span>
+
+                      <span className="mt-3 block font-hand text-[15px] leading-snug text-plum-muted">
+                        “{c.quote}”
+                      </span>
+
+                      <span className="mt-auto block space-y-1 pt-4">
+                        {c.skills.map((s) => (
+                          <span
+                            key={s}
+                            className="flex items-baseline gap-1.5 text-[12px] text-plum-muted"
+                          >
+                            <span aria-hidden className="text-lavender-deep">
+                              ·
+                            </span>
+                            {s}
+                          </span>
+                        ))}
+                      </span>
+                    </span>
+                  </span>
+                </button>
+              </li>
+            </Reveal>
+          )
+        })}
+      </ul>
     </section>
   )
 }
