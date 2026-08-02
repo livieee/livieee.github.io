@@ -4,7 +4,7 @@ import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { TiltCard } from '@/components/TiltCard'
 import { AskDataUI } from '@/components/AskDataUI'
-import { ProgramBoard } from '@/components/ProgramBoard'
+import { ProgramWall } from '@/components/ProgramWall'
 
 type Metric = {
   value: string
@@ -345,7 +345,7 @@ export function Impact() {
               </span>
             <article id="case-aivalley" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 md:p-12">
               <div className="mb-8" data-cursor="VIEW">
-                <ProgramBoard />
+                <ProgramWall />
               </div>
               <p className="label-text mb-4">03 · Partnerships, GTM & Community Programs · AI Valley</p>
               <h3 className="font-serif text-2xl font-light leading-snug text-plum">
