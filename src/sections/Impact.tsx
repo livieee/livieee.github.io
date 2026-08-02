@@ -406,23 +406,24 @@ export function Impact() {
                 </div>
                 <p className="label-text mb-4">04 · Applied AI at Work · Yuto USA</p>
                 <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                  Shipping AI the executive team uses daily — and the programs around it
+                  Shipping AI the executive
+                  <br />
+                  team uses daily
                 </h3>
                 <p className="mt-4 text-[15px] leading-relaxed text-plum-muted">
                   At an advanced-materials company, I shipped a 0-to-1 forecasting product to
-                  production — built solo with agentic coding, with full traceability and
-                  human-in-the-loop override — now in daily use by the executive team. Alongside it,
-                  I drive technical program management across 5+ concurrent workstreams for top-tier
-                  consumer technology accounts, and delivered the company showcase at a global
-                  technology client's tech day.
+                  production — built solo with agentic coding, fully traceable, with human
+                  override — now in daily use by the executive team. Alongside it I run technical
+                  program management across concurrent workstreams for top-tier consumer
+                  technology accounts.
                 </p>
                 <div className="mt-6">
                   <Metrics
                     accent="text-orchid"
                     items={[
-                      { value: '9.2→7.5%', label: 'one-month forecast error, at 90% directional accuracy' },
-                      { value: '100+', n: 100, suffix: '+', label: 'attendees at client tech-day showcase' },
-                      { value: '5+', n: 5, suffix: '+', label: 'concurrent workstreams coordinated' },
+                      { value: '9.2→7.5%', label: 'one-month forecast error' },
+                      { value: '100+', n: 100, suffix: '+', label: 'attendees at the showcase I delivered' },
+                      { value: '5+', n: 5, suffix: '+', label: 'concurrent workstreams run' },
                     ]}
                   />
                 </div>
