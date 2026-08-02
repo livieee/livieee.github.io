@@ -308,6 +308,119 @@ const OURS_LO = 0.007        // 我方：每份抽取任务，与页数无关
 const OURS_HI = 0.03
 const SCALE = 0.2            // 条形满格对应 10 页的花费
 
+/* ── 可试的置信度门：读者自己拨分数，看它怎么判 ──────────────── */
+const GATE_PRESETS = [
+  { k: 'A clean extraction', n: 95, d: 90, t: 100 },
+  { k: 'Vague description', n: 92, d: 60, t: 90 },
+  { k: 'Misread field name', n: 45, d: 95, t: 95 },
+]
+
+function ConfidenceGate() {
+  const [n, setN] = useState(95)
+  const [d, setD] = useState(90)
+  const [t, setT] = useState(100)
+
+  const total = n * 0.5 + d * 0.3 + t * 0.2
+  const nameFails = n < 60
+  const totalFails = total < 85
+  const passed = !nameFails && !totalFails
+  const reason = nameFails
+    ? 'Name below the floor of 60 — rejected regardless of the total.'
+    : totalFails
+      ? 'Total below 85 — back to the generator with the failing field named.'
+      : 'Clears both gates. Shipped as trusted schema.'
+
+  const rows = [
+    { key: 'name', v: n, set: setN, w: '50%', c: '#4E6E96' },
+    { key: 'description', v: d, set: setD, w: '30%', c: '#B98ACB' },
+    { key: 'type', v: t, set: setT, w: '20%', c: '#8FAE8B' },
+  ]
+
+  return (
+    <div className="rounded-2xl border border-plum/10 bg-white/80 p-5 md:p-6">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#4E6E96]">
+          Try the gate
+        </p>
+        <p className="font-hand text-[14px] text-plum-faint">drag a score ✦</p>
+      </div>
+
+      {/* 三个可拖的分数 */}
+      <div className="mt-4 space-y-3.5">
+        {rows.map((r) => (
+          <div key={r.key}>
+            <div className="flex items-baseline justify-between text-[11.5px]">
+              <span className="text-plum">
+                {r.key}
+                <span className="ml-1.5 text-plum-faint">× {r.w}</span>
+              </span>
+              <span className="font-mono text-[12px] text-plum">{r.v}</span>
+            </div>
+            <input
+              type="range"
+              min={0}
+              max={100}
+              value={r.v}
+              onChange={(e) => r.set(Number(e.target.value))}
+              aria-label={`${r.key} score`}
+              className="mt-1.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-cream-soft accent-[#4E6E96]"
+              style={{ background: `linear-gradient(to right, ${r.c} ${r.v}%, #F0EBE4 ${r.v}%)` }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* 总分与阈值 */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between">
+          <span className="text-[11px] uppercase tracking-label text-plum-faint">Confidence score</span>
+          <span className={`font-serif text-2xl font-light ${passed ? 'text-[#4E6E96]' : 'text-rose'}`}>
+            {total.toFixed(1)}
+          </span>
+        </div>
+        <div className="relative mt-2 h-3 overflow-hidden rounded-full bg-cream-soft">
+          <div
+            className={`h-full rounded-full ${passed ? 'bg-[#4E6E96]' : 'bg-[#D193A8]'}`}
+            style={{ width: `${total}%`, transition: 'width .3s, background-color .3s' }}
+          />
+          <span aria-hidden className="absolute inset-y-0 w-px bg-plum/45" style={{ left: '85%' }} />
+        </div>
+        <p className="mt-1 text-right text-[10.5px] text-plum-faint">threshold 85</p>
+      </div>
+
+      {/* 判定 */}
+      <div
+        className={`mt-4 rounded-xl border px-4 py-3 transition-colors duration-300 ${
+          passed ? 'border-[#8FAE8B]/45 bg-[#8FAE8B]/[0.09]' : 'border-[#D193A8]/45 bg-blush/30'
+        }`}
+      >
+        <p className={`text-[12.5px] font-medium ${passed ? 'text-[#5E8B5A]' : 'text-rose'}`}>
+          {passed ? 'Accepted YAML' : 'Fallback'}
+        </p>
+        <p className="mt-1 text-[12.5px] leading-relaxed text-plum-muted">{reason}</p>
+      </div>
+
+      {/* 快捷场景 */}
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {GATE_PRESETS.map((g) => (
+          <button
+            key={g.k}
+            type="button"
+            onClick={() => {
+              setN(g.n)
+              setD(g.d)
+              setT(g.t)
+            }}
+            className="rounded-full border border-plum/15 px-3 py-1 text-[11px] text-plum-muted transition-colors hover:border-[#7FA3CC] hover:text-[#4E6E96]"
+          >
+            {g.k}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function CostCompare() {
   const ref = useRef<HTMLDivElement>(null)
   const [on, setOn] = useState(false)
@@ -460,52 +573,79 @@ const CALLS = [
   },
 ]
 
-/* ── 静默失败：同一列，两种输出 ─────────────────────────────── */
+/* ── 静默失败：同一份输出，切换到真相 ──────────────────────── */
+const TRUTH = { name: 'annual_revenue', description: 'Total sales in USD, per supplier', type: 'float' }
+const GUESS = { name: 'Column3', description: 'Customer name', type: 'string' }
+
 function SilentFailure() {
+  const [showTruth, setShowTruth] = useState(false)
+  const v = showTruth ? TRUTH : GUESS
+
   return (
-    <div className="grid gap-5 md:grid-cols-2">
-      {[
-        {
-          tone: 'ok',
-          tag: 'What the source says',
-          name: 'annual_revenue',
-          desc: 'Total sales in USD, per supplier',
-          type: 'float',
-        },
-        {
-          tone: 'bad',
-          tag: 'What a confident model can return',
-          name: 'Column3',
-          desc: 'Customer name',
-          type: 'string',
-        },
-      ].map((c) => (
-        <div
-          key={c.tag}
-          className={`rounded-[1.4rem] border p-6 ${
-            c.tone === 'ok' ? 'border-[#8FAE8B]/40 bg-[#8FAE8B]/[0.07]' : 'border-[#D193A8]/45 bg-blush/25'
-          }`}
-        >
-          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">{c.tag}</p>
-          <dl className="mt-4 space-y-2 font-mono text-[12.5px] leading-relaxed">
-            {[
-              ['name', c.name],
-              ['description', c.desc],
-              ['type', c.type],
-            ].map(([k, v]) => (
-              <div key={k} className="flex gap-3">
-                <dt className="w-[86px] shrink-0 text-plum-faint">{k}</dt>
-                <dd className={c.tone === 'ok' ? 'text-plum' : 'text-rose'}>{v}</dd>
-              </div>
-            ))}
-          </dl>
-          <p className="mt-4 border-t border-plum/10 pt-3 text-[12.5px] leading-relaxed text-plum-muted">
-            {c.tone === 'ok'
-              ? 'Every downstream chart reads the field name. Get it right and nobody notices.'
-              : 'Same shape, same confidence, no error raised. The chart still renders — of the wrong thing.'}
-          </p>
+    <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
+      {/* YAML 卡：字段原地替换 */}
+      <div
+        className={`rounded-[1.4rem] border p-6 transition-colors duration-500 ${
+          showTruth ? 'border-[#8FAE8B]/45 bg-[#8FAE8B]/[0.07]' : 'border-plum/12 bg-white/80'
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+            extracted_schema.yaml
+          </span>
+          <span
+            className={`rounded-full px-2.5 py-0.5 text-[10.5px] font-medium transition-colors duration-500 ${
+              showTruth ? 'bg-[#8FAE8B]/18 text-[#5E8B5A]' : 'bg-cream-soft text-plum-faint'
+            }`}
+          >
+            {showTruth ? 'matches the source' : 'no error raised'}
+          </span>
         </div>
-      ))}
+
+        <dl className="mt-4 space-y-2.5 font-mono text-[13px] leading-relaxed">
+          {(['name', 'description', 'type'] as const).map((k) => {
+            const wrong = !showTruth && GUESS[k] !== TRUTH[k]
+            return (
+              <div key={k} className="flex gap-3">
+                <dt className="w-[92px] shrink-0 text-plum-faint">{k}</dt>
+                <dd
+                  key={String(showTruth)}
+                  className={`transition-colors duration-300 ${wrong ? 'text-rose' : 'text-plum'}`}
+                  style={{ animation: 'annot-in .3s ease-out' }}
+                >
+                  {v[k]}
+                </dd>
+              </div>
+            )
+          })}
+        </dl>
+      </div>
+
+      {/* 切换与说明 */}
+      <div>
+        <div className="inline-flex rounded-full border border-plum/15 bg-white/70 p-1">
+          {[
+            { k: false, l: 'What the model returned' },
+            { k: true, l: 'What the source said' },
+          ].map((o) => (
+            <button
+              key={String(o.k)}
+              type="button"
+              onClick={() => setShowTruth(o.k)}
+              className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-colors ${
+                showTruth === o.k ? 'bg-[#4E6E96] text-white' : 'text-plum-muted hover:text-plum'
+              }`}
+            >
+              {o.l}
+            </button>
+          ))}
+        </div>
+        <p className="mt-4 text-[14px] leading-relaxed text-plum-muted">
+          {showTruth
+            ? 'Three fields, all of them different — and nothing in the first version flagged it. That is what the validator had to catch.'
+            : 'Well-formed YAML, every field filled, no exception thrown. A chart reads this and renders happily. Flip it and see what was actually in the document.'}
+        </p>
+      </div>
     </div>
   )
 }
@@ -623,16 +763,7 @@ export function BoschSchemaCase() {
               </figure>
 
               <div>
-                {/* 评分公式 */}
-                <div className="rounded-xl bg-[#EFF5FB]/70 px-5 py-4">
-                  <p className="text-[10px] uppercase tracking-[0.16em] text-[#4E6E96]">Confidence score</p>
-                  <p className="mt-2 font-mono text-[12.5px] leading-relaxed text-plum">
-                    name × 50% + description × 30% + type × 20%
-                  </p>
-                  <p className="mt-2 text-[12px] leading-snug text-plum-muted">
-                    Name carries half the weight — every downstream chart reads it.
-                  </p>
-                </div>
+                <ConfidenceGate />
 
                 <ul className="mt-5 space-y-2.5 text-[13.5px] leading-relaxed text-plum-muted">
                   <li className="flex gap-2.5">
