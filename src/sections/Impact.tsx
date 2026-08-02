@@ -343,22 +343,22 @@ export function Impact() {
             </span>
             <article
               id="case-aivalley"
-              className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 md:p-14"
+              className="group/card relative flex scroll-mt-24 flex-col justify-center overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 md:min-h-[50vh] md:p-12"
             >
-              <div className="grid items-center gap-10 md:grid-cols-[minmax(0,44fr)_minmax(0,56fr)] md:gap-12">
+              <div className="grid items-center gap-8 md:grid-cols-[minmax(0,44fr)_minmax(0,56fr)] md:gap-12">
                 {/* 文字 */}
                 <div>
                   <p className="label-text mb-4">03 · GTM &amp; AI Ecosystem Partnerships</p>
                   <h3 className="font-serif text-2xl font-light leading-snug text-plum md:text-[1.9rem]">
                     Creating spaces where people come to build
                   </h3>
-                  <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
+                  <p className="mt-4 text-[15px] leading-relaxed text-plum-muted">
                     From global builder challenges to Bay Area hackathons and founder
                     conversations, I turn partner goals into thoughtful programs — bringing together
                     builders, speakers, judges, sponsors, and communities around ideas worth
                     building.
                   </p>
-                  <div className="mt-8">
+                  <div className="mt-6">
                     <Metrics
                       accent="text-rose"
                       items={[
@@ -368,14 +368,14 @@ export function Impact() {
                       ]}
                     />
                   </div>
-                  <div className="mt-6 flex flex-wrap gap-2">
+                  <div className="mt-5 flex flex-wrap gap-2">
                     <Tag>Ecosystem Partnerships</Tag>
                     <Tag>Developer Programs</Tag>
                     <Tag>Program Strategy</Tag>
                   </div>
                   <Link
                     to="/work/ai-valley"
-                    className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
+                    className="group/cta mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
                   >
                     Explore the program portfolio
                     <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
