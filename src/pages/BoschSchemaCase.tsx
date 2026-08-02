@@ -455,34 +455,28 @@ export function BoschSchemaCase() {
                     name × 50% + description × 30% + type × 20%
                   </p>
                   <p className="mt-2 text-[12px] leading-snug text-plum-muted">
-                    Name carries half the weight — it is what every downstream chart reads.
+                    Name carries half the weight — every downstream chart reads it.
                   </p>
                 </div>
 
-                <ul className="mt-5 space-y-3 text-[13.5px] leading-relaxed text-plum-muted">
-                  <li className="flex gap-2.5">
-                    <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#8FAE8B]" />
-                    <span>Accepted only if total ≥ 85 <em>and</em> name ≥ 60 — a strong average can’t rescue a bad field name.</span>
-                  </li>
+                <ul className="mt-5 space-y-2.5 text-[13.5px] leading-relaxed text-plum-muted">
                   <li className="flex gap-2.5">
                     <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#C79A4B]" />
-                    <span>Otherwise the generator gets told <em>which</em> field failed and why — targeted regeneration, not blind retries. Three attempts, max.</span>
+                    <span>Fails? The generator is told <em>which</em> field and why — three attempts, max.</span>
                   </li>
                   <li className="flex gap-2.5">
                     <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#7FA3CC]" />
-                    <span>A selector then picks the <em>highest-scoring</em> version — not the latest one.</span>
+                    <span>A selector keeps the highest-scoring version, not the latest.</span>
                   </li>
                   <li className="flex gap-2.5">
                     <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#D193A8]" />
-                    <span>If nothing clears the bar, the best version is flagged for human review rather than silently shipped.</span>
+                    <span>Nothing clears the bar? Human review — never a silent ship.</span>
                   </li>
                 </ul>
 
                 <p className="mt-5 border-t border-plum/10 pt-3.5 text-[12.5px] leading-relaxed text-plum-muted">
-                  Scoring is semantically tolerant by design — “float” ≈ “continuous”, “UID” ≈ “User
-                  ID” — so the gate rejects real errors, not harmless wording. Every score, failure
-                  type and final decision is logged, which is what makes the pipeline auditable
-                  rather than merely confident.
+                  Semantically tolerant by design — “float” ≈ “continuous”. Every score and decision
+                  logged, so the pipeline is auditable, not just confident.
                 </p>
               </div>
             </div>
