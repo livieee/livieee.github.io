@@ -265,7 +265,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
         role="button"
         tabIndex={0}
         aria-pressed={flipped}
-        aria-label={flipped ? 'How I show up card — activate to flip back to portrait' : 'Meet Olivia card — activate to flip and see how I show up'}
+        aria-label={flipped ? 'How I Work card — activate to flip back to portrait' : 'Meet Olivia card — activate to flip and see how I work'}
         onClick={flip}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -360,7 +360,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
             }}
           >
             <p className="text-center font-hand text-[26px] font-semibold text-plum sm:text-[28px] lg:text-[31px]">
-              How I show up ✦
+              How I Work ✦
             </p>
 
             <div className="mt-3 flex flex-1 flex-col justify-around divide-y divide-plum/[0.07]">
