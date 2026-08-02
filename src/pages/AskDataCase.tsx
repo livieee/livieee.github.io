@@ -1301,6 +1301,21 @@ export function AskDataCase() {
             ))}
           </div>
 
+          {/* 第五个决策：集成下沉到后端 */}
+          <Reveal className="mt-12">
+            <p className="font-serif text-xl font-light leading-snug text-plum md:text-[1.55rem]">
+              And the structural one: integrate underneath, not in the shell
+            </p>
+            <p className="mt-2 max-w-2xl text-[14.5px] leading-relaxed text-plum-muted">
+              The three frontends stayed separate, as the constraint required. One layer below them
+              took over session, orchestration and business logic — which is what let the experience
+              come together while the services stayed apart.
+            </p>
+          </Reveal>
+          <Reveal className="mt-6" y={28}>
+            <ArchLayers />
+          </Reveal>
+
           <Reveal className="mt-10">
             <div className="rounded-[1.6rem] border border-[#D193A8]/30 bg-blush/25 p-7 md:p-9">
               <span className="font-hand text-[17px] text-rose">the call I keep coming back to ✦</span>
@@ -1360,17 +1375,6 @@ export function AskDataCase() {
             <AnnotatedShot />
           </Reveal>
 
-          <Reveal className="mt-16">
-            <p className="font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
-              What it takes to make that feel like one product
-            </p>
-            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              The frontends stayed separate. The integration moved underneath them.
-            </p>
-          </Reveal>
-          <Reveal className="mt-7" y={28}>
-            <ArchLayers />
-          </Reveal>
         </section>
 
         {/* ── 07 交付 ──────────────────────────────────────────── */}
