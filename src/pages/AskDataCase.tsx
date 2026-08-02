@@ -194,9 +194,16 @@ const CLIPS = [
   {
     id: 'analyze',
     step: '03',
-    tab: 'Analyze & visualize',
+    tab: 'Analyze',
     src: '/bosch/demo-3-analyze.mp4',
-    note: 'The same result flows into Python analysis and then an interactive chart — with the interaction timeline logging every refinement and an explain panel saying what just happened. No re-upload, no re-explaining.',
+    note: 'The same result flows into Python analysis — generated code you can read, execution output, and charts — without a single re-upload or re-explained column.',
+  },
+  {
+    id: 'explore',
+    step: '04',
+    tab: 'Explore',
+    src: '/bosch/demo-4-explore.mp4',
+    note: 'And into conversational visualization: refine the chart in plain language, with an interaction timeline logging every step and an explain panel saying what the chart is actually showing.',
   },
 ]
 
@@ -286,7 +293,7 @@ function PipelineDemo() {
             <p className="mt-3 min-h-[132px] text-[14px] leading-relaxed text-plum">{clip.note}</p>
           </div>
           <p className="mt-3 font-hand text-[15px] text-plum-muted">
-            three stages, one session — nothing gets carried by hand ✦
+            four stages, one session — nothing gets carried by hand ✦
           </p>
         </div>
       </div>
@@ -1054,7 +1061,7 @@ export function AskDataCase() {
               And here is the right-hand side, running.
             </p>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              The same question travelling through all three stages without a single manual handoff.
+              The same question travelling through all four stages without a single manual handoff.
               Step through it.
             </p>
           </Reveal>
@@ -1165,6 +1172,22 @@ export function AskDataCase() {
                 schema validation on the way back in, and the session waiting exactly where it was
                 left. The unglamorous branch is what made this usable inside a real enterprise.
               </p>
+
+              {/* 兑现的失败态 */}
+              <figure className="mt-7 overflow-hidden rounded-xl border border-plum/10 bg-white shadow-[0_18px_40px_-22px_rgba(90,63,86,0.35)]">
+                <img
+                  src="/bosch/fallback-state.png"
+                  alt="The shipped failure state: Query Execution Failed — run SQL externally or locally, then upload your CSV below, with Run externally and Upload CSV buttons and the full error kept available"
+                  loading="lazy"
+                  className="w-full"
+                />
+              </figure>
+              <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-2">
+                <span className="text-[12px] text-plum-faint">
+                  The failure state, as shipped — instruction, both exits, and the real error kept one click away
+                </span>
+                <span className="font-hand text-[15px] text-rose">a dead end turned into a doorway ✦</span>
+              </figcaption>
             </div>
           </Reveal>
         </section>
