@@ -15,7 +15,6 @@ type Pin = {
   type: string
   /** hover 后才出现的事实 */
   name: string
-  partners: string
   role: string
   cls: string
   delay: string
@@ -26,7 +25,6 @@ const PINS: Pin[] = [
     src: '/events/gtc-fireside.jpg',
     type: 'Founder conversation',
     name: '2026 GTC Fireside Talk',
-    partners: 'EPIC Connector · Peak Mojo · Z.ai',
     role: 'Host · partner development',
     cls: 'left-[0.5%] top-[1%] w-[26%] -rotate-2',
     delay: '.18s',
@@ -35,7 +33,6 @@ const PINS: Pin[] = [
     src: '/events/luma/agent-recall.jpg',
     type: 'Agent hackathon',
     name: 'Total Agent Recall',
-    partners: 'GMI Cloud · Dify · HydraDB · Photon',
     role: 'Marketing · sponsor coordination',
     cls: 'right-[0.5%] top-[0.5%] w-[26%] rotate-2',
     delay: '.3s',
@@ -44,7 +41,6 @@ const PINS: Pin[] = [
     src: '/events/women-hackathon.jpg',
     type: 'Women in Tech build day',
     name: 'Build What You Love',
-    partners: 'AI Valley · bem · MiniMax',
     role: 'Program team',
     cls: 'right-[1%] bottom-[2%] w-[27%] -rotate-2',
     delay: '.42s',
@@ -156,24 +152,32 @@ export function ProgramWall() {
           key={p.name}
           to="/work/ai-valley"
           aria-label={`${p.name} — ${p.role}`}
-          className={`group/pin absolute ${p.cls} rounded-[6px] bg-white p-[4px] pb-[3px] shadow-[0_12px_28px_-14px_rgba(58,36,64,0.55)] transition-transform duration-500 hover:z-20 hover:scale-[1.06] hover:rotate-0`}
+          data-cursor="VIEW"
+          className={`group/pin absolute ${p.cls} rounded-[6px] bg-white p-[4px] pb-[3px] shadow-[0_12px_28px_-14px_rgba(58,36,64,0.55)] transition-all duration-500 hover:z-20 hover:-translate-y-1.5 hover:rotate-0 hover:scale-[1.05] hover:shadow-[0_20px_40px_-16px_rgba(58,36,64,0.55)]`}
           style={{ animation: `annot-in .6s ${p.delay} ease-out both` }}
         >
           <span className="relative block overflow-hidden rounded-[4px]">
-            <img src={p.src} alt="" aria-hidden loading="lazy" className="aspect-[3/2] w-full object-cover" />
+            <img
+              src={p.src}
+              alt=""
+              aria-hidden
+              loading="lazy"
+              className="aspect-[3/2] w-full object-cover saturate-[0.82] transition-all duration-500 group-hover/pin:scale-[1.03] group-hover/pin:saturate-100"
+            />
 
             {/* hover 才出现的事实层 */}
-            <span className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-plum/92 via-plum/70 to-plum/10 p-1.5 opacity-0 transition-opacity duration-300 group-hover/pin:opacity-100">
-              <span className="block text-[7.5px] font-semibold leading-tight text-cream">{p.name}</span>
-              <span className="mt-[2px] block text-[6px] leading-tight text-cream/75">{p.partners}</span>
-              <span className="mt-[3px] block text-[6px] leading-tight text-cream">{p.role}</span>
-              <span className="mt-[3px] block text-[6px] font-medium leading-tight text-blush">
-                View chapter ↗
-              </span>
+            <span className="absolute inset-x-0 bottom-0 translate-y-1 bg-cream/95 px-2 pb-1.5 pt-1.5 opacity-0 backdrop-blur-[2px] transition-all duration-300 group-hover/pin:translate-y-0 group-hover/pin:opacity-100">
+              <span className="block text-[9px] font-semibold leading-tight text-plum">{p.name}</span>
+              <span className="mt-[3px] block text-[7.5px] leading-tight text-plum-muted">{p.role}</span>
             </span>
           </span>
-          <span className="block px-[2px] pt-[3px] text-center font-hand text-[8px] leading-tight text-plum-muted transition-opacity duration-300 group-hover/pin:opacity-0">
-            {p.type}
+          <span className="relative block px-[2px] pt-[3px] text-center text-[8px] leading-tight">
+            <span className="font-hand text-plum-muted transition-opacity duration-300 group-hover/pin:opacity-0">
+              {p.type}
+            </span>
+            <span className="absolute inset-0 font-medium text-rose opacity-0 transition-opacity duration-300 group-hover/pin:opacity-100">
+              View chapter ↗
+            </span>
           </span>
         </Link>
       ))}
