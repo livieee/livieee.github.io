@@ -253,6 +253,28 @@ const PROGRAMS: Program[] = [
     cover: '/events/luma/agi-summit.jpg',
   },
   {
+    name: 'MiniMax AI Founder Day @ GTC',
+    where: 'San Francisco',
+    size: '839 attendees · 9 speakers',
+    n: 839,
+    role: 'Program coordination',
+    partners: 'The AI Collective · AI Valley · MiniMax',
+    caps: ['Community', 'Strategic partnerships'],
+    href: 'https://luma.com/aic-sf-3-21?tk=C8DbIO',
+    cover: '/events/luma/minimax.jpg',
+  },
+  {
+    name: 'Global Builders Salon — private mixer',
+    where: 'San Francisco',
+    size: '100 seats, approval only',
+    n: 100,
+    role: 'Program coordination',
+    partners: 'AI Valley · HAC.ai · Boundless Immigration',
+    caps: ['Community', 'Strategic partnerships'],
+    href: 'https://luma.com/6re61lly',
+    cover: '/events/luma/builders-salon.jpg',
+  },
+  {
     name: 'Total Agent Recall Hackathon',
     where: 'Sky9 Capital, San Francisco',
     size: '358 registered · 50 engineers, 8 hours',
@@ -266,11 +288,6 @@ const PROGRAMS: Program[] = [
   },
 ]
 
-/* 参与过、但角色不由我替她认领的两场 —— 只留链接 */
-const ALSO = [
-  { name: 'MiniMax AI Founder Day @ GTC', href: 'https://luma.com/aic-sf-3-21?tk=C8DbIO' },
-  { name: 'Global Builders Salon', href: 'https://luma.com/6re61lly' },
-]
 
 function ProgramMatrix() {
   const [cap, setCap] = useState<string | null>(null)
@@ -381,25 +398,6 @@ function ProgramMatrix() {
           </li>
         ))}
       </ul>
-
-      {!cap && (
-        <p className="mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[12.5px] text-plum-faint">
-          <span>Also on the calendar:</span>
-          {ALSO.map((a, i) => (
-            <span key={a.name}>
-              <a
-                href={a.href}
-                target="_blank"
-                rel="noreferrer"
-                className="text-plum-muted underline decoration-plum/20 underline-offset-4 transition-colors hover:text-rose"
-              >
-                {a.name}
-              </a>
-              {i < ALSO.length - 1 && <span aria-hidden> ·</span>}
-            </span>
-          ))}
-        </p>
-      )}
 
       {shown.length === 0 && (
         <p className="mt-6 font-hand text-[15px] text-plum-muted">nothing tagged with that yet ✦</p>
