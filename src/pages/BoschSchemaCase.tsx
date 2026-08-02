@@ -779,11 +779,13 @@ function SilentFailure() {
 
 /* ── 统一的章节头：细线 + 标签 + 标题 + 可选导语 ──────────────── */
 function Chapter({
+  n,
   label,
   title,
   intro,
   className = 'mt-24',
 }: {
+  n: string
   label: string
   title: string
   intro?: string
@@ -792,7 +794,8 @@ function Chapter({
   return (
     <Reveal className={className}>
       <div className="mb-3 flex items-center gap-3">
-        <span aria-hidden className="h-px w-8 shrink-0 bg-plum/20" />
+        <span className="font-serif text-[15px] leading-none text-[#7FA3CC]">{n}</span>
+        <span aria-hidden className="h-px w-6 shrink-0 bg-plum/20" />
         <p className="label-text">{label}</p>
       </div>
       <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
@@ -871,6 +874,7 @@ export function BoschSchemaCase() {
 
         {/* ── 一 · 问题 ────────────────────────────────────────── */}
         <Chapter
+          n="01"
           label="The problem"
           title="An LLM always returns something. That's the problem."
           intro="Ask a model to read a PDF and it will hand back a clean, confident schema every time — including when it is wrong. Downstream, a chart reads that field name and plots it. The failure is silent, and it looks like data."
@@ -882,6 +886,7 @@ export function BoschSchemaCase() {
 
         {/* ── 二 · 系统怎么工作（走查 + 原稿 + 评分门） ──────────── */}
         <Chapter
+          n="02"
           label="How it works"
           title="A generator that drafts — and a layer that decides what ships"
         />
@@ -905,7 +910,7 @@ export function BoschSchemaCase() {
         </Reveal>
 
         {/* ── 三 · 我的判断 ────────────────────────────────────── */}
-        <Chapter label="The calls I made" title="Four choices, and what I chose against" />
+        <Chapter n="03" label="The calls I made" title="Four choices, and what I chose against" />
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {CALLS.map((c, i) => (
             <Reveal key={c.n} delay={i * 0.06}>
@@ -937,6 +942,7 @@ export function BoschSchemaCase() {
 
         {/* ── 四 · 证据（评测 + 自查 + 成本对比） ────────────────── */}
         <Chapter
+          n="04"
           label="The proof"
           title="Generator alone guessed. The trust layer knew."
           intro="Two evaluations across four public datasets — Iris, Mushroom, NPHA, Wine Quality. The validator, semantic tolerance and retry loop took average accuracy from 56.6% to 97.2%, at full coverage, with no human fixes."
@@ -974,6 +980,7 @@ export function BoschSchemaCase() {
 
         {/* ── 五 · 交付时留下的路线 ────────────────────────────── */}
         <Chapter
+          n="05"
           label="What comes next"
           title="A working system, and an argued case for what follows"
         />
