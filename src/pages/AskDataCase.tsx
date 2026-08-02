@@ -852,36 +852,23 @@ function AnnotatedShot() {
   )
 }
 
-/* ── 05b · 架构：真实架构图 + 逐组件热区 ────────────────────── */
-type Hot = { id: string; x: number; y: number; w: number; h: number; band: string; label: string; note: string }
-
-const HOTS: Hot[] = [
-  { id: 'sql', x: 0.025, y: 0.078, w: 0.220, h: 0.104, band: 'What users touch', label: 'SQL mode', note: 'Natural language in, an editable query out.' },
-  { id: 'analytics', x: 0.255, y: 0.078, w: 0.237, h: 0.104, band: 'What users touch', label: 'Analytics', note: 'Python analysis on the result you just produced — no re-upload.' },
-  { id: 'viz', x: 0.502, y: 0.078, w: 0.233, h: 0.104, band: 'What users touch', label: 'Visualization', note: 'Conversational charting, with every refinement logged.' },
-  { id: 'schema', x: 0.745, y: 0.078, w: 0.230, h: 0.104, band: 'What users touch', label: 'Schema', note: 'Where teams correct the metadata the AI reads.' },
-
-  { id: 'proxy', x: 0.012, y: 0.245, w: 0.973, h: 0.100, band: 'Edge', label: 'Reverse proxy', note: 'One address in front of services that were never designed to sit together.' },
-
-  { id: 'orch', x: 0.025, y: 0.452, w: 0.220, h: 0.115, band: 'Orchestration', label: 'Orchestration', note: 'Routes each request to whichever service can answer it.' },
-  { id: 'session', x: 0.255, y: 0.452, w: 0.237, h: 0.115, band: 'Orchestration', label: 'Session management', note: 'The digital thread. Schema and history live here — not in the user’s head.' },
-  { id: 'logic', x: 0.502, y: 0.452, w: 0.233, h: 0.115, band: 'Orchestration', label: 'Business logic', note: 'The rules deciding what unlocks, what locks, what retries.' },
-  { id: 'integration', x: 0.745, y: 0.452, w: 0.230, h: 0.115, band: 'Orchestration', label: 'Integration', note: 'Where three separate products were finally stitched into one flow.' },
-
-  { id: 'kb', x: 0.012, y: 0.602, w: 0.233, h: 0.215, band: 'Services', label: 'Knowledge engine', note: 'Validated enterprise metadata — the reason generated queries are accurate.' },
-  { id: 'agent', x: 0.255, y: 0.602, w: 0.237, h: 0.215, band: 'Services', label: 'Query agent', note: 'Translates the question into SQL, grounded in the knowledge engine.' },
-  { id: 'exec', x: 0.502, y: 0.602, w: 0.238, h: 0.215, band: 'Services', label: 'Executor', note: 'Runs the query — and owns the failure path when it cannot.' },
-  { id: 'vizsvc', x: 0.750, y: 0.602, w: 0.235, h: 0.215, band: 'Services', label: 'Visualization service', note: 'The existing charting engine, reused rather than rebuilt.' },
-
-  { id: 'pg', x: 0.012, y: 0.852, w: 0.233, h: 0.118, band: 'Data & models', label: 'PostgreSQL', note: 'Where the corrected schema knowledge persists.' },
-  { id: 'redis', x: 0.255, y: 0.852, w: 0.237, h: 0.118, band: 'Data & models', label: 'Redis', note: 'Keeps sessions responsive across the round-trip.' },
-  { id: 'llm', x: 0.502, y: 0.852, w: 0.238, h: 0.118, band: 'Data & models', label: 'Azure OpenAI', note: 'The model, kept behind our own layer so it can be swapped.' },
-  { id: 'customer', x: 0.750, y: 0.852, w: 0.235, h: 0.118, band: 'Data & models', label: 'Customer database', note: 'Live enterprise data we can never touch directly — the constraint that shaped everything above it.' },
+/* ── 05b · 架构：真实架构图 + 整条层带聚光灯 ─────────────────── */
+const LAYERS = [
+  { id: 'frontend', top: 0.0, bottom: 0.21, name: 'What users touch',
+    note: 'One frontend, four surfaces. Users never learn that three services live underneath.' },
+  { id: 'edge', top: 0.21, bottom: 0.375, name: 'The edge',
+    note: 'One address in front of services that were never designed to sit together.' },
+  { id: 'orchestration', top: 0.375, bottom: 0.595, name: 'The orchestration layer',
+    note: 'Where the integration lives — session, routing and rules, held here instead of by the user.' },
+  { id: 'services', top: 0.595, bottom: 0.835, name: 'The four services',
+    note: 'Each replaceable on its own — which is what let us ship in slices.' },
+  { id: 'data', top: 0.835, bottom: 1.0, name: 'Data & models',
+    note: 'Including the customer database that stays behind the wall — the constraint that shaped everything above it.' },
 ]
 
 function ArchLayers() {
-  const [id, setId] = useState('session')
-  const a = HOTS.find((h) => h.id === id)!
+  const [i, setI] = useState(2)
+  const a = LAYERS[i]
 
   return (
     <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
@@ -893,55 +880,58 @@ function ArchLayers() {
             className="w-full"
             loading="eager"
           />
-          {/* 聚光灯：只压暗选中区域之外，选中处完全不遮挡 */}
-          {[
-            { left: 0, top: 0, width: 1, height: a.y },
-            { left: 0, top: a.y + a.h, width: 1, height: 1 - (a.y + a.h) },
-            { left: 0, top: a.y, width: a.x, height: a.h },
-            { left: a.x + a.w, top: a.y, width: 1 - (a.x + a.w), height: a.h },
-          ].map((r, i) => (
-            <div
-              key={i}
-              aria-hidden
-              className="pointer-events-none absolute bg-cream/[0.72] transition-all duration-300"
-              style={{
-                left: `${r.left * 100}%`,
-                top: `${r.top * 100}%`,
-                width: `${r.width * 100}%`,
-                height: `${r.height * 100}%`,
-              }}
-            />
-          ))}
-
-          {HOTS.map((h) => (
+          {/* 聚光灯：只压暗选中层带以外，选中的一整条保持原样 */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 bg-cream/[0.72] transition-all duration-300"
+            style={{ height: `${a.top * 100}%` }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 bg-cream/[0.72] transition-all duration-300"
+            style={{ height: `${(1 - a.bottom) * 100}%` }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-[-0.4%] rounded-lg border-2 border-[#3A2440]/70 transition-all duration-300"
+            style={{ top: `${a.top * 100}%`, height: `${(a.bottom - a.top) * 100}%` }}
+          />
+          {/* 整条可点 */}
+          {LAYERS.map((l, n) => (
             <button
-              key={h.id}
+              key={l.id}
               type="button"
-              onMouseEnter={() => setId(h.id)}
-              onClick={() => setId(h.id)}
-              aria-label={h.label}
-              className={`absolute rounded-[7px] transition-all duration-300 ${
-                h.id === id ? 'ring-2 ring-[#3A2440]' : 'ring-0 hover:ring-2 hover:ring-[#7FA3CC]/70'
-              }`}
-              style={{
-                left: `${h.x * 100}%`,
-                top: `${h.y * 100}%`,
-                width: `${h.w * 100}%`,
-                height: `${h.h * 100}%`,
-                boxShadow: h.id === id ? '0 12px 30px -10px rgba(58,36,64,0.5)' : undefined,
-              }}
+              onMouseEnter={() => setI(n)}
+              onClick={() => setI(n)}
+              aria-label={l.name}
+              className="absolute inset-x-0"
+              style={{ top: `${l.top * 100}%`, height: `${(l.bottom - l.top) * 100}%` }}
             />
           ))}
         </div>
       </div>
 
       <div className="lg:sticky lg:top-32">
-        <div className="rounded-2xl border border-plum/10 bg-white/80 p-6 backdrop-blur-sm">
-          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">{a.band}</p>
-          <h3 className="mt-2 font-serif text-lg font-light text-plum">{a.label}</h3>
-          <p className="mt-2 min-h-[76px] text-[14px] leading-relaxed text-plum-muted">{a.note}</p>
+        <div className="flex flex-wrap gap-1.5">
+          {LAYERS.map((l, n) => (
+            <button
+              key={l.id}
+              type="button"
+              onClick={() => setI(n)}
+              className={`rounded-full px-3 py-1.5 text-[11.5px] transition-colors ${
+                n === i
+                  ? 'bg-[#4E6E96] text-white'
+                  : 'border border-plum/15 text-plum-muted hover:border-[#7FA3CC] hover:text-[#4E6E96]'
+              }`}
+            >
+              {l.name}
+            </button>
+          ))}
         </div>
-        <p className="mt-3 font-hand text-[15px] text-plum-muted">tap any component ✦</p>
+        <div className="mt-4 rounded-2xl border border-plum/10 bg-white/80 p-6 backdrop-blur-sm">
+          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">{a.name}</p>
+          <p className="mt-3 min-h-[76px] text-[14px] leading-relaxed text-plum">{a.note}</p>
+        </div>
 
         <div className="mt-4 rounded-2xl border border-plum/10 bg-white/60 px-5 py-4">
           <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">What it runs on</p>
@@ -967,6 +957,7 @@ function ArchLayers() {
     </div>
   )
 }
+
 
 /* ── 07 · Sprint 时间轴 ──────────────────────────────────────── */
 const SPRINTS = [
