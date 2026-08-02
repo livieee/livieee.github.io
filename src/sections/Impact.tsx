@@ -397,29 +397,31 @@ export function Impact() {
               </div>
               <p className="label-text mb-4">04 · AI GTM & Ecosystem Programs · AI Valley</p>
               <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                Running the programs where builders, labs, and investors meet
+                Programs run like products — partnered, designed, measured
               </h3>
               <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
-                I coordinated a Bay Area developer program calendar — hackathons, Builder Sprints,
-                Demo Days — from goals and run-of-show through retrospective, and ran developer
-                relations for a global build challenge co-hosted with a leading open-weights model
-                lab. I also wrote the outbound developer content and sourced speakers through CMU
-                and Bay Area university networks.
+                Nine Bay Area and global programs — hackathons, fireside talks, demo days, a private
+                salon. I sourced the partners, invited and briefed the panel guests, wrote the
+                run-of-show, and closed the loop afterwards. The one I owned outright was a
+                week-long global build challenge with Z.ai: partnership, prize design, judging
+                rubric and developer relations.
               </p>
               <div className="mt-8">
                 <Metrics
                   accent="text-rose"
                   items={[
-                    { value: '200+', n: 200, suffix: '+', label: 'average attendees — founders, developers, investors' },
-                    { value: '~100', n: 100, prefix: '~', label: 'projects shipped in one week-long global build challenge' },
-                    { value: 'E2E', label: 'program ownership, from design to recap' },
+                    { value: '3,200+', n: 3200, suffix: '+', label: 'builders, founders and investors across nine programs' },
+                    { value: '221', n: 221, label: 'developers in the global build challenge I ran end to end' },
+                    { value: 'E2E', label: 'program ownership, from partner search to recap' },
                   ]}
                 />
               </div>
               <div className="mt-6 flex flex-wrap gap-2">
+                <Tag>Program ownership</Tag>
                 <Tag>Developer relations</Tag>
-                <Tag>Hackathon programming</Tag>
-                <Tag>Ecosystem partnerships</Tag>
+                <Tag>Community</Tag>
+                <Tag>GTM</Tag>
+                <Tag>Strategic partnerships</Tag>
               </div>
               <Link
                 to="/work/ai-valley"
@@ -428,17 +430,17 @@ export function Impact() {
                 See the programs
                 <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
               </Link>
-              <figure className="mt-8 max-w-[220px]">
+              <figure className="mt-8 max-w-[340px]">
                 <div className="overflow-hidden rounded-2xl shadow-soft">
                   <img
-                    src="/images/photo-conference.jpg"
-                    alt="Olivia at an IEEE global AI conference"
-                    className="aspect-[3/4] w-full object-cover transition-transform duration-700 hover:scale-[1.04]"
+                    src="/events/women-hackathon.jpg"
+                    alt="The cohort of Build What You Love — Women in Tech Hackathon, on stage after demos"
+                    className="aspect-[3/2] w-full object-cover transition-transform duration-700 hover:scale-[1.04]"
                     loading="lazy"
                   />
                 </div>
                 <figcaption className="mt-2 text-[11px] uppercase tracking-label text-plum-faint">
-                  IEEE global AI conference
+                  Build What You Love · Women in Tech Hackathon
                 </figcaption>
               </figure>
             </article>
