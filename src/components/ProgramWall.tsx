@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 
 /**
@@ -53,8 +54,20 @@ const STAMPS = [
 ]
 
 export function ProgramWall() {
+  const [cur, setCur] = useState<{ x: number; y: number } | null>(null)
+
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-lavender/45 via-cream-soft to-blush/30">
+    <Link
+      to="/work/ai-valley"
+      aria-label="AI Valley programs — open the case study"
+      className="group/wall relative block aspect-[4/3] w-full cursor-none overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-lavender/45 via-cream-soft to-blush/30"
+      onPointerMove={(e) => {
+        if (e.pointerType === 'touch') return
+        const r = e.currentTarget.getBoundingClientRect()
+        setCur({ x: e.clientX - r.left, y: e.clientY - r.top })
+      }}
+      onPointerLeave={() => setCur(null)}
+    >
       {/* 手绘路线 */}
       <svg
         viewBox="0 0 400 300"
@@ -148,11 +161,8 @@ export function ProgramWall() {
 
       {/* 三张拍立得 */}
       {PINS.map((p) => (
-        <Link
+        <span
           key={p.name}
-          to="/work/ai-valley"
-          aria-label={`${p.name} — ${p.role}`}
-          data-cursor="VIEW"
           className={`group/pin absolute ${p.cls} rounded-[6px] bg-white p-[4px] pb-[3px] shadow-[0_12px_28px_-14px_rgba(58,36,64,0.55)] transition-all duration-500 hover:z-20 hover:-translate-y-1.5 hover:rotate-0 hover:scale-[1.05] hover:shadow-[0_20px_40px_-16px_rgba(58,36,64,0.55)]`}
           style={{ animation: `annot-in .6s ${p.delay} ease-out both` }}
         >
@@ -179,7 +189,7 @@ export function ProgramWall() {
               View chapter ↗
             </span>
           </span>
-        </Link>
+        </span>
       ))}
 
       {/* 路线上的四个阶段 */}
@@ -208,6 +218,21 @@ export function ProgramWall() {
           align partners · welcome builders · follow through
         </span>
       </span>
-    </div>
+
+      {/* 跟随光标的胶囊 —— 与 Theta 卡片同一套 */}
+      {cur && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute z-30 whitespace-nowrap rounded-full bg-rose px-4 py-1.5 font-hand text-[15px] font-semibold text-white shadow-[0_12px_28px_-8px_rgba(209,147,168,0.75)]"
+          style={{
+            left: cur.x,
+            top: cur.y,
+            transform: 'translate(12px, -130%) rotate(3deg)',
+          }}
+        >
+          Tap to view ↗
+        </span>
+      )}
+    </Link>
   )
 }

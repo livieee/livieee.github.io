@@ -383,9 +383,7 @@ export function Impact() {
                 </div>
 
                 {/* 生态项目板 */}
-                <div data-cursor="VIEW">
-                  <ProgramWall />
-                </div>
+                <ProgramWall />
               </div>
             </article>
           </TiltCard>
