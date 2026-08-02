@@ -410,8 +410,8 @@ export function Impact() {
                 <Metrics
                   accent="text-rose"
                   items={[
-                    { value: '200+', n: 200, suffix: '+', label: 'average attendees — founders, developers, investors' },
-                    { value: '~100', n: 100, prefix: '~', label: 'projects shipped in one week-long global build challenge' },
+                    { value: '~470', n: 470, prefix: '~', label: 'average turnout per program — founders, developers, investors' },
+                    { value: '221', n: 221, label: 'developers in the week-long global build challenge I led' },
                     { value: 'E2E', label: 'program ownership, from design to recap' },
                   ]}
                 />
