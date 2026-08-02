@@ -345,27 +345,29 @@ export function Impact() {
               </span>
               <article
                 id="case-aivalley"
-                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 md:p-12"
+                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-12"
               >
                 <div className="mb-8">
                   <ProgramWall />
                 </div>
                 <p className="label-text mb-4">03 · GTM &amp; AI Ecosystem Partnerships</p>
                 <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                  Creating spaces where people come to build
+                  Creating spaces where
+                  <br />
+                  people come to build
                 </h3>
                 <p className="mt-4 text-[15px] leading-relaxed text-plum-muted">
                   From global builder challenges to Bay Area hackathons and founder conversations, I
-                  turn partner goals into thoughtful programs — bringing together builders,
-                  speakers, judges, sponsors, and communities around ideas worth building.
+                  shape thoughtful programs that connect partner goals with builders and communities
+                  around ideas worth building.
                 </p>
                 <div className="mt-7">
                   <Metrics
                     accent="text-rose"
                     items={[
-                      { value: '3,200+', n: 3200, suffix: '+', label: 'builders, founders and investors reached' },
-                      { value: '221', n: 221, label: 'builders in the global challenge I led' },
-                      { value: '20+', n: 20, suffix: '+', label: 'partner and sponsor organisations' },
+                      { value: '9', n: 9, label: 'selected programs' },
+                      { value: '221', n: 221, label: 'builders in a flagship global challenge' },
+                      { value: 'E2E', label: 'flagship program ownership' },
                     ]}
                   />
                 </div>
@@ -376,9 +378,9 @@ export function Impact() {
                 </div>
                 <Link
                   to="/work/ai-valley"
-                  className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
+                  className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
                 >
-                  Explore the program portfolio
+                  Explore programs
                   <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
                 </Link>
               </article>

@@ -24,25 +24,25 @@ type Pin = {
 const PINS: Pin[] = [
   {
     src: '/events/gtc-fireside.jpg',
-    type: 'Founder conversation',
+    type: 'founder conversation',
     name: '2026 GTC Fireside Talk',
-    role: 'Host · partner development',
+    role: 'Host',
     cls: 'left-[0.5%] top-[1%] w-[26%] -rotate-2',
     delay: '.18s',
   },
   {
     src: '/events/luma/agent-recall.jpg',
-    type: 'Agent hackathon',
+    type: 'agent hackathon',
     name: 'Total Agent Recall',
-    role: 'Marketing · sponsor coordination',
+    role: 'Partner Coordination',
     cls: 'right-[0.5%] top-[0.5%] w-[26%] rotate-2',
     delay: '.3s',
   },
   {
     src: '/events/women-hackathon.jpg',
-    type: 'Women in Tech build day',
+    type: 'build day',
     name: 'Build What You Love',
-    role: 'Program team',
+    role: 'Program Team',
     cls: 'right-[1%] bottom-[2%] w-[27%] -rotate-2',
     delay: '.42s',
   },
@@ -60,7 +60,7 @@ export function ProgramWall() {
     <Link
       to="/work/ai-valley"
       aria-label="AI Valley programs — open the case study"
-      className="group/wall relative block aspect-[4/3] w-full cursor-none overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-lavender/45 via-cream-soft to-blush/30"
+      className="wall-board group/wall relative block aspect-[3/2] w-full cursor-none overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-lavender/45 via-cream-soft to-blush/30"
       onPointerMove={(e) => {
         if (e.pointerType === 'touch') return
         const r = e.currentTarget.getBoundingClientRect()
@@ -71,7 +71,7 @@ export function ProgramWall() {
       {/* 手绘路线 */}
       <svg
         viewBox="0 0 400 300"
-        className="absolute inset-0 h-full w-full"
+        className="wall-route absolute inset-0 h-full w-full"
         fill="none"
         aria-hidden
         preserveAspectRatio="none"
@@ -104,7 +104,7 @@ export function ProgramWall() {
 
       {/* 中央：旗舰项目的页面局部 */}
       <div
-        className="absolute left-1/2 top-[49%] w-[42%] -translate-x-1/2 -translate-y-1/2 -rotate-1 overflow-hidden rounded-xl bg-white shadow-[0_22px_48px_-20px_rgba(58,36,64,0.5)] ring-1 ring-plum/10"
+        className="flagship group/flag absolute left-1/2 top-[49%] w-[42%] -translate-x-1/2 -translate-y-1/2 -rotate-1 overflow-hidden rounded-xl bg-white shadow-[0_22px_48px_-20px_rgba(58,36,64,0.5)] ring-1 ring-plum/10 transition-transform duration-500 hover:scale-[1.03]"
         style={{ animation: 'annot-in .6s .05s ease-out both' }}
       >
         <div className="flex items-center gap-1 bg-plum/[0.06] px-2.5 py-1.5">
@@ -156,6 +156,12 @@ export function ProgramWall() {
             ))}
             <span className="text-[6.5px] text-plum-faint">in partnership</span>
           </div>
+
+          <span className="mt-1.5 block h-[9px] overflow-hidden">
+            <span className="block text-[6.5px] font-medium leading-tight text-rose opacity-0 transition-opacity duration-300 group-hover/flag:opacity-100">
+              Flagship program · View chapter ↗
+            </span>
+          </span>
         </div>
       </div>
 
