@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
+import { PartnerLogos } from '@/components/PartnerLogos'
 
 /**
  * Bosch × CMU 项目一：多智能体 schema 抽取（对外名 Schema Extraction Agents）。
@@ -213,13 +214,6 @@ function ArchWalkthrough() {
 
 /* ── 信任层三支柱 ────────────────────────────────────────────── */
 /* ── 对比竞品 ────────────────────────────────────────────────── */
-const COMPARE = [
-  { dim: 'Trust layer', them: 'None / manual fix', us: 'Validator + scoring + retry' },
-  { dim: 'Output control', them: 'One-shot, template-based', us: 'Threshold-gated, best-YAML' },
-  { dim: 'Modularity', them: 'Limited or monolithic', us: 'Fully modular agents' },
-  { dim: 'Cost · 3-page PDF', them: '~$0.06', us: '$0.007–0.03' },
-]
-
 /* ── 原始手绘架构：默认收起，需要时展开 ────────────────────── */
 function OriginalDoc() {
   const [open, setOpen] = useState(false)
@@ -306,6 +300,56 @@ function EvalBars() {
   )
 }
 
+/* ── 成本对比：进入视口时生长 ───────────────────────────────── */
+function CostCompare() {
+  const ref = useRef<HTMLDivElement>(null)
+  const [on, setOn] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setOn(true), { threshold: 0.4 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref} className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:p-8">
+      <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+        Cost to process a 3-page PDF
+      </p>
+
+      <div className="mt-6 space-y-6">
+        {[
+          { label: 'Unstructured.io · billed per page', price: '~$0.06', w: '100%', tone: 'bg-plum/22', text: 'text-plum-muted', size: 'text-2xl md:text-3xl', d: '0s' },
+          { label: 'Ours · billed per YAML task', price: '$0.007–0.03', w: '38%', tone: 'bg-[#4E6E96]', text: 'text-[#4E6E96]', size: 'text-3xl md:text-4xl', d: '.22s' },
+        ].map((r) => (
+          <div key={r.label}>
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <span className="text-[12px] uppercase tracking-label text-plum-muted">{r.label}</span>
+              <span className={`font-serif font-light ${r.size} ${r.text}`}>{r.price}</span>
+            </div>
+            <div className="mt-2 h-3 overflow-hidden rounded-full bg-cream-soft">
+              <div
+                className={`h-full rounded-full ${r.tone}`}
+                style={{ width: on ? r.w : '0%', transition: `width 1s cubic-bezier(.4,0,.2,1) ${r.d}` }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-7 grid gap-4 border-t border-plum/10 pt-5 sm:grid-cols-2">
+        <p className="text-[13px] leading-relaxed text-plum-muted">
+          Priced per task, not per page — so cost scales with work done, not paper.
+        </p>
+        <p className="text-[13px] leading-relaxed text-plum-muted">
+          Agents stay modular and independently replaceable, where the alternatives ship monolithic.
+        </p>
+      </div>
+    </div>
+  )
+}
+
 export function BoschSchemaCase() {
   return (
     <main className="min-h-screen bg-cream">
@@ -328,7 +372,9 @@ export function BoschSchemaCase() {
       <article className="mx-auto max-w-5xl px-6 pb-28 pt-32 md:px-10 md:pt-36">
         {/* ── Hero ─────────────────────────────────────────────── */}
         <Reveal>
-          <p className="label-text mb-5 text-[#4E6E96]">Bosch × CMU · Project 01 · Solution Architect</p>
+          <div className="mb-6">
+            <PartnerLogos note="Architecture &amp; Validation" />
+          </div>
         </Reveal>
         <h1 className="max-w-3xl font-serif text-[clamp(2rem,5.4vw,3.6rem)] font-light leading-[1.08] text-plum">
           <WordReveal text="Schema Extraction Agents" />
@@ -340,10 +386,9 @@ export function BoschSchemaCase() {
         </Reveal>
         <Reveal delay={0.25}>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-            Built with Bosch Research: an agentic system that reads unstructured PDFs and returns
-            schema a downstream tool can trust. My part was the system architecture and the
-            validator — the confidence-scoring layer deciding what ships, what retries, and what
-            goes to a human.
+            Pulling schema out of real documents was manual and error-prone. I designed the system
+            architecture and the validator — the layer that scores every field and decides what
+            ships, what retries, and what goes to a human.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {['System Architecture', 'Multi-Agent Design', 'LangGraph', 'FastAPI + Docker', 'Evaluation'].map((s) => (
@@ -356,7 +401,7 @@ export function BoschSchemaCase() {
             ))}
           </div>
           <p className="mt-4 text-[12px] uppercase tracking-label text-plum-faint">
-            Bosch Research × CMU · team of four · mine: architecture &amp; validator
+            Bosch Research · team of four · 2024–2025
           </p>
         </Reveal>
 
@@ -455,34 +500,15 @@ export function BoschSchemaCase() {
           </div>
         </Reveal>
 
-        {/* ── 竞品对比 ─────────────────────────────────────────── */}
+        {/* ── 竞品对比：只留未讲过的差异 ───────────────────────── */}
         <Reveal className="mt-20">
           <p className="label-text mb-3">Against the market</p>
           <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
             Cheaper than Unstructured.io — and it can prove its answers
           </h2>
-          <div className="mt-8 overflow-x-auto">
-            <div className="min-w-[560px] overflow-hidden rounded-[1.4rem] border border-plum/10">
-              <div className="grid grid-cols-[1.1fr_1.2fr_1.4fr] bg-white/80 px-6 py-3 text-[10.5px] font-medium uppercase tracking-[0.15em] text-plum-faint">
-                <span />
-                <span>Rossum · Docugami · Unstructured.io</span>
-                <span className="text-[#4E6E96]">Our system</span>
-              </div>
-              {COMPARE.map((row, i) => (
-                <div
-                  key={row.dim}
-                  className={`grid grid-cols-[1.1fr_1.2fr_1.4fr] items-center px-6 py-4 text-[13.5px] ${i % 2 ? 'bg-white/50' : 'bg-white/75'}`}
-                >
-                  <span className="font-medium text-plum">{row.dim}</span>
-                  <span className="text-plum-muted">{row.them}</span>
-                  <span className="font-medium text-[#4E6E96]">✓ {row.us}</span>
-                </div>
-              ))}
-            </div>
+          <div className="mt-8">
+            <CostCompare />
           </div>
-          <p className="mt-4 font-hand text-[15px] text-plum-muted">
-            per-YAML-task pricing vs per-page billing — cost you can tune, not a black box ✦
-          </p>
         </Reveal>
 
         {/* ── 技术栈 + 公开记录 ────────────────────────────────── */}
@@ -565,7 +591,7 @@ export function BoschSchemaCase() {
           >
             <div>
               <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-                Project 02 · What the schema layer made possible ↗
+                What the schema layer made possible ↗
               </p>
               <p className="mt-2 font-serif text-xl font-light text-plum md:text-2xl">
                 GenAI Analytics Suite — AI-native analytics workspace

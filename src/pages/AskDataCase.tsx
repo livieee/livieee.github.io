@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { AskDataUI } from '@/components/AskDataUI'
+import { PartnerLogos } from '@/components/PartnerLogos'
 import { Glyph, type GlyphName } from '@/components/Glyph'
 
 /**
@@ -1276,11 +1277,8 @@ export function AskDataCase() {
       <article className="mx-auto max-w-5xl px-6 pb-28 pt-32 md:px-10 md:pt-36">
         {/* ── Hero ─────────────────────────────────────────────── */}
         <Reveal>
-          <div className="mb-5 flex flex-wrap items-center gap-3">
-            <img src="/logos/bosch-wordmark.png" alt="Bosch" className="h-5 w-auto" />
-            <span aria-hidden className="font-hand text-[16px] text-plum-faint">×</span>
-            <img src="/logos/cmu-wordmark.png" alt="Carnegie Mellon University" className="h-8 w-auto rounded-md" />
-            <span className="label-text text-[#4E6E96]">Enterprise AI Product · Product Lead</span>
+          <div className="mb-6">
+            <PartnerLogos note="Enterprise AI Product · Product Lead" />
           </div>
         </Reveal>
         <h1 className="font-serif text-[clamp(2.2rem,5.6vw,3.9rem)] font-light leading-[1.05] text-plum">
