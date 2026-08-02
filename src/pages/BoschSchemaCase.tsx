@@ -341,12 +341,90 @@ function CostCompare() {
 
       <div className="mt-7 grid gap-4 border-t border-plum/10 pt-5 sm:grid-cols-2">
         <p className="text-[13px] leading-relaxed text-plum-muted">
-          Priced per task, not per page — so cost scales with work done, not paper.
+          Priced per task, not per page — cost scales with work done, not paper.
         </p>
         <p className="text-[13px] leading-relaxed text-plum-muted">
           Agents stay modular and independently replaceable, where the alternatives ship monolithic.
         </p>
       </div>
+    </div>
+  )
+}
+
+/* ── 我的判断：每条都带被否掉的另一个选项 ──────────────────── */
+const CALLS = [
+  {
+    n: '01',
+    title: 'Score fields, not documents',
+    instead: 'Accept or reject the whole file',
+    body: 'One weak column shouldn’t sink a good document — and a good average shouldn’t hide one fatal column. Trust had to be granular to be useful.',
+  },
+  {
+    n: '02',
+    title: 'Give the name a floor, not just a weight',
+    instead: 'A single weighted average',
+    body: 'Name is what every downstream chart reads. So it carries half the score and a hard floor of 60 — below that the schema is rejected no matter how good the total looks.',
+  },
+  {
+    n: '03',
+    title: 'Retry with feedback, capped at three',
+    instead: 'Retry until it passes',
+    body: 'The generator is told which field failed and why, so attempts converge instead of wandering. The cap is a cost decision — I picked a bound over an open loop.',
+  },
+  {
+    n: '04',
+    title: 'Keep the best version, not the last',
+    instead: 'Take the most recent attempt',
+    body: 'Later is not always better. A selector compares every attempt by score and ships the strongest one — which is what makes retrying safe.',
+  },
+]
+
+/* ── 静默失败：同一列，两种输出 ─────────────────────────────── */
+function SilentFailure() {
+  return (
+    <div className="grid gap-5 md:grid-cols-2">
+      {[
+        {
+          tone: 'ok',
+          tag: 'What the source says',
+          name: 'annual_revenue',
+          desc: 'Total sales in USD, per supplier',
+          type: 'float',
+        },
+        {
+          tone: 'bad',
+          tag: 'What a confident model can return',
+          name: 'Column3',
+          desc: 'Customer name',
+          type: 'string',
+        },
+      ].map((c) => (
+        <div
+          key={c.tag}
+          className={`rounded-[1.4rem] border p-6 ${
+            c.tone === 'ok' ? 'border-[#8FAE8B]/40 bg-[#8FAE8B]/[0.07]' : 'border-[#D193A8]/45 bg-blush/25'
+          }`}
+        >
+          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">{c.tag}</p>
+          <dl className="mt-4 space-y-2 font-mono text-[12.5px] leading-relaxed">
+            {[
+              ['name', c.name],
+              ['description', c.desc],
+              ['type', c.type],
+            ].map(([k, v]) => (
+              <div key={k} className="flex gap-3">
+                <dt className="w-[86px] shrink-0 text-plum-faint">{k}</dt>
+                <dd className={c.tone === 'ok' ? 'text-plum' : 'text-rose'}>{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-4 border-t border-plum/10 pt-3 text-[12.5px] leading-relaxed text-plum-muted">
+            {c.tone === 'ok'
+              ? 'Every downstream chart reads the field name. Get it right and nobody notices.'
+              : 'Same shape, same confidence, no error raised. The chart still renders — of the wrong thing.'}
+          </p>
+        </div>
+      ))}
     </div>
   )
 }
@@ -412,9 +490,25 @@ export function BoschSchemaCase() {
             items={[
               { n: 97.2, suffix: '%', label: 'average accuracy, up from 56.6% without the validator' },
               { n: 100, suffix: '%', label: 'field coverage — nothing silently skipped' },
-              { n: 2, suffix: '–8×', label: 'cheaper per document than the industry benchmark' },
+              { n: 0, label: 'manual fixes needed — the loop corrected itself' },
             ]}
           />
+        </Reveal>
+
+        {/* ── 问题 ─────────────────────────────────────────────── */}
+        <Reveal className="mt-20">
+          <p className="label-text mb-3">The problem</p>
+          <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
+            An LLM always returns something. That's the problem.
+          </h2>
+          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
+            Ask a model to read a PDF and it will hand back a clean, confident schema every time —
+            including when it is wrong. Downstream, a chart reads that field name and plots it. The
+            failure is silent, and it looks like data.
+          </p>
+        </Reveal>
+        <Reveal className="mt-8" y={28}>
+          <SilentFailure />
         </Reveal>
 
         {/* ── 交互式架构走查 ──────────────────────────────────── */}
@@ -483,6 +577,29 @@ export function BoschSchemaCase() {
           </div>
         </Reveal>
 
+        {/* ── 我的判断 ─────────────────────────────────────────── */}
+        <Reveal className="mt-20">
+          <p className="label-text mb-3">The calls I made</p>
+          <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
+            Four choices, and what I chose against
+          </h2>
+        </Reveal>
+        <div className="mt-8 grid gap-5 md:grid-cols-2">
+          {CALLS.map((c, i) => (
+            <Reveal key={c.n} delay={i * 0.06}>
+              <div className="group/c h-full rounded-[1.6rem] border border-plum/10 bg-white/70 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#7FA3CC]/50 hover:bg-white hover:shadow-[0_18px_40px_-18px_rgba(78,110,150,0.35)]">
+                <span className="font-serif text-lg text-[#7FA3CC]">{c.n}</span>
+                <h3 className="mt-2 font-serif text-xl font-light leading-snug text-plum">{c.title}</h3>
+                <p className="mt-3 text-[14px] leading-relaxed text-plum-muted">{c.body}</p>
+                <p className="mt-4 flex items-baseline gap-2 border-t border-plum/10 pt-3 text-[12.5px] text-plum-faint">
+                  <span className="shrink-0 uppercase tracking-[0.14em]">instead of</span>
+                  <span className="italic text-plum-muted line-through decoration-plum/25">{c.instead}</span>
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
         {/* ── 评测结果 ─────────────────────────────────────────── */}
         <Reveal className="mt-20">
           <p className="label-text mb-3">The proof</p>
@@ -495,13 +612,37 @@ export function BoschSchemaCase() {
                   The trust layer knew.
                 </h2>
                 <p className="mt-4 max-w-md text-[14px] leading-relaxed text-plum-muted">
-                  Same pipeline, two evaluations across four public datasets (Iris, Mushroom, NPHA,
-                  Wine Quality). Adding the validator, semantic tolerance, and retry logic took
-                  average accuracy from 56.6% to 97.2% — with full coverage and no human fixes
-                  required.
+                  Two evaluations across four public datasets — Iris, Mushroom, NPHA, Wine Quality.
+                  The validator, semantic tolerance and retry loop took average accuracy from 56.6%
+                  to 97.2%, at full coverage, with no human fixes.
                 </p>
               </div>
               <EvalBars />
+            </div>
+          </div>
+        </Reveal>
+
+        {/* ── 第一次评测我们自己错了 ───────────────────────────── */}
+        <Reveal className="mt-12" y={28}>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-[1.6rem] border border-[#C79A4B]/35 bg-champagne/25 p-7">
+              <p className="font-hand text-[16px] text-[#9A7B3E]">what the first eval got wrong ✦</p>
+              <p className="mt-3 text-[14px] leading-relaxed text-plum-muted">
+                Part of that 56.6% wasn’t the system failing — it was our rubric. We were scoring
+                <span className="mx-1 font-mono text-[13px] text-plum">float</span>against
+                <span className="mx-1 font-mono text-[13px] text-plum">continuous</span>as a defect.
+                So I fixed the evaluation, not just the model: semantic tolerance, with the tolerance
+                rules verified by hand rather than assumed.
+              </p>
+            </div>
+            <div className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-7">
+              <p className="font-hand text-[16px] text-plum-muted">and what it cost ✦</p>
+              <p className="mt-3 text-[14px] leading-relaxed text-plum-muted">
+                A validator that scores every field and can retry three times is slower and burns
+                more tokens than generating once. That was the trade: latency and spend in exchange
+                for output you can put a number on. For a schema every downstream chart depends on,
+                I’d make it again.
+              </p>
             </div>
           </div>
         </Reveal>
@@ -510,7 +651,7 @@ export function BoschSchemaCase() {
         <Reveal className="mt-20">
           <p className="label-text mb-3">Against the market</p>
           <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
-            Cheaper than Unstructured.io — and it can prove its answers
+            Cheaper to run — and able to show its work
           </h2>
           <div className="mt-8">
             <CostCompare />
