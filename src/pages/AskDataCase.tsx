@@ -27,27 +27,56 @@ const SECTIONS = [
 /* ── 章节导航（吸顶） ────────────────────────────────────────── */
 function SectionNav() {
   const [active, setActive] = useState('problem')
+  const navRef = useRef<HTMLElement>(null)
+
+  /* 当前项滚出视野时（窄屏常见），把它带回来 */
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const vis = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-        if (vis[0]) setActive(vis[0].target.id)
-      },
-      { rootMargin: '-30% 0px -60% 0px' },
-    )
-    SECTIONS.forEach((s) => {
-      const el = document.getElementById(s.id)
-      if (el) obs.observe(el)
-    })
-    return () => obs.disconnect()
+    const nav = navRef.current
+    if (!nav) return
+    const chip = nav.querySelector<HTMLAnchorElement>(`a[href="#${active}"]`)
+    if (!chip) return
+    const cl = chip.offsetLeft
+    const cr = cl + chip.offsetWidth
+    if (cl < nav.scrollLeft + 8 || cr > nav.scrollLeft + nav.clientWidth - 8) {
+      nav.scrollTo({ left: Math.max(0, cl - 16), behavior: 'smooth' })
+    }
+  }, [active])
+
+  /* 按滚动位置直接判定当前章节 —— 大跨度跳转也不会漏 */
+  useEffect(() => {
+    let raf = 0
+    const pick = () => {
+      raf = 0
+      const line = window.innerHeight * 0.34 // 视口上部三分之一处作为判定线
+      let current = SECTIONS[0].id
+      for (const s of SECTIONS) {
+        const el = document.getElementById(s.id)
+        if (el && el.getBoundingClientRect().top <= line) current = s.id
+      }
+      setActive(current)
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(pick)
+    }
+    pick()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
   }, [])
 
   return (
     <nav
+      ref={navRef}
       aria-label="Case sections"
-      className="sticky top-[68px] z-40 -mx-6 mb-2 overflow-x-auto bg-cream/85 px-6 py-3 backdrop-blur-md md:-mx-10 md:px-10"
+      className="sticky top-[68px] z-40 -mx-6 mb-2 overflow-x-auto bg-cream/85 px-6 py-3 backdrop-blur-md [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:-mx-10 md:px-10"
+      style={{
+        maskImage: 'linear-gradient(to right, transparent 0, black 18px, black calc(100% - 26px), transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent 0, black 18px, black calc(100% - 26px), transparent 100%)',
+      }}
     >
       <ul className="flex gap-1.5 whitespace-nowrap">
         {SECTIONS.map((s) => (

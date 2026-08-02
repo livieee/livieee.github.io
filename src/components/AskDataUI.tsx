@@ -123,8 +123,8 @@ export function AskDataUI() {
           </ModuleShell>
 
           {/* 02 SQL */}
-          <ModuleShell i={1} num="02" label="SQL" active={lit(1)} inView={inView} className="col-span-7">
-            <pre className="overflow-hidden font-mono text-[9.5px] leading-[1.7] text-plum-muted">
+          <ModuleShell i={1} num="02" label="SQL" active={lit(1)} inView={inView} className="col-span-12 sm:col-span-7">
+            <pre className="overflow-x-auto font-mono text-[9.5px] leading-[1.7] text-plum-muted">
               <code>
                 <span className="text-[#4E6E96]">SELECT</span> sku, <span className="text-[#4E6E96]">SUM</span>(revenue) <span className="text-[#4E6E96]">AS</span> total{'\n'}
                 <span className="text-[#4E6E96]">FROM</span> sales{'\n'}
@@ -135,7 +135,7 @@ export function AskDataUI() {
           </ModuleShell>
 
           {/* 04 Visualize（排在 SQL 右侧，编号按工作流） */}
-          <ModuleShell i={3} num="04" label="Visualize" active={lit(3)} inView={inView} className="col-span-5">
+          <ModuleShell i={3} num="04" label="Visualize" active={lit(3)} inView={inView} className="col-span-12 sm:col-span-5">
             <div className="flex h-[64px] items-end gap-1.5 px-1" aria-hidden>
               {[42, 68, 55, 88, 62].map((h, i) => (
                 <span
@@ -151,7 +151,7 @@ export function AskDataUI() {
           </ModuleShell>
 
           {/* 03 Analyze */}
-          <ModuleShell i={2} num="03" label="Analyze" active={lit(2)} inView={inView} className="col-span-7">
+          <ModuleShell i={2} num="03" label="Analyze" active={lit(2)} inView={inView} className="col-span-12 sm:col-span-7">
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="rounded-md bg-plum/[0.05] px-1.5 py-0.5 font-mono text-[9px] text-plum-muted">python · pandas</span>
               <span className="rounded-md bg-[#EDF3FA] px-1.5 py-0.5 text-[9px] text-[#4E6E96]">trend ↗</span>
@@ -163,7 +163,7 @@ export function AskDataUI() {
           </ModuleShell>
 
           {/* 05 Reuse */}
-          <ModuleShell i={4} num="05" label="Reuse" active={lit(4)} inView={inView} className="col-span-5">
+          <ModuleShell i={4} num="05" label="Reuse" active={lit(4)} inView={inView} className="col-span-12 sm:col-span-5">
             <div className="space-y-1.5">
               <p className="flex items-center gap-1.5 rounded-md border border-plum/[0.07] bg-white px-2 py-1 text-[9.5px] text-plum-muted">
                 <span aria-hidden className="text-[#4E6E96]">⌘</span> saved query · Q3 revenue by SKU
