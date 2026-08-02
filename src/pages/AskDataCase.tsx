@@ -853,92 +853,118 @@ function AnnotatedShot() {
 }
 
 /* ── 06c · 架构分层聚光灯 ───────────────────────────────────── */
-const LAYERS = [
-  {
-    id: 'frontend',
-    name: 'What users touch',
-    top: 0.0,
-    bottom: 0.215,
-    note: 'One frontend, four surfaces. Users never learn that three services live underneath.',
-  },
-  {
-    id: 'orchestration',
-    name: 'The orchestration layer',
-    top: 0.38,
-    bottom: 0.59,
-    note: 'Where integration actually happens — one layer owns orchestration and session state, so the frontends stay separate while the experience does not.',
-  },
-  {
-    id: 'services',
-    name: 'The four services',
-    top: 0.60,
-    bottom: 0.845,
-    note: 'Four services, each replaceable on its own — which is what let us ship in slices.',
-  },
-  {
-    id: 'data',
-    name: 'Data & models',
-    top: 0.845,
-    bottom: 1.0,
-    note: 'Including the customer database that stays behind the wall — the constraint that shaped everything above it.',
-  },
+/* ── 05b · 架构：原生 SVG，逐个组件可点 ─────────────────────── */
+type ArchNode = { id: string; col: number; band: number; label: string; sub?: string; note: string; wide?: boolean }
+
+const BANDS = [
+  { y: 34, h: 64, label: 'WHAT USERS TOUCH' },
+  { y: 134, h: 40, label: 'EDGE' },
+  { y: 210, h: 64, label: 'ORCHESTRATION — WHERE THE INTEGRATION LIVES' },
+  { y: 310, h: 80, label: 'SERVICES' },
+  { y: 426, h: 64, label: 'DATA & MODELS' },
 ]
 
+const ARCH: ArchNode[] = [
+  { id: 'sql', col: 0, band: 0, label: 'SQL', sub: 'ask in words', note: 'Natural language in, an editable query out.' },
+  { id: 'analytics', col: 1, band: 0, label: 'Analytics', sub: 'python', note: 'Python analysis on the result you just produced — no re-upload.' },
+  { id: 'viz', col: 2, band: 0, label: 'Visualization', sub: 'charts', note: 'Conversational charting, with every refinement logged.' },
+  { id: 'schema', col: 3, band: 0, label: 'Schema', sub: 'metadata', note: 'Where teams correct the metadata the AI reads.' },
+
+  { id: 'proxy', col: 0, band: 1, wide: true, label: 'Reverse proxy', sub: 'one origin, three services', note: 'One address in front of services that were never designed to sit together.' },
+
+  { id: 'orch', col: 0, band: 2, label: 'Orchestration', note: 'Routes each request to whichever service can answer it.' },
+  { id: 'session', col: 1, band: 2, label: 'Session', note: 'The digital thread. Schema and history live here — not in the user’s head.' },
+  { id: 'logic', col: 2, band: 2, label: 'Business logic', note: 'The rules deciding what unlocks, what locks, what retries.' },
+  { id: 'integration', col: 3, band: 2, label: 'Integration', note: 'Where three separate products were finally stitched into one flow.' },
+
+  { id: 'kb', col: 0, band: 3, label: 'Knowledge engine', sub: 'metadata + validation', note: 'Validated enterprise metadata — the reason generated queries are accurate.' },
+  { id: 'agent', col: 1, band: 3, label: 'Query agent', sub: 'NL → SQL', note: 'Translates the question, grounded in the knowledge engine.' },
+  { id: 'exec', col: 2, band: 3, label: 'Executor', sub: 'run + fail well', note: 'Runs the query — and owns the failure path when it cannot.' },
+  { id: 'vizsvc', col: 3, band: 3, label: 'Viz service', sub: 'interactive', note: 'The existing charting engine, reused rather than rebuilt.' },
+
+  { id: 'pg', col: 0, band: 4, label: 'PostgreSQL', sub: 'metadata store', note: 'Where the corrected schema knowledge persists.' },
+  { id: 'redis', col: 1, band: 4, label: 'Redis', sub: 'cache & queue', note: 'Keeps sessions responsive across the round-trip.' },
+  { id: 'llm', col: 2, band: 4, label: 'LLM service', sub: 'Azure OpenAI', note: 'The model, kept behind our own layer so it can be swapped.' },
+  { id: 'customer', col: 3, band: 4, label: 'Customer DB', sub: 'behind the wall', note: 'Live enterprise data we can never touch directly. The constraint that shaped everything above it.' },
+]
+
+const COL_X = [20, 234, 448, 662]
+const COL_W = 196
+
 function ArchLayers() {
-  const [i, setI] = useState(0)
-  const layer = LAYERS[i]
+  const [id, setId] = useState('session')
+  const active = ARCH.find((n) => n.id === id)!
+
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
-      <div className="relative overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white p-3 shadow-[0_22px_50px_-28px_rgba(78,110,150,0.45)]">
-        <div className="relative">
-          <img src="/bosch/askdata-architecture.png" alt="System architecture across four layers" className="w-full" loading="eager" />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 bg-white/80 transition-all duration-500"
-            style={{ height: `${layer.top * 100}%` }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 bg-white/80 transition-all duration-500"
-            style={{ height: `${(1 - layer.bottom) * 100}%` }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-[-0.5%] rounded-lg border-2 border-[#4E6E96] transition-all duration-500"
-            style={{ top: `${layer.top * 100}%`, height: `${(layer.bottom - layer.top) * 100}%` }}
-          />
-        </div>
-      </div>
-      <div className="lg:sticky lg:top-32">
-        <div className="flex flex-wrap gap-1.5">
-          {LAYERS.map((l, n) => (
-            <button
-              key={l.id}
-              type="button"
-              onMouseEnter={() => setI(n)}
-              onClick={() => setI(n)}
-              className={`rounded-full px-3 py-1.5 text-[11.5px] transition-colors ${
-                n === i
-                  ? 'bg-[#4E6E96] text-white'
-                  : 'border border-plum/15 text-plum-muted hover:border-[#7FA3CC] hover:text-[#4E6E96]'
-              }`}
-            >
-              {l.name}
-            </button>
+    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+      <div className="rounded-[1.4rem] border border-plum/10 bg-white p-4 shadow-[0_20px_46px_-26px_rgba(78,110,150,0.4)] md:p-6">
+        <svg viewBox="0 0 878 512" className="w-full" role="img" aria-label="System architecture: one frontend over a reverse proxy, an orchestration layer, four services, and the data and model layer">
+          {BANDS.map((b, i) => (
+            <g key={i}>
+              <rect x="14" y={b.y - 8} width="850" height={b.h + 16} rx="14" fill="#F7F4EF" opacity={ARCH.find((n) => n.id === id)!.band === i ? 0.9 : 0.45} style={{ transition: 'opacity .35s' }} />
+              <text x="20" y={b.y - 15} fontSize="8.5" letterSpacing="1.4" fill="#9A87A0">{b.label}</text>
+            </g>
           ))}
-        </div>
-        <div className="mt-4 rounded-2xl border border-plum/10 bg-white/80 p-6 backdrop-blur-sm">
-          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">{layer.name}</p>
-          <p className="mt-3 min-h-[96px] text-[14px] leading-relaxed text-plum">{layer.note}</p>
-        </div>
-        <p className="mt-3 font-hand text-[15px] text-plum-muted">
-          separate services, one product surface ✦
-        </p>
-        {/* 真实技术栈 */}
-        <div className="mt-5 rounded-2xl border border-plum/10 bg-white/60 px-5 py-4">
+
+          {/* 层间连线 */}
+          {[[98, 134], [174, 210], [274, 310], [390, 426]].map(([y1, y2], i) =>
+            COL_X.map((x) => (
+              <path key={`${i}-${x}`} d={`M${x + COL_W / 2} ${y1} V${y2}`} stroke="#C9D9EA" strokeWidth="1.2" strokeDasharray="3 3" />
+            )),
+          )}
+
+          {ARCH.map((n) => {
+            const b = BANDS[n.band]
+            const x = n.wide ? 20 : COL_X[n.col]
+            const w = n.wide ? 844 : COL_W
+            const on = n.id === id
+            return (
+              <g key={n.id} onClick={() => setId(n.id)} onMouseEnter={() => setId(n.id)} style={{ cursor: 'pointer' }}>
+                <rect
+                  x={x}
+                  y={b.y}
+                  width={w}
+                  height={b.h}
+                  rx="11"
+                  fill={on ? '#DCE7F2' : '#FFFFFF'}
+                  stroke={on ? '#3A2440' : '#B9CDE4'}
+                  strokeWidth={on ? 2 : 1.2}
+                  style={{ transition: 'fill .3s, stroke .3s' }}
+                />
+                <text
+                  x={x + w / 2}
+                  y={b.y + (n.sub ? b.h / 2 - 2 : b.h / 2 + 4)}
+                  textAnchor="middle"
+                  fontSize="12.5"
+                  fontFamily="Georgia, serif"
+                  fill="#3A2440"
+                >
+                  {n.label}
+                </text>
+                {n.sub && (
+                  <text x={x + w / 2} y={b.y + b.h / 2 + 14} textAnchor="middle" fontSize="9.5" fill="#9A87A0">
+                    {n.sub}
+                  </text>
+                )}
+              </g>
+            )
+          })}
+        </svg>
+      </div>
+
+      <div className="lg:sticky lg:top-32">
+        <div className="rounded-2xl border border-plum/10 bg-white/80 p-6 backdrop-blur-sm">
           <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-            What it runs on
+            {BANDS[active.band].label.split(' —')[0]}
           </p>
+          <h3 className="mt-2 font-serif text-lg font-light text-plum">{active.label}</h3>
+          <p className="mt-2 min-h-[76px] text-[14px] leading-relaxed text-plum-muted">{active.note}</p>
+        </div>
+        <p className="mt-3 font-hand text-[15px] text-plum-muted">tap any box ✦</p>
+
+        {/* 真实技术栈 */}
+        <div className="mt-4 rounded-2xl border border-plum/10 bg-white/60 px-5 py-4">
+          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">What it runs on</p>
           <ul className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-3">
             {[
               { src: '/bosch/stack/react.svg', alt: 'React' },
