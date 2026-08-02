@@ -302,9 +302,16 @@ function EvalBars() {
 }
 
 /* ── 成本对比：进入视口时生长 ───────────────────────────────── */
+const PAGE_OPTS = [1, 3, 5, 10]
+const PER_PAGE = 0.02        // 对方：每页计费
+const OURS_LO = 0.007        // 我方：每份抽取任务，与页数无关
+const OURS_HI = 0.03
+const SCALE = 0.2            // 条形满格对应 10 页的花费
+
 function CostCompare() {
   const ref = useRef<HTMLDivElement>(null)
   const [on, setOn] = useState(false)
+  const [pages, setPages] = useState(3)
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -313,76 +320,97 @@ function CostCompare() {
     return () => io.disconnect()
   }, [])
 
+  const theirs = pages * PER_PAGE
+  const theirsW = (theirs / SCALE) * 100
+  const oursW = (OURS_HI / SCALE) * 100
+  const times = Math.round(theirs / OURS_LO)
+
   return (
     <div ref={ref} className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:p-8">
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-          Cost to process a 3-page PDF
+          Cost to process a document
         </p>
-        <p className="font-hand text-[15px] text-plum-muted">their unit is a page, ours is a task ✦</p>
+        {/* 页数切换 */}
+        <div className="inline-flex rounded-full border border-plum/15 bg-cream-soft/60 p-1">
+          {PAGE_OPTS.map((n) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => setPages(n)}
+              className={`rounded-full px-3 py-1 text-[11.5px] font-medium transition-colors ${
+                n === pages ? 'bg-[#4E6E96] text-white' : 'text-plum-muted hover:text-plum'
+              }`}
+            >
+              {n} {n === 1 ? 'page' : 'pages'}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="relative mt-6 space-y-7">
-        {[
-          {
-            label: 'Unstructured.io',
-            unit: 'billed per page',
-            price: '~$0.06',
-            w: '100%',
-            tone: 'bg-[#C9A2B0]',
-            text: 'text-[#A8798A]',
-            size: 'text-2xl md:text-[1.75rem]',
-            d: '0s',
-          },
-          {
-            label: 'Ours',
-            unit: 'billed per extraction task',
-            price: '$0.007–0.03',
-            w: '38%',
-            tone: 'bg-[#4E6E96]',
-            text: 'text-[#4E6E96]',
-            size: 'text-3xl md:text-[2.1rem]',
-            d: '.24s',
-          },
-        ].map((r) => (
-          <div key={r.label}>
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <span className="text-[12.5px] text-plum">
-                {r.label}
-                <span className="ml-2 text-[11px] uppercase tracking-label text-plum-faint">{r.unit}</span>
-              </span>
-              <span className={`font-serif font-light ${r.size} ${r.text}`}>{r.price}</span>
-            </div>
-            <div className="mt-2 h-3.5 overflow-hidden rounded-full bg-cream-soft">
-              <div
-                className={`h-full rounded-full ${r.tone}`}
-                style={{ width: on ? r.w : '0%', transition: `width 1s cubic-bezier(.4,0,.2,1) ${r.d}` }}
-              />
-            </div>
-          </div>
-        ))}
-
-        {/* 差距标注：从短条末端拉到长条末端 */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[62px] hidden md:block"
-          style={{ opacity: on ? 1 : 0, transition: 'opacity .5s 1.1s' }}
-        >
-          <div className="absolute left-[38%] right-0 flex items-center gap-2 px-3">
-            <span className="h-px flex-1 bg-plum/20" />
-            <span className="whitespace-nowrap rounded-full border border-plum/12 bg-white px-3 py-1 text-[11.5px] font-medium text-[#4E6E96]">
-              2–8× less
+      <div className="mt-7 space-y-7">
+        {/* 对方：随页数增长 */}
+        <div>
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <span className="text-[12.5px] text-plum">
+              Unstructured.io
+              <span className="ml-2 text-[11px] uppercase tracking-label text-plum-faint">billed per page</span>
             </span>
-            <span className="h-px flex-1 bg-plum/20" />
+            <span className="font-serif text-2xl font-light text-[#A8798A] md:text-[1.75rem]">
+              ~${theirs.toFixed(2)}
+            </span>
+          </div>
+          <div className="mt-2 h-3.5 overflow-hidden rounded-full bg-cream-soft">
+            <div
+              className="h-full rounded-full bg-[#C9A2B0]"
+              style={{ width: on ? `${theirsW}%` : '0%', transition: 'width .7s cubic-bezier(.4,0,.2,1)' }}
+            />
+          </div>
+        </div>
+
+        {/* 我方：与页数无关 */}
+        <div>
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <span className="text-[12.5px] text-plum">
+              Ours
+              <span className="ml-2 text-[11px] uppercase tracking-label text-plum-faint">
+                billed per extraction task
+              </span>
+            </span>
+            <span className="font-serif text-3xl font-light text-[#4E6E96] md:text-[2.1rem]">
+              ${OURS_LO.toFixed(3)}–{OURS_HI.toFixed(2)}
+            </span>
+          </div>
+          <div className="relative mt-2 h-3.5 overflow-hidden rounded-full bg-cream-soft">
+            <div
+              className="h-full rounded-full bg-[#4E6E96]"
+              style={{ width: on ? `${oursW}%` : '0%', transition: 'width .7s cubic-bezier(.4,0,.2,1)' }}
+            />
+          </div>
+          {/* 差额标注：落在未填充的那段上，那段就是省下的部分 */}
+          <div
+            className="relative mt-2 h-5"
+            style={{ opacity: on ? 1 : 0, transition: 'opacity .5s .6s' }}
+          >
+            <div
+              className="absolute flex items-center gap-2"
+              style={{ left: `${oursW}%`, width: `${Math.max(0, theirsW - oursW)}%`, transition: 'left .7s, width .7s' }}
+            >
+              <span className="h-px flex-1 bg-[#4E6E96]/30" />
+              <span className="whitespace-nowrap text-[11.5px] font-medium text-[#4E6E96]">
+                up to {times}× less
+              </span>
+              <span className="h-px flex-1 bg-[#4E6E96]/30" />
+            </div>
           </div>
         </div>
       </div>
 
-      <p className="mt-7 text-[13px] leading-relaxed text-plum-muted">
-        Cost scales with the work done, not the paper it arrived on.
+      <p className="mt-6 text-[13px] leading-relaxed text-plum-muted">
+        Their line grows with the paper. Ours doesn’t move — the unit is the extraction, not the
+        page. <span className="text-plum-faint">Modelled from published billing units.</span>
       </p>
 
-      {/* 便宜之外：可追溯、可调 */}
       <div className="mt-5 grid gap-4 border-t border-plum/10 pt-5 sm:grid-cols-2">
         {[
           {
