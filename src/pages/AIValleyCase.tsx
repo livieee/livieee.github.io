@@ -299,7 +299,7 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco · hybrid',
     size: '422 attended',
     n: 422,
-    role: 'Program manager. Ran it end to end — hybrid logistics, seven sponsors, mentors on the floor — and issued the volunteer certificates afterwards.',
+    role: 'Program manager — ran the program, and issued the volunteer certificates afterwards.',
     partners: 'AI Valley · Bond AI · Replit · Vercel · Daytona · MiniMax · BEM',
     caps: ['Program ownership', 'Community'],
     tier: 2,
@@ -492,6 +492,110 @@ function ProgramMatrix() {
       {shown.length === 0 && (
         <p className="mt-6 font-hand text-[15px] text-plum-muted">nothing tagged with that yet ✦</p>
       )}
+    </div>
+  )
+}
+
+/* ── 我写的招募文案，以 LinkedIn 帖子的形态呈现 ────────────────── */
+const OUTBOUND = [
+  {
+    for: 'Build with GLM 5.1',
+    text: 'Most people talk about AI. This is where you actually build with it.\n\nGLM 5.1 is here, and we’re kicking off a 1-week global builder sprint to see what people can really do with it. No pitches. No fluff. Just builders shipping real things.\n\nWhy GLM 5.1? Built for multi-step reasoning and execution · strong at tool calling and long workflows · designed for real-world agents, not just prototypes.',
+    stats: '7 reactions · 1 comment',
+    href: 'https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256',
+  },
+  {
+    for: 'Total Agent Recall',
+    text: 'A build day for ~50 engineers working on agent systems. Come in with an idea, leave with a working agent.\n\nNVIDIA GPUs, 170+ models, Dify for orchestration, HydraDB for memory, Photon for interfaces. Judges from Microsoft, Amazon and YC. Mac Mini for the grand prize.\n\nFirst 20 AI Valley members through the door get a branded mug. Small room: fills fast.',
+    stats: '19 reactions · 4 comments',
+    href: 'https://www.linkedin.com/feed/update/urn:li:activity:7443396471057485824',
+  },
+]
+
+function LinkedInPost({
+  text,
+  stats,
+  href,
+  note,
+  author = 'AI Valley',
+  avatar = '/logos/aivalley.png',
+  sub = '1,028 followers',
+  i = 0,
+}: {
+  text: string
+  stats: string
+  href: string
+  note?: string
+  author?: string
+  avatar?: string | null
+  sub?: string
+  i?: number
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      style={{ animation: `annot-in .45s ${i * 0.08}s ease-out both` }}
+      className="group/li flex flex-col rounded-2xl border border-[#d0d5dc] bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[#0A66C2]/50 hover:shadow-[0_16px_36px_-20px_rgba(10,102,194,0.35)]"
+    >
+      <div className="flex items-center gap-2.5">
+        {avatar ? (
+          <img
+            src={avatar}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            className="h-10 w-10 shrink-0 rounded-full bg-white object-contain ring-1 ring-black/5"
+          />
+        ) : (
+          <span
+            aria-hidden
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#0A66C2]/10 font-serif text-[17px] text-[#0A66C2]"
+          >
+            {author[0]}
+          </span>
+        )}
+        <div className="min-w-0 flex-1 leading-tight">
+          <span className="block truncate text-[14px] font-semibold text-[#000000e6]">{author}</span>
+          <span className="block truncate text-[12px] text-[#00000099]">{sub}</span>
+        </div>
+        <svg viewBox="0 0 24 24" className="h-[18px] w-[18px] shrink-0" fill="#0A66C2" aria-hidden>
+          <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
+        </svg>
+      </div>
+
+      <p className="mt-3 whitespace-pre-line text-[13.5px] leading-[1.45] text-[#000000e6]">{text}</p>
+
+      <div className="mt-auto flex items-center justify-between gap-2 border-t border-black/8 pt-3 text-[12px] text-[#00000099]">
+        <span>{stats}</span>
+        {note ? (
+          <span className="font-medium text-[#0A66C2]">{note}</span>
+        ) : (
+          <span className="font-medium text-[#0A66C2] transition-opacity group-hover/li:opacity-75">
+            Read on LinkedIn
+            <span aria-hidden className="ml-1 inline-block transition-transform duration-300 group-hover/li:translate-x-0.5">↗</span>
+          </span>
+        )}
+      </div>
+    </a>
+  )
+}
+
+function Outbound() {
+  return (
+    <div>
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+          How the rooms actually filled
+        </p>
+        <p className="font-hand text-[15px] text-plum-muted">the copy is mine ✦</p>
+      </div>
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
+        {OUTBOUND.map((o, i) => (
+          <LinkedInPost key={o.for} {...o} i={i} />
+        ))}
+      </div>
     </div>
   )
 }
@@ -777,6 +881,10 @@ export function AIValleyCase() {
           <ProgramMatrix />
         </Reveal>
 
+        <Reveal className="mt-10" y={24}>
+          <Outbound />
+        </Reveal>
+
         {/* ── 三 · 合作方 ──────────────────────────────────────── */}
         <Chapter
           n="03"
@@ -818,6 +926,18 @@ export function AIValleyCase() {
             <p className="label-text">For the record</p>
           </div>
           <EventPhotos />
+          <div className="mt-4 md:max-w-[52%]">
+            <LinkedInPost
+              author="Courtney Ko"
+              avatar={null}
+              sub="Organiser · Build What You Love"
+              text={
+                '150+ women in one room in San Francisco, building on Valentine’s Day. Spaces where women in STEM felt supported, confident, and ambitious — women who showed up not to impress anyone, but to build what they love.\n\nVolunteers: Olivia Xiao, Kathy Men, Amy Wang, Uche Oh, Andrew Flores.'
+              }
+              stats="215 reactions · 59 comments"
+              href="https://www.linkedin.com/posts/courtneythko_womenintech-buildwhatyoulove-aivalley-activity-7429241914459303938-4MG5"
+            />
+          </div>
         </Reveal>
 
         {/* ── 交叉链接 ─────────────────────────────────────────── */}
