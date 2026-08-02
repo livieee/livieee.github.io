@@ -273,7 +273,7 @@ const PROGRAMS: Program[] = [
     where: 'Global · one-week async build',
     size: '221 registered builders',
     n: 221,
-    role: 'Owned end to end — partnership, prize design, judging rubric, DevRel',
+    role: 'Owned it end to end — brought Z.ai in, wrote the builder guide and the judging bar, ran the Discord and the outbound.',
     partners: 'Z.ai · AI Valley · Devpost',
     caps: ['Program ownership', 'Developer relations', 'GTM', 'Strategic partnerships'],
     tier: 1,
@@ -287,7 +287,7 @@ const PROGRAMS: Program[] = [
     where: 'Palo Alto',
     size: '413 attendees · 20+ speakers',
     n: 413,
-    role: 'Co-host — partner search, panel guest invitations, guest background prep',
+    role: 'Co-host. Found the partners, invited the panel, and researched every guest beforehand so the questions were specific.',
     partners: 'EPIC Connector · Peak Mojo · Manycore Tech · Z.ai',
     caps: ['Strategic partnerships', 'Community', 'Program ownership'],
     tier: 2,
@@ -299,7 +299,7 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco · hybrid',
     size: '422 attended',
     n: 422,
-    role: 'Program manager — ran the program, issued volunteer certificates',
+    role: 'Program manager. Ran it end to end — hybrid logistics, seven sponsors, mentors on the floor — and issued the volunteer certificates afterwards.',
     partners: 'AI Valley · Bond AI · Replit · Vercel · Daytona · MiniMax · BEM',
     caps: ['Program ownership', 'Community'],
     tier: 2,
@@ -312,7 +312,7 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco',
     size: '594 registered · 40+ VC firms',
     n: 594,
-    role: 'Co-host',
+    role: 'Co-host of the founder showcase — main-stage pitches in front of 40+ funds.',
     partners: 'EPIC Connector × Allscale · FounderGro',
     caps: ['GTM', 'Strategic partnerships'],
     tier: 3,
@@ -324,7 +324,7 @@ const PROGRAMS: Program[] = [
     where: 'Palo Alto',
     size: '100 builders hosted',
     n: 100,
-    role: 'Lead organiser',
+    role: 'Lead organiser. A pop-up with no agenda — 100 cups of tea as the reason for builders in Palo Alto to be in one room.',
     partners: 'AI Valley · Molly Tea',
     caps: ['Community', 'GTM'],
     tier: 2,
@@ -336,7 +336,7 @@ const PROGRAMS: Program[] = [
     where: 'Stanford Faculty Club',
     size: '448 attendees · Yuval Noah Harari keynote',
     n: 448,
-    role: 'Helped organise — a side project taken on after the AI Valley program',
+    role: 'Came back to help organise after the AI Valley program ended — my own side project, on a bill opened by Yuval Noah Harari.',
     partners: 'AIRA · GPT DAO · Cheetah Community · LOOMUS · EpicConnector',
     caps: ['Community'],
     tier: 3,
@@ -348,7 +348,7 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco',
     size: '839 attendees · 9 speakers',
     n: 839,
-    role: 'Program coordination',
+    role: 'Program coordination across a nine-speaker agenda and nine co-hosting communities.',
     partners: 'The AI Collective · AI Valley · MiniMax',
     caps: ['Community', 'Strategic partnerships'],
     tier: 3,
@@ -360,7 +360,7 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco',
     size: '100 seats, approval only',
     n: 100,
-    role: 'Program coordination',
+    role: 'Program coordination for an approval-only mixer — first-generation builders, and an immigration lawyer on hand.',
     partners: 'AI Valley · HAC.ai · Boundless Immigration',
     caps: ['Community', 'Strategic partnerships'],
     tier: 3,
@@ -372,7 +372,7 @@ const PROGRAMS: Program[] = [
     where: 'Sky9 Capital, San Francisco',
     size: '358 registered · 50 engineers, 8 hours',
     n: 358,
-    role: 'Marketing and sponsor coordination — and on the day, running judging across Dify, GMI Cloud and HydraDB',
+    role: 'Ran marketing and sponsor coordination, then on the day kept judging aligned across Dify, GMI Cloud and HydraDB.',
     partners: 'GMI Cloud · Photon · HydraDB · Dify',
     caps: ['GTM', 'Strategic partnerships', 'Community'],
     tier: 3,
@@ -686,15 +686,16 @@ export function AIValleyCase() {
         </h1>
         <Reveal delay={0.15}>
           <p className="mt-4 font-serif text-xl font-light leading-snug text-plum-muted md:text-2xl">
-            Nine Bay Area and global programs — a week-long build challenge, hackathons, fireside
-            talks, demo days — partnered, designed and run.
+            Community programs for AI builders — and the partnerships and go-to-market that
+            decide whether anyone shows up.
           </p>
         </Reveal>
         <Reveal delay={0.25}>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-            An ecosystem program has users, a funnel and a retention problem, same as any product.
-            I ran them that way: source the partner, design what winning means, write the bar down
-            before anyone shows up, and close the loop afterwards so the next one starts warm.
+            A program has users, a funnel and a retention problem, same as any product — so I ran
+            them that way. Source the partner before the date. Design what winning means. Write the
+            bar down before anyone shows up. Close the loop afterwards, so the next one starts warm
+            instead of cold.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {CAPS.map((s) => (
@@ -765,19 +766,26 @@ export function AIValleyCase() {
           n="02"
           label="The full slate"
           title="Nine programs, and what each one was for"
-          intro="Filter by what the program was really doing. Every number below is the public registration or attendance count on its own event page."
+          intro="Different rooms, different jobs — some I owned, some I ran, some I kept aligned from the side. Filter by what the work actually was; every number is the public count on that event’s own page."
         />
         <Reveal className="mt-8" y={24}>
           <ProgramMatrix />
         </Reveal>
 
-        <Reveal className="mt-10" y={24}>
+        {/* ── 三 · 合作方 ──────────────────────────────────────── */}
+        <Chapter
+          n="03"
+          label="Who it was with"
+          title="Every program is somebody saying yes first"
+          intro="Model labs, communities, funds, venues — sourced, pitched and kept warm. This is the part of program work that never shows up in a photo."
+        />
+        <Reveal className="mt-8" y={24}>
           <PartnerWall />
         </Reveal>
 
-        {/* ── 三 · 打法 ─────────────────────────────────────────── */}
+        {/* ── 四 · 打法 ─────────────────────────────────────────── */}
         <Chapter
-          n="03"
+          n="04"
           label="How I run one"
           title="The five things that happen every time"
         />
