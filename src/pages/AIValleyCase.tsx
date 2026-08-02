@@ -383,23 +383,6 @@ const PROGRAMS: Program[] = [
 ]
 
 
-const TIERS = [
-  {
-    t: 1 as const,
-    k: 'Owned end to end',
-    v: 'Mine from the brief to the write-up — partner, rules, funnel, judging.',
-  },
-  {
-    t: 2 as const,
-    k: 'Ran the program',
-    v: 'Responsible for the thing happening: the calendar, the guests, the room, the follow-through.',
-  },
-  {
-    t: 3 as const,
-    k: 'Partnered and coordinated',
-    v: 'Brought in sponsors and partners, and kept the moving parts aligned on the day.',
-  },
-]
 
 function ProgramCard({ p, i }: { p: Program; i: number }) {
   return (
@@ -482,7 +465,7 @@ function ProgramMatrix() {
               : 'border-plum/15 bg-white/70 text-plum-muted hover:text-plum'
           }`}
         >
-          By ownership
+          All nine
         </button>
         {CAPS.map((c) => (
           <button
@@ -500,35 +483,11 @@ function ProgramMatrix() {
         ))}
       </div>
 
-      {/* 无筛选时按主导深度分三层；筛选后铺平 */}
-      {cap === null ? (
-        TIERS.map((t) => {
-          const rows = PROGRAMS.filter((p) => p.tier === t.t)
-          if (rows.length === 0) return null
-          return (
-            <section key={t.k} className="mt-9 first:mt-7">
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <h3 className="font-serif text-[19px] font-light text-plum">{t.k}</h3>
-                <span className="text-[11px] uppercase tracking-label text-plum-faint">
-                  {rows.length} {rows.length === 1 ? 'program' : 'programs'}
-                </span>
-              </div>
-              <p className="mt-1 max-w-xl text-[13px] leading-relaxed text-plum-muted">{t.v}</p>
-              <ul className="mt-4 grid gap-5 sm:grid-cols-2">
-                {rows.map((p, i) => (
-                  <ProgramCard key={p.name} p={p} i={i} />
-                ))}
-              </ul>
-            </section>
-          )
-        })
-      ) : (
-        <ul className="mt-6 grid gap-5 sm:grid-cols-2">
-          {shown.map((p, i) => (
-            <ProgramCard key={p.name} p={p} i={i} />
-          ))}
-        </ul>
-      )}
+      <ul className="mt-6 grid gap-5 sm:grid-cols-2">
+        {shown.map((p, i) => (
+          <ProgramCard key={p.name} p={p} i={i} />
+        ))}
+      </ul>
 
       {shown.length === 0 && (
         <p className="mt-6 font-hand text-[15px] text-plum-muted">nothing tagged with that yet ✦</p>
@@ -538,11 +497,73 @@ function ProgramMatrix() {
 }
 
 /* ── 合作方名录：strategic partnership 的直接证据 ──────────────── */
-const PARTNER_GROUPS = [
-  { k: 'Model labs & platforms', v: ['Z.ai', 'MiniMax', 'Dify', 'GMI Cloud', 'HydraDB', 'Photon', 'Replit', 'Vercel', 'Daytona', 'BEM', 'Devpost'] },
-  { k: 'Communities & convenors', v: ['AI Valley', 'The AI Collective', 'EPIC Connector', 'Bond AI', 'AIRA', 'GPT DAO', 'Cheetah Community', 'LOOMUS', 'FounderGro'] },
-  { k: 'Capital, venue & services', v: ['Sky9 Capital', 'Allscale', 'Peak Mojo', 'Manycore Tech', 'HAC.ai', 'Boundless Immigration', 'Molly Tea'] },
+const PARTNER_GROUPS: Array<{ k: string; v: Array<{ n: string; l?: string }> }> = [
+  {
+    k: 'Model labs & platforms',
+    v: [
+      { n: 'Z.ai', l: '/logos/partners/zai.jpg' },
+      { n: 'MiniMax', l: '/logos/partners/minimax.jpg' },
+      { n: 'Vercel', l: '/logos/partners/vercel.svg' },
+      { n: 'Daytona', l: '/logos/partners/daytona.jpg' },
+      { n: 'Devpost', l: '/logos/partners/devpost.jpg' },
+      { n: 'Replit' },
+      { n: 'Dify' },
+      { n: 'GMI Cloud' },
+      { n: 'HydraDB' },
+      { n: 'Photon' },
+      { n: 'BEM' },
+    ],
+  },
+  {
+    k: 'Communities & convenors',
+    v: [
+      { n: 'AI Valley', l: '/logos/aivalley.png' },
+      { n: 'The AI Collective', l: '/logos/partners/aicollective.jpg' },
+      { n: 'EPIC Connector' },
+      { n: 'Bond AI' },
+      { n: 'AIRA' },
+      { n: 'GPT DAO' },
+      { n: 'Cheetah Community' },
+      { n: 'LOOMUS' },
+      { n: 'FounderGro' },
+    ],
+  },
+  {
+    k: 'Capital, venue & services',
+    v: [
+      { n: 'Sky9 Capital', l: '/logos/partners/sky9.jpg' },
+      { n: 'Peak Mojo', l: '/logos/partners/peakmojo.jpg' },
+      { n: 'Molly Tea', l: '/logos/partners/mollytea.jpg' },
+      { n: 'Manycore Tech' },
+      { n: 'Allscale' },
+      { n: 'HAC.ai' },
+      { n: 'Boundless Immigration' },
+    ],
+  },
 ]
+
+/** 没有可信 logo 的用同色系字母标，避免贴错公司 */
+const MONO_TINTS = ['#D193A8', '#B98ACB', '#7A9CC6', '#8FAE8B', '#C79A4B']
+
+function PartnerMark({ n, l, i }: { n: string; l?: string; i: number }) {
+  if (l) {
+    return (
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white ring-1 ring-plum/10">
+        <img src={l} alt="" aria-hidden loading="lazy" className="h-full w-full object-contain" />
+      </span>
+    )
+  }
+  const c = MONO_TINTS[i % MONO_TINTS.length]
+  return (
+    <span
+      aria-hidden
+      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md font-serif text-[13px] leading-none"
+      style={{ backgroundColor: `${c}22`, color: c }}
+    >
+      {n[0]}
+    </span>
+  )
+}
 
 function PartnerWall() {
   return (
@@ -558,12 +579,13 @@ function PartnerWall() {
           <div key={g.k}>
             <p className="text-[12px] font-medium text-plum">{g.k}</p>
             <ul className="mt-3 flex flex-wrap gap-1.5">
-              {g.v.map((n) => (
+              {g.v.map((o, i) => (
                 <li
-                  key={n}
-                  className="rounded-full border border-plum/12 bg-white/70 px-2.5 py-1 text-[11.5px] text-plum-muted"
+                  key={o.n}
+                  className="flex items-center gap-2 rounded-full border border-plum/12 bg-white/70 py-1 pl-1 pr-3 text-[11.5px] text-plum-muted"
                 >
-                  {n}
+                  <PartnerMark n={o.n} l={o.l} i={i} />
+                  {o.n}
                 </li>
               ))}
             </ul>
