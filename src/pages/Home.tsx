@@ -3,10 +3,9 @@ import { Marquee } from '@/components/Marquee'
 import { Navigation } from '@/sections/Navigation'
 import { Hero } from '@/sections/Hero'
 import { Impact } from '@/sections/Impact'
-import { Capabilities } from '@/sections/Capabilities'
+import { HowICreateValue } from '@/sections/HowICreateValue'
 import { Journey } from '@/sections/Journey'
-import { HowIWork } from '@/sections/HowIWork'
-import { EcosystemBeyond } from '@/sections/EcosystemBeyond'
+import { KindNotes } from '@/sections/KindNotes'
 import { Life } from '@/sections/Life'
 import { Contact } from '@/sections/Contact'
 import { Reveal } from '@/components/Reveal'
@@ -34,10 +33,9 @@ export default function Home() {
         <Hero />
         <Marquee />
         <Impact />
-        <Capabilities />
-        <HowIWork />
-        <EcosystemBeyond />
+        <HowICreateValue />
         <Journey />
+        <KindNotes />
         <LifeTransition />
         <Life />
         <Contact />
