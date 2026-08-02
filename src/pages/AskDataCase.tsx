@@ -939,17 +939,21 @@ function ArchLayers() {
           <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
             What it runs on
           </p>
-          <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <ul className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-3">
             {[
-              { src: '/bosch/stack/react.png', alt: 'React', h: 'h-5' },
-              { src: '/bosch/stack/fastapi.png', alt: 'FastAPI', h: 'h-4' },
-              { src: '/bosch/stack/django.png', alt: 'Django', h: 'h-4' },
-              { src: '/bosch/stack/openai.png', alt: 'OpenAI', h: 'h-5' },
+              { src: '/bosch/stack/react.svg', alt: 'React' },
+              { src: '/bosch/stack/fastapi.svg', alt: 'FastAPI' },
+              { src: '/bosch/stack/django.svg', alt: 'Django' },
+              { src: '/bosch/stack/postgresql.svg', alt: 'PostgreSQL' },
+              { src: '/bosch/stack/redis.svg', alt: 'Redis' },
+              { src: '/bosch/stack/openai.png', alt: 'Azure OpenAI' },
             ].map((t) => (
-              <img key={t.alt} src={t.src} alt={t.alt} title={t.alt} loading="lazy" className={`${t.h} w-auto opacity-80`} />
+              <li key={t.alt} className="flex items-center gap-1.5">
+                <img src={t.src} alt="" aria-hidden loading="lazy" className="h-[18px] w-[18px] object-contain" />
+                <span className="text-[11.5px] text-plum-muted">{t.alt}</span>
+              </li>
             ))}
-            <span className="text-[12px] text-plum-faint">PostgreSQL · Redis · Azure</span>
-          </div>
+          </ul>
         </div>
       </div>
     </div>
@@ -1306,10 +1310,9 @@ export function AskDataCase() {
             <p className="font-serif text-xl font-light leading-snug text-plum md:text-[1.55rem]">
               And the structural one: integrate underneath, not in the shell
             </p>
-            <p className="mt-2 max-w-2xl text-[14.5px] leading-relaxed text-plum-muted">
-              The three frontends stayed separate, as the constraint required. One layer below them
-              took over session, orchestration and business logic — which is what let the experience
-              come together while the services stayed apart.
+            <p className="mt-2 max-w-xl text-[14.5px] leading-relaxed text-plum-muted">
+              The frontends stayed apart. One layer below them took over session and orchestration —
+              so the experience came together anyway.
             </p>
           </Reveal>
           <Reveal className="mt-6" y={28}>
