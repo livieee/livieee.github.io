@@ -125,9 +125,9 @@ export function Hero() {
               <span className="text-[11px] tracking-[0.22em] md:text-[12px]">AI Product · Programs · Partnerships</span>
             </motion.p>
 
-            <h1 className="mt-5 max-w-[15ch] font-serif text-[clamp(1.85rem,3.4vw,2.95rem)] font-light leading-[1.14] tracking-[-0.015em] text-plum md:max-w-none">
+            <h1 className="mt-5 font-serif text-[clamp(2.1rem,4.1vw,3.5rem)] font-light leading-[1.09] tracking-[-0.015em] text-plum">
               <motion.span {...rise(0.3)} className="block">
-                AI products that get adopted.
+                User Empathy
               </motion.span>
               <motion.span {...rise(0.42)} className="relative block italic">
                 {/* 行首星形点缀（沿用旧版 four-point star） */}
@@ -141,11 +141,11 @@ export function Hero() {
                   <path d="M10 1 l2.2 6.8 6.8 2.2 -6.8 2.2 -2.2 6.8 -2.2 -6.8 -6.8 -2.2 6.8 -2.2 Z" />
                 </svg>
                 <span className="bg-[linear-gradient(100deg,#D193A8_0%,#B98ACB_34%,#9DB8E8_68%,#DECDA6_100%)] bg-clip-text text-transparent">
-                  Programs that bring people to them.
+                  Meaningful Connection
                 </span>
               </motion.span>
               <motion.span {...rise(0.54)} className="block">
-                Partnerships that outlast the launch.
+                Ideas in Motion.
               </motion.span>
             </h1>
 
