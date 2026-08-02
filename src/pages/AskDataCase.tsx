@@ -457,6 +457,105 @@ function LaneExplorer() {
   )
 }
 
+/* ── 04b · 我做的可交互原型 ─────────────────────────────────── */
+const PROTO = [
+  {
+    id: 'sso',
+    step: '01',
+    tab: 'Sign in',
+    src: '/bosch/proto-1-sso.png',
+    title: 'Start where the enterprise starts',
+    note: 'Not a login screen for show. Single sign-on through the company identity provider, with the credential story stated plainly. If the first screen ignores how enterprise IT works, nothing after it gets adopted.',
+  },
+  {
+    id: 'locked',
+    step: '02',
+    tab: 'Locked',
+    src: '/bosch/proto-2-locked.png',
+    title: 'Nothing works until data does',
+    note: 'The input is disabled. Analytics and visualization are greyed out. Only two doors are open — connect a database, or upload a file. This is the "data unlocks modes" decision, made testable before it was written into the spec.',
+  },
+  {
+    id: 'connect',
+    step: '03',
+    tab: 'Connect',
+    src: '/bosch/proto-3-connect.png',
+    title: 'Pick a domain, not a connection string',
+    note: 'Databases are presented as business domains with what they contain, how many tables, when they were refreshed, and their access level — so a purchasing analyst can choose correctly without asking an engineer.',
+  },
+  {
+    id: 'explorer',
+    step: '04',
+    tab: 'Results',
+    src: '/bosch/proto-4-explorer.png',
+    title: 'One place everything lands',
+    note: 'The Results Explorer: every output from every mode, tabbed and searchable, with each query keeping its own regeneration history. This is the last lane of my workflow map, made real.',
+  },
+]
+
+function ProtoWalkthrough() {
+  const [i, setI] = useState(0)
+  const p = PROTO[i]
+
+  return (
+    <div className="rounded-[2rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-6 md:p-10">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <p className="label-text text-[#4E6E96]">The prototype I built</p>
+        <p className="font-hand text-[15px] text-plum-muted">
+          product names and identity masked — NDA ✦
+        </p>
+      </div>
+
+      <div className="mb-5 flex flex-wrap items-center gap-2">
+        {PROTO.map((c, n) => (
+          <div key={c.id} className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setI(n)}
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12.5px] font-medium transition-all duration-300 ${
+                n === i
+                  ? 'bg-[#4E6E96] text-white shadow-[0_10px_22px_-12px_rgba(78,110,150,0.8)]'
+                  : 'border border-plum/15 bg-white/60 text-plum-muted hover:border-[#7FA3CC] hover:text-[#4E6E96]'
+              }`}
+            >
+              <span className={n === i ? 'text-white/65' : 'text-plum-faint'}>{c.step}</span>
+              {c.tab}
+            </button>
+            {n < PROTO.length - 1 && <span aria-hidden className="text-[#7FA3CC]">→</span>}
+          </div>
+        ))}
+      </div>
+
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+        <div className="overflow-hidden rounded-xl border border-plum/15 bg-white shadow-[0_28px_60px_-28px_rgba(78,110,150,0.55)]">
+          <div className="flex items-center gap-1.5 border-b border-plum/10 bg-cream-soft/70 px-4 py-2.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#E8B4B4]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#E8D5A8]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#B5CBB7]" />
+            <span className="mx-auto rounded-md bg-white px-3 py-0.5 text-[10.5px] text-plum-faint">
+              clickable prototype · built by me
+            </span>
+          </div>
+          <img src={p.src} alt={p.title} className="block w-full" loading={i === 0 ? 'eager' : 'lazy'} />
+        </div>
+
+        <div className="lg:sticky lg:top-32">
+          <div className="rounded-2xl border border-plum/10 bg-white/80 p-6 backdrop-blur-sm">
+            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+              Step {p.step} · {p.tab}
+            </p>
+            <h3 className="mt-2 font-serif text-lg font-light leading-snug text-plum">{p.title}</h3>
+            <p className="mt-3 min-h-[132px] text-[14px] leading-relaxed text-plum-muted">{p.note}</p>
+          </div>
+          <p className="mt-3 font-hand text-[15px] text-plum-muted">
+            841 versions before I called it settled ✦
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* ── 05 · 决策 ───────────────────────────────────────────────── */
 const DECISIONS = [
   {
@@ -1130,6 +1229,20 @@ export function AskDataCase() {
           </Reveal>
           <Reveal className="mt-8" y={28}>
             <LaneExplorer />
+          </Reveal>
+
+          <Reveal className="mt-16">
+            <p className="font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
+              Then I built it, before I specced it
+            </p>
+            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
+              A map tells you the routes exist. It doesn't tell you whether they feel right. So the
+              next thing I made wasn't a document — it was a clickable prototype of the whole
+              workspace, which is where the decisions in the next section actually got settled.
+            </p>
+          </Reveal>
+          <Reveal className="mt-7" y={28}>
+            <ProtoWalkthrough />
           </Reveal>
         </section>
 
