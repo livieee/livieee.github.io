@@ -186,28 +186,28 @@ const CLIPS = [
     step: '01',
     tab: 'Connect',
     src: '/bosch/demo-1-connect.mp4',
-    note: 'Pick a database, browse its tables, load the schema. From here on the session knows what data it is holding — nobody has to re-explain it downstream.',
+    note: 'Pick a database, load its schema. From here the session knows what it is holding — nobody re-explains it downstream.',
   },
   {
     id: 'query',
     step: '02',
     tab: 'Ask',
     src: '/bosch/demo-2-query.mp4',
-    note: 'A question in plain language becomes an editable query, runs, and returns a table — with two exits already attached: send it to analytics, or send it to visualization.',
+    note: 'Plain language becomes an editable query — returned with its two exits already attached.',
   },
   {
     id: 'analyze',
     step: '03',
     tab: 'Analyze',
     src: '/bosch/demo-3-analyze.mp4',
-    note: 'The same result flows into Python analysis — generated code you can read, execution output, and charts — without a single re-upload or re-explained column.',
+    note: 'The same result flows into Python analysis — readable code, output, charts — with no re-upload.',
   },
   {
     id: 'explore',
     step: '04',
     tab: 'Explore',
     src: '/bosch/demo-4-explore.mp4',
-    note: 'And into conversational visualization: refine the chart in plain language, with an interaction timeline logging every step and an explain panel saying what the chart is actually showing.',
+    note: 'And into conversational visualization, with every refinement logged and explained.',
   },
 ]
 
@@ -310,19 +310,19 @@ const CONSTRAINTS = [
   {
     icon: 'db-locked' as GlyphName,
     title: 'No direct database connection',
-    body: 'Enterprise data lives on-premise. The app can never touch it directly — authentication and network security make it a non-starter.',
+    body: 'Data lives on-premise. Auth and network security make a direct connection a non-starter.',
     became: 'so the product had to be useful without ever holding the data',
   },
   {
     icon: 'round-trip' as GlyphName,
     title: 'The manual hop is real',
-    body: 'Users copy the generated SQL, run it in an external platform, and come back with a CSV. That round-trip was not going away.',
+    body: 'Users run the query elsewhere and come back with a CSV. That round-trip was not going away.',
     became: 'so the session had to survive the user leaving',
   },
   {
     icon: 'split-panes' as GlyphName,
     title: 'Three separate frontends',
-    body: 'Query, analytics and visualization were built independently — and may stay that way.',
+    body: 'Three services, built independently — and likely to stay that way.',
     became: 'so integration had to happen in the backend, not the UI shell',
   },
 ]
@@ -332,19 +332,19 @@ const SEGMENTS = [
   {
     who: 'Semiconductor analysts',
     quote: 'I know exactly what I want to ask. I lose twenty minutes getting the data into a shape I can ask it of.',
-    need: 'The full suite — question to visualization without switching tools.',
+    need: 'The full suite, without switching tools.',
     icon: 'bar-chart' as GlyphName,
   },
   {
     who: 'Purchasing teams',
     quote: 'Which suppliers are affected by the new tariff policy?',
-    need: 'Similarity queries and AI insights — answers without writing SQL, without filing a ticket.',
+    need: 'Answers without writing SQL, or filing a ticket.',
     icon: 'invoice' as GlyphName,
   },
   {
     who: 'Plant engineers',
     quote: 'I can write the query myself. I want the statistical modelling on top of it.',
-    need: 'Query editing plus analysis — power tools that respect their expertise.',
+    need: 'Power tools that respect their expertise.',
     icon: 'wrench' as GlyphName,
   },
 ]
@@ -356,42 +356,42 @@ const LANES = [
     name: 'User',
     top: 0.215,
     bottom: 0.33,
-    note: 'Every entry point in one lane: start fresh or resume, upload a CSV or connect a database. Whatever the user picks, the lanes below react — nothing asks them to choose twice.',
+    note: 'Every entry point in one lane. Whatever the user picks here, the lanes below react — nothing asks them to choose twice.',
   },
   {
     id: 'session',
     name: 'Session / Data',
     top: 0.33,
     bottom: 0.425,
-    note: 'The lane that makes the rest possible. Session context is retrieved or created, then datasets and schema are validated — and that validation is what unlocks the modes downstream.',
+    note: 'Session context created or restored, then schema validated. That validation is what unlocks everything downstream.',
   },
   {
     id: 'sql',
     name: 'Query agent',
     top: 0.425,
     bottom: 0.55,
-    note: 'Suggested prompts → natural language → editable SQL → run. And the branch I insisted on: when execution fails, the product says exactly how to run it externally and hands over an upload button — instead of a dead end.',
+    note: 'Natural language becomes editable SQL. Plus the branch I insisted on — when execution fails, the product hands over instructions and an upload button instead of a dead end.',
   },
   {
     id: 'analytics',
     name: 'Analytics',
     top: 0.55,
     bottom: 0.655,
-    note: 'Python analysis with its rationale, not just its output. Results export, or push straight into visualization — the handoff is a button, never a re-upload.',
+    note: 'Python analysis with its rationale, not just its output. The handoff onward is a button, never a re-upload.',
   },
   {
     id: 'viz',
     name: 'Visualization',
     top: 0.655,
     bottom: 0.765,
-    note: 'Direct manipulation of the chart, every refinement logged in a history bar, and a selected region that becomes the next prompt. Exploration you can retrace.',
+    note: 'Refine the chart directly, every step logged, a selected region becomes the next prompt. Exploration you can retrace.',
   },
   {
     id: 'results',
     name: 'Results Explorer',
     top: 0.765,
     bottom: 0.875,
-    note: 'The quiet lane that ties it together: every cell from every mode lands here with its full regeneration history. Nothing a user produced disappears.',
+    note: 'The quiet lane that ties it together — every cell from every mode, with its full history. Nothing a user produced disappears.',
   },
 ]
 
@@ -469,7 +469,7 @@ const PROTO = [
     tab: 'Sign in',
     src: '/bosch/proto-1-sso.png',
     title: 'Start where the enterprise starts',
-    note: 'Not a login screen for show. Single sign-on through the company identity provider, with the credential story stated plainly. If the first screen ignores how enterprise IT works, nothing after it gets adopted.',
+    note: 'Single sign-on through the company identity provider. If the first screen ignores how enterprise IT works, nothing after it gets adopted.',
   },
   {
     id: 'locked',
@@ -477,7 +477,7 @@ const PROTO = [
     tab: 'Locked',
     src: '/bosch/proto-2-locked.png',
     title: 'Nothing works until data does',
-    note: 'The input is disabled. Analytics and visualization are greyed out. Only two doors are open — connect a database, or upload a file. This is the "data unlocks modes" decision, made testable before it was written into the spec.',
+    note: 'Input disabled, two modes greyed out, two doors open. The "data unlocks modes" decision, made testable before it was specced.',
   },
   {
     id: 'connect',
@@ -485,7 +485,7 @@ const PROTO = [
     tab: 'Connect',
     src: '/bosch/proto-3-connect.png',
     title: 'Pick a domain, not a connection string',
-    note: 'Databases are presented as business domains with what they contain, how many tables, when they were refreshed, and their access level — so a purchasing analyst can choose correctly without asking an engineer.',
+    note: 'Databases as business domains — contents, table count, freshness, access level. A purchasing analyst can choose without asking an engineer.',
   },
   {
     id: 'explorer',
@@ -493,7 +493,7 @@ const PROTO = [
     tab: 'Results',
     src: '/bosch/proto-4-explorer.png',
     title: 'One place everything lands',
-    note: 'The Results Explorer: every output from every mode, tabbed and searchable, with each query keeping its own regeneration history. This is the last lane of my workflow map, made real.',
+    note: 'Every output from every mode, tabbed and searchable, each keeping its own history. The last lane of my map, made real.',
   },
 ]
 
@@ -565,25 +565,25 @@ const DECISIONS = [
   {
     num: '01',
     title: 'The Analysis Session — a digital thread',
-    body: 'If users must leave to fetch their data, the product remembers for them. The session holds the query, the schema and the history across the manual hop, then validates the returning CSV against the schema it expected.',
+    body: 'If users must leave to fetch data, the product remembers for them — holding query, schema and history across the hop, then validating what comes back.',
     hand: 'context survives the round-trip ✦',
   },
   {
     num: '02',
     title: 'Data unlocks modes — not menus',
-    body: 'No data, no chat. Connect a database and query mode opens; upload a CSV and analytics and visualization open. The interface teaches the workflow through what it makes possible.',
+    body: 'No data, no chat. What you connect decides what opens. The interface teaches the workflow through what it makes possible.',
     hand: 'the UI is the onboarding ✦',
   },
   {
     num: '03',
     title: 'Designed for the bad days',
-    body: 'When the query agent goes offline: the health indicator flips, new generation locks, but existing queries stay viewable, editable and runnable. I specced the offline state action by action, so a degraded product still moves work forward.',
+    body: 'Agent offline: generation locks, but existing queries stay viewable, editable and runnable. I specced it action by action, so a degraded product still moves work forward.',
     hand: 'graceful degradation, specced row by row ✦',
   },
   {
     num: '04',
     title: 'Queries become reusable knowledge',
-    body: 'High-value question and query pairs get saved, tagged and reinserted — and the AI regenerates them against whatever dataset is loaded now. Teams stop re-deriving the same answer.',
+    body: 'Saved question-and-query pairs get reinserted and regenerated against the current dataset. Teams stop re-deriving the same answer.',
     hand: 'reuse, not retype ✦',
   },
 ]
@@ -724,129 +724,129 @@ const PINS = [
     x: 0.098,
     y: 0.31,
     title: 'Session history',
-    note: 'Every session titled by its own latest content and tagged with the mode it lives in. Resume one and the whole workspace returns — cells, mode state, linked datasets.',
+    note: 'Titled by its own latest content, tagged by mode. Resume one and the whole workspace returns.',
   },
   {
     x: 0.145,
     y: 0.089,
     title: 'Agent health',
-    note: 'The status line I specced: LLM configured, agent online, last checked. When it flips to offline, generation locks but existing work stays runnable — the failure design from section 05, sitting in the header.',
+    note: 'When this flips to offline, generation locks but existing work stays runnable.',
   },
   {
     x: 0.409,
     y: 0.152,
     title: 'Results, then a doorway',
-    note: 'The table is not the end of the cell. Its job is to give the user something to hand onward, which is why the next three buttons exist.',
+    note: 'Not the end of the cell — its job is to give the user something to hand onward.',
   },
   {
     x: 0.552,
     y: 0.574,
     title: 'Three exits, one row',
-    note: 'Download, send to analytics, send to visualization. This single row is what replaced the copy-run-download-reupload loop — the handoff is a button, not a round-trip.',
+    note: 'This one row replaced the copy-run-download-reupload loop.',
   },
   {
     x: 0.43,
     y: 0.642,
     title: 'Executed in 0.12s · 5 rows',
-    note: 'Time and row count, always. Boring on the happy path, essential on the bad one — it is the same line that turns into the failure state with an upload fallback.',
+    note: 'Boring here, essential when it fails — this is the line that becomes the upload fallback.',
   },
   {
     x: 0.352,
     y: 0.879,
     title: 'Modes, now unlocked',
-    note: 'Analytics and visualization were greyed out until this query produced data. The interface teaches the workflow by what it makes possible — and the table chips above show exactly what context is in play.',
+    note: 'Greyed out until this query produced data. The chips above show what context is in play.',
   },
   {
     x: 0.931,
     y: 0.812,
     title: 'Auto-select (AI)',
-    note: 'Skip table selection and let the backend infer, with a nudge that manual selection is more accurate. Speed by default, precision on request.',
+    note: 'Speed by default, precision on request — with a nudge that manual selection is more accurate.',
   },
   {
     x: 0.36,
     y: 0.979,
     title: 'Quick refinements',
-    note: 'Suggested next questions generated from the connected table, so the second question costs less effort than the first. Exploration, prompted.',
+    note: 'Next questions drawn from the connected table, so the second one costs less than the first.',
   },
 ]
 
 function AnnotatedShot() {
   const [open, setOpen] = useState(0)
+  const a = PINS[open]
+  const left = a.x > 0.55           // 右半边的点，注释浮到左侧
+  const top = a.y > 0.62            // 下半部分的点，注释浮到上方
 
   return (
-    <div>
-      <div className="relative overflow-hidden rounded-xl border border-plum/15 bg-white shadow-[0_28px_60px_-28px_rgba(78,110,150,0.5)]">
-        <div className="flex items-center gap-1.5 border-b border-plum/10 bg-cream-soft/70 px-4 py-2.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-[#E8B4B4]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#E8D5A8]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#B5CBB7]" />
-          <span className="mx-auto rounded-md bg-white px-3 py-0.5 text-[10.5px] text-plum-faint">
-            the shipped product · internal deployment
-          </span>
-        </div>
-        <div className="relative">
-          <img
-            src="/bosch/shipped-screen.png"
-            alt="The shipped workspace mid-flight: query results, the three handoff buttons, execution status, unlocked modes and table chips"
-            className="w-full"
-          />
-          {PINS.map((p, i) => (
-            <button
-              key={p.title}
-              type="button"
-              onMouseEnter={() => setOpen(i)}
-              onClick={() => setOpen(i)}
-              aria-label={p.title}
-              className="absolute -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${p.x * 100}%`, top: `${p.y * 100}%` }}
-            >
-              <span
-                className={`relative z-10 flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold shadow-md transition-all duration-300 ${
-                  open === i
-                    ? 'scale-125 bg-[#4E6E96] text-white'
-                    : 'bg-white text-[#4E6E96] ring-2 ring-[#4E6E96]/60 hover:scale-110'
-                }`}
-              >
-                {i + 1}
-              </span>
-              {open !== i && (
-                <span
-                  aria-hidden
-                  className="absolute inset-0 animate-ping rounded-full bg-[#4E6E96]/25"
-                  style={{ animationDuration: '2.4s' }}
-                />
-              )}
-            </button>
-          ))}
-        </div>
+    <div className="overflow-hidden rounded-xl border border-plum/15 bg-white shadow-[0_28px_60px_-28px_rgba(78,110,150,0.5)]">
+      <div className="flex items-center gap-1.5 border-b border-plum/10 bg-cream-soft/70 px-4 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#E8B4B4]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#E8D5A8]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#B5CBB7]" />
+        <span className="mx-auto rounded-md bg-white px-3 py-0.5 text-[10.5px] text-plum-faint">
+          the shipped product · tap a marker
+        </span>
       </div>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {PINS.map((p, i) => (
+      <div className="relative">
+        <img
+          src="/bosch/shipped-screen.png"
+          alt="The shipped workspace mid-flight: query results, the three handoff buttons, execution status, unlocked modes and table chips"
+          className="w-full"
+        />
+
+        {PINS.map((pin, i) => (
           <button
-            key={p.title}
+            key={pin.title}
             type="button"
             onMouseEnter={() => setOpen(i)}
             onClick={() => setOpen(i)}
-            className={`rounded-xl border p-4 text-left transition-all duration-300 ${
-              open === i
-                ? 'border-[#7FA3CC] bg-white shadow-[0_14px_30px_-16px_rgba(78,110,150,0.4)]'
-                : 'border-plum/10 bg-white/55 hover:border-[#7FA3CC]/50'
-            }`}
+            aria-label={pin.title}
+            className="absolute z-10 -translate-x-1/2 -translate-y-1/2"
+            style={{ left: `${pin.x * 100}%`, top: `${pin.y * 100}%` }}
           >
-            <p className="flex items-center gap-2 font-serif text-[15px] text-plum">
+            <span
+              className={`relative z-10 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold shadow-md transition-all duration-300 md:h-6 md:w-6 md:text-[11px] ${
+                open === i
+                  ? 'scale-125 bg-[#4E6E96] text-white'
+                  : 'bg-white text-[#4E6E96] ring-2 ring-[#4E6E96]/60 hover:scale-110'
+              }`}
+            >
+              {i + 1}
+            </span>
+            {open !== i && (
               <span
-                className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold ${
-                  open === i ? 'bg-[#4E6E96] text-white' : 'bg-[#EFF5FB] text-[#4E6E96]'
-                }`}
-              >
-                {i + 1}
-              </span>
-              {p.title}
-            </p>
-            <p className="mt-2 text-[12.5px] leading-relaxed text-plum-muted">{p.note}</p>
+                aria-hidden
+                className="absolute inset-0 animate-ping rounded-full bg-[#4E6E96]/25"
+                style={{ animationDuration: '2.4s' }}
+              />
+            )}
           </button>
         ))}
+
+        {/* 轻注释：跟着选中的点浮在旁边 */}
+        <div
+          key={a.title}
+          className="pointer-events-none absolute z-20 hidden w-[248px] md:block"
+          style={{
+            left: `${a.x * 100}%`,
+            top: `${a.y * 100}%`,
+            transform: `translate(${left ? 'calc(-100% - 18px)' : '18px'}, ${top ? 'calc(-100% + 10px)' : '-10px'})`,
+            animation: 'annot-in .28s ease-out',
+          }}
+        >
+          <div className="rounded-xl border border-[#7FA3CC]/45 bg-white/95 p-3.5 shadow-[0_16px_34px_-14px_rgba(78,110,150,0.45)] backdrop-blur-sm">
+            <p className="font-serif text-[13.5px] leading-snug text-plum">{a.title}</p>
+            <p className="mt-1.5 text-[11.5px] leading-relaxed text-plum-muted">{a.note}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 移动端：注释落在图下方 */}
+      <div className="border-t border-plum/10 bg-cream-soft/40 p-4 md:hidden">
+        <p className="font-serif text-[14px] text-plum">
+          {open + 1} · {a.title}
+        </p>
+        <p className="mt-1.5 text-[12.5px] leading-relaxed text-plum-muted">{a.note}</p>
       </div>
     </div>
   )
@@ -859,28 +859,28 @@ const LAYERS = [
     name: 'What users touch',
     top: 0.0,
     bottom: 0.215,
-    note: 'One frontend, four surfaces — query, analytics, visualization, schema. Users never learn that three services live underneath.',
+    note: 'One frontend, four surfaces. Users never learn that three services live underneath.',
   },
   {
     id: 'orchestration',
     name: 'The orchestration layer',
     top: 0.38,
     bottom: 0.59,
-    note: 'Where the integration actually happens. One layer owns orchestration, session state, business logic — so the frontends stay separate while the experience does not.',
+    note: 'Where integration actually happens — one layer owns orchestration and session state, so the frontends stay separate while the experience does not.',
   },
   {
     id: 'services',
     name: 'The four services',
     top: 0.60,
     bottom: 0.845,
-    note: 'The metadata engine, the query agent, the executor and the visualization service. Each replaceable on its own — which is what let us ship in slices.',
+    note: 'Four services, each replaceable on its own — which is what let us ship in slices.',
   },
   {
     id: 'data',
     name: 'Data & models',
     top: 0.845,
     bottom: 1.0,
-    note: 'Metadata storage, cache, the LLM service, and the customer database that stays behind the wall — the constraint that shaped everything above it.',
+    note: 'Including the customer database that stays behind the wall — the constraint that shaped everything above it.',
   },
 ]
 
@@ -1081,19 +1081,19 @@ const SHIP_CARDS = [
     tag: 'Epic · assigned to me',
     color: '#8FAE8B',
     title: 'Redesign the interaction flow',
-    body: 'Handed the open-ended brief and the product design phase end to end — refined user workflow, UX mockups, MVP scope, and the alternatives we chose against. Closed as completed.',
+    body: 'An open-ended brief, handed to me end to end: workflow, mockups, MVP scope, alternatives. Closed as completed.',
   },
   {
     tag: 'PRD',
     color: '#7A9CC6',
     title: 'MVP product requirements',
-    body: 'Five layers, three modes, session persistence, offline behaviour — I wrote it before it was built, so the team argued about the doc instead of the build. A second PRD followed for the query library.',
+    body: 'Five layers, three modes, offline behaviour — written before it was built, so the team argued about the doc instead of the build.',
   },
   {
     tag: 'Issue · opened by me',
     color: '#D193A8',
     title: 'Bug + UI enhancement, specced',
-    body: 'Found in QA. Instead of filing "this is broken", I wrote the expected behaviour cell by cell, assigned an owner, and scheduled it into the sprint.',
+    body: 'Found in QA. Not "this is broken" — the expected behaviour, cell by cell, with an owner and a sprint.',
   },
 ]
 
@@ -1143,11 +1143,9 @@ export function AskDataCase() {
         </Reveal>
         <Reveal delay={0.25}>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-            An enterprise GenAI analytics platform for internal teams across manufacturing,
-            purchasing and engineering. I owned it as the only product person on the team: I mapped
-            the workflow, prototyped it before writing a line of spec, wrote the requirements, ran
-            the weekly sprints, and made the calls that turned a fragmented toolchain into one
-            product.
+            An enterprise analytics platform for internal manufacturing, purchasing and engineering
+            teams. I was the only product person on it — I mapped the workflow, prototyped it,
+            wrote the specs, and ran the sprints.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {SCOPE.map((s) => (
@@ -1180,10 +1178,9 @@ export function AskDataCase() {
               The tools all worked. The workflow between them didn't.
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              Query generation, analytics and visualization had each been built well — and
-              independently. Between them sat a person doing clipboard work: copying a query out,
-              running it somewhere else, downloading a file, re-uploading it, re-explaining the
-              columns. Every hop dropped the context the next tool needed.
+              Query, analytics and visualization were each built well — and independently. Between
+              them sat a person doing clipboard work, and every hop dropped the context the next
+              tool needed.
             </p>
           </Reveal>
           <Reveal className="mt-8" y={28}>
@@ -1195,8 +1192,7 @@ export function AskDataCase() {
               And here is the right-hand side, running.
             </p>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              The same question travelling through all four stages without a single manual handoff.
-              Step through it.
+              One question, four stages, no manual handoff.
             </p>
           </Reveal>
           <Reveal className="mt-7" y={28}>
@@ -1243,7 +1239,7 @@ export function AskDataCase() {
                   <Glyph name={s.icon} className="h-8 w-8 text-[#4E6E96]" />
                   <p className="mt-4 font-serif text-[15px] italic leading-snug text-plum">“{s.quote}”</p>
                   <h3 className="mt-4 border-t border-plum/10 pt-3 font-serif text-lg font-light text-plum">{s.who}</h3>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-plum-muted">{s.need}</p>
+                  <p className="mt-1.5 text-[12.5px] leading-snug text-plum-muted">{s.need}</p>
                 </div>
               </Reveal>
             ))}
@@ -1258,8 +1254,7 @@ export function AskDataCase() {
               Six lanes, one thread
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              Before writing a single requirement I mapped every route a user could take — including
-              the ones where things go wrong. This is that map, walked lane by lane.
+              Every route a user can take, including the ones where things go wrong.
             </p>
           </Reveal>
           <Reveal className="mt-8" y={28}>
@@ -1271,9 +1266,9 @@ export function AskDataCase() {
               Then I built it, before I specced it
             </p>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              A map tells you the routes exist. It doesn't tell you whether they feel right. So the
-              next thing I made wasn't a document — it was a clickable prototype of the whole
-              workspace, which is where the decisions in the next section actually got settled.
+              A map says the routes exist; it doesn't say whether they feel right. So the next thing
+              I made wasn't a document — it was a clickable prototype, where the decisions below
+              actually got settled.
             </p>
           </Reveal>
           <Reveal className="mt-7" y={28}>
@@ -1313,12 +1308,10 @@ export function AskDataCase() {
                 The obvious move was to hide the manual step. I designed for it instead.
               </p>
               <p className="mt-4 max-w-3xl text-[14.5px] leading-relaxed text-plum-muted">
-                Every instinct said a modern analytics product should never tell a user "go run this
-                somewhere else." But the constraint was permanent, and pretending otherwise would
-                have made a normal event feel like the product's fault. So the failure path got the
-                same design care as the happy one: a clear instruction, a single upload button,
-                schema validation on the way back in, and the session waiting exactly where it was
-                left. The unglamorous branch is what made this usable inside a real enterprise.
+                Pretending the constraint didn't exist would have made a normal event feel like the
+                product's fault. So the failure path got the same care as the happy one — an
+                instruction, one upload button, validation on the way back, and the session waiting
+                where it was left.
               </p>
 
               {/* 兑现的失败态 */}
@@ -1348,8 +1341,7 @@ export function AskDataCase() {
               Anatomy of a query cell
             </h2>
             <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              The core unit of the workspace. Every zone below — down to the failure states — was
-              specced before it was built.
+              The core unit of the workspace, specced before it was built.
             </p>
           </Reveal>
           <Reveal className="mt-8" y={28}>
@@ -1361,7 +1353,7 @@ export function AskDataCase() {
               Spec, meet shipped screen
             </p>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              Eight places where a written decision became a visible one. Tap a marker.
+              Eight written decisions, now visible. Tap a marker.
             </p>
           </Reveal>
           <Reveal className="mt-7" y={28}>
@@ -1373,8 +1365,7 @@ export function AskDataCase() {
               What it takes to make that feel like one product
             </p>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              The frontends stayed separate, as the constraint required. The integration moved
-              underneath them.
+              The frontends stayed separate. The integration moved underneath them.
             </p>
           </Reveal>
           <Reveal className="mt-7" y={28}>
@@ -1437,11 +1428,9 @@ export function AskDataCase() {
                 Integration is a product problem before it is an engineering one.
               </p>
               <p className="mt-4 text-[15px] leading-relaxed text-plum-muted">
-                Nothing here needed a new model or a new service. What changed was where the context
-                lived: once the product held the session instead of the person, three tools started
-                behaving like one. The most valuable thing I designed wasn't a screen — it was the
-                thread running underneath them, and the discipline to spec the ugly branches as
-                carefully as the demo path.
+                Nothing here needed a new model. What changed was where the context lived — once the
+                product held the session instead of the person, three tools started behaving like
+                one. The most valuable thing I designed wasn't a screen.
               </p>
             </div>
           </Reveal>

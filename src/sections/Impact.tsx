@@ -256,7 +256,7 @@ export function Impact() {
                           Schema Extraction Agents
                         </span>
                         <span className="mt-0.5 block text-[11.5px] text-plum-muted">
-                          Solution Architect · trust layer · 56.6% → 97.2% accuracy
+                          Solution Architect · 56.6% → 97.2% accuracy
                         </span>
                       </span>
                       <span
@@ -296,9 +296,8 @@ export function Impact() {
                     Making enterprise analytics easier to ask, explore, and reuse
                   </h3>
                   <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
-                    Designed an AI-native analytics workspace that unified natural-language SQL,
-                    Python analysis, visualization, and reusable query knowledge into one
-                    end-to-end experience — streamlining 80%+ of manual analytics workflows.
+                    Three disconnected tools, unified into one workspace — natural-language SQL,
+                    Python analysis and visualization, sharing a single session.
                   </p>
                   <div className="mt-6 flex flex-wrap gap-2">
                     <Tag>Product Strategy</Tag>

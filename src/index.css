@@ -162,3 +162,9 @@
     transform: none !important;
   }
 }
+
+/* 标注浮层入场 */
+@keyframes annot-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
