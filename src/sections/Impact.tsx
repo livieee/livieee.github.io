@@ -421,6 +421,13 @@ export function Impact() {
                 <Tag>Hackathon programming</Tag>
                 <Tag>Ecosystem partnerships</Tag>
               </div>
+              <Link
+                to="/work/ai-valley"
+                className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
+              >
+                See the programs
+                <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
+              </Link>
               <figure className="mt-8 max-w-[220px]">
                 <div className="overflow-hidden rounded-2xl shadow-soft">
                   <img

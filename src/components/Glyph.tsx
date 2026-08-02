@@ -30,6 +30,10 @@ export type GlyphName =
   | 'question'
   | 'parallel'
   | 'approx'
+  | 'handshake'
+  | 'mic'
+  | 'calendar'
+  | 'community'
 
 const PATHS: Record<GlyphName, (w: number) => React.ReactNode> = {
   /* 数据库 + 斜杠：不能直连 */
@@ -175,6 +179,48 @@ const PATHS: Record<GlyphName, (w: number) => React.ReactNode> = {
       <path d="M12 4.3c2.6 1.9 3.8 4.5 3.7 7.5-.1 2.9-1.3 5.4-3.7 7.3" strokeWidth={w} />
       <path d="M8.2 8.4 5.4 7.3M8 12.1l-3.1-.2M8.6 15.6l-2.7 1.2" strokeWidth={w} />
       <path d="m15.8 8.4 2.9-1.1M16 12.1l3.1-.2M15.4 15.6l2.8 1.2" strokeWidth={w} />
+    </>
+  ),
+  /* 两只手交叠：合作/伙伴关系 */
+  handshake: (w) => (
+    <>
+      <path d="M2.6 9.4l3.2-2.6 4.1 1.1 3.1-1.1 4.2 2.5" strokeWidth={w} />
+      <path d="M5.8 6.8v7.9c0 .9.8 1.6 1.8 1.5" strokeWidth={w} />
+      <path d="M17.2 9.4v6c0 .9-.8 1.6-1.7 1.5" strokeWidth={w} />
+      <path d="M8.1 13.1l2.6 2.4c.7.6 1.7.6 2.3-.1l3.6-3.9" strokeWidth={w} />
+      <path d="M10.6 10.6l2 1.9" strokeWidth={w} />
+    </>
+  ),
+  /* 手持麦：对外发声 / DevRel */
+  mic: (w) => (
+    <>
+      <rect x="8.4" y="2.6" width="5.4" height="9.4" rx="2.7" strokeWidth={w} />
+      <path d="M5.4 10.4c.2 3.1 2.6 5.4 5.7 5.4s5.5-2.3 5.7-5.4" strokeWidth={w} />
+      <path d="M11.1 15.9v4.4" strokeWidth={w} />
+      <path d="M8.2 20.4h5.9" strokeWidth={w} />
+    </>
+  ),
+  /* 日历：排期与 run-of-show */
+  calendar: (w) => (
+    <>
+      <rect x="3.1" y="4.9" width="16.1" height="15" rx="2.4" strokeWidth={w} />
+      <path d="M3.3 9.6h15.8" strokeWidth={w} />
+      <path d="M7.6 2.8v4" strokeWidth={w} />
+      <path d="M15 2.8v4" strokeWidth={w} />
+      <path d="M7.2 13.2h2.1" strokeWidth={w} />
+      <path d="M12.9 13.2h2.2" strokeWidth={w} />
+      <path d="M7.2 16.5h2.1" strokeWidth={w} />
+    </>
+  ),
+  /* 三个人围成一圈：社区 */
+  community: (w) => (
+    <>
+      <circle cx="11.1" cy="5.3" r="2.5" strokeWidth={w} />
+      <circle cx="5.1" cy="15.4" r="2.5" strokeWidth={w} />
+      <circle cx="17.1" cy="15.4" r="2.5" strokeWidth={w} />
+      <path d="M9.3 7.6L6.7 12.9" strokeWidth={w} />
+      <path d="M12.9 7.6l2.6 5.3" strokeWidth={w} />
+      <path d="M7.6 16.3h6.9" strokeWidth={w} />
     </>
   ),
 }
