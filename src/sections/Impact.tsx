@@ -45,7 +45,7 @@ function Metrics({ items, accent }: { items: Metric[]; accent: string }) {
 
 function Tag({ children }: { children: string }) {
   return (
-    <span className="rounded-full border border-plum/15 px-3 py-1 text-[11px] font-medium text-plum-muted">
+    <span className="rounded-full border border-plum/15 px-2.5 py-[3px] text-[10.5px] font-medium text-plum-muted">
       {children}
     </span>
   )
@@ -345,7 +345,7 @@ export function Impact() {
               </span>
               <article
                 id="case-aivalley"
-                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-12"
+                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-10"
               >
                 <div className="mb-8">
                   <ProgramWall />
@@ -361,24 +361,24 @@ export function Impact() {
                   shape thoughtful programs that connect partner goals with builders and communities
                   around ideas worth building.
                 </p>
-                <div className="mt-7">
+                <div className="mt-6">
                   <Metrics
                     accent="text-rose"
                     items={[
                       { value: '9', n: 9, label: 'selected programs' },
-                      { value: '221', n: 221, label: 'builders in a flagship global challenge' },
+                      { value: '221', n: 221, label: 'builders in a flagship challenge' },
                       { value: 'E2E', label: 'flagship program ownership' },
                     ]}
                   />
                 </div>
-                <div className="mt-6 flex flex-wrap gap-2">
+                <div className="mt-5 flex flex-wrap gap-1.5">
                   <Tag>Ecosystem Partnerships</Tag>
                   <Tag>Developer Programs</Tag>
                   <Tag>Program Strategy</Tag>
                 </div>
                 <Link
                   to="/work/ai-valley"
-                  className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
+                  className="group/cta mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
                 >
                   Explore programs
                   <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
@@ -396,13 +396,13 @@ export function Impact() {
               >
                 the enterprise chapter
               </span>
-            <article id="case-peopleai" className="group/card flex h-full scroll-mt-24 flex-col justify-between overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-transform duration-500 md:p-12">
+            <article id="case-peopleai" className="group/card flex h-full scroll-mt-24 flex-col justify-between overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-transform duration-500 md:p-10">
               <div>
-                <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
+                <div className="mb-7 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
                   <img
                     src="/images/case-analytics.jpg"
                     alt="Abstract editorial illustration — an analytics ribbon rising over soft bar charts"
-                    className="aspect-[3/2] w-full object-cover saturate-[0.8] transition-all duration-700 hover:scale-[1.03] group-hover/card:saturate-100"
+                    className="aspect-[16/10] w-full object-cover saturate-[0.8] transition-all duration-700 hover:scale-[1.03] group-hover/card:saturate-100"
                     loading="lazy"
                   />
                 </div>
