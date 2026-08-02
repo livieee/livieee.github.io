@@ -23,27 +23,27 @@ type Pin = {
 
 const PINS: Pin[] = [
   {
-    src: '/events/gtc-fireside.jpg',
+    src: '/events/gtc-panel-crop.jpg',
     type: 'founder conversation',
     name: '2026 GTC Fireside Talk',
     role: 'Host',
-    cls: 'left-[0.5%] top-[1%] w-[26%] -rotate-2',
+    cls: 'left-[0.5%] top-[1%] w-[29%] -rotate-2',
     delay: '.18s',
   },
   {
-    src: '/events/gmi-perk.jpg',
+    src: '/events/luma/agent-recall.jpg',
     type: 'agent hackathon',
     name: 'Total Agent Recall',
     role: 'Partner Coordination',
-    cls: 'right-[0.5%] top-[0.5%] w-[26%] rotate-2',
+    cls: 'right-[0.5%] top-[0.5%] w-[28%] rotate-2',
     delay: '.3s',
   },
   {
-    src: '/events/photostrip-crop.jpg',
+    src: '/events/photostrip-tight.jpg',
     type: 'build day',
     name: 'Build What You Love',
     role: 'Program Team',
-    cls: 'right-[1%] bottom-[2%] w-[27%] -rotate-2',
+    cls: 'right-[1%] bottom-[2%] w-[29%] -rotate-2',
     delay: '.42s',
   },
 ]
