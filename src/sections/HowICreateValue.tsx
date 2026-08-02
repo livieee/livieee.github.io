@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Reveal, WordReveal } from '@/components/Reveal'
 
 /**
@@ -233,6 +233,25 @@ function ForkSketch({ className = '' }: { className?: string }) {
 
 export function HowICreateValue() {
   const [active, setActive] = useState<number | null>(null)
+  const [dealt, setDealt] = useState(false)
+  const fanRef = useRef<HTMLDivElement>(null)
+
+  // 进入视口时才「发牌」：四张从法阵中心散开
+  useEffect(() => {
+    const el = fanRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setDealt(true)
+          io.disconnect()
+        }
+      },
+      { threshold: 0.3 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   return (
     <section id="capabilities" className="mx-auto max-w-6xl px-6 py-28 md:px-10 md:py-36">
@@ -263,6 +282,7 @@ export function HowICreateValue() {
 
       <Reveal className="mt-6" y={30}>
         <div
+          ref={fanRef}
           className="relative mx-auto h-[520px] w-full max-w-4xl select-none"
           style={{ perspective: '1400px' }}
         >
@@ -293,6 +313,17 @@ export function HowICreateValue() {
               )
             })}
           </svg>
+
+          {/* 法阵中心的呼吸光 */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute bottom-[6%] left-1/2 h-[140px] w-[300px] -translate-x-1/2 rounded-full"
+            style={{
+              background:
+                'radial-gradient(ellipse, rgba(199,154,75,0.2) 0%, rgba(185,138,203,0.1) 50%, rgba(255,255,255,0) 72%)',
+              animation: 'seal-breathe 6.5s ease-in-out infinite',
+            }}
+          />
 
           {/* 飘落的碎光 */}
           {[12, 28, 46, 63, 81, 92].map((left, i) => (
@@ -335,12 +366,17 @@ export function HowICreateValue() {
                 style={{
                   transformOrigin: '50% 130%',
                   transition: 'transform .8s cubic-bezier(.2,.75,.2,1), opacity .5s',
-                  transform: isUp
-                    ? 'translateX(-50%) translateY(24px) rotate(0deg) scale(1.16)'
-                    : `translateX(-50%) rotate(${angle}deg) translateY(${lift}px)`,
+                  transform: !dealt
+                    ? 'translateX(-50%) translateY(104px) rotate(0deg) scale(0.58)'
+                    : isUp
+                      ? 'translateX(-50%) translateY(24px) rotate(0deg) scale(1.16)'
+                      : `translateX(-50%) rotate(${angle}deg) translateY(${lift}px)`,
+                  transitionDelay: dealt ? `${i * 0.11}s` : '0s',
                   animation:
-                    active === null ? `card-idle ${5.4 + i * 0.6}s ${i * 0.35}s ease-in-out infinite` : undefined,
-                  opacity: dimmed ? 0.32 : 1,
+                    dealt && active === null
+                      ? `card-idle ${5.4 + i * 0.6}s ${i * 0.35}s ease-in-out infinite`
+                      : undefined,
+                  opacity: !dealt ? 0 : dimmed ? 0.32 : 1,
                   zIndex: isUp ? 30 : 10 + i,
                   filter: isUp ? 'drop-shadow(0 22px 44px rgba(199,154,75,0.32))' : undefined,
                 }}

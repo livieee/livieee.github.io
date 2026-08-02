@@ -198,3 +198,9 @@
   0%, 100% { margin-top: 0; }
   50%      { margin-top: -7px; }
 }
+
+/* 法阵呼吸 */
+@keyframes seal-breathe {
+  0%, 100% { opacity: .55; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 1;   transform: translateX(-50%) scale(1.08); }
+}
