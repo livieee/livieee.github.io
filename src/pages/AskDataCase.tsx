@@ -1314,18 +1314,34 @@ export function AskDataCase() {
         </Reveal>
 
         {/* 影响力前置：一眼可见 */}
-        <Reveal className="mt-9" delay={0.32}>
-          <dl className="flex flex-wrap gap-x-12 gap-y-6 border-t border-plum/10 pt-7">
-            {VALUE.map((v) => (
-              <div key={v.label}>
-                <dd className="font-serif text-4xl font-light leading-none text-[#4E6E96] md:text-5xl">
-                  {v.prefix}
-                  <CountUp value={v.n} suffix={v.suffix} />
-                </dd>
-                <dt className="mt-2 max-w-[190px] text-[12px] leading-snug text-plum-muted">{v.short}</dt>
-              </div>
-            ))}
-          </dl>
+        <Reveal className="mt-10" delay={0.32}>
+          <div className="rounded-[1.6rem] border border-[#7FA3CC]/25 bg-[#EFF5FB]/45 px-6 py-6 md:px-8 md:py-7">
+            <p className="label-text mb-5 text-[#4E6E96]">The outcome</p>
+            <dl className="grid divide-y divide-plum/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+              {VALUE.map((v, n) => (
+                <div
+                  key={v.label}
+                  className={`py-4 first:pt-0 last:pb-0 sm:py-0 sm:px-7 sm:first:pl-0 sm:last:pr-0`}
+                >
+                  <dd className="font-serif text-[2.5rem] font-light leading-none text-[#4E6E96] md:text-[2.9rem]">
+                    {v.prefix}
+                    <CountUp value={v.n} suffix={v.suffix} />
+                  </dd>
+                  <span
+                    aria-hidden
+                    className="mt-2.5 block h-[3px] w-14 origin-left rounded-full bg-[#7FA3CC] opacity-45"
+                    style={{
+                      transform: 'scaleX(0)',
+                      animation: `metric-underline .6s ${0.5 + n * 0.14}s ease-out forwards`,
+                    }}
+                  />
+                  <dt className="mt-3 text-[12.5px] leading-snug text-plum-muted sm:min-h-[34px]">
+                    {v.short}
+                  </dt>
+                </div>
+              ))}
+            </dl>
+          </div>
         </Reveal>
 
         <Reveal className="mt-12" y={32}>
