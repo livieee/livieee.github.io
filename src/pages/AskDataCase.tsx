@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { AskDataUI } from '@/components/AskDataUI'
+import { Glyph, type GlyphName } from '@/components/Glyph'
 
 /**
  * Bosch × CMU：GenAI Analytics Suite —— Olivia = Product Lead。
@@ -118,7 +119,10 @@ function BeforeAfterFlow() {
         {/* 分析师 */}
         <g style={{ transition: 'opacity .5s', opacity: after ? 0.3 : 1 }}>
           <circle cx="52" cy="105" r="24" fill="#FFFFFF" stroke="#9A87A0" strokeWidth="1.4" />
-          <text x="52" y="112" textAnchor="middle" fontSize="20">🧑‍💻</text>
+          <g stroke="#8A7A90" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="52" cy="98" r="5.4" />
+            <path d="M42.4 116c1.4-5.2 5.2-8 9.7-8s8.2 2.8 9.6 8" />
+          </g>
           <text x="52" y="150" textAnchor="middle" fontSize="10" fill="#9A87A0">analyst</text>
         </g>
 
@@ -304,19 +308,19 @@ function PipelineDemo() {
 /* ── 02 · 约束 ───────────────────────────────────────────────── */
 const CONSTRAINTS = [
   {
-    icon: '⛔',
+    icon: 'db-locked' as GlyphName,
     title: 'No direct database connection',
     body: 'Enterprise data lives on-premise. The app can never touch it directly — authentication and network security make it a non-starter.',
     became: 'so the product had to be useful without ever holding the data',
   },
   {
-    icon: '↪',
+    icon: 'round-trip' as GlyphName,
     title: 'The manual hop is real',
     body: 'Users copy the generated SQL, run it in an external platform, and come back with a CSV. That round-trip was not going away.',
     became: 'so the session had to survive the user leaving',
   },
   {
-    icon: '⌸',
+    icon: 'split-panes' as GlyphName,
     title: 'Three separate frontends',
     body: 'Query, analytics and visualization were built independently — and may stay that way.',
     became: 'so integration had to happen in the backend, not the UI shell',
@@ -329,19 +333,19 @@ const SEGMENTS = [
     who: 'Semiconductor analysts',
     quote: 'I know exactly what I want to ask. I lose twenty minutes getting the data into a shape I can ask it of.',
     need: 'The full suite — question to visualization without switching tools.',
-    icon: '📊',
+    icon: 'bar-chart' as GlyphName,
   },
   {
     who: 'Purchasing teams',
     quote: 'Which suppliers are affected by the new tariff policy?',
     need: 'Similarity queries and AI insights — answers without writing SQL, without filing a ticket.',
-    icon: '🧾',
+    icon: 'invoice' as GlyphName,
   },
   {
     who: 'Plant engineers',
     quote: 'I can write the query myself. I want the statistical modelling on top of it.',
     need: 'Query editing plus analysis — power tools that respect their expertise.',
-    icon: '⚙️',
+    icon: 'wrench' as GlyphName,
   },
 ]
 
@@ -630,10 +634,10 @@ function SqlCellAnatomy() {
           onClick={() => setActive('header')}
         >
           <span className="rounded-md bg-[#4E6E96] px-2 py-0.5 text-[10px] font-semibold text-white">QUERY</span>
-          <span className="rounded-full border border-[#7FA3CC]/40 bg-[#EFF5FB] px-2.5 py-0.5 text-[10.5px] text-[#4E6E96]">🗄 manufacturing</span>
-          <span className="rounded-full border border-[#7FA3CC]/40 bg-[#EFF5FB] px-2.5 py-0.5 text-[10.5px] text-[#4E6E96]">production_lines 👁</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#7FA3CC]/40 bg-[#EFF5FB] px-2.5 py-0.5 text-[10.5px] text-[#4E6E96]"><Glyph name="database" className="h-3 w-3" w={1.8} />manufacturing</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#7FA3CC]/40 bg-[#EFF5FB] px-2.5 py-0.5 text-[10.5px] text-[#4E6E96]">production_lines<Glyph name="eye" className="h-3 w-3" w={1.8} /></span>
           <span className="rounded-full border border-[#7FA3CC]/40 bg-[#EFF5FB] px-2.5 py-0.5 text-[10.5px] text-[#4E6E96]">+2 more</span>
-          <span className="ml-auto text-[11px] text-plum-faint">🗑</span>
+          <Glyph name="trash" className="ml-auto h-3.5 w-3.5 text-plum-faint" w={1.7} />
         </div>
         <div className={`${zone('prompt')} mt-1 p-2.5`} onMouseEnter={() => setActive('prompt')} onClick={() => setActive('prompt')}>
           <p className="text-[10px] uppercase tracking-[0.15em] text-plum-faint">Prompt</p>
@@ -678,7 +682,7 @@ ORDER BY annual_revenue DESC;`}
             <span className="rounded-full border border-[#7FA3CC]/50 px-2.5 py-1 text-[#4E6E96]">Send to Analytics</span>
             <span className="rounded-full border border-[#7FA3CC]/50 px-2.5 py-1 text-[#4E6E96]">Send to Visualization</span>
           </div>
-          <p className="mt-2 text-[11px] italic text-plum-muted">✨ Alpine accounts for 33.7% of total revenue.</p>
+          <p className="mt-2 flex items-center gap-1.5 text-[11px] italic text-plum-muted"><Glyph name="spark" className="h-3.5 w-3.5 shrink-0 not-italic text-[#B98ACB]" w={1.6} />Alpine accounts for 33.7% of total revenue.</p>
         </div>
         <div className={`${zone('footer')} mt-1 p-2.5`} onMouseEnter={() => setActive('footer')} onClick={() => setActive('footer')}>
           <p className="text-[11px] text-[#5E8B5A]">✓ Executed in 0.42s · 4 rows</p>
@@ -930,6 +934,23 @@ function ArchLayers() {
         <p className="mt-3 font-hand text-[15px] text-plum-muted">
           separate services, one product surface ✦
         </p>
+        {/* 真实技术栈 */}
+        <div className="mt-5 rounded-2xl border border-plum/10 bg-white/60 px-5 py-4">
+          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+            What it runs on
+          </p>
+          <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-3">
+            {[
+              { src: '/bosch/stack/react.png', alt: 'React', h: 'h-5' },
+              { src: '/bosch/stack/fastapi.png', alt: 'FastAPI', h: 'h-4' },
+              { src: '/bosch/stack/django.png', alt: 'Django', h: 'h-4' },
+              { src: '/bosch/stack/openai.png', alt: 'OpenAI', h: 'h-5' },
+            ].map((t) => (
+              <img key={t.alt} src={t.src} alt={t.alt} title={t.alt} loading="lazy" className={`${t.h} w-auto opacity-80`} />
+            ))}
+            <span className="text-[12px] text-plum-faint">PostgreSQL · Redis · Azure</span>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -1060,19 +1081,19 @@ const SHIP_CARDS = [
     tag: 'Epic · assigned to me',
     color: '#8FAE8B',
     title: 'Redesign the interaction flow',
-    body: 'I owned the product design phase end to end: refined user workflow, UX mockups, MVP scope, and the alternative approaches we chose against.',
+    body: 'Handed the open-ended brief and the product design phase end to end — refined user workflow, UX mockups, MVP scope, and the alternatives we chose against. Closed as completed.',
   },
   {
     tag: 'PRD',
     color: '#7A9CC6',
     title: 'MVP product requirements',
-    body: 'Five layers, three modes, session persistence, offline behaviour — written down before it was built, so the team argued about the doc instead of the build.',
+    body: 'Five layers, three modes, session persistence, offline behaviour — I wrote it before it was built, so the team argued about the doc instead of the build. A second PRD followed for the query library.',
   },
   {
     tag: 'Issue · opened by me',
     color: '#D193A8',
     title: 'Bug + UI enhancement, specced',
-    body: 'Found in QA. Instead of filing "this is broken", I wrote the expected behaviour cell by cell and scheduled it into the sprint.',
+    body: 'Found in QA. Instead of filing "this is broken", I wrote the expected behaviour cell by cell, assigned an owner, and scheduled it into the sprint.',
   },
 ]
 
@@ -1123,8 +1144,10 @@ export function AskDataCase() {
         <Reveal delay={0.25}>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
             An enterprise GenAI analytics platform for internal teams across manufacturing,
-            purchasing and engineering. I led the product: the workflow, the requirements, the weekly
-            sprints, and the calls that made a fragmented toolchain behave like one product.
+            purchasing and engineering. I owned it as the only product person on the team: I mapped
+            the workflow, prototyped it before writing a line of spec, wrote the requirements, ran
+            the weekly sprints, and made the calls that turned a fragmented toolchain into one
+            product.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {SCOPE.map((s) => (
@@ -1193,7 +1216,7 @@ export function AskDataCase() {
             {CONSTRAINTS.map((c, i) => (
               <Reveal key={c.title} delay={i * 0.08}>
                 <div className="h-full rounded-[1.4rem] border border-plum/10 bg-white/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#7FA3CC]/50 hover:bg-white">
-                  <span aria-hidden className="text-xl">{c.icon}</span>
+                  <Glyph name={c.icon} className="h-7 w-7 text-[#4E6E96]" />
                   <h3 className="mt-3 font-serif text-lg font-light text-plum">{c.title}</h3>
                   <p className="mt-2 text-[13.5px] leading-relaxed text-plum-muted">{c.body}</p>
                   <p className="mt-4 border-t border-plum/10 pt-3 font-hand text-[15px] text-[#4E6E96]">
@@ -1217,7 +1240,7 @@ export function AskDataCase() {
             {SEGMENTS.map((s, i) => (
               <Reveal key={s.who} delay={i * 0.08}>
                 <div className="flex h-full flex-col rounded-[1.4rem] bg-gradient-to-br from-[#EFF5FB] to-cream-soft p-6 transition-transform duration-300 hover:-translate-y-1">
-                  <span aria-hidden className="text-2xl">{s.icon}</span>
+                  <Glyph name={s.icon} className="h-8 w-8 text-[#4E6E96]" />
                   <p className="mt-4 font-serif text-[15px] italic leading-snug text-plum">“{s.quote}”</p>
                   <h3 className="mt-4 border-t border-plum/10 pt-3 font-serif text-lg font-light text-plum">{s.who}</h3>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-plum-muted">{s.need}</p>
@@ -1417,7 +1440,8 @@ export function AskDataCase() {
                 Nothing here needed a new model or a new service. What changed was where the context
                 lived: once the product held the session instead of the person, three tools started
                 behaving like one. The most valuable thing I designed wasn't a screen — it was the
-                thread running underneath them.
+                thread running underneath them, and the discipline to spec the ugly branches as
+                carefully as the demo path.
               </p>
             </div>
           </Reveal>

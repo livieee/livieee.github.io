@@ -29,7 +29,7 @@ const LETTER_PHOTOS: (LetterPhoto | null)[] = [
   {
     src: '/images/photo-cmu-friends.jpg',
     alt: 'Olivia with friends at CMU graduation',
-    caption: 'CMU days 🎓',
+    caption: 'CMU days',
   },
   {
     src: '/images/photo-conference.jpg',

@@ -332,9 +332,9 @@ function PulseCheckCard() {
   const [mode, setMode] = useState<'pct' | 'votes'>('pct')
   const toggle = () => setMode((m) => (m === 'pct' ? 'votes' : 'pct'))
   const reactions = [
-    { e: '😍', label: 'love it', n: 2, pct: 14, c: '#8FAE8B' },
-    { e: '🤔', label: 'curious', n: 10, pct: 72, c: '#B98ACB' },
-    { e: '😐', label: 'pass', n: 2, pct: 14, c: '#8A6E84' },
+    { e: 'love', label: 'love it', n: 2, pct: 14, c: '#8FAE8B' },
+    { e: 'curious', label: 'curious', n: 10, pct: 72, c: '#B98ACB' },
+    { e: 'pass', label: 'pass', n: 2, pct: 14, c: '#8A6E84' },
   ]
   const concerns = [
     { label: 'data privacy & security', n: 8, pct: 57, c: '#D193A8' },
@@ -359,15 +359,16 @@ function PulseCheckCard() {
       {/* 反应堆叠条（可点） */}
       <button type="button" onClick={toggle} className="mt-5 flex h-[16px] w-full cursor-pointer overflow-hidden rounded-full outline-none focus-visible:ring-2 focus-visible:ring-orchid/50" aria-label="Toggle between percentages and vote counts">
         {reactions.map((r) => (
-          <span key={r.e} className="flex items-center justify-center text-[9px] font-bold text-white" style={{ width: `${r.pct}%`, backgroundColor: r.c, opacity: r.e === '😐' ? 0.45 : 0.85 }}>
+          <span key={r.e} className="flex items-center justify-center text-[9px] font-bold text-white" style={{ width: `${r.pct}%`, backgroundColor: r.c, opacity: r.e === 'pass' ? 0.45 : 0.85 }}>
             {mode === 'votes' ? r.n : `${r.pct}%`}
           </span>
         ))}
       </button>
       <div className="mt-2.5 flex justify-between text-[11px] text-plum-muted">
         {reactions.map((r) => (
-          <span key={r.e}>
-            {r.e} {r.label}
+          <span key={r.e} className="flex items-center gap-1.5">
+            <span aria-hidden className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: r.c, opacity: r.e === 'pass' ? 0.5 : 0.9 }} />
+            {r.label}
             {mode === 'votes' ? ` · ${r.n}` : ''}
           </span>
         ))}
@@ -1237,7 +1238,7 @@ export default function ThetaCase() {
                 <div className="mb-3 flex flex-wrap items-center gap-2 px-1">
                   <span className="font-hand text-[17px] font-semibold text-plum">Theta Health MCP · product demo</span>
                   <span className="ml-auto rounded-full bg-[#C79A4B]/15 px-3 py-1 font-hand text-[14px] text-[#9A7433]">
-                    🏆 GAIA Leaderboard #1
+                    GAIA Leaderboard #1
                   </span>
                 </div>
                 <DemoFrameLoop />

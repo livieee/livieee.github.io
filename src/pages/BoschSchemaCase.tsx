@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
+import { Glyph, type GlyphName } from '@/components/Glyph'
 
 /**
  * Bosch × CMU 项目一：多智能体 schema 抽取（对外名 Schema Extraction Agents）。
@@ -214,17 +215,17 @@ function ArchWalkthrough() {
 /* ── 信任层三支柱 ────────────────────────────────────────────── */
 const TRUST = [
   {
-    icon: '◎',
+    icon: 'target' as GlyphName,
     title: 'Confidence scoring drives the system',
     body: 'Every field gets a score. Scores decide what ships, what retries, and what asks a human — YAML never fails silently.',
   },
   {
-    icon: '↻',
+    icon: 'retry' as GlyphName,
     title: 'Retry with control, not hope',
     body: 'LangGraph routes low-confidence fields back to the Generator — partial retries, max 3 rounds, best-YAML selection at the end.',
   },
   {
-    icon: '⌗',
+    icon: 'ledger' as GlyphName,
     title: 'Every score is logged',
     body: "Full token trace and score logs make the pipeline explainable — trust you can audit, not trust you're asked for.",
   },
@@ -335,7 +336,7 @@ A conversational data-visualization tool is only as good as the schema underneat
                 key={t.title}
                 className="group/t rounded-[1.4rem] border border-plum/10 bg-white/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#7FA3CC]/50 hover:bg-white hover:shadow-[0_18px_40px_-18px_rgba(78,110,150,0.35)]"
               >
-                <span className="font-serif text-2xl text-[#4E6E96]">{t.icon}</span>
+                <Glyph name={t.icon} className="h-7 w-7 text-[#4E6E96]" />
                 <h3 className="mt-3 font-serif text-lg font-light text-plum">{t.title}</h3>
                 <p className="mt-2 text-[13.5px] leading-relaxed text-plum-muted">{t.body}</p>
               </div>
