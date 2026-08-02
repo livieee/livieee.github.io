@@ -242,6 +242,7 @@ const CLIPS = [
 
 function PipelineDemo() {
   const [i, setI] = useState(0)
+  const [pct, setPct] = useState(0)
   const clip = CLIPS[i]
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -260,6 +261,8 @@ function PipelineDemo() {
     return () => obs.disconnect()
   }, [i])
 
+  useEffect(() => setPct(0), [i])
+
   return (
     <div className="rounded-[2rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-6 md:p-10">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -276,7 +279,7 @@ function PipelineDemo() {
             <button
               type="button"
               onClick={() => setI(n)}
-              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12.5px] font-medium transition-all duration-300 ${
+              className={`relative inline-flex items-center gap-2 overflow-hidden rounded-full px-4 py-2 text-[12.5px] font-medium transition-all duration-300 ${
                 n === i
                   ? 'bg-[#4E6E96] text-white shadow-[0_10px_22px_-12px_rgba(78,110,150,0.8)]'
                   : 'border border-plum/15 bg-white/60 text-plum-muted hover:border-[#7FA3CC] hover:text-[#4E6E96]'
@@ -284,6 +287,13 @@ function PipelineDemo() {
             >
               <span className={n === i ? 'text-white/65' : 'text-plum-faint'}>{c.step}</span>
               {c.tab}
+              {n === i && (
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 bottom-0 h-[2.5px] bg-white/70"
+                  style={{ width: `${pct}%`, transition: 'width .25s linear' }}
+                />
+              )}
             </button>
             {n < CLIPS.length - 1 && (
               <span aria-hidden className="text-[#7FA3CC]">→</span>
@@ -312,6 +322,10 @@ function PipelineDemo() {
             loop
             playsInline
             preload="metadata"
+            onTimeUpdate={(e) => {
+              const v = e.currentTarget
+              if (v.duration) setPct((v.currentTime / v.duration) * 100)
+            }}
             aria-label={`${clip.tab} — recorded demo`}
             className="block w-full bg-white"
           />
@@ -377,6 +391,45 @@ const SEGMENTS = [
     icon: 'wrench' as GlyphName,
   },
 ]
+
+function SegmentPicker() {
+  const [i, setI] = useState(0)
+  const p = SEGMENTS[i]
+  return (
+    <div className="rounded-[2rem] bg-gradient-to-br from-[#EFF5FB] to-cream-soft p-6 md:p-9">
+      <div className="flex flex-wrap gap-2">
+        {SEGMENTS.map((seg, n) => (
+          <button
+            key={seg.who}
+            type="button"
+            onMouseEnter={() => setI(n)}
+            onClick={() => setI(n)}
+            className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12.5px] font-medium transition-all duration-300 ${
+              n === i
+                ? 'bg-[#4E6E96] text-white shadow-[0_10px_22px_-12px_rgba(78,110,150,0.8)]'
+                : 'border border-plum/15 bg-white/70 text-plum-muted hover:border-[#7FA3CC] hover:text-[#4E6E96]'
+            }`}
+          >
+            <Glyph name={seg.icon} className="h-4 w-4" w={1.7} />
+            {seg.who}
+          </button>
+        ))}
+      </div>
+
+      <div key={p.who} className="mt-7 grid items-center gap-7 md:grid-cols-[auto_minmax(0,1fr)]" style={{ animation: 'annot-in .3s ease-out' }}>
+        <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-plum/10 bg-white shadow-sm">
+          <Glyph name={p.icon} className="h-10 w-10 text-[#4E6E96]" w={1.4} />
+        </span>
+        <div>
+          <p className="font-serif text-[1.35rem] font-light italic leading-snug text-plum md:text-[1.6rem]">
+            “{p.quote}”
+          </p>
+          <p className="mt-3 text-[13.5px] leading-relaxed text-plum-muted">{p.need}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 /* ── 04 · 流程图泳道聚光灯 ───────────────────────────────────── */
 const LANES = [
@@ -1131,10 +1184,76 @@ const SHIP_CARDS = [
 
 /* ── 08 · 价值 ───────────────────────────────────────────────── */
 const VALUE = [
-  { n: 5, suffix: '–10×', label: 'faster time-to-insight — a 10+ minute scramble becomes a 1–3 minute pipeline' },
-  { n: 80, suffix: '%+', label: 'of manual analytics workflows streamlined end to end' },
-  { n: 7, prefix: '3–', suffix: ' hrs', label: 'of engineer support handed back to each business unit, every week' },
+  { n: 5, suffix: '–10×', short: 'faster time-to-insight', label: 'faster time-to-insight — a 10+ minute scramble becomes a 1–3 minute pipeline' },
+  { n: 80, suffix: '%+', short: 'of manual analytics workflows streamlined', label: 'of manual analytics workflows streamlined end to end' },
+  { n: 7, prefix: '3–', suffix: ' hrs', short: 'of engineer support returned per business unit, weekly', label: 'of engineer support handed back to each business unit, every week' },
 ]
+
+/* ── 08 · 时间坍缩：与 01 段前后对照呼应 ─────────────────────── */
+const STEPS_BEFORE = ['ask', 'write SQL', 'copy out', 'run elsewhere', 'download', 're-upload', 're-explain', 'chart']
+const STEPS_AFTER = ['ask', 'run', 'analyze', 'chart']
+
+function TimeCollapse() {
+  const ref = useRef<HTMLDivElement>(null)
+  const [on, setOn] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => e.isIntersecting && setOn(true),
+      { threshold: 0.4 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref} className="rounded-[2rem] border border-[#7FA3CC]/25 bg-[#EFF5FB]/50 p-7 md:p-11">
+      {[
+        { k: 'before', label: 'Before', time: '10+ min', steps: STEPS_BEFORE, w: '100%', tone: 'bg-plum/20', text: 'text-plum-muted' },
+        { k: 'after', label: 'After', time: '1–3 min', steps: STEPS_AFTER, w: '26%', tone: 'bg-[#4E6E96]', text: 'text-[#4E6E96]' },
+      ].map((row, i) => (
+        <div key={row.k} className={i ? 'mt-8' : ''}>
+          <div className="flex items-baseline justify-between gap-4">
+            <span className="text-[11px] uppercase tracking-label text-plum-faint">{row.label}</span>
+            <span className={`font-serif text-2xl font-light md:text-3xl ${row.text}`}>{row.time}</span>
+          </div>
+          <div className="mt-2.5 h-3 overflow-hidden rounded-full bg-white">
+            <div
+              className={`h-full rounded-full ${row.tone}`}
+              style={{
+                width: on ? row.w : '0%',
+                transition: `width 1.1s cubic-bezier(.4,0,.2,1) ${i * 0.25}s`,
+              }}
+            />
+          </div>
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {row.steps.map((st) => (
+              <span
+                key={st}
+                className={`rounded-full px-2.5 py-1 text-[11px] ${
+                  row.k === 'after' ? 'bg-[#DCE7F2] text-[#4E6E96]' : 'bg-white text-plum-muted'
+                }`}
+              >
+                {st}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div className="mt-9 grid gap-6 border-t border-plum/10 pt-7 sm:grid-cols-2">
+        <p className="text-[13.5px] leading-relaxed text-plum-muted">
+          Eight steps became four — and the four that remain never leave the workspace.
+        </p>
+        <p className="text-[13.5px] leading-relaxed text-plum-muted">
+          Across business units that adds up to{' '}
+          <span className="font-medium text-[#4E6E96]">3–7 engineer-hours returned every week</span>.
+        </p>
+      </div>
+    </div>
+  )
+}
 
 export function AskDataCase() {
   return (
@@ -1192,6 +1311,21 @@ export function AskDataCase() {
           <p className="mt-4 text-[12px] uppercase tracking-label text-plum-faint">
             Industry collaboration · internal names and details masked
           </p>
+        </Reveal>
+
+        {/* 影响力前置：一眼可见 */}
+        <Reveal className="mt-9" delay={0.32}>
+          <dl className="flex flex-wrap gap-x-12 gap-y-6 border-t border-plum/10 pt-7">
+            {VALUE.map((v) => (
+              <div key={v.label}>
+                <dd className="font-serif text-4xl font-light leading-none text-[#4E6E96] md:text-5xl">
+                  {v.prefix}
+                  <CountUp value={v.n} suffix={v.suffix} />
+                </dd>
+                <dt className="mt-2 max-w-[190px] text-[12px] leading-snug text-plum-muted">{v.short}</dt>
+              </div>
+            ))}
+          </dl>
         </Reveal>
 
         <Reveal className="mt-12" y={32}>
@@ -1264,18 +1398,9 @@ export function AskDataCase() {
               Three very different people, one shared complaint
             </h2>
           </Reveal>
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {SEGMENTS.map((s, i) => (
-              <Reveal key={s.who} delay={i * 0.08}>
-                <div className="flex h-full flex-col rounded-[1.4rem] bg-gradient-to-br from-[#EFF5FB] to-cream-soft p-6 transition-transform duration-300 hover:-translate-y-1">
-                  <Glyph name={s.icon} className="h-8 w-8 text-[#4E6E96]" />
-                  <p className="mt-4 font-serif text-[15px] italic leading-snug text-plum">“{s.quote}”</p>
-                  <h3 className="mt-4 border-t border-plum/10 pt-3 font-serif text-lg font-light text-plum">{s.who}</h3>
-                  <p className="mt-1.5 text-[12.5px] leading-snug text-plum-muted">{s.need}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal className="mt-8" y={28}>
+            <SegmentPicker />
+          </Reveal>
         </section>
 
         {/* ── 04 流程地图 ──────────────────────────────────────── */}
@@ -1440,20 +1565,13 @@ export function AskDataCase() {
         {/* ── 08 价值 + 反思 ───────────────────────────────────── */}
         <section id="worth" className="mt-20 scroll-mt-32">
           <Reveal>
-            <div className="rounded-[2rem] border border-[#7FA3CC]/25 bg-[#EFF5FB]/60 p-10 md:p-14">
-              <p className="label-text mb-8 text-center text-[#4E6E96]">08 · What it's worth</p>
-              <div className="grid gap-10 text-center md:grid-cols-3">
-                {VALUE.map((v) => (
-                  <div key={v.label}>
-                    <p className="font-serif text-5xl font-light text-[#4E6E96] md:text-6xl">
-                      {v.prefix}
-                      <CountUp value={v.n} suffix={v.suffix} />
-                    </p>
-                    <p className="mx-auto mt-3 max-w-[240px] text-[12.5px] leading-snug text-plum-muted">{v.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <p className="label-text mb-3">08 · What it's worth</p>
+            <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
+              The same question, before and after
+            </h2>
+          </Reveal>
+          <Reveal className="mt-8" y={28}>
+            <TimeCollapse />
           </Reveal>
 
           <Reveal className="mt-10">
