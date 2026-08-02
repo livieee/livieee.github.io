@@ -902,24 +902,48 @@ export function BoschSchemaCase() {
               href="https://www.linkedin.com/posts/olivia-zerun-xiao_aiforproductmanagers-boschresearch-ai-activity-7345267527628849152-37t5"
               target="_blank"
               rel="noreferrer"
-              className="group/li flex flex-col justify-between rounded-[1.4rem] border border-plum/10 bg-white/60 px-6 py-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#7FA3CC]/50 hover:bg-white"
+              className="group/li flex flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-[#0A66C2]/40 hover:shadow-[0_18px_40px_-20px_rgba(10,102,194,0.3)]"
             >
-              <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-                  Written up at the time
-                </p>
-                <p className="mt-2 font-serif text-[17px] font-light leading-snug text-plum">
-                  My post on what the team built, and who did what
-                </p>
-                <p className="mt-2 text-[12.5px] leading-relaxed text-plum-muted">
-                  Corner cases we chased — nested tables, image-heavy PDFs, type mismatches — and the
-                  four roles behind it.
-                </p>
+              {/* 帖子头部 */}
+              <div className="flex items-center gap-3 px-5 pt-5">
+                <img
+                  src="/theta/olivia-cmu-avatar.jpg"
+                  alt=""
+                  aria-hidden
+                  className="h-10 w-10 shrink-0 rounded-full object-cover"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-[13px] font-medium leading-tight text-plum">Olivia Xiao</p>
+                  <p className="truncate text-[11.5px] leading-tight text-plum-faint">
+                    Wrote this up when we shipped it
+                  </p>
+                </div>
+                <svg viewBox="0 0 24 24" className="h-[18px] w-[18px] shrink-0" fill="#0A66C2" aria-hidden>
+                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
+                </svg>
               </div>
-              <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#4E6E96]">
-                Read on LinkedIn
-                <span aria-hidden className="transition-transform duration-300 group-hover/li:translate-x-0.5">↗</span>
-              </span>
+
+              {/* 正文摘录 */}
+              <p className="mt-3.5 px-5 text-[13px] leading-relaxed text-plum-muted">
+                The corner cases we chased — nested tables, image-heavy PDFs, type mismatches — and
+                the four roles behind it.
+              </p>
+
+              {/* 互动与入口 */}
+              <div className="mt-4 flex items-center justify-between border-t border-plum/8 px-5 py-3.5">
+                <span className="flex items-center gap-1.5 text-[11.5px] text-plum-faint">
+                  <span aria-hidden className="flex -space-x-1">
+                    {['#0A66C2', '#D193A8', '#8FAE8B'].map((c) => (
+                      <span key={c} className="h-3.5 w-3.5 rounded-full ring-2 ring-white" style={{ backgroundColor: c }} />
+                    ))}
+                  </span>
+                  36 reactions · 1 comment
+                </span>
+                <span className="inline-flex items-center gap-1 text-[12px] font-medium text-[#0A66C2]">
+                  Read post
+                  <span aria-hidden className="transition-transform duration-300 group-hover/li:translate-x-0.5">↗</span>
+                </span>
+              </div>
             </a>
           </div>
         </Reveal>
