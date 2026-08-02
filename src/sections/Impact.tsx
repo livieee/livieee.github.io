@@ -332,68 +332,66 @@ export function Impact() {
           </TiltCard>
         </Reveal>
 
-        {/* ── Case 3 + 4 · 生态项目（主）与企业分析（次） ───────────────────── */}
-        <div className="mt-10 grid gap-10 md:grid-cols-12">
-          {/* ── Case 3 · Strategic Partnerships, GTM & Community — 主卡 ────────── */}
-          <Reveal className="md:col-span-7" y={36} delay={0.05}>
-            <TiltCard className="h-full">
-              <span
-                aria-hidden
-                className="absolute -top-3 right-8 z-10 rotate-[3deg] rounded-md bg-rose px-2.5 py-0.5 font-hand text-[14px] font-semibold text-white shadow"
-              >
-                programs are products too
-              </span>
-            <article id="case-aivalley" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 md:p-12">
-              <div className="mb-8" data-cursor="VIEW">
-                <ProgramWall />
-              </div>
-              <p className="label-text mb-4">03 · Partnerships, GTM & Community Programs · AI Valley</p>
-              <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                Creating the rooms where people come to build
-              </h3>
-              <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
-                From global builder challenges to Bay Area hackathons and founder gatherings, I
-                helped turn partner goals into thoughtful programs — bringing together builders,
-                speakers, judges, sponsors, and communities.
-              </p>
-              <div className="mt-8">
-                <Metrics
-                  accent="text-rose"
-                  items={[
-                    { value: '9', n: 9, label: 'selected programs' },
-                    { value: '221', n: 221, label: 'builders in a global challenge' },
-                    { value: 'E2E', label: 'program ownership' },
-                  ]}
-                />
-              </div>
-              <div className="mt-6 flex flex-wrap gap-2">
-                <Tag>Partnerships</Tag>
-                <Tag>Developer Programs</Tag>
-                <Tag>Community Experience</Tag>
-              </div>
-              <Link
-                to="/work/ai-valley"
-                className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
-              >
-                See the programs
-                <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
-              </Link>
-              <figure className="mt-8 max-w-[340px]">
-                <div className="overflow-hidden rounded-2xl shadow-soft">
-                  <img
-                    src="/events/women-hackathon.jpg"
-                    alt="The cohort of Build What You Love — Women in Tech Hackathon, on stage after demos"
-                    className="aspect-[3/2] w-full object-cover transition-transform duration-700 hover:scale-[1.04]"
-                    loading="lazy"
-                  />
+        {/* ── Case 3 · GTM & AI Ecosystem Partnerships — 整幅主卡 ─────────────── */}
+        <Reveal className="mt-10" y={36} delay={0.05}>
+          <TiltCard>
+            <span
+              aria-hidden
+              className="absolute -top-3 right-10 z-10 rotate-[3deg] rounded-md bg-rose px-2.5 py-0.5 font-hand text-[14px] font-semibold text-white shadow"
+            >
+              programs are products too
+            </span>
+            <article
+              id="case-aivalley"
+              className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 md:p-14"
+            >
+              <div className="grid items-center gap-10 md:grid-cols-[minmax(0,44fr)_minmax(0,56fr)] md:gap-12">
+                {/* 文字 */}
+                <div>
+                  <p className="label-text mb-4">03 · GTM &amp; AI Ecosystem Partnerships</p>
+                  <h3 className="font-serif text-2xl font-light leading-snug text-plum md:text-[1.9rem]">
+                    Creating spaces where people come to build
+                  </h3>
+                  <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
+                    From global builder challenges to Bay Area hackathons and founder
+                    conversations, I turn partner goals into thoughtful programs — bringing together
+                    builders, speakers, judges, sponsors, and communities around ideas worth
+                    building.
+                  </p>
+                  <div className="mt-8">
+                    <Metrics
+                      accent="text-rose"
+                      items={[
+                        { value: '3,200+', n: 3200, suffix: '+', label: 'builders, founders and investors reached' },
+                        { value: '221', n: 221, label: 'builders in the global challenge I led' },
+                        { value: '20+', n: 20, suffix: '+', label: 'partner and sponsor organisations' },
+                      ]}
+                    />
+                  </div>
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    <Tag>Ecosystem Partnerships</Tag>
+                    <Tag>Developer Programs</Tag>
+                    <Tag>Program Strategy</Tag>
+                  </div>
+                  <Link
+                    to="/work/ai-valley"
+                    className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
+                  >
+                    Explore the program portfolio
+                    <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
+                  </Link>
                 </div>
-                <figcaption className="mt-2 text-[11px] uppercase tracking-label text-plum-faint">
-                  Build What You Love · Women in Tech Hackathon
-                </figcaption>
-              </figure>
+
+                {/* 生态项目板 */}
+                <div data-cursor="VIEW">
+                  <ProgramWall />
+                </div>
+              </div>
             </article>
-            </TiltCard>
-          </Reveal>
+          </TiltCard>
+        </Reveal>
+
+        <div className="mt-10 grid gap-10 md:grid-cols-12">
           {/* ── Case 4 · Enterprise SaaS & Product Analytics — 下沉小卡 ────────── */}
           <Reveal className="md:col-span-5 md:mt-16" y={36} delay={0.15}>
             <TiltCard className="h-full">
