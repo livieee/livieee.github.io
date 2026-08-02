@@ -710,6 +710,11 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
     cap: 'Build What You Love · Women in Tech Hackathon — San Francisco, 14 February 2026',
   },
   {
+    src: '/events/photostrip.jpg',
+    alt: 'Two printed photo-booth strips from Build What You Love, branded with the AI Valley, bem and MiniMax logos',
+    cap: 'Photo-booth strips — sponsor branding people actually took home',
+  },
+  {
     src: '/events/gmi-perk.jpg',
     alt: 'Sponsor perk graphic — a GMI-branded tumbler held up in the GMI Cloud office, captioned “First 20 AI Valley sign-ups get a FREE GMI MUG!”',
     cap: 'Sponsor perk creative I made for GMI Cloud — Total Agent Recall Hackathon',
