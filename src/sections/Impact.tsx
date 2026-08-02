@@ -397,7 +397,7 @@ export function Impact() {
               </div>
               <p className="label-text mb-4">04 · AI GTM & Ecosystem Programs · AI Valley</p>
               <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                Programs run like products — partnered, designed, measured
+                Running the programs where builders, labs, and investors meet
               </h3>
               <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
                 I coordinated a Bay Area developer program calendar — hackathons, Builder Sprints,
@@ -410,9 +410,9 @@ export function Impact() {
                 <Metrics
                   accent="text-rose"
                   items={[
-                    { value: '3,200+', n: 3200, suffix: '+', label: 'builders, founders and investors across nine programs' },
-                    { value: '221', n: 221, label: 'developers in the global build challenge I ran end to end' },
-                    { value: 'E2E', label: 'program ownership, from partner search to recap' },
+                    { value: '200+', n: 200, suffix: '+', label: 'average attendees — founders, developers, investors' },
+                    { value: '~100', n: 100, prefix: '~', label: 'projects shipped in one week-long global build challenge' },
+                    { value: 'E2E', label: 'program ownership, from design to recap' },
                   ]}
                 />
               </div>
