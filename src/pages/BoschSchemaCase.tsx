@@ -896,6 +896,34 @@ export function BoschSchemaCase() {
         <Reveal className="mt-5">
           <OriginalDoc />
         </Reveal>
+        <Reveal className="mt-5">
+          <div className="flex flex-col gap-4 rounded-[1.4rem] border border-plum/10 bg-white/60 px-6 py-5 md:flex-row md:items-center md:gap-8">
+            <div className="shrink-0 md:w-40">
+              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+                What it runs on
+              </p>
+              <p className="mt-1.5 text-[12px] leading-relaxed text-plum-muted">
+                OCR for image-heavy pages · containerised
+              </p>
+            </div>
+            <ul className="flex flex-wrap items-center gap-x-6 gap-y-3 md:border-l md:border-plum/10 md:pl-8">
+              {[
+                { src: '/bosch/stack/openai.png', alt: 'OpenAI' },
+                { src: '/bosch/stack/langchain.svg', alt: 'LangGraph' },
+                { src: '/bosch/stack/fastapi.svg', alt: 'FastAPI' },
+                { src: '/bosch/stack/python.svg', alt: 'Python' },
+                { src: '/bosch/stack/tesseract.png', alt: 'Tesseract OCR' },
+                { src: '/bosch/stack/docker.svg', alt: 'Docker' },
+              ].map((t) => (
+                <li key={t.alt} className="flex items-center gap-1.5">
+                  <img src={t.src} alt="" aria-hidden loading="lazy" className="h-[18px] w-[18px] object-contain" />
+                  <span className="text-[11.5px] text-plum-muted">{t.alt}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
+
         <Reveal className="mt-6" y={28}>
           <div className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:p-8">
             <div className="flex flex-wrap items-baseline justify-between gap-3">
@@ -1020,62 +1048,33 @@ export function BoschSchemaCase() {
           ))}
         </div>
 
-        {/* ── 现场 ─────────────────────────────────────────────── */}
-        <Reveal className="mt-16" y={28}>
-          <figure className="overflow-hidden rounded-[1.6rem] border border-plum/10 bg-white p-3 shadow-[0_26px_58px_-30px_rgba(58,36,64,0.45)] md:p-4">
-            <img
-              src="/bosch/ic/team.jpg"
-              alt="Final presentation at Bosch Research in Sunnyvale — the team presenting, the campus, and the full group afterwards"
-              loading="lazy"
-              className="w-full rounded-[1.1rem]"
-            />
-            <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-2 px-1.5 pb-1">
-              <span className="text-[12px] text-plum-faint">
-                Final presentation · Bosch Research, Sunnyvale
-              </span>
-              <span className="font-hand text-[15px] text-[#4E6E96]">
-                the day we handed it over ✦
-              </span>
-            </figcaption>
-          </figure>
-        </Reveal>
-
-        {/* ── 存档：技术栈 + 公开记录 ───────────────────────────── */}
-        <Reveal className="mt-16">
+        {/* ── 存档：现场照 + 公开记录 ───────────────────────────── */}
+        <Reveal className="mt-20">
           <div className="mb-4 flex items-center gap-3">
             <span aria-hidden className="h-px w-8 shrink-0 bg-plum/20" />
             <p className="label-text">For the record</p>
           </div>
-          <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-            <div className="rounded-[1.4rem] border border-plum/10 bg-white/60 px-6 py-5">
-              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-                What it runs on
-              </p>
-              <ul className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-3">
-                {[
-                  { src: '/bosch/stack/openai.png', alt: 'OpenAI' },
-                  { src: '/bosch/stack/langchain.svg', alt: 'LangGraph' },
-                  { src: '/bosch/stack/fastapi.svg', alt: 'FastAPI' },
-                  { src: '/bosch/stack/python.svg', alt: 'Python' },
-                  { src: '/bosch/stack/tesseract.png', alt: 'Tesseract OCR' },
-                  { src: '/bosch/stack/docker.svg', alt: 'Docker' },
-                ].map((t) => (
-                  <li key={t.alt} className="flex items-center gap-1.5">
-                    <img src={t.src} alt="" aria-hidden loading="lazy" className="h-[18px] w-[18px] object-contain" />
-                    <span className="text-[11.5px] text-plum-muted">{t.alt}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-4 border-t border-plum/10 pt-3.5 text-[12.5px] leading-relaxed text-plum-muted">
-                OCR for image-heavy pages · containerised for deployment
-              </p>
-            </div>
+          <div className="grid items-stretch gap-6 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+            <figure className="flex flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white p-3">
+              <img
+                src="/bosch/ic/team.jpg"
+                alt="Final presentation at Bosch Research in Sunnyvale — the team presenting, the campus, and the full group afterwards"
+                loading="lazy"
+                className="w-full rounded-[1rem]"
+              />
+              <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-2 px-1.5 pb-0.5">
+                <span className="text-[12px] text-plum-faint">
+                  Final presentation · Bosch Research, Sunnyvale
+                </span>
+                <span className="font-hand text-[15px] text-[#4E6E96]">the day we handed it over ✦</span>
+              </figcaption>
+            </figure>
 
             <a
               href="https://www.linkedin.com/posts/olivia-zerun-xiao_aiforproductmanagers-boschresearch-ai-activity-7345267527628849152-37t5"
               target="_blank"
               rel="noreferrer"
-              className="group/li flex flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-[#0A66C2]/40 hover:shadow-[0_18px_40px_-20px_rgba(10,102,194,0.3)]"
+              className="group/li flex h-full flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-[#0A66C2]/40 hover:shadow-[0_18px_40px_-20px_rgba(10,102,194,0.3)]"
             >
               <div className="flex items-center gap-3 px-5 pt-5">
                 <img
@@ -1100,7 +1099,7 @@ export function BoschSchemaCase() {
                 the four roles behind it.
               </p>
 
-              <div className="mt-4 flex items-center justify-between border-t border-plum/8 px-5 py-3.5">
+              <div className="mt-auto flex items-center justify-between border-t border-plum/8 px-5 py-3.5">
                 <span className="flex items-center gap-1.5 text-[11.5px] text-plum-faint">
                   <span aria-hidden className="flex -space-x-1">
                     {['#0A66C2', '#D193A8', '#8FAE8B'].map((c) => (

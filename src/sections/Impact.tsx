@@ -288,9 +288,9 @@ export function Impact() {
                   <p className="label-text mb-3">02 · Enterprise AI Product</p>
                   {/* 合作双方 logo */}
                   <div className="mb-5 flex items-center gap-3">
-                    <img src="/logos/bosch-wordmark.png" alt="Bosch" className="h-6 w-auto" />
+                    <img src="/logos/bosch-wordmark.png" alt="Bosch" className="h-[22px] w-auto" />
                     <span aria-hidden className="font-hand text-[17px] text-plum-faint">×</span>
-                    <img src="/logos/cmu-wordmark.png" alt="Carnegie Mellon University" className="h-9 w-auto rounded-lg" />
+                    <img src="/logos/cmu-mark.png" alt="Carnegie Mellon University" className="h-[30px] w-auto" />
                   </div>
                   <h3 className="font-serif text-2xl font-light leading-snug text-plum md:text-[1.9rem]">
                     Three disconnected tools, one continuous pipeline
