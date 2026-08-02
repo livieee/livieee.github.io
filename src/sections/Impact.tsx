@@ -4,6 +4,7 @@ import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { TiltCard } from '@/components/TiltCard'
 import { AskDataUI } from '@/components/AskDataUI'
+import { ProgramBoard } from '@/components/ProgramBoard'
 
 type Metric = {
   value: string
@@ -343,42 +344,32 @@ export function Impact() {
                 programs are products too
               </span>
             <article id="case-aivalley" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-transform duration-500 md:p-12">
-              <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
-                <img
-                  src="/images/case-ecosystem.jpg"
-                  alt="Abstract editorial illustration — a constellation of connected ecosystem nodes"
-                  className="aspect-[3/2] w-full object-cover saturate-[0.8] transition-all duration-700 hover:scale-[1.03] group-hover/card:saturate-100"
-                  loading="lazy"
-                />
+              <div className="mb-8" data-cursor="VIEW">
+                <ProgramBoard />
               </div>
               <p className="label-text mb-4">03 · Partnerships, GTM & Community Programs · AI Valley</p>
               <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                Running the programs where builders, labs, and investors meet
+                Creating the rooms where people come to build
               </h3>
               <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
-                As community program manager I ran AI Valley's Bay Area calendar — hackathons,
-                fireside talks, demo days — from goals and run-of-show through retrospective. The
-                partnerships and the go-to-market were mine too: sourcing model labs, sponsors and
-                venues, inviting and briefing panel guests, and writing the outbound that filled
-                the rooms. One I owned outright — a week-long global build challenge co-hosted with
-                a leading open-weights model lab.
+                From global builder challenges to Bay Area hackathons and founder gatherings, I
+                helped turn partner goals into thoughtful programs — bringing together builders,
+                speakers, judges, sponsors, and communities.
               </p>
               <div className="mt-8">
                 <Metrics
                   accent="text-rose"
                   items={[
-                    { value: '20+', n: 20, suffix: '+', label: 'partner and sponsor organisations across the slate' },
-                    { value: '~470', n: 470, prefix: '~', label: 'average turnout per program — founders, developers, investors' },
-                    { value: 'E2E', label: 'program ownership, from partner search to recap' },
+                    { value: '9', n: 9, label: 'selected programs' },
+                    { value: '221', n: 221, label: 'builders in a global challenge' },
+                    { value: 'E2E', label: 'program ownership' },
                   ]}
                 />
               </div>
               <div className="mt-6 flex flex-wrap gap-2">
-                <Tag>Program ownership</Tag>
-                <Tag>Developer relations</Tag>
-                <Tag>Community</Tag>
-                <Tag>GTM</Tag>
-                <Tag>Strategic partnerships</Tag>
+                <Tag>Partnerships</Tag>
+                <Tag>Developer Programs</Tag>
+                <Tag>Community Experience</Tag>
               </div>
               <Link
                 to="/work/ai-valley"
