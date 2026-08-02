@@ -717,40 +717,52 @@ ORDER BY annual_revenue DESC;`}
 /* ── 06b · 真实产品截图 + 标注热点 ───────────────────────────── */
 const PINS = [
   {
-    x: 0.055,
-    y: 0.15,
+    x: 0.098,
+    y: 0.31,
     title: 'Session history',
-    note: 'Sessions ordered by last update, each titled by its own latest content. Resume one and everything returns — cells, mode state, linked datasets.',
+    note: 'Every session titled by its own latest content and tagged with the mode it lives in. Resume one and the whole workspace returns — cells, mode state, linked datasets.',
   },
   {
-    x: 0.038,
-    y: 0.088,
+    x: 0.145,
+    y: 0.089,
     title: 'Agent health',
-    note: 'The status line I specced: when the agent drops, this flips, generation locks, and a banner explains what you can still do with what you already have.',
+    note: 'The status line I specced: LLM configured, agent online, last checked. When it flips to offline, generation locks but existing work stays runnable — the failure design from section 05, sitting in the header.',
   },
   {
-    x: 0.45,
-    y: 0.036,
-    title: 'Results & Schema',
-    note: 'Results appears only once a session has produced cells. Schema opens the metadata editor — the knowledge that makes generated queries accurate.',
+    x: 0.409,
+    y: 0.152,
+    title: 'Results, then a doorway',
+    note: 'The table is not the end of the cell. Its job is to give the user something to hand onward, which is why the next three buttons exist.',
   },
   {
-    x: 0.298,
-    y: 0.851,
-    title: 'Table chips',
-    note: 'The tables in play, always visible above the input, collapsing into “+N more” when they overflow. Table name masked here.',
+    x: 0.552,
+    y: 0.574,
+    title: 'Three exits, one row',
+    note: 'Download, send to analytics, send to visualization. This single row is what replaced the copy-run-download-reupload loop — the handoff is a button, not a round-trip.',
   },
   {
-    x: 0.335,
-    y: 0.908,
-    title: 'Mode switcher',
-    note: 'Three modes, one workspace. A disabled mode is the product telling you what data you still need — not hiding the feature from you.',
+    x: 0.43,
+    y: 0.642,
+    title: 'Executed in 0.12s · 5 rows',
+    note: 'Time and row count, always. Boring on the happy path, essential on the bad one — it is the same line that turns into the failure state with an upload fallback.',
   },
   {
-    x: 0.955,
-    y: 0.851,
+    x: 0.352,
+    y: 0.879,
+    title: 'Modes, now unlocked',
+    note: 'Analytics and visualization were greyed out until this query produced data. The interface teaches the workflow by what it makes possible — and the table chips above show exactly what context is in play.',
+  },
+  {
+    x: 0.931,
+    y: 0.812,
     title: 'Auto-select (AI)',
-    note: 'Users can skip table selection and let the backend infer, with a nudge that manual selection is more accurate. Speed by default, precision on request.',
+    note: 'Skip table selection and let the backend infer, with a nudge that manual selection is more accurate. Speed by default, precision on request.',
+  },
+  {
+    x: 0.36,
+    y: 0.979,
+    title: 'Quick refinements',
+    note: 'Suggested next questions generated from the connected table, so the second question costs less effort than the first. Exploration, prompted.',
   },
 ]
 
@@ -770,8 +782,8 @@ function AnnotatedShot() {
         </div>
         <div className="relative">
           <img
-            src="/bosch/askdata-ui.png"
-            alt="The shipped workspace: session history, agent health, mode switcher, table selector and prompt input"
+            src="/bosch/shipped-screen.png"
+            alt="The shipped workspace mid-flight: query results, the three handoff buttons, execution status, unlocked modes and table chips"
             className="w-full"
           />
           {PINS.map((p, i) => (
@@ -1326,7 +1338,7 @@ export function AskDataCase() {
               Spec, meet shipped screen
             </p>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-              Six places where a written decision became a visible one. Tap a marker.
+              Eight places where a written decision became a visible one. Tap a marker.
             </p>
           </Reveal>
           <Reveal className="mt-7" y={28}>
