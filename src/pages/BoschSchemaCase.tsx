@@ -344,42 +344,62 @@ export function BoschSchemaCase() {
           </div>
         </Reveal>
 
-        {/* ── 真实门控图 ───────────────────────────────────────── */}
+        {/* ── 真实评分模型（来自我写的 Validator PRD） ──────────── */}
         <Reveal className="mt-12" y={28}>
-          <div className="grid items-center gap-8 rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] md:p-8">
-            <figure className="overflow-hidden rounded-xl border border-plum/10 bg-white">
-              <img
-                src="/bosch/ic/gating.png"
-                alt="The confidence gate: generated YAML goes to the validator, then a LangGraph controller applies three thresholds — structure complete, name at least 90, type and description at least 75 — routing to accepted YAML, up to three controlled retries, or human review"
-                className="w-full"
-                loading="lazy"
-              />
-            </figure>
-            <div>
+          <div className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:p-8">
+            <div className="flex flex-wrap items-baseline justify-between gap-3">
               <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-                The gate, as specified
+                The validator, as I specified it
               </p>
-              <h3 className="mt-2 font-serif text-xl font-light leading-snug text-plum">
-                Three thresholds decide everything downstream
-              </h3>
-              <ul className="mt-4 space-y-2.5 text-[13.5px] leading-relaxed text-plum-muted">
-                <li className="flex gap-2.5">
-                  <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#D193A8]" />
-                  Structure complete — no partial YAML gets through
-                </li>
-                <li className="flex gap-2.5">
-                  <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#D193A8]" />
-                  Field name confidence ≥ 90
-                </li>
-                <li className="flex gap-2.5">
-                  <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#D193A8]" />
-                  Type &amp; description confidence ≥ 75
-                </li>
-              </ul>
-              <p className="mt-4 border-t border-plum/10 pt-3.5 text-[13.5px] leading-relaxed text-plum-muted">
-                Miss a gate and it retries — at most three times. Still failing, it goes to a human
-                rather than shipping something the system cannot vouch for.
-              </p>
+              <p className="font-hand text-[15px] text-plum-muted">from my own PRD ✦</p>
+            </div>
+
+            <div className="mt-6 grid items-center gap-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+              <figure className="overflow-hidden rounded-xl border border-plum/10 bg-white p-2">
+                <img
+                  src="/bosch/ic/decision-tree.png"
+                  alt="Validator decision tree: does the column exist, is the name score below 60, is the confidence score at least 85 — routing to accepted YAML or fallback"
+                  className="w-full"
+                  loading="lazy"
+                />
+              </figure>
+
+              <div>
+                {/* 评分公式 */}
+                <div className="rounded-xl bg-[#EFF5FB]/70 px-5 py-4">
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-[#4E6E96]">Confidence score</p>
+                  <p className="mt-2 font-mono text-[12.5px] leading-relaxed text-plum">
+                    name × 50% + description × 30% + type × 20%
+                  </p>
+                  <p className="mt-2 text-[12px] leading-snug text-plum-muted">
+                    Name carries half the weight — it is what every downstream chart reads.
+                  </p>
+                </div>
+
+                <ul className="mt-5 space-y-3 text-[13.5px] leading-relaxed text-plum-muted">
+                  <li className="flex gap-2.5">
+                    <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#8FAE8B]" />
+                    <span>Accepted only if total ≥ 85 <em>and</em> name ≥ 60 — a strong average can’t rescue a bad field name.</span>
+                  </li>
+                  <li className="flex gap-2.5">
+                    <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#C79A4B]" />
+                    <span>Otherwise the generator gets told <em>which</em> field failed and why — targeted regeneration, not blind retries. Three attempts, max.</span>
+                  </li>
+                  <li className="flex gap-2.5">
+                    <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#7FA3CC]" />
+                    <span>A selector then picks the <em>highest-scoring</em> version — not the latest one.</span>
+                  </li>
+                  <li className="flex gap-2.5">
+                    <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#D193A8]" />
+                    <span>If nothing clears the bar, the best version is flagged for human review rather than silently shipped.</span>
+                  </li>
+                </ul>
+
+                <p className="mt-5 border-t border-plum/10 pt-3.5 text-[12.5px] leading-relaxed text-plum-muted">
+                  Scoring is semantically tolerant by design — “float” ≈ “continuous”, “UID” ≈ “User
+                  ID” — so the gate rejects real errors, not harmless wording.
+                </p>
+              </div>
             </div>
           </div>
         </Reveal>
