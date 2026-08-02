@@ -167,6 +167,8 @@ type Program = {
   partners: string
   caps: string[]
   href: string
+  /** luma 封面 */
+  cover: string
   /** 她自己写的公开记录 */
   post?: string
   lead?: boolean
@@ -190,6 +192,7 @@ const PROGRAMS: Program[] = [
     partners: 'Z.ai · AI Valley · Devpost',
     caps: ['Program ownership', 'Developer relations', 'GTM', 'Strategic partnerships'],
     href: 'https://luma.com/32jfoybh',
+    cover: '/events/luma/glm.jpg',
     post: 'https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256',
     lead: true,
   },
@@ -202,6 +205,7 @@ const PROGRAMS: Program[] = [
     partners: 'EPIC Connector · Peak Mojo · Manycore Tech · Z.ai',
     caps: ['Strategic partnerships', 'Community', 'Program ownership'],
     href: 'https://luma.com/GTCTALK',
+    cover: '/events/luma/gtc-talk.jpg',
   },
   {
     name: 'Build What You Love — Women in Tech Hackathon',
@@ -212,6 +216,7 @@ const PROGRAMS: Program[] = [
     partners: 'AI Valley · Bond AI · Replit · Vercel · Daytona · MiniMax · BEM',
     caps: ['Program ownership', 'Community'],
     href: 'https://luma.com/ic3l89gi',
+    cover: '/events/luma/women.jpg',
     post: 'https://www.linkedin.com/posts/courtneythko_womenintech-buildwhatyoulove-aivalley-activity-7429241914459303938-4MG5',
   },
   {
@@ -223,6 +228,7 @@ const PROGRAMS: Program[] = [
     partners: 'EPIC Connector × Allscale · FounderGro',
     caps: ['GTM', 'Strategic partnerships'],
     href: 'https://luma.com/GTCDEMODAY',
+    cover: '/events/luma/gtc-demoday.jpg',
   },
   {
     name: 'AI Valley × Molly Tea Pop-Up',
@@ -233,6 +239,7 @@ const PROGRAMS: Program[] = [
     partners: 'AI Valley · Molly Tea',
     caps: ['Community', 'GTM'],
     href: 'https://luma.com/puy9vbok',
+    cover: '/events/luma/molly-tea.jpg',
   },
   {
     name: 'Humanity & AGI Summit 2026',
@@ -243,6 +250,7 @@ const PROGRAMS: Program[] = [
     partners: 'AIRA · GPT DAO · Cheetah Community · LOOMUS · EpicConnector',
     caps: ['Community'],
     href: 'https://luma.com/wkolq6uc',
+    cover: '/events/luma/agi-summit.jpg',
   },
   {
     name: 'Total Agent Recall Hackathon',
@@ -253,6 +261,7 @@ const PROGRAMS: Program[] = [
     partners: 'GMI Cloud · Photon · HydraDB · Dify',
     caps: ['GTM', 'Strategic partnerships', 'Community'],
     href: 'https://luma.com/snixr7yb',
+    cover: '/events/luma/agent-recall.jpg',
     post: 'https://www.linkedin.com/feed/update/urn:li:activity:7443396471057485824',
   },
 ]
@@ -297,59 +306,77 @@ function ProgramMatrix() {
         ))}
       </div>
 
-      <ul className="mt-6 space-y-3">
+      <ul className="mt-6 grid gap-5 sm:grid-cols-2">
         {shown.map((p, i) => (
           <li
             key={p.name}
-            style={{ animation: `annot-in .4s ${i * 0.04}s ease-out both` }}
-            className={`group/p flex flex-col gap-3 rounded-[1.4rem] border p-5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white md:flex-row md:items-center md:gap-6 md:p-6 ${
+            style={{ animation: `annot-in .4s ${i * 0.05}s ease-out both` }}
+            className={`group/p flex flex-col overflow-hidden rounded-[1.4rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)] ${
               p.lead
-                ? 'border-rose/35 bg-rose/[0.06] hover:border-rose/55'
-                : 'border-plum/10 bg-white/60 hover:border-plum/25'
+                ? 'border-rose/40 bg-rose/[0.05] hover:border-rose/60 sm:col-span-2'
+                : 'border-plum/10 bg-white/60 hover:border-plum/25 hover:bg-white'
             }`}
           >
-            <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                <a
-                  href={p.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-serif text-[17px] font-light leading-snug text-plum transition-colors hover:text-rose"
-                >
+            {/* luma 封面 */}
+            <a
+              href={p.href}
+              target="_blank"
+              rel="noreferrer"
+              className="relative block overflow-hidden"
+              aria-label={`${p.name} — open the event page`}
+            >
+              <img
+                src={p.cover}
+                alt=""
+                aria-hidden
+                loading="lazy"
+                className={`w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03] ${
+                  p.lead ? 'aspect-[3/1]' : 'aspect-[2/1]'
+                }`}
+              />
+              <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
+                Luma <span aria-hidden>↗</span>
+              </span>
+              {p.lead && (
+                <span className="absolute left-3 top-3 rounded-full bg-rose px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-sm">
+                  led end to end
+                </span>
+              )}
+            </a>
+
+            <div className="flex flex-1 flex-col p-5 md:p-6">
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="font-serif text-[17px] font-light leading-snug text-plum">
                   {p.name}
-                  <span aria-hidden className="ml-1 text-[13px] text-plum-faint">↗</span>
-                </a>
-                {p.lead && (
-                  <span className="rounded-full bg-rose px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
-                    led
+                </h3>
+                <span className="shrink-0 text-right">
+                  <span className="block font-serif text-xl font-light leading-none text-rose">
+                    {p.n?.toLocaleString()}
                   </span>
-                )}
+                  <span className="mt-1 block text-[10.5px] leading-tight text-plum-faint">
+                    {p.size.replace(/^[\d,]+\s*/, '')}
+                  </span>
+                </span>
               </div>
-              <p className="mt-1 text-[12.5px] text-plum-faint">
+              <p className="mt-1.5 text-[12px] leading-snug text-plum-faint">
                 {p.where} · {p.partners}
               </p>
-              {p.role && <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>}
+              {p.role && (
+                <p className="mt-3 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>
+              )}
               {p.post && (
                 <a
                   href={p.post}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
+                  className="mt-auto inline-flex items-center gap-1.5 pt-3.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
                 >
                   <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
                     <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
                   </svg>
-                  Written up
+                  I wrote this one up
                 </a>
               )}
-            </div>
-            <div className="flex shrink-0 items-baseline gap-2 md:w-52 md:flex-col md:items-end md:gap-0.5">
-              <span className="font-serif text-2xl font-light leading-none text-rose">
-                {p.n?.toLocaleString()}
-              </span>
-              <span className="text-[11.5px] leading-snug text-plum-faint md:text-right">
-                {p.size.replace(/^[\d,]+\s*/, '')}
-              </span>
             </div>
           </li>
         ))}

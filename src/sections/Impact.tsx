@@ -331,54 +331,10 @@ export function Impact() {
           </TiltCard>
         </Reveal>
 
-        {/* ── Case 2 · Enterprise SaaS & Product Analytics — split / offset ────── */}
+        {/* ── Case 3 + 4 · 生态项目（主）与企业分析（次） ───────────────────── */}
         <div className="mt-10 grid gap-10 md:grid-cols-12">
-          <Reveal className="md:col-span-5" y={36} delay={0.05}>
-            <TiltCard className="h-full">
-              <span
-                aria-hidden
-                className="absolute -top-3 left-8 z-10 rotate-[-3deg] rounded-md border border-dashed border-orchid/60 bg-white/95 px-2.5 py-0.5 font-hand text-[14px] text-plum shadow"
-              >
-                the enterprise chapter
-              </span>
-            <article id="case-peopleai" className="group/card flex h-full scroll-mt-24 flex-col justify-between overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-transform duration-500 md:p-12">
-              <div>
-                <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
-                  <img
-                    src="/images/case-analytics.jpg"
-                    alt="Abstract editorial illustration — an analytics ribbon rising over soft bar charts"
-                    className="aspect-[3/2] w-full object-cover saturate-[0.8] transition-all duration-700 hover:scale-[1.03] group-hover/card:saturate-100"
-                    loading="lazy"
-                  />
-                </div>
-                <p className="label-text mb-4">03 · Enterprise SaaS & Analytics · People.ai</p>
-                <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                  Turning product data into retention and renewal decisions
-                </h3>
-                <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
-                  At a YC-incubated sales-analytics company, I diagnosed data-quality defects
-                  hurting reliability and partnered with Engineering on targeted fixes. I also
-                  analyzed usage patterns to influence roadmap priorities and built a Tableau
-                  dashboard covering 50+ enterprise clients — validating ROI that supported
-                  renewals.
-                </p>
-              </div>
-              <div className="mt-8">
-                <Metrics
-                  accent="text-orchid"
-                  items={[
-                    { value: '−6%', n: 6, prefix: '−', suffix: '%', label: 'customer churn, with a company award for customer-first ownership' },
-                    { value: '+13%', n: 13, prefix: '+', suffix: '%', label: 'feature adoption across enterprise accounts' },
-                    { value: '50+', n: 50, suffix: '+', label: 'enterprise clients covered by ROI dashboard' },
-                  ]}
-                />
-              </div>
-            </article>
-            </TiltCard>
-          </Reveal>
-
-          {/* ── Case 3 · AI GTM & Ecosystem — offset card ──────────────────────── */}
-          <Reveal className="md:col-span-6 md:col-start-7 md:mt-16" y={36} delay={0.15}>
+          {/* ── Case 3 · Strategic Partnerships, GTM & Community — 主卡 ────────── */}
+          <Reveal className="md:col-span-7" y={36} delay={0.05}>
             <TiltCard className="h-full">
               <span
                 aria-hidden
@@ -395,24 +351,25 @@ export function Impact() {
                   loading="lazy"
                 />
               </div>
-              <p className="label-text mb-4">04 · AI GTM & Ecosystem Programs · AI Valley</p>
+              <p className="label-text mb-4">03 · Partnerships, GTM & Community Programs · AI Valley</p>
               <h3 className="font-serif text-2xl font-light leading-snug text-plum">
                 Running the programs where builders, labs, and investors meet
               </h3>
               <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
-                I coordinated a Bay Area developer program calendar — hackathons, Builder Sprints,
-                Demo Days — from goals and run-of-show through retrospective, and ran developer
-                relations for a global build challenge co-hosted with a leading open-weights model
-                lab. I also wrote the outbound developer content and sourced speakers through CMU
-                and Bay Area university networks.
+                As community program manager I ran AI Valley's Bay Area calendar — hackathons,
+                fireside talks, demo days — from goals and run-of-show through retrospective. The
+                partnerships and the go-to-market were mine too: sourcing model labs, sponsors and
+                venues, inviting and briefing panel guests, and writing the outbound that filled
+                the rooms. One I owned outright — a week-long global build challenge co-hosted with
+                a leading open-weights model lab.
               </p>
               <div className="mt-8">
                 <Metrics
                   accent="text-rose"
                   items={[
+                    { value: '20+', n: 20, suffix: '+', label: 'partner and sponsor organisations across the slate' },
                     { value: '~470', n: 470, prefix: '~', label: 'average turnout per program — founders, developers, investors' },
-                    { value: '221', n: 221, label: 'developers in the week-long global build challenge I led' },
-                    { value: 'E2E', label: 'program ownership, from design to recap' },
+                    { value: 'E2E', label: 'program ownership, from partner search to recap' },
                   ]}
                 />
               </div>
@@ -446,6 +403,51 @@ export function Impact() {
             </article>
             </TiltCard>
           </Reveal>
+          {/* ── Case 4 · Enterprise SaaS & Product Analytics — 下沉小卡 ────────── */}
+          <Reveal className="md:col-span-5 md:mt-16" y={36} delay={0.15}>
+            <TiltCard className="h-full">
+              <span
+                aria-hidden
+                className="absolute -top-3 left-8 z-10 rotate-[-3deg] rounded-md border border-dashed border-orchid/60 bg-white/95 px-2.5 py-0.5 font-hand text-[14px] text-plum shadow"
+              >
+                the enterprise chapter
+              </span>
+            <article id="case-peopleai" className="group/card flex h-full scroll-mt-24 flex-col justify-between overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-transform duration-500 md:p-12">
+              <div>
+                <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
+                  <img
+                    src="/images/case-analytics.jpg"
+                    alt="Abstract editorial illustration — an analytics ribbon rising over soft bar charts"
+                    className="aspect-[3/2] w-full object-cover saturate-[0.8] transition-all duration-700 hover:scale-[1.03] group-hover/card:saturate-100"
+                    loading="lazy"
+                  />
+                </div>
+                <p className="label-text mb-4">04 · Enterprise SaaS & Analytics · People.ai</p>
+                <h3 className="font-serif text-2xl font-light leading-snug text-plum">
+                  Turning product data into retention and renewal decisions
+                </h3>
+                <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
+                  At a YC-incubated sales-analytics company, I diagnosed data-quality defects
+                  hurting reliability and partnered with Engineering on targeted fixes. I also
+                  analyzed usage patterns to influence roadmap priorities and built a Tableau
+                  dashboard covering 50+ enterprise clients — validating ROI that supported
+                  renewals.
+                </p>
+              </div>
+              <div className="mt-8">
+                <Metrics
+                  accent="text-orchid"
+                  items={[
+                    { value: '−6%', n: 6, prefix: '−', suffix: '%', label: 'customer churn, with a company award for customer-first ownership' },
+                    { value: '+13%', n: 13, prefix: '+', suffix: '%', label: 'feature adoption across enterprise accounts' },
+                    { value: '50+', n: 50, suffix: '+', label: 'enterprise clients covered by ROI dashboard' },
+                  ]}
+                />
+              </div>
+            </article>
+            </TiltCard>
+          </Reveal>
+
         </div>
 
         {/* ── Case 4 · Strategic Industry Engagement — minimal editorial ────────── */}
