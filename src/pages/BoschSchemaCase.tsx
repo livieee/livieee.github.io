@@ -329,7 +329,7 @@ function RetryFlow() {
   }, [])
 
   return (
-    <div ref={ref} className="mt-5 rounded-2xl border border-plum/10 bg-cream-soft/40 p-5">
+    <div ref={ref} className="rounded-2xl border border-plum/10 bg-cream-soft/40 p-5">
       <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-plum-faint">
         When it doesn’t clear
       </p>
@@ -431,9 +431,10 @@ function ValidatorSpec() {
   ]
 
   return (
-    <div className="mt-6 grid items-start gap-8 md:grid-cols-2">
-      <figure className="md:sticky md:top-28">
-        <div className="relative overflow-hidden rounded-xl border border-plum/10 bg-white p-2">
+    <div className="mt-6 grid items-stretch gap-8 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+      <figure className="flex flex-col">
+        <div className="flex flex-1 items-center overflow-hidden rounded-xl border border-plum/10 bg-white p-3">
+          <div className="relative w-full">
           <img
             src="/bosch/ic/decision-tree.png"
             alt="Validator decision tree: column exists, name score below 60, confidence score at least 85 — routing to accepted YAML or fallback"
@@ -458,6 +459,7 @@ function ValidatorSpec() {
               />
             )
           })}
+          </div>
         </div>
         <figcaption className="mt-2.5 font-hand text-[14px] text-plum-muted">
           the path your scores just took ✦
@@ -541,12 +543,19 @@ function ValidatorSpec() {
           </div>
         </div>
 
-        <RetryFlow />
+      </div>
 
-        <p className="mt-5 text-[12.5px] leading-relaxed text-plum-muted">
-          Semantically tolerant by design — “float” ≈ “continuous”. Every score and decision logged,
-          so the pipeline is auditable, not just confident.
-        </p>
+      {/* 门之后：整行铺开，两栏因此等高 */}
+      <div className="md:col-span-2">
+        <div className="grid gap-6 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+          <RetryFlow />
+          <div className="flex items-center">
+            <p className="text-[13px] leading-relaxed text-plum-muted">
+              Semantically tolerant by design — “float” ≈ “continuous”. Every score and decision
+              logged, so the pipeline is auditable, not just confident.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   )
