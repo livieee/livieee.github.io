@@ -273,10 +273,10 @@ export function BoschSchemaCase() {
         </Reveal>
         <Reveal delay={0.25}>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-A conversational data-visualization tool is only as good as the schema underneath it —
-            and extracting that schema from real enterprise documents was manual and error-prone. We
-            built an agentic pipeline with a trust layer at its core, so the tool could ground every
-            chart in structure it had reason to trust. My part was designing the system architecture.
+            Built with Bosch Research: an agentic system that reads unstructured PDFs and returns
+            schema a downstream tool can trust. My part was the system architecture and the
+            validator — the confidence-scoring layer deciding what ships, what retries, and what
+            goes to a human.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {['System Architecture', 'Multi-Agent Design', 'LangGraph', 'FastAPI + Docker', 'Evaluation'].map((s) => (
@@ -289,7 +289,7 @@ A conversational data-visualization tool is only as good as the schema underneat
             ))}
           </div>
           <p className="mt-4 text-[12px] uppercase tracking-label text-plum-faint">
-            Team of four — Chi · Lan · Olivia · Jerome · 2024–2025
+            Bosch Research × CMU · team of four · mine: architecture &amp; validator
           </p>
         </Reveal>
 
@@ -341,6 +341,46 @@ A conversational data-visualization tool is only as good as the schema underneat
                 <p className="mt-2 text-[13.5px] leading-relaxed text-plum-muted">{t.body}</p>
               </div>
             ))}
+          </div>
+        </Reveal>
+
+        {/* ── 真实门控图 ───────────────────────────────────────── */}
+        <Reveal className="mt-12" y={28}>
+          <div className="grid items-center gap-8 rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] md:p-8">
+            <figure className="overflow-hidden rounded-xl border border-plum/10 bg-white">
+              <img
+                src="/bosch/ic/gating.png"
+                alt="The confidence gate: generated YAML goes to the validator, then a LangGraph controller applies three thresholds — structure complete, name at least 90, type and description at least 75 — routing to accepted YAML, up to three controlled retries, or human review"
+                className="w-full"
+                loading="lazy"
+              />
+            </figure>
+            <div>
+              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+                The gate, as specified
+              </p>
+              <h3 className="mt-2 font-serif text-xl font-light leading-snug text-plum">
+                Three thresholds decide everything downstream
+              </h3>
+              <ul className="mt-4 space-y-2.5 text-[13.5px] leading-relaxed text-plum-muted">
+                <li className="flex gap-2.5">
+                  <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#D193A8]" />
+                  Structure complete — no partial YAML gets through
+                </li>
+                <li className="flex gap-2.5">
+                  <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#D193A8]" />
+                  Field name confidence ≥ 90
+                </li>
+                <li className="flex gap-2.5">
+                  <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#D193A8]" />
+                  Type &amp; description confidence ≥ 75
+                </li>
+              </ul>
+              <p className="mt-4 border-t border-plum/10 pt-3.5 text-[13.5px] leading-relaxed text-plum-muted">
+                Miss a gate and it retries — at most three times. Still failing, it goes to a human
+                rather than shipping something the system cannot vouch for.
+              </p>
+            </div>
           </div>
         </Reveal>
 
@@ -419,6 +459,58 @@ A conversational data-visualization tool is only as good as the schema underneat
           <p className="mt-4 font-hand text-[15px] text-plum-muted">
             per-YAML-task pricing vs per-page billing — cost you can tune, not a black box ✦
           </p>
+        </Reveal>
+
+        {/* ── 技术栈 + 公开记录 ────────────────────────────────── */}
+        <Reveal className="mt-16">
+          <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <div className="rounded-[1.4rem] border border-plum/10 bg-white/60 px-6 py-5">
+              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+                What it runs on
+              </p>
+              <ul className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-3">
+                {[
+                  { src: '/bosch/stack/openai.png', alt: 'OpenAI' },
+                  { src: '/bosch/stack/langchain.svg', alt: 'LangGraph' },
+                  { src: '/bosch/stack/fastapi.svg', alt: 'FastAPI' },
+                  { src: '/bosch/stack/docker.svg', alt: 'Docker' },
+                  { src: '/bosch/stack/python.svg', alt: 'Python' },
+                ].map((t) => (
+                  <li key={t.alt} className="flex items-center gap-1.5">
+                    <img src={t.src} alt="" aria-hidden loading="lazy" className="h-[18px] w-[18px] object-contain" />
+                    <span className="text-[11.5px] text-plum-muted">{t.alt}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 border-t border-plum/10 pt-3.5 text-[12.5px] leading-relaxed text-plum-muted">
+                Tesseract OCR for image-heavy pages · containerised for deployment
+              </p>
+            </div>
+
+            <a
+              href="https://www.linkedin.com/posts/olivia-zerun-xiao_aiforproductmanagers-boschresearch-ai-activity-7345267527628849152-37t5"
+              target="_blank"
+              rel="noreferrer"
+              className="group/li flex flex-col justify-between rounded-[1.4rem] border border-plum/10 bg-white/60 px-6 py-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#7FA3CC]/50 hover:bg-white"
+            >
+              <div>
+                <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+                  Written up at the time
+                </p>
+                <p className="mt-2 font-serif text-[17px] font-light leading-snug text-plum">
+                  My post on what the team built, and who did what
+                </p>
+                <p className="mt-2 text-[12.5px] leading-relaxed text-plum-muted">
+                  Corner cases we chased — nested tables, image-heavy PDFs, type mismatches — and the
+                  four roles behind it.
+                </p>
+              </div>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#4E6E96]">
+                Read on LinkedIn
+                <span aria-hidden className="transition-transform duration-300 group-hover/li:translate-x-0.5">↗</span>
+              </span>
+            </a>
+          </div>
         </Reveal>
 
         {/* ── 它后来长成了什么 ──────────────────────────────────── */}
