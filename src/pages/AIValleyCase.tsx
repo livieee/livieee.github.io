@@ -159,23 +159,21 @@ function FlagshipStages() {
 const FEATURED = [
   {
     name: 'OSAP',
-    by: '@Maaztwts',
-    what: 'Stops the constant tab-switching between Slack, GitHub and Notion — GLM 5.1 as the reasoning layer over multi-step cross-app tasks, with persistent memory of your workflow habits.',
+    text: '@Maaztwts built OSAP to stop the constant tab-switching between Slack, GitHub, and Notion.\n\nIt uses GLM-5.1 as a reasoning layer to handle multi-step tasks across different apps, with persistent memory (HydraDB) to keep track of your specific workflow habits.',
     href: 'https://x.com/Zai_org/status/2042996323037917227',
   },
   {
     name: 'Builddy',
-    by: '@Neelkamalshah',
-    what: 'Text prompt to a deployed web app in one run. Six agents coordinate everything from system design through to deployment.',
+    text: '@Neelkamalshah built Builddy to go from a text prompt to a deployed web app in one go using GLM-5.1.\n\nThe system coordinates 6 different agents to handle everything from system design to final deployment, all running on GLM-5.1’s coding logic.',
     href: 'https://x.com/Zai_org/status/2043000894174994519',
   },
   {
     name: 'CodeTribunal',
-    by: '@AmineYagoube',
-    what: 'An “AI courtroom” for auditing freelance code — GLM 5.1 agents argue as prosecutor and defense to surface logical risks a linter would miss.',
+    text: '@AmineYagoube created CodeTribunal to help teams audit freelance code more effectively.\n\nIt sets up an “AI Courtroom” where GLM-5.1 agents debate as prosecutor and defense to uncover hidden logical risks that standard linters might miss.',
     href: 'https://x.com/Zai_org/status/2043001835099951474',
   },
 ]
+
 
 function FeaturedProjects() {
   return (
@@ -193,21 +191,45 @@ function FeaturedProjects() {
             href={f.href}
             target="_blank"
             rel="noreferrer"
+            aria-label={`Z.ai's post about ${f.name} on X`}
             style={{ animation: `annot-in .45s ${i * 0.08}s ease-out both` }}
-            className="group/f flex flex-col rounded-[1.4rem] border border-plum/10 bg-white/70 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-plum/30 hover:bg-white"
+            className="group/f flex flex-col rounded-2xl border border-[#cfd9de] bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[#8b98a5] hover:shadow-[0_16px_36px_-20px_rgba(15,20,25,0.35)]"
           >
-            <div className="flex items-baseline justify-between gap-2">
-              <h4 className="font-serif text-[18px] font-light text-plum">{f.name}</h4>
-              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0 text-plum-faint" fill="currentColor" aria-hidden>
+            {/* 帖子头 */}
+            <div className="flex items-center gap-2.5">
+              <img
+                src="/events/x/zai-avatar.jpg"
+                alt=""
+                aria-hidden
+                loading="lazy"
+                className="h-10 w-10 shrink-0 rounded-full"
+              />
+              <div className="min-w-0 flex-1 leading-tight">
+                <span className="flex items-center gap-1">
+                  <span className="truncate text-[14px] font-bold text-[#0f1419]">Z.ai</span>
+                  <svg viewBox="0 0 22 22" className="h-[15px] w-[15px] shrink-0" fill="#1d9bf0" aria-hidden>
+                    <path d="M20.4 11c0-1.1-.6-2.1-1.5-2.6.3-1 .1-2.2-.7-3-.8-.8-2-1-3-.7C14.7 3.8 13.7 3.2 12.6 3.2h-.1c-1.1 0-2.1.6-2.6 1.5-1-.3-2.2-.1-3 .7-.8.8-1 2-.7 3-.9.5-1.5 1.5-1.5 2.6s.6 2.1 1.5 2.6c-.3 1-.1 2.2.7 3 .8.8 2 1 3 .7.5.9 1.5 1.5 2.6 1.5h.1c1.1 0 2.1-.6 2.6-1.5 1 .3 2.2.1 3-.7.8-.8 1-2 .7-3 .9-.5 1.5-1.5 1.5-2.6zm-9.9 4.2-3.5-3.5 1.4-1.4 2.1 2.1 4.6-4.6 1.4 1.4z" />
+                  </svg>
+                </span>
+                <span className="block truncate text-[13px] text-[#536471]">@Zai_org</span>
+              </div>
+              <svg viewBox="0 0 24 24" className="h-[17px] w-[17px] shrink-0 text-[#0f1419]" fill="currentColor" aria-hidden>
                 <path d="M18.9 1.6h3.7l-8.1 9.2 9.5 12.6h-7.4l-5.8-7.6-6.7 7.6H.4l8.6-9.9L0 1.6h7.6l5.2 6.9zm-1.3 19.6h2L6.5 3.7H4.3z" />
               </svg>
             </div>
-            <p className="mt-0.5 text-[12px] text-plum-faint">{f.by}</p>
-            <p className="mt-3 text-[13px] leading-relaxed text-plum-muted">{f.what}</p>
-            <span className="mt-auto pt-3.5 text-[12px] font-medium text-plum-muted transition-colors group-hover/f:text-plum">
-              Reposted by Z.ai
-              <span aria-hidden className="ml-1 inline-block transition-transform duration-300 group-hover/f:translate-x-0.5">↗</span>
-            </span>
+
+            {/* 正文 */}
+            <p className="mt-3 whitespace-pre-line text-[14px] leading-[1.4] text-[#0f1419]">
+              {f.text}
+            </p>
+
+            <div className="mt-auto flex items-center justify-between gap-2 border-t border-[#eff3f4] pt-3 text-[12.5px] text-[#536471]">
+              <span>11 Apr 2026</span>
+              <span className="font-medium text-[#1d9bf0] transition-opacity group-hover/f:opacity-75">
+                Read on X
+                <span aria-hidden className="ml-1 inline-block transition-transform duration-300 group-hover/f:translate-x-0.5">↗</span>
+              </span>
+            </div>
           </a>
         ))}
       </div>
@@ -611,28 +633,23 @@ export function AIValleyCase() {
           <FeaturedProjects />
         </Reveal>
         <Reveal className="mt-5">
-          <div className="flex flex-col gap-3 rounded-[1.4rem] border border-plum/10 bg-white/50 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-[13px] leading-relaxed text-plum-muted">
-              The challenge ran 30 March – 6 April 2026. Winners announced 9 April.
-            </p>
-            <div className="flex shrink-0 flex-wrap gap-2">
-              <a
-                href="https://build-with-glm-5-1-challenge.devpost.com/"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-rose/50"
-              >
-                Devpost <span aria-hidden>↗</span>
-              </a>
-              <a
-                href="https://luma.com/32jfoybh"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-rose/50"
-              >
-                Event page <span aria-hidden>↗</span>
-              </a>
-            </div>
+          <div className="flex flex-wrap gap-2">
+            <a
+              href="https://build-with-glm-5-1-challenge.devpost.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-rose/50"
+            >
+              Devpost <span aria-hidden>↗</span>
+            </a>
+            <a
+              href="https://luma.com/32jfoybh"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-rose/50"
+            >
+              Event page <span aria-hidden>↗</span>
+            </a>
           </div>
         </Reveal>
 
