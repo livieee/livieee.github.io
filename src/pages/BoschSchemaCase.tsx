@@ -378,10 +378,28 @@ function CostCompare() {
         </div>
       </div>
 
-      <p className="mt-7 border-t border-plum/10 pt-5 text-[13px] leading-relaxed text-plum-muted">
-        Cost scales with the work done, not the paper it arrived on — and the agents stay modular
-        enough to swap one without touching the rest.
+      <p className="mt-7 text-[13px] leading-relaxed text-plum-muted">
+        Cost scales with the work done, not the paper it arrived on.
       </p>
+
+      {/* 便宜之外：可追溯、可调 */}
+      <div className="mt-5 grid gap-4 border-t border-plum/10 pt-5 sm:grid-cols-2">
+        {[
+          {
+            k: 'Traceable',
+            v: 'Every run carries a full token trace, so spend is a number we can point at — not a line on an invoice.',
+          },
+          {
+            k: 'Tunable',
+            v: 'Retry depth and score thresholds are dials, not fixed behaviour. Accuracy and cost can be traded on purpose.',
+          },
+        ].map((d) => (
+          <div key={d.k}>
+            <p className="text-[11px] uppercase tracking-label text-[#4E6E96]">{d.k}</p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-plum-muted">{d.v}</p>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -666,8 +684,9 @@ export function BoschSchemaCase() {
                 Part of that 56.6% wasn’t the system failing — it was our rubric. We were scoring
                 <span className="mx-1 font-mono text-[13px] text-plum">float</span>against
                 <span className="mx-1 font-mono text-[13px] text-plum">continuous</span>as a defect.
-                So I fixed the evaluation, not just the model: semantic tolerance, with the tolerance
-                rules verified by hand rather than assumed.
+                So I fixed the evaluation, not just the model: semantic tolerance, with the rules
+                verified by hand. We also swapped word-count estimates for tiktoken, so the cost
+                numbers measured what we were actually spending.
               </p>
             </div>
             <div className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-7">
@@ -745,6 +764,41 @@ export function BoschSchemaCase() {
             </a>
           </div>
         </Reveal>
+
+        {/* ── 交付时留下的路线 ─────────────────────────────────── */}
+        <Reveal className="mt-20">
+          <p className="label-text mb-3">What we handed over</p>
+          <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
+            A working system, and an argued case for what comes next
+          </h2>
+        </Reveal>
+        <div className="mt-8 grid gap-5 md:grid-cols-3">
+          {[
+            {
+              k: 'Put a person in the loop earlier',
+              v: 'Inline schema editing before the YAML is written, and remembering those edits for similar datasets.',
+              c: '#8FAE8B',
+            },
+            {
+              k: 'Ask better questions',
+              v: 'Context-aware fallback prompts — surface only the field genuinely in doubt, not a checklist.',
+              c: '#B98ACB',
+            },
+            {
+              k: 'Take the latency back',
+              v: 'Run independent agents in parallel; let teams load their own enterprise validation rules.',
+              c: '#7A9CC6',
+            },
+          ].map((r, i) => (
+            <Reveal key={r.k} delay={i * 0.07}>
+              <div className="h-full rounded-[1.4rem] border border-plum/10 bg-white/70 p-6">
+                <span aria-hidden className="block h-[3px] w-10 rounded-full" style={{ backgroundColor: r.c }} />
+                <h3 className="mt-4 font-serif text-[17px] font-light leading-snug text-plum">{r.k}</h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{r.v}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
 
         {/* ── 现场 ─────────────────────────────────────────────── */}
         <Reveal className="mt-16" y={28}>
