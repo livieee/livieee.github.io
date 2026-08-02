@@ -647,6 +647,23 @@ function RunOfShow() {
         the conversation went somewhere specific.
       </p>
 
+      <figure className="mt-5">
+        <div className="overflow-hidden rounded-[1.1rem] border border-plum/10">
+          <img
+            src="/events/gtc-fireside.jpg"
+            alt="Panel 3 of the 2026 GTC Fireside Talk in progress — four speakers on stage, the screen behind them reading Beyond the Horizon: Next Frontier of AI"
+            loading="lazy"
+            className="aspect-[16/9] w-full object-cover"
+          />
+        </div>
+        <figcaption className="mt-2.5 flex flex-wrap items-baseline justify-between gap-2 px-1">
+          <span className="text-[12px] text-plum-faint">
+            Panel 3 running — Palo Alto, 16 March 2026
+          </span>
+          <span className="font-hand text-[14px] text-plum-muted">7:50 on the sheet ✦</span>
+        </figcaption>
+      </figure>
+
       <ol className="mt-6 space-y-2">
         {PANELS.map((p, i) => (
           <li
