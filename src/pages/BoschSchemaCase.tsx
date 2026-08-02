@@ -315,21 +315,45 @@ function CostCompare() {
 
   return (
     <div ref={ref} className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:p-8">
-      <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-        Cost to process a 3-page PDF
-      </p>
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+          Cost to process a 3-page PDF
+        </p>
+        <p className="font-hand text-[15px] text-plum-muted">their unit is a page, ours is a task ✦</p>
+      </div>
 
-      <div className="mt-6 space-y-6">
+      <div className="relative mt-6 space-y-7">
         {[
-          { label: 'Unstructured.io · billed per page', price: '~$0.06', w: '100%', tone: 'bg-plum/22', text: 'text-plum-muted', size: 'text-2xl md:text-3xl', d: '0s' },
-          { label: 'Ours · billed per YAML task', price: '$0.007–0.03', w: '38%', tone: 'bg-[#4E6E96]', text: 'text-[#4E6E96]', size: 'text-3xl md:text-4xl', d: '.22s' },
+          {
+            label: 'Unstructured.io',
+            unit: 'billed per page',
+            price: '~$0.06',
+            w: '100%',
+            tone: 'bg-[#C9A2B0]',
+            text: 'text-[#A8798A]',
+            size: 'text-2xl md:text-[1.75rem]',
+            d: '0s',
+          },
+          {
+            label: 'Ours',
+            unit: 'billed per extraction task',
+            price: '$0.007–0.03',
+            w: '38%',
+            tone: 'bg-[#4E6E96]',
+            text: 'text-[#4E6E96]',
+            size: 'text-3xl md:text-[2.1rem]',
+            d: '.24s',
+          },
         ].map((r) => (
           <div key={r.label}>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <span className="text-[12px] uppercase tracking-label text-plum-muted">{r.label}</span>
+              <span className="text-[12.5px] text-plum">
+                {r.label}
+                <span className="ml-2 text-[11px] uppercase tracking-label text-plum-faint">{r.unit}</span>
+              </span>
               <span className={`font-serif font-light ${r.size} ${r.text}`}>{r.price}</span>
             </div>
-            <div className="mt-2 h-3 overflow-hidden rounded-full bg-cream-soft">
+            <div className="mt-2 h-3.5 overflow-hidden rounded-full bg-cream-soft">
               <div
                 className={`h-full rounded-full ${r.tone}`}
                 style={{ width: on ? r.w : '0%', transition: `width 1s cubic-bezier(.4,0,.2,1) ${r.d}` }}
@@ -337,16 +361,27 @@ function CostCompare() {
             </div>
           </div>
         ))}
+
+        {/* 差距标注：从短条末端拉到长条末端 */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-[62px] hidden md:block"
+          style={{ opacity: on ? 1 : 0, transition: 'opacity .5s 1.1s' }}
+        >
+          <div className="absolute left-[38%] right-0 flex items-center gap-2 px-3">
+            <span className="h-px flex-1 bg-plum/20" />
+            <span className="whitespace-nowrap rounded-full border border-plum/12 bg-white px-3 py-1 text-[11.5px] font-medium text-[#4E6E96]">
+              2–8× less
+            </span>
+            <span className="h-px flex-1 bg-plum/20" />
+          </div>
+        </div>
       </div>
 
-      <div className="mt-7 grid gap-4 border-t border-plum/10 pt-5 sm:grid-cols-2">
-        <p className="text-[13px] leading-relaxed text-plum-muted">
-          Priced per task, not per page — cost scales with work done, not paper.
-        </p>
-        <p className="text-[13px] leading-relaxed text-plum-muted">
-          Agents stay modular and independently replaceable, where the alternatives ship monolithic.
-        </p>
-      </div>
+      <p className="mt-7 border-t border-plum/10 pt-5 text-[13px] leading-relaxed text-plum-muted">
+        Cost scales with the work done, not the paper it arrived on — and the agents stay modular
+        enough to swap one without touching the rest.
+      </p>
     </div>
   )
 }
