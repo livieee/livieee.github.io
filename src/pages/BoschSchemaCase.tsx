@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { PartnerLogos } from '@/components/PartnerLogos'
+import { OutcomeStrip } from '@/components/OutcomeStrip'
 
 /**
  * Bosch × CMU 项目一：多智能体 schema 抽取（对外名 Schema Extraction Agents）。
@@ -403,6 +404,17 @@ export function BoschSchemaCase() {
           <p className="mt-4 text-[12px] uppercase tracking-label text-plum-faint">
             Bosch Research · team of four · 2024–2025
           </p>
+        </Reveal>
+
+        {/* 成果前置：一眼可见 */}
+        <Reveal className="mt-10" delay={0.32}>
+          <OutcomeStrip
+            items={[
+              { n: 97.2, suffix: '%', label: 'average accuracy, up from 56.6% without the validator' },
+              { n: 100, suffix: '%', label: 'field coverage — nothing silently skipped' },
+              { n: 2, suffix: '–8×', label: 'cheaper per document than the industry benchmark' },
+            ]}
+          />
         </Reveal>
 
         {/* ── 交互式架构走查 ──────────────────────────────────── */}
