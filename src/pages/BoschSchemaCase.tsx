@@ -897,8 +897,8 @@ export function BoschSchemaCase() {
           <OriginalDoc />
         </Reveal>
         <Reveal className="mt-5">
-          <div className="flex flex-col gap-4 rounded-[1.4rem] border border-plum/10 bg-white/60 px-6 py-5 md:flex-row md:items-center md:gap-8">
-            <div className="shrink-0 md:w-40">
+          <div className="flex flex-col gap-4 rounded-[1.4rem] border border-plum/10 bg-white/60 px-6 py-5 lg:flex-row lg:items-center lg:gap-8">
+            <div className="shrink-0 lg:w-40">
               <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
                 What it runs on
               </p>
@@ -906,7 +906,7 @@ export function BoschSchemaCase() {
                 OCR for image-heavy pages · containerised
               </p>
             </div>
-            <ul className="flex flex-wrap items-center gap-x-6 gap-y-3 md:border-l md:border-plum/10 md:pl-8">
+            <ul className="flex flex-wrap items-center gap-x-6 gap-y-3 lg:border-l lg:border-plum/10 lg:pl-8">
               {[
                 { src: '/bosch/stack/openai.png', alt: 'OpenAI' },
                 { src: '/bosch/stack/langchain.svg', alt: 'LangGraph' },
