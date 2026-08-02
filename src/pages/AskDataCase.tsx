@@ -552,7 +552,7 @@ function ProtoWalkthrough() {
             <p className="mt-3 min-h-[132px] text-[14px] leading-relaxed text-plum-muted">{p.note}</p>
           </div>
           <p className="mt-3 font-hand text-[15px] text-plum-muted">
-            841 versions before I called it settled ✦
+            built and rebuilt until the flow felt right ✦
           </p>
         </div>
       </div>
@@ -893,6 +893,26 @@ function ArchLayers() {
             className="w-full"
             loading="eager"
           />
+          {/* 聚光灯：只压暗选中区域之外，选中处完全不遮挡 */}
+          {[
+            { left: 0, top: 0, width: 1, height: a.y },
+            { left: 0, top: a.y + a.h, width: 1, height: 1 - (a.y + a.h) },
+            { left: 0, top: a.y, width: a.x, height: a.h },
+            { left: a.x + a.w, top: a.y, width: 1 - (a.x + a.w), height: a.h },
+          ].map((r, i) => (
+            <div
+              key={i}
+              aria-hidden
+              className="pointer-events-none absolute bg-cream/[0.72] transition-all duration-300"
+              style={{
+                left: `${r.left * 100}%`,
+                top: `${r.top * 100}%`,
+                width: `${r.width * 100}%`,
+                height: `${r.height * 100}%`,
+              }}
+            />
+          ))}
+
           {HOTS.map((h) => (
             <button
               key={h.id}
@@ -901,16 +921,14 @@ function ArchLayers() {
               onClick={() => setId(h.id)}
               aria-label={h.label}
               className={`absolute rounded-[7px] transition-all duration-300 ${
-                h.id === id
-                  ? 'ring-2 ring-[#3A2440] ring-offset-1 ring-offset-white'
-                  : 'ring-0 hover:ring-2 hover:ring-[#7FA3CC]/70'
+                h.id === id ? 'ring-2 ring-[#3A2440]' : 'ring-0 hover:ring-2 hover:ring-[#7FA3CC]/70'
               }`}
               style={{
                 left: `${h.x * 100}%`,
                 top: `${h.y * 100}%`,
                 width: `${h.w * 100}%`,
                 height: `${h.h * 100}%`,
-                boxShadow: h.id === id ? '0 10px 26px -10px rgba(58,36,64,0.45)' : undefined,
+                boxShadow: h.id === id ? '0 12px 30px -10px rgba(58,36,64,0.5)' : undefined,
               }}
             />
           ))}
