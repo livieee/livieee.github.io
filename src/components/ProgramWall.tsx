@@ -39,7 +39,7 @@ const PINS: Pin[] = [
     delay: '.3s',
   },
   {
-    src: '/events/women-hackathon.jpg',
+    src: '/events/photostrip-crop.jpg',
     type: 'build day',
     name: 'Build What You Love',
     role: 'Program Team',
@@ -164,20 +164,20 @@ export function ProgramWall() {
       {PINS.map((p) => (
         <span
           key={p.name}
-          className={`group/pin absolute ${p.cls} rounded-[6px] bg-white p-[4px] pb-[3px] shadow-[0_12px_28px_-14px_rgba(58,36,64,0.55)] transition-all duration-500 hover:z-20 hover:-translate-y-1.5 hover:rotate-0 hover:scale-[1.05] hover:bg-white/80 hover:backdrop-blur-[1px] hover:shadow-[0_20px_40px_-16px_rgba(58,36,64,0.55)]`}
+          className={`group/pin absolute ${p.cls} rounded-[6px] bg-white p-[4px] pb-[3px] shadow-[0_12px_28px_-14px_rgba(58,36,64,0.55)] transition-all duration-500 hover:z-20 hover:-translate-y-1.5 hover:rotate-0 hover:scale-[1.05] hover:bg-white/70 hover:backdrop-blur-[2px] hover:shadow-[0_20px_40px_-16px_rgba(58,36,64,0.55)]`}
           style={{ animation: `annot-in .6s ${p.delay} ease-out both` }}
         >
-          <span className="relative block overflow-hidden rounded-[4px] bg-[#C9A8B4]">
+          <span className="relative block overflow-hidden rounded-[4px]">
             <img
               src={p.src}
               alt=""
               aria-hidden
               loading="lazy"
-              className="aspect-[3/2] w-full object-cover mix-blend-luminosity opacity-90 transition-all duration-500 group-hover/pin:scale-[1.03] group-hover/pin:opacity-100 group-hover/pin:mix-blend-normal"
+              className="aspect-[3/2] w-full object-cover saturate-[0.9] transition-all duration-500 group-hover/pin:scale-[1.03] group-hover/pin:opacity-[0.7] group-hover/pin:saturate-[0.75]"
             />
 
             {/* hover 才出现的事实层 */}
-            <span className="absolute inset-x-0 bottom-0 translate-y-1 bg-cream/95 px-2 pb-1.5 pt-1.5 opacity-0 backdrop-blur-[2px] transition-all duration-300 group-hover/pin:translate-y-0 group-hover/pin:opacity-100">
+            <span className="absolute inset-x-[6%] bottom-[7%] translate-y-1.5 scale-95 rounded-[5px] border border-white/70 bg-white/55 px-2 pb-1.5 pt-1.5 opacity-0 shadow-[0_8px_20px_-8px_rgba(58,36,64,0.45)] backdrop-blur-md transition-all duration-300 group-hover/pin:translate-y-0 group-hover/pin:scale-100 group-hover/pin:opacity-100">
               <span className="block text-[9px] font-semibold leading-tight text-plum">{p.name}</span>
               <span className="mt-[3px] block text-[7.5px] leading-tight text-plum-muted">{p.role}</span>
             </span>
