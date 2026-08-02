@@ -184,3 +184,17 @@
   12%  { opacity: .8; }
   100% { transform: translateY(520px) translateX(26px) scale(.5); opacity: 0; }
 }
+
+/* 抽牌区：法阵缓转、抽起光晕、待机浮动 */
+@keyframes seal-turn {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to   { transform: translateX(-50%) rotate(360deg); }
+}
+@keyframes halo-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(.75); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes card-idle {
+  0%, 100% { margin-top: 0; }
+  50%      { margin-top: -7px; }
+}

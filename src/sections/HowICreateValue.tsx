@@ -17,41 +17,36 @@ type Card = {
   title: string
   quote: string
   skills: string[]
-  tilt: string
 }
 
 const HAND: Card[] = [
   {
-    rank: 'A',
+    rank: '01',
     suit: 'spark',
-    title: 'I design the layer that decides what ships',
-    quote: 'An LLM always returns something — the judgment is what you do about that.',
-    skills: ['PRDs & specs', 'Eval design', 'Agent workflows', 'Human-in-the-loop'],
-    tilt: '-rotate-[4deg]',
+    title: 'AI Product & Product Operations',
+    quote: 'Turning user needs and messy cross-functional input into clear priorities and workflows that ship.',
+    skills: ['Product discovery', 'Customer research', 'Product analytics', 'AI workflow design'],
   },
   {
-    rank: 'K',
+    rank: '02',
     suit: 'target',
-    title: 'I put distribution inside the rules',
-    quote: 'Every entry shipped a public repo and a thread — so the work carried itself.',
-    skills: ['Launch narrative', 'Developer relations', 'Funnel design', 'Adoption metrics'],
-    tilt: 'rotate-[2deg]',
+    title: 'GTM Strategy & Adoption',
+    quote: 'Connecting what a product can do to the people who need it — launches, narratives, adoption.',
+    skills: ['GTM strategy', 'Product launches', 'Metric definition', 'A/B testing & funnels'],
   },
   {
-    rank: 'Q',
+    rank: '03',
     suit: 'hands',
-    title: 'A room fills because of who is standing in it',
-    quote: 'Source the partner before the date is set. Everything else follows from that.',
-    skills: ['Partner sourcing', 'Sponsor coordination', 'Executive comms', 'Co-hosting'],
-    tilt: '-rotate-[2deg]',
+    title: 'Strategic Partnerships',
+    quote: 'Turning promising conversations into collaborations both sides keep showing up for.',
+    skills: ['Partner programs', 'Stakeholder management', 'Executive communication'],
   },
   {
-    rank: 'J',
+    rank: '04',
     suit: 'clock',
-    title: '7:50 on the sheet, 7:50 in the room',
-    quote: 'Goals, run-of-show, owners and timings written down — so the day is executed.',
-    skills: ['Run-of-show', 'Cross-functional workstreams', 'Retrospectives', 'Community ops'],
-    tilt: 'rotate-[4deg]',
+    title: 'Ecosystem & Program Execution',
+    quote: 'Bringing companies, researchers and communities into the same room — and giving it a shape.',
+    skills: ['Developer relations', 'Program design', 'Speaker sourcing', 'Cross-functional execution'],
   },
 ]
 
@@ -251,67 +246,16 @@ export function HowICreateValue() {
         </span>
       </h2>
 
-      {/* ── ① What I bring to the table ───────────────────────── */}
-      <Reveal className="mt-14" y={28}>
-        <div className="relative overflow-hidden rounded-[1.6rem] border border-plum/10 bg-white/55 px-6 pb-8 pt-7 md:px-9 md:pb-10">
-          <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-              What I bring to the table
-            </p>
-            <p className="font-hand text-[15px] text-plum-muted">
-              what I actually open on a weekday ✦
-            </p>
-          </div>
-
-          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-            Every “complex system” I’ve worked on turned out to be people trying to get something
-            done. I start by understanding how they actually work, then build the structure —
-            specs, programs, partnerships — that makes the work feel lighter rather than heavier.
-          </p>
-
-          <div className="mt-8 grid items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
-            {/* 左：分类清单 */}
-            <ul className="space-y-3">
-              {LINES.map((r) => (
-                <li key={r.k}>
-                  <span className="block font-hand text-[15px] text-plum-muted">{r.k}</span>
-                  <span className="mt-0.5 block text-[14px] leading-snug text-plum">{r.v}</span>
-                </li>
-              ))}
-            </ul>
-
-            {/* 右：盘子 + logo 摆成一圈 */}
-            <div className="relative mx-auto w-full max-w-[380px]">
-              <div className="relative aspect-square">
-                <PlateSketch className="absolute inset-0 h-full w-full drop-shadow-[0_18px_38px_rgba(58,36,64,0.16)]" />
-                {PLATE.map((t, i) => (
-                  <span
-                    key={t.n}
-                    title={t.n}
-                    style={{
-                      left: `${t.x}%`,
-                      top: `${t.y}%`,
-                      animation: `annot-in .55s ${0.08 * i}s ease-out both`,
-                    }}
-                    className="group/tool absolute z-10 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-[10px] bg-white shadow-[0_6px_14px_-6px_rgba(58,36,64,0.5)] ring-1 ring-plum/10 transition-transform duration-300 hover:-translate-y-[calc(50%+4px)] hover:scale-110"
-                  >
-                    <img
-                      src={t.l}
-                      alt={t.n}
-                      loading="lazy"
-                      className="h-full w-full object-contain"
-                    />
-                  </span>
-                ))}
-              </div>
-              <ForkSketch className="absolute -left-6 bottom-2 h-[62%] w-auto text-plum/25" />
-            </div>
-          </div>
-        </div>
+      <Reveal className="mt-8">
+        <p className="max-w-2xl text-[15px] leading-relaxed text-plum-muted">
+          Every “complex system” I’ve worked on turned out to be people trying to get something
+          done. I start by understanding how they actually work, then build the structure — specs,
+          programs, partnerships — that makes the work feel lighter rather than heavier.
+        </p>
       </Reveal>
 
-      {/* ── ② 抽牌：扇面 + 法阵 + 升起翻面 ────────────────────── */}
-      <Reveal className="mt-20">
+      {/* ── ① 四个领域：扇面抽牌 ─────────────────────────────── */}
+      <Reveal className="mt-16">
         <p className="text-center font-hand text-[17px] text-plum-muted">
           {active === null ? 'so — pick a card ✦' : 'tap it again to put it back ✦'}
         </p>
@@ -326,6 +270,7 @@ export function HowICreateValue() {
           <svg
             viewBox="0 0 400 160"
             className="pointer-events-none absolute bottom-[8%] left-1/2 w-[78%] -translate-x-1/2"
+            style={{ animation: 'seal-turn 46s linear infinite' }}
             fill="none"
             aria-hidden
           >
@@ -362,6 +307,18 @@ export function HowICreateValue() {
             />
           ))}
 
+          {active !== null && (
+            <span
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-[26%] h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{
+                background:
+                  'radial-gradient(circle, rgba(199,154,75,0.22) 0%, rgba(185,138,203,0.12) 45%, rgba(255,255,255,0) 70%)',
+                animation: 'halo-in .8s ease-out both',
+              }}
+            />
+          )}
+
           {HAND.map((c, i) => {
             const isUp = active === i
             const dimmed = active !== null && !isUp
@@ -381,6 +338,8 @@ export function HowICreateValue() {
                   transform: isUp
                     ? 'translateX(-50%) translateY(24px) rotate(0deg) scale(1.16)'
                     : `translateX(-50%) rotate(${angle}deg) translateY(${lift}px)`,
+                  animation:
+                    active === null ? `card-idle ${5.4 + i * 0.6}s ${i * 0.35}s ease-in-out infinite` : undefined,
                   opacity: dimmed ? 0.32 : 1,
                   zIndex: isUp ? 30 : 10 + i,
                   filter: isUp ? 'drop-shadow(0 22px 44px rgba(199,154,75,0.32))' : undefined,
@@ -438,6 +397,65 @@ export function HowICreateValue() {
               </button>
             )
           })}
+        </div>
+      </Reveal>
+
+      <Reveal className="mt-24">
+        <p className="text-center font-hand text-[16px] text-plum-muted">
+          … and these are what I reach for to do it ↓
+        </p>
+      </Reveal>
+
+      {/* ── ② What I bring to the table ───────────────────────── */}
+      <Reveal className="mt-6" y={28}>
+        <div className="relative overflow-hidden rounded-[1.6rem] border border-plum/10 bg-white/55 px-6 pb-8 pt-7 md:px-9 md:pb-10">
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+              What I bring to the table
+            </p>
+            <p className="font-hand text-[15px] text-plum-muted">
+              what I actually open on a weekday ✦
+            </p>
+          </div>
+
+          <div className="mt-6 grid items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
+            {/* 左：分类清单 */}
+            <ul className="space-y-3">
+              {LINES.map((r) => (
+                <li key={r.k}>
+                  <span className="block font-hand text-[15px] text-plum-muted">{r.k}</span>
+                  <span className="mt-0.5 block text-[14px] leading-snug text-plum">{r.v}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* 右：盘子 + logo 摆成一圈 */}
+            <div className="relative mx-auto w-full max-w-[380px]">
+              <div className="relative aspect-square">
+                <PlateSketch className="absolute inset-0 h-full w-full drop-shadow-[0_18px_38px_rgba(58,36,64,0.16)]" />
+                {PLATE.map((t, i) => (
+                  <span
+                    key={t.n}
+                    title={t.n}
+                    style={{
+                      left: `${t.x}%`,
+                      top: `${t.y}%`,
+                      animation: `annot-in .55s ${0.08 * i}s ease-out both`,
+                    }}
+                    className="group/tool absolute z-10 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-[10px] bg-white shadow-[0_6px_14px_-6px_rgba(58,36,64,0.5)] ring-1 ring-plum/10 transition-transform duration-300 hover:-translate-y-[calc(50%+4px)] hover:scale-110"
+                  >
+                    <img
+                      src={t.l}
+                      alt={t.n}
+                      loading="lazy"
+                      className="h-full w-full object-contain"
+                    />
+                  </span>
+                ))}
+              </div>
+              <ForkSketch className="absolute -left-6 bottom-2 h-[62%] w-auto text-plum/25" />
+            </div>
+          </div>
         </div>
       </Reveal>
 
