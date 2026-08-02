@@ -29,6 +29,7 @@ export type GlyphName =
   | 'pen-edit'
   | 'question'
   | 'parallel'
+  | 'approx'
 
 const PATHS: Record<GlyphName, (w: number) => React.ReactNode> = {
   /* 数据库 + 斜杠：不能直连 */
@@ -158,6 +159,13 @@ const PATHS: Record<GlyphName, (w: number) => React.ReactNode> = {
       <path d="m12.9 3.9 2.7 2.6-2.8 2.5" strokeWidth={w} />
       <path d="m18 9.4 2.7 2.6-2.8 2.6" strokeWidth={w} />
       <path d="m10.1 15.1 2.7 2.6-2.8 2.5" strokeWidth={w} />
+    </>
+  ),
+  /* 约等于：语义容忍 */
+  approx: (w) => (
+    <>
+      <path d="M3.6 9.1c1.6-2.6 3.3-2.7 5.1-.6 1.9 2.1 3.6 2 5.2-.5 1.6-2.5 3.3-2.6 5.2-.5" strokeWidth={w} />
+      <path d="M3.5 15.6c1.7-2.6 3.4-2.7 5.2-.6 1.9 2.1 3.6 1.9 5.2-.5 1.6-2.5 3.3-2.6 5.1-.5" strokeWidth={w} />
     </>
   ),
   /* 桂冠：榜单第一 */

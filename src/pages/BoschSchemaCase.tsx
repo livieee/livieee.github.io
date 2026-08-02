@@ -513,11 +513,34 @@ function ValidatorSpec() {
       <div className="md:col-span-2">
         <div className="grid gap-6 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
           <RetryFlow />
-          <div className="flex items-center">
-            <p className="text-[13px] leading-relaxed text-plum-muted">
-              Semantically tolerant by design — “float” ≈ “continuous”. Every score and decision
-              logged, so the pipeline is auditable, not just confident.
-            </p>
+          <div className="flex flex-col gap-4">
+            {[
+              {
+                g: 'approx' as GlyphName,
+                c: '#B98ACB',
+                k: 'Tolerant of wording',
+                v: '“float” ≈ “continuous”. The gate rejects real errors, not harmless phrasing.',
+              },
+              {
+                g: 'ledger' as GlyphName,
+                c: '#7A9CC6',
+                k: 'Everything logged',
+                v: 'Every score, failure type and final decision — auditable, not just confident.',
+              },
+            ].map((c) => (
+              <div key={c.k} className="flex flex-1 gap-3.5 rounded-2xl border border-plum/10 bg-white/70 p-5">
+                <span
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
+                  style={{ backgroundColor: `${c.c}1f`, color: c.c }}
+                >
+                  <Glyph name={c.g} className="h-5 w-5" w={1.6} />
+                </span>
+                <div>
+                  <p className="text-[13px] font-medium text-plum">{c.k}</p>
+                  <p className="mt-1 text-[12.5px] leading-relaxed text-plum-muted">{c.v}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
