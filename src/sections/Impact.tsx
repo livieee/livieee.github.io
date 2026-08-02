@@ -5,6 +5,7 @@ import { CountUp } from '@/components/CountUp'
 import { TiltCard } from '@/components/TiltCard'
 import { AskDataUI } from '@/components/AskDataUI'
 import { ProgramWall } from '@/components/ProgramWall'
+import { DailyReportCard } from '@/components/DailyReportCard'
 
 type Metric = {
   value: string
@@ -387,97 +388,97 @@ export function Impact() {
             </TiltCard>
           </Reveal>
 
-          {/* ── Case 4 · Enterprise SaaS & Product Analytics — 下沉小卡 ────────── */}
+          {/* ── Case 4 · Applied AI at work · Yuto USA ──────────────────────── */}
           <Reveal y={36} delay={0.15}>
             <TiltCard className="h-full">
               <span
                 aria-hidden
-                className="absolute -top-3 left-8 z-10 rotate-[-3deg] rounded-md border border-dashed border-orchid/60 bg-white/95 px-2.5 py-0.5 font-hand text-[14px] text-plum shadow"
+                className="absolute -top-3 left-8 z-10 rotate-[-3deg] rounded-md border border-dashed border-lavender-deep/60 bg-white/95 px-2.5 py-0.5 font-hand text-[14px] text-plum shadow"
               >
-                the enterprise chapter
+                now shipping ✈
               </span>
-            <article id="case-peopleai" className="group/card flex h-full scroll-mt-24 flex-col justify-between overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-transform duration-500 md:p-10">
-              <div>
-                <div className="mb-7 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
-                  <img
-                    src="/images/case-analytics.jpg"
-                    alt="Abstract editorial illustration — an analytics ribbon rising over soft bar charts"
-                    className="aspect-[16/10] w-full object-cover saturate-[0.8] transition-all duration-700 hover:scale-[1.03] group-hover/card:saturate-100"
-                    loading="lazy"
+              <article
+                id="case-yuto"
+                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-10"
+              >
+                <div className="mb-7" data-cursor="VIEW">
+                  <DailyReportCard />
+                </div>
+                <p className="label-text mb-4">04 · Applied AI at Work · Yuto USA</p>
+                <h3 className="font-serif text-2xl font-light leading-snug text-plum">
+                  An AI product that runs
+                  <br />
+                  without me
+                </h3>
+                <p className="mt-4 text-[15px] leading-relaxed text-plum-muted">
+                  At an advanced-materials company I built and shipped a 0-to-1 forecasting product
+                  solo with agentic coding — a daily pipeline that gathers market prices, reads the
+                  ones published only as images, retries itself when a source is down, and lands a
+                  formatted report in leadership's inbox before the workday starts.
+                </p>
+                <div className="mt-6">
+                  <Metrics
+                    accent="text-orchid"
+                    items={[
+                      { value: '337', n: 337, label: 'trading days captured, unattended' },
+                      { value: '9.2→7.5%', label: 'one-month forecast error' },
+                      { value: '0', n: 0, label: 'manual steps in the daily run' },
+                    ]}
                   />
                 </div>
-                <p className="label-text mb-4">04 · Enterprise SaaS & Analytics · People.ai</p>
-                <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                  Turning product data into retention and renewal decisions
-                </h3>
-                <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
-                  At a YC-incubated sales-analytics company, I diagnosed data-quality defects
-                  hurting reliability and partnered with Engineering on targeted fixes. I also
-                  analyzed usage patterns to influence roadmap priorities and built a Tableau
-                  dashboard covering 50+ enterprise clients — validating ROI that supported
-                  renewals.
-                </p>
-              </div>
-              <div className="mt-8">
-                <Metrics
-                  accent="text-orchid"
-                  items={[
-                    { value: '−6%', n: 6, prefix: '−', suffix: '%', label: 'customer churn, with a company award for customer-first ownership' },
-                    { value: '+13%', n: 13, prefix: '+', suffix: '%', label: 'feature adoption across enterprise accounts' },
-                    { value: '50+', n: 50, suffix: '+', label: 'enterprise clients covered by ROI dashboard' },
-                  ]}
-                />
-              </div>
-            </article>
+                <div className="mt-5 flex flex-wrap gap-1.5">
+                  <Tag>Agentic Coding</Tag>
+                  <Tag>Data Pipelines</Tag>
+                  <Tag>Applied Forecasting</Tag>
+                </div>
+              </article>
             </TiltCard>
           </Reveal>
 
         </div>
 
-        {/* ── Case 4 · Strategic Industry Engagement — minimal editorial ────────── */}
+        {/* ── Case 5 · Enterprise SaaS & Analytics — minimal editorial ────────── */}
         <Reveal className="mt-10" y={36}>
-          <article id="case-yuto" className="relative grid scroll-mt-24 gap-8 border-t border-plum/10 py-12 md:grid-cols-12 md:py-16">
+          <article id="case-peopleai" className="relative grid scroll-mt-24 gap-8 border-t border-plum/10 py-12 md:grid-cols-12 md:py-16">
             <span
               aria-hidden
-              className="absolute -top-3 right-4 rotate-[2deg] rounded-md border border-dashed border-lavender-deep/60 bg-white/95 px-2.5 py-0.5 font-hand text-[14px] text-plum shadow"
+              className="absolute -top-3 right-4 rotate-[2deg] rounded-md border border-dashed border-orchid/60 bg-white/95 px-2.5 py-0.5 font-hand text-[14px] text-plum shadow"
             >
-              now shipping ✈
+              the enterprise chapter
             </span>
             <div className="md:col-span-4">
               <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
                 <img
-                  src="/images/case-industry.jpg"
-                  alt="Abstract editorial illustration — layered panels and orbiting workstreams"
+                  src="/images/case-analytics.jpg"
+                  alt="Abstract editorial illustration — an analytics ribbon rising over soft bar charts"
                   className="aspect-[3/2] w-full object-cover saturate-[0.8] transition-all duration-700 hover:scale-[1.03] hover:saturate-100"
                   loading="lazy"
                 />
               </div>
-              <p className="label-text mb-4">05 · Strategic Industry Engagement · Yuto USA</p>
+              <p className="label-text mb-4">05 · Enterprise SaaS &amp; Analytics · People.ai</p>
               <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                Shipping AI the executive team uses daily — and the programs around it
+                Turning product data into retention and renewal decisions
               </h3>
             </div>
             <div className="md:col-span-5">
               <p className="text-[15px] leading-relaxed text-plum-muted">
-                At an advanced-materials company, I shipped a 0-to-1 forecasting product to
-                production — built solo with agentic coding, with full traceability and
-                human-in-the-loop override — now in daily use by the executive team. Alongside it,
-                I drive technical program management across 5+ concurrent workstreams for top-tier
-                consumer technology accounts, and delivered the company showcase at a global
-                technology client's tech day.
+                At a YC-incubated sales-analytics company, I diagnosed data-quality defects hurting
+                reliability and partnered with Engineering on targeted fixes. I also analyzed usage
+                patterns to influence roadmap priorities and built a Tableau dashboard covering 50+
+                enterprise clients — validating ROI that supported renewals.
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
-                <Tag>Agentic coding</Tag>
-                <Tag>Technical program management</Tag>
-                <Tag>Market & GTM research</Tag>
+                <Tag>Product analytics</Tag>
+                <Tag>Data quality</Tag>
+                <Tag>Customer success</Tag>
               </div>
             </div>
             <div className="md:col-span-3">
               <dl className="space-y-6">
                 {[
-                  { value: '9.2→7.5%', label: 'one-month forecast error, at 90% directional accuracy' },
-                  { value: '100+', label: 'attendees at client tech-day showcase' },
-                  { value: '5+', label: 'concurrent workstreams coordinated' },
+                  { value: '−6%', label: 'customer churn, with a company award for customer-first ownership' },
+                  { value: '+13%', label: 'feature adoption across enterprise accounts' },
+                  { value: '50+', label: 'enterprise clients covered by ROI dashboard' },
                 ].map((m) => (
                   <div key={m.label} className="border-l-2 border-lavender-deep pl-4">
                     <dt className="sr-only">{m.label}</dt>
