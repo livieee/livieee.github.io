@@ -400,11 +400,11 @@ export function Impact() {
                 Programs run like products — partnered, designed, measured
               </h3>
               <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
-                Nine Bay Area and global programs — hackathons, fireside talks, demo days, a private
-                salon. I sourced the partners, invited and briefed the panel guests, wrote the
-                run-of-show, and closed the loop afterwards. The one I owned outright was a
-                week-long global build challenge with Z.ai: partnership, prize design, judging
-                rubric and developer relations.
+                I coordinated a Bay Area developer program calendar — hackathons, Builder Sprints,
+                Demo Days — from goals and run-of-show through retrospective, and ran developer
+                relations for a global build challenge co-hosted with a leading open-weights model
+                lab. I also wrote the outbound developer content and sourced speakers through CMU
+                and Bay Area university networks.
               </p>
               <div className="mt-8">
                 <Metrics
