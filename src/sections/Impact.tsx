@@ -406,30 +406,30 @@ export function Impact() {
                 </div>
                 <p className="label-text mb-4">04 · Applied AI at Work · Yuto USA</p>
                 <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                  An AI product that runs
-                  <br />
-                  without me
+                  Shipping AI the executive team uses daily — and the programs around it
                 </h3>
                 <p className="mt-4 text-[15px] leading-relaxed text-plum-muted">
-                  At an advanced-materials company I built and shipped a 0-to-1 forecasting product
-                  solo with agentic coding — a daily pipeline that gathers market prices, reads the
-                  ones published only as images, retries itself when a source is down, and lands a
-                  formatted report in leadership's inbox before the workday starts.
+                  At an advanced-materials company, I shipped a 0-to-1 forecasting product to
+                  production — built solo with agentic coding, with full traceability and
+                  human-in-the-loop override — now in daily use by the executive team. Alongside it,
+                  I drive technical program management across 5+ concurrent workstreams for top-tier
+                  consumer technology accounts, and delivered the company showcase at a global
+                  technology client's tech day.
                 </p>
                 <div className="mt-6">
                   <Metrics
                     accent="text-orchid"
                     items={[
-                      { value: '337', n: 337, label: 'trading days captured, unattended' },
-                      { value: '9.2→7.5%', label: 'one-month forecast error' },
-                      { value: '0', n: 0, label: 'manual steps in the daily run' },
+                      { value: '9.2→7.5%', label: 'one-month forecast error, at 90% directional accuracy' },
+                      { value: '100+', n: 100, suffix: '+', label: 'attendees at client tech-day showcase' },
+                      { value: '5+', n: 5, suffix: '+', label: 'concurrent workstreams coordinated' },
                     ]}
                   />
                 </div>
                 <div className="mt-5 flex flex-wrap gap-1.5">
-                  <Tag>Agentic Coding</Tag>
-                  <Tag>Data Pipelines</Tag>
-                  <Tag>Applied Forecasting</Tag>
+                  <Tag>Agentic coding</Tag>
+                  <Tag>Technical program management</Tag>
+                  <Tag>Market &amp; GTM research</Tag>
                 </div>
               </article>
             </TiltCard>
