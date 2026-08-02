@@ -392,16 +392,6 @@ function RetryFlow() {
   )
 }
 
-const TREE_NODES = {
-  agent:      { x: 0.205, y: 0.005, w: 0.187, h: 0.098 },
-  column:     { x: 0.213, y: 0.208, w: 0.180, h: 0.093 },
-  nameCheck:  { x: 0.449, y: 0.418, w: 0.187, h: 0.100 },
-  nameFail:   { x: 0.267, y: 0.657, w: 0.185, h: 0.100 },
-  scoreCheck: { x: 0.643, y: 0.657, w: 0.185, h: 0.100 },
-  scoreFail:  { x: 0.478, y: 0.888, w: 0.185, h: 0.100 },
-  accepted:   { x: 0.815, y: 0.888, w: 0.185, h: 0.100 },
-} as const
-
 /* 决策树与滑块联动：拖分数，树上点亮这次走过的路径 */
 function ValidatorSpec() {
   const [n, setN] = useState(95)
@@ -416,13 +406,6 @@ function ValidatorSpec() {
     : total < 85
       ? 'Total below 85 — back to the generator with the failing field named.'
       : 'Clears both gates. Shipped as trusted schema.'
-
-  const lit: (keyof typeof TREE_NODES)[] = ['agent', 'column', 'nameCheck']
-  if (nameFails) lit.push('nameFail')
-  else {
-    lit.push('scoreCheck')
-    lit.push(passed ? 'accepted' : 'scoreFail')
-  }
 
   const rows = [
     { key: 'name', v: n, set: setN, w: '50%', c: '#4E6E96' },
@@ -440,29 +423,10 @@ function ValidatorSpec() {
             alt="Validator decision tree: column exists, name score below 60, confidence score at least 85 — routing to accepted YAML or fallback"
             className="w-full"
           />
-          {lit.map((k) => {
-            const b = TREE_NODES[k]
-            const win = k === 'accepted'
-            return (
-              <span
-                key={k}
-                aria-hidden
-                className="pointer-events-none absolute rounded-md transition-all duration-300"
-                style={{
-                  left: `${b.x * 100}%`,
-                  top: `${b.y * 100}%`,
-                  width: `${b.w * 100}%`,
-                  height: `${b.h * 100}%`,
-                  border: `2px solid ${win ? '#5E8B5A' : '#3A2440'}`,
-                  boxShadow: `0 0 0 4px ${win ? 'rgba(143,174,139,.2)' : 'rgba(78,110,150,.14)'}`,
-                }}
-              />
-            )
-          })}
           </div>
         </div>
         <figcaption className="mt-2.5 font-hand text-[14px] text-plum-muted">
-          the path your scores just took ✦
+          the gate, as I drew it ✦
         </figcaption>
       </figure>
 
