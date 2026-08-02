@@ -31,10 +31,10 @@ const PINS: Pin[] = [
     delay: '.18s',
   },
   {
-    src: '/events/luma/agent-recall.jpg',
+    src: '/events/av-hackathon.jpg',
     type: 'agent hackathon',
-    name: 'Total Agent Recall',
-    role: 'Partner Coordination',
+    name: 'AI Valley Hackathon',
+    role: '',
     cls: 'right-[0.5%] top-[0.5%] w-[25%] rotate-2',
     delay: '.3s',
   },
@@ -195,7 +195,9 @@ export function ProgramWall() {
             {/* hover 才出现的事实层 */}
             <span className="absolute inset-x-[6%] bottom-[7%] translate-y-1.5 scale-95 rounded-[5px] border border-white/70 bg-white/55 px-2 pb-1.5 pt-1.5 opacity-0 shadow-[0_8px_20px_-8px_rgba(58,36,64,0.45)] backdrop-blur-md transition-all duration-300 group-hover/pin:translate-y-0 group-hover/pin:scale-100 group-hover/pin:opacity-100">
               <span className="block text-[9px] font-semibold leading-tight text-plum">{p.name}</span>
-              <span className="mt-[3px] block text-[7.5px] leading-tight text-plum-muted">{p.role}</span>
+              {p.role && (
+                <span className="mt-[3px] block text-[7.5px] leading-tight text-plum-muted">{p.role}</span>
+              )}
             </span>
           </span>
           <span className="relative block px-[2px] pt-[3px] text-center text-[10px] leading-tight">
@@ -224,6 +226,20 @@ export function ProgramWall() {
             </span>
           ))}
         </span>
+      </span>
+
+      {/* 路线上的四个阶段 */}
+      <span className="absolute left-[30%] top-[2%] font-hand text-[10.5px] leading-none text-plum-muted">
+        partner goal
+      </span>
+      <span className="absolute left-[2%] top-[62%] font-hand text-[10.5px] leading-none text-plum-muted">
+        program design
+      </span>
+      <span className="absolute bottom-[2%] left-[36%] font-hand text-[10.5px] leading-none text-plum-muted">
+        people come together
+      </span>
+      <span className="absolute right-[2%] top-[46%] max-w-[24%] text-right font-hand text-[10.5px] leading-tight text-plum-muted">
+        momentum after
       </span>
 
       {/* 便签 */}
