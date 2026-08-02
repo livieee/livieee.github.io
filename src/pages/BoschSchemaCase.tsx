@@ -392,20 +392,37 @@ function RetryFlow() {
   )
 }
 
-function ConfidenceGate() {
+const TREE_NODES = {
+  agent:      { x: 0.205, y: 0.005, w: 0.187, h: 0.098 },
+  column:     { x: 0.213, y: 0.208, w: 0.180, h: 0.093 },
+  nameCheck:  { x: 0.449, y: 0.418, w: 0.187, h: 0.100 },
+  nameFail:   { x: 0.267, y: 0.657, w: 0.185, h: 0.100 },
+  scoreCheck: { x: 0.643, y: 0.657, w: 0.185, h: 0.100 },
+  scoreFail:  { x: 0.478, y: 0.888, w: 0.185, h: 0.100 },
+  accepted:   { x: 0.815, y: 0.888, w: 0.185, h: 0.100 },
+} as const
+
+/* 决策树与滑块联动：拖分数，树上点亮这次走过的路径 */
+function ValidatorSpec() {
   const [n, setN] = useState(95)
   const [d, setD] = useState(90)
   const [t, setT] = useState(100)
 
   const total = n * 0.5 + d * 0.3 + t * 0.2
   const nameFails = n < 60
-  const totalFails = total < 85
-  const passed = !nameFails && !totalFails
+  const passed = !nameFails && total >= 85
   const reason = nameFails
     ? 'Name below the floor of 60 — rejected regardless of the total.'
-    : totalFails
+    : total < 85
       ? 'Total below 85 — back to the generator with the failing field named.'
       : 'Clears both gates. Shipped as trusted schema.'
+
+  const lit: (keyof typeof TREE_NODES)[] = ['agent', 'column', 'nameCheck']
+  if (nameFails) lit.push('nameFail')
+  else {
+    lit.push('scoreCheck')
+    lit.push(passed ? 'accepted' : 'scoreFail')
+  }
 
   const rows = [
     { key: 'name', v: n, set: setN, w: '50%', c: '#4E6E96' },
@@ -414,85 +431,122 @@ function ConfidenceGate() {
   ]
 
   return (
-    <div className="rounded-2xl border border-plum/10 bg-white/80 p-5 md:p-6">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#4E6E96]">
-          Try the gate
-        </p>
-        <p className="font-hand text-[14px] text-plum-faint">drag a score ✦</p>
-      </div>
-
-      {/* 三个可拖的分数 */}
-      <div className="mt-4 space-y-3.5">
-        {rows.map((r) => (
-          <div key={r.key}>
-            <div className="flex items-baseline justify-between text-[11.5px]">
-              <span className="text-plum">
-                {r.key}
-                <span className="ml-1.5 text-plum-faint">× {r.w}</span>
-              </span>
-              <span className="font-mono text-[12px] text-plum">{r.v}</span>
-            </div>
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={r.v}
-              onChange={(e) => r.set(Number(e.target.value))}
-              aria-label={`${r.key} score`}
-              className="mt-1.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-cream-soft accent-[#4E6E96]"
-              style={{ background: `linear-gradient(to right, ${r.c} ${r.v}%, #F0EBE4 ${r.v}%)` }}
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* 总分与阈值 */}
-      <div className="mt-5">
-        <div className="flex items-baseline justify-between">
-          <span className="text-[11px] uppercase tracking-label text-plum-faint">Confidence score</span>
-          <span className={`font-serif text-2xl font-light ${passed ? 'text-[#4E6E96]' : 'text-rose'}`}>
-            {total.toFixed(1)}
-          </span>
-        </div>
-        <div className="relative mt-2 h-3 overflow-hidden rounded-full bg-cream-soft">
-          <div
-            className={`h-full rounded-full ${passed ? 'bg-[#4E6E96]' : 'bg-[#D193A8]'}`}
-            style={{ width: `${total}%`, transition: 'width .3s, background-color .3s' }}
+    <div className="mt-6 grid items-start gap-8 md:grid-cols-2">
+      <figure className="md:sticky md:top-28">
+        <div className="relative overflow-hidden rounded-xl border border-plum/10 bg-white p-2">
+          <img
+            src="/bosch/ic/decision-tree.png"
+            alt="Validator decision tree: column exists, name score below 60, confidence score at least 85 — routing to accepted YAML or fallback"
+            className="w-full"
           />
-          <span aria-hidden className="absolute inset-y-0 w-px bg-plum/45" style={{ left: '85%' }} />
+          {lit.map((k) => {
+            const b = TREE_NODES[k]
+            const win = k === 'accepted'
+            return (
+              <span
+                key={k}
+                aria-hidden
+                className="pointer-events-none absolute rounded-md transition-all duration-300"
+                style={{
+                  left: `${b.x * 100}%`,
+                  top: `${b.y * 100}%`,
+                  width: `${b.w * 100}%`,
+                  height: `${b.h * 100}%`,
+                  border: `2px solid ${win ? '#5E8B5A' : '#3A2440'}`,
+                  boxShadow: `0 0 0 4px ${win ? 'rgba(143,174,139,.2)' : 'rgba(78,110,150,.14)'}`,
+                }}
+              />
+            )
+          })}
         </div>
-        <p className="mt-1 text-right text-[10.5px] text-plum-faint">threshold 85</p>
-      </div>
+        <figcaption className="mt-2.5 font-hand text-[14px] text-plum-muted">
+          the path your scores just took ✦
+        </figcaption>
+      </figure>
 
-      {/* 判定 */}
-      <div
-        className={`mt-4 rounded-xl border px-4 py-3 transition-colors duration-300 ${
-          passed ? 'border-[#8FAE8B]/45 bg-[#8FAE8B]/[0.09]' : 'border-[#D193A8]/45 bg-blush/30'
-        }`}
-      >
-        <p className={`text-[12.5px] font-medium ${passed ? 'text-[#5E8B5A]' : 'text-rose'}`}>
-          {passed ? 'Accepted YAML' : 'Fallback'}
-        </p>
-        <p className="mt-1 text-[12.5px] leading-relaxed text-plum-muted">{reason}</p>
-      </div>
+      <div>
+        <div className="rounded-2xl border border-plum/10 bg-white/80 p-5 md:p-6">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#4E6E96]">Try the gate</p>
+            <p className="font-hand text-[14px] text-plum-faint">drag a score ✦</p>
+          </div>
 
-      {/* 快捷场景 */}
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {GATE_PRESETS.map((g) => (
-          <button
-            key={g.k}
-            type="button"
-            onClick={() => {
-              setN(g.n)
-              setD(g.d)
-              setT(g.t)
-            }}
-            className="rounded-full border border-plum/15 px-3 py-1 text-[11px] text-plum-muted transition-colors hover:border-[#7FA3CC] hover:text-[#4E6E96]"
+          <div className="mt-4 space-y-3.5">
+            {rows.map((r) => (
+              <div key={r.key}>
+                <div className="flex items-baseline justify-between text-[11.5px]">
+                  <span className="text-plum">
+                    {r.key}
+                    <span className="ml-1.5 text-plum-faint">× {r.w}</span>
+                  </span>
+                  <span className="font-mono text-[12px] text-plum">{r.v}</span>
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={r.v}
+                  onChange={(e) => r.set(Number(e.target.value))}
+                  aria-label={`${r.key} score`}
+                  className="mt-1.5 h-1.5 w-full cursor-pointer appearance-none rounded-full accent-[#4E6E96]"
+                  style={{ background: `linear-gradient(to right, ${r.c} ${r.v}%, #F0EBE4 ${r.v}%)` }}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-5">
+            <div className="flex items-baseline justify-between">
+              <span className="text-[11px] uppercase tracking-label text-plum-faint">Confidence score</span>
+              <span className={`font-serif text-2xl font-light ${passed ? 'text-[#4E6E96]' : 'text-rose'}`}>
+                {total.toFixed(1)}
+              </span>
+            </div>
+            <div className="relative mt-2 h-3 overflow-hidden rounded-full bg-cream-soft">
+              <div
+                className={`h-full rounded-full ${passed ? 'bg-[#4E6E96]' : 'bg-[#D193A8]'}`}
+                style={{ width: `${total}%`, transition: 'width .3s, background-color .3s' }}
+              />
+              <span aria-hidden className="absolute inset-y-0 w-px bg-plum/45" style={{ left: '85%' }} />
+            </div>
+            <p className="mt-1 text-right text-[10.5px] text-plum-faint">threshold 85</p>
+          </div>
+
+          <div
+            className={`mt-4 rounded-xl border px-4 py-3 transition-colors duration-300 ${
+              passed ? 'border-[#8FAE8B]/45 bg-[#8FAE8B]/[0.09]' : 'border-[#D193A8]/45 bg-blush/30'
+            }`}
           >
-            {g.k}
-          </button>
-        ))}
+            <p className={`text-[12.5px] font-medium ${passed ? 'text-[#5E8B5A]' : 'text-rose'}`}>
+              {passed ? 'Accepted YAML' : 'Fallback'}
+            </p>
+            <p className="mt-1 text-[12.5px] leading-relaxed text-plum-muted">{reason}</p>
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {GATE_PRESETS.map((g) => (
+              <button
+                key={g.k}
+                type="button"
+                onClick={() => {
+                  setN(g.n)
+                  setD(g.d)
+                  setT(g.t)
+                }}
+                className="rounded-full border border-plum/15 px-3 py-1 text-[11px] text-plum-muted transition-colors hover:border-[#7FA3CC] hover:text-[#4E6E96]"
+              >
+                {g.k}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <RetryFlow />
+
+        <p className="mt-5 text-[12.5px] leading-relaxed text-plum-muted">
+          Semantically tolerant by design — “float” ≈ “continuous”. Every score and decision logged,
+          so the pipeline is auditable, not just confident.
+        </p>
       </div>
     </div>
   )
@@ -829,27 +883,7 @@ export function BoschSchemaCase() {
               <p className="font-hand text-[15px] text-plum-muted">from my own PRD ✦</p>
             </div>
 
-            <div className="mt-6 grid items-center gap-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-              <figure className="overflow-hidden rounded-xl border border-plum/10 bg-white p-2">
-                <img
-                  src="/bosch/ic/decision-tree.png"
-                  alt="Validator decision tree: does the column exist, is the name score below 60, is the confidence score at least 85 — routing to accepted YAML or fallback"
-                  className="w-full"
-                  loading="lazy"
-                />
-              </figure>
-
-              <div>
-                <ConfidenceGate />
-
-                <RetryFlow />
-
-                <p className="mt-5 border-t border-plum/10 pt-3.5 text-[12.5px] leading-relaxed text-plum-muted">
-                  Semantically tolerant by design — “float” ≈ “continuous”. Every score and decision
-                  logged, so the pipeline is auditable, not just confident.
-                </p>
-              </div>
-            </div>
+            <ValidatorSpec />
           </div>
         </Reveal>
 
