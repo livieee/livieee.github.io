@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { PartnerLogos } from '@/components/PartnerLogos'
+import { Glyph, type GlyphName } from '@/components/Glyph'
 import { OutcomeStrip } from '@/components/OutcomeStrip'
 
 /**
@@ -314,6 +315,82 @@ const GATE_PRESETS = [
   { k: 'Vague description', n: 92, d: 60, t: 90 },
   { k: 'Misread field name', n: 45, d: 95, t: 95 },
 ]
+
+/* ── 未过门之后：把三条要点画成流程 ────────────────────────── */
+function RetryFlow() {
+  const [on, setOn] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setOn(true), { threshold: 0.5 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref} className="mt-5 rounded-2xl border border-plum/10 bg-cream-soft/40 p-5">
+      <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-plum-faint">
+        When it doesn’t clear
+      </p>
+
+      {/* 三次重试 */}
+      <div className="mt-4 flex items-center gap-2">
+        {[1, 2, 3].map((n, i) => (
+          <div key={n} className="flex flex-1 items-center gap-2">
+            <span
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#C79A4B]/50 bg-white text-[11.5px] font-medium text-[#9A7B3E]"
+              style={{ opacity: on ? 1 : 0, transform: on ? 'scale(1)' : 'scale(.8)', transition: `all .4s ${i * 0.15}s` }}
+            >
+              {n}
+            </span>
+            {i < 2 && (
+              <span
+                className="h-px flex-1 origin-left bg-[#C79A4B]/35"
+                style={{ transform: on ? 'scaleX(1)' : 'scaleX(0)', transition: `transform .35s ${0.15 + i * 0.15}s` }}
+              />
+            )}
+          </div>
+        ))}
+        <span className="shrink-0 text-[11.5px] text-plum-faint">attempts, max</span>
+      </div>
+      <p className="mt-2 text-[12.5px] leading-relaxed text-plum-muted">
+        Each retry is told <em>which</em> field failed and why — targeted, not blind.
+      </p>
+
+      {/* 选择器分叉 */}
+      <div className="mt-4 border-t border-plum/10 pt-4">
+        <p className="text-[12.5px] leading-relaxed text-plum-muted">
+          A selector then compares every attempt by score:
+        </p>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          {[
+            { k: 'Best version ships', c: '#8FAE8B', d: 'highest score, not the latest' },
+            { k: 'Human review', c: '#D193A8', d: 'if none clears the bar' },
+          ].map((o, i) => (
+            <div
+              key={o.k}
+              className="rounded-xl border bg-white/70 px-3.5 py-2.5"
+              style={{
+                borderColor: `${o.c}55`,
+                opacity: on ? 1 : 0,
+                transform: on ? 'translateY(0)' : 'translateY(6px)',
+                transition: `all .4s ${0.55 + i * 0.12}s`,
+              }}
+            >
+              <p className="flex items-center gap-2 text-[12.5px] font-medium text-plum">
+                <span aria-hidden className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: o.c }} />
+                {o.k}
+              </p>
+              <p className="mt-0.5 pl-3.5 text-[11.5px] text-plum-muted">{o.d}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-2.5 text-[12px] text-plum-faint">Never a silent ship.</p>
+      </div>
+    </div>
+  )
+}
 
 function ConfidenceGate() {
   const [n, setN] = useState(95)
@@ -765,20 +842,7 @@ export function BoschSchemaCase() {
               <div>
                 <ConfidenceGate />
 
-                <ul className="mt-5 space-y-2.5 text-[13.5px] leading-relaxed text-plum-muted">
-                  <li className="flex gap-2.5">
-                    <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#C79A4B]" />
-                    <span>Fails? The generator is told <em>which</em> field and why — three attempts, max.</span>
-                  </li>
-                  <li className="flex gap-2.5">
-                    <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#7FA3CC]" />
-                    <span>A selector keeps the highest-scoring version, not the latest.</span>
-                  </li>
-                  <li className="flex gap-2.5">
-                    <span aria-hidden className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#D193A8]" />
-                    <span>Nothing clears the bar? Human review — never a silent ship.</span>
-                  </li>
-                </ul>
+                <RetryFlow />
 
                 <p className="mt-5 border-t border-plum/10 pt-3.5 text-[12.5px] leading-relaxed text-plum-muted">
                   Semantically tolerant by design — “float” ≈ “continuous”. Every score and decision
@@ -961,21 +1025,29 @@ export function BoschSchemaCase() {
               k: 'Put a person in the loop earlier',
               v: 'Inline schema editing before the YAML is written, and remembering those edits for similar datasets.',
               c: '#8FAE8B',
+              g: 'pen-edit' as GlyphName,
             },
             {
               k: 'Ask better questions',
               v: 'Context-aware fallback prompts — surface only the field genuinely in doubt, not a checklist.',
               c: '#B98ACB',
+              g: 'question' as GlyphName,
             },
             {
               k: 'Take the latency back',
               v: 'Run independent agents in parallel; let teams load their own enterprise validation rules.',
               c: '#7A9CC6',
+              g: 'parallel' as GlyphName,
             },
           ].map((r, i) => (
             <Reveal key={r.k} delay={i * 0.07}>
-              <div className="h-full rounded-[1.4rem] border border-plum/10 bg-white/70 p-6">
-                <span aria-hidden className="block h-[3px] w-10 rounded-full" style={{ backgroundColor: r.c }} />
+              <div className="group/rd h-full rounded-[1.4rem] border border-plum/10 bg-white/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white">
+                <span
+                  className="flex h-11 w-11 items-center justify-center rounded-xl transition-colors duration-300"
+                  style={{ backgroundColor: `${r.c}1f`, color: r.c }}
+                >
+                  <Glyph name={r.g} className="h-6 w-6" w={1.5} />
+                </span>
                 <h3 className="mt-4 font-serif text-[17px] font-light leading-snug text-plum">{r.k}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{r.v}</p>
               </div>

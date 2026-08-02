@@ -26,6 +26,9 @@ export type GlyphName =
   | 'retry'
   | 'ledger'
   | 'laurel'
+  | 'pen-edit'
+  | 'question'
+  | 'parallel'
 
 const PATHS: Record<GlyphName, (w: number) => React.ReactNode> = {
   /* 数据库 + 斜杠：不能直连 */
@@ -128,6 +131,33 @@ const PATHS: Record<GlyphName, (w: number) => React.ReactNode> = {
       <path d="M11.4 8.2h4.6" strokeWidth={w} />
       <path d="M11.3 11.9h4.7" strokeWidth={w} />
       <path d="M11.4 15.5h3.1" strokeWidth={w} />
+    </>
+  ),
+  /* 笔尖：落盘前的行内编辑 */
+  'pen-edit': (w) => (
+    <>
+      <path d="M4.2 16.6 15.9 4.9a2.4 2.4 0 0 1 3.4 3.3L7.6 19.9l-4.3 1z" strokeWidth={w} />
+      <path d="M13.8 7.1 17 10.3" strokeWidth={w} />
+      <path d="M3.4 20.9h9" strokeWidth={w} />
+    </>
+  ),
+  /* 只问一个问题 */
+  question: (w) => (
+    <>
+      <path d="M3.4 5.6h17.2v11.2H9.9l-4.6 3.6v-3.6H3.4z" strokeWidth={w} />
+      <path d="M9.6 9.6a2.5 2.5 0 1 1 2.6 2.9v1.1" strokeWidth={w} />
+      <path d="M12.2 15.9h.02" strokeWidth={w * 1.4} />
+    </>
+  ),
+  /* 并行泳道：把延迟拿回来 */
+  parallel: (w) => (
+    <>
+      <path d="M3.4 6.4h11.2" strokeWidth={w} />
+      <path d="M3.3 12h16.4" strokeWidth={w} />
+      <path d="M3.4 17.6h8.4" strokeWidth={w} />
+      <path d="m12.9 3.9 2.7 2.6-2.8 2.5" strokeWidth={w} />
+      <path d="m18 9.4 2.7 2.6-2.8 2.6" strokeWidth={w} />
+      <path d="m10.1 15.1 2.7 2.6-2.8 2.5" strokeWidth={w} />
     </>
   ),
   /* 桂冠：榜单第一 */
