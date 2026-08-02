@@ -217,8 +217,27 @@ export function ProgramWall() {
         </span>
       </span>
 
+      {/* partner goal —— 伙伴的诉求 */}
+      <span
+        className="absolute left-[33%] top-[2%] w-[31%] rotate-[1.5deg] rounded-md border border-plum/8 bg-white/95 px-2 py-1.5 shadow-[0_10px_24px_-14px_rgba(58,36,64,0.5)]"
+        style={{ animation: 'annot-in .6s .12s ease-out both' }}
+      >
+        <span className="flex items-center gap-1">
+          <span className="h-[10px] w-[10px] overflow-hidden rounded-[2px] bg-white ring-1 ring-plum/10">
+            <img src="/logos/partners/zai.jpg" alt="" aria-hidden loading="lazy" className="h-full w-full object-contain" />
+          </span>
+          <span className="text-[6px] uppercase tracking-[0.16em] text-plum-faint">the brief</span>
+        </span>
+        <span className="mt-1 block text-[7px] font-medium leading-tight text-plum">
+          A new model ships in two weeks.
+        </span>
+        <span className="mt-[3px] block text-[6px] leading-snug text-plum-muted">
+          warm up the launch · surface use cases the lab can point at
+        </span>
+      </span>
+
       {/* 路线上的四个阶段 */}
-      <span className="absolute left-[33%] top-[10%] font-hand text-[9px] text-plum-muted">
+      <span className="absolute left-[36%] top-[23%] font-hand text-[9px] text-plum-muted">
         partner goal
       </span>
       <span className="absolute left-[3%] top-[32%] max-w-[24%] font-hand text-[9px] leading-tight text-plum-muted">
