@@ -421,7 +421,7 @@ export function Impact() {
                   <Metrics
                     accent="text-orchid"
                     items={[
-                      { value: '9.2→7.5%', label: 'one-month forecast error' },
+                      { value: '7.5%', label: 'one-month forecast error, down from 9.2%' },
                       { value: '100+', n: 100, suffix: '+', label: 'attendees at the showcase I delivered' },
                       { value: '5+', n: 5, suffix: '+', label: 'concurrent workstreams run' },
                     ]}
