@@ -305,7 +305,6 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/ic3l89gi',
     cover: '/events/luma/women.jpg',
-    post: 'https://www.linkedin.com/posts/courtneythko_womenintech-buildwhatyoulove-aivalley-activity-7429241914459303938-4MG5',
   },
   {
     name: '2026 GTC AI Demo Day',
@@ -607,15 +606,18 @@ const PARTNER_GROUPS: Array<{ k: string; v: Array<{ n: string; l?: string }> }> 
     v: [
       { n: 'Z.ai', l: '/logos/partners/zai.jpg' },
       { n: 'MiniMax', l: '/logos/partners/minimax.jpg' },
-      { n: 'Vercel', l: '/logos/partners/vercel.svg' },
+      { n: 'Dify', l: '/logos/partners/dify.jpg' },
+      { n: 'GMI Cloud', l: '/logos/partners/gmicloud.jpg' },
+      { n: 'HydraDB', l: '/logos/partners/hydradb.jpg' },
+      { n: 'Replit', l: '/logos/partners/replit.jpg' },
+      { n: 'Vercel', l: '/logos/partners/vercel.jpg' },
       { n: 'Daytona', l: '/logos/partners/daytona.jpg' },
+      { n: 'Neo4j', l: '/logos/partners/neo4j.jpg' },
+      { n: 'Convex', l: '/logos/partners/convex.jpg' },
+      { n: 'Runloop AI', l: '/logos/partners/runloop.jpg' },
+      { n: 'BEM', l: '/logos/partners/bem.jpg' },
       { n: 'Devpost', l: '/logos/partners/devpost.jpg' },
-      { n: 'Replit' },
-      { n: 'Dify' },
-      { n: 'GMI Cloud' },
-      { n: 'HydraDB' },
       { n: 'Photon' },
-      { n: 'BEM' },
     ],
   },
   {
@@ -623,12 +625,12 @@ const PARTNER_GROUPS: Array<{ k: string; v: Array<{ n: string; l?: string }> }> 
     v: [
       { n: 'AI Valley', l: '/logos/aivalley.png' },
       { n: 'The AI Collective', l: '/logos/partners/aicollective.jpg' },
-      { n: 'EPIC Connector' },
+      { n: 'EPIC Connector', l: '/logos/partners/epicconnector.jpg' },
+      { n: 'GPT DAO', l: '/logos/partners/gptdao.jpg' },
+      { n: 'LOOMUS', l: '/logos/partners/loomus.jpg' },
       { n: 'Bond AI' },
       { n: 'AIRA' },
-      { n: 'GPT DAO' },
       { n: 'Cheetah Community' },
-      { n: 'LOOMUS' },
       { n: 'FounderGro' },
     ],
   },
@@ -930,7 +932,7 @@ export function AIValleyCase() {
             <LinkedInPost
               author="Courtney Ko"
               avatar={null}
-              sub="Organiser · Build What You Love"
+              sub="AI Valley · organiser of Build What You Love"
               text={
                 '150+ women in one room in San Francisco, building on Valentine’s Day. Spaces where women in STEM felt supported, confident, and ambitious — women who showed up not to impress anyone, but to build what they love.\n\nVolunteers: Olivia Xiao, Kathy Men, Amy Wang, Uche Oh, Andrew Flores.'
               }
@@ -940,31 +942,6 @@ export function AIValleyCase() {
           </div>
         </Reveal>
 
-        {/* ── 交叉链接 ─────────────────────────────────────────── */}
-        <Reveal className="mt-20">
-          <Link
-            to="/work/genai-analytics"
-            className="group/x flex items-center justify-between gap-6 rounded-[1.6rem] border border-plum/10 bg-white/70 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-rose/45 hover:bg-white hover:shadow-[0_18px_40px_-18px_rgba(209,147,168,0.4)] md:p-8"
-          >
-            <div>
-              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-                What I build when I'm not running the room ↗
-              </p>
-              <p className="mt-2 font-serif text-xl font-light text-plum md:text-2xl">
-                GenAI Analytics Suite — AI-native analytics workspace
-              </p>
-              <p className="mt-1 text-[13px] text-plum-muted">
-                Natural-language SQL · Python analysis · Visualization · Reusable knowledge
-              </p>
-            </div>
-            <span
-              aria-hidden
-              className="shrink-0 font-serif text-2xl text-rose transition-transform duration-300 group-hover/x:translate-x-1.5"
-            >
-              →
-            </span>
-          </Link>
-        </Reveal>
       </article>
     </main>
   )
