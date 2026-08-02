@@ -249,6 +249,8 @@ type Program = {
   role: string | null
   partners: string
   caps: string[]
+  /** 主导深度：1 全权 · 2 主理 · 3 协同 */
+  tier: 1 | 2 | 3
   href: string
   /** luma 封面 */
   cover: string
@@ -274,6 +276,7 @@ const PROGRAMS: Program[] = [
     role: 'Owned end to end — partnership, prize design, judging rubric, DevRel',
     partners: 'Z.ai · AI Valley · Devpost',
     caps: ['Program ownership', 'Developer relations', 'GTM', 'Strategic partnerships'],
+    tier: 1,
     href: 'https://luma.com/32jfoybh',
     cover: '/events/luma/glm.jpg',
     post: 'https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256',
@@ -287,6 +290,7 @@ const PROGRAMS: Program[] = [
     role: 'Co-host — partner search, panel guest invitations, guest background prep',
     partners: 'EPIC Connector · Peak Mojo · Manycore Tech · Z.ai',
     caps: ['Strategic partnerships', 'Community', 'Program ownership'],
+    tier: 2,
     href: 'https://luma.com/GTCTALK',
     cover: '/events/luma/gtc-talk.jpg',
   },
@@ -298,6 +302,7 @@ const PROGRAMS: Program[] = [
     role: 'Program manager — ran the program, issued volunteer certificates',
     partners: 'AI Valley · Bond AI · Replit · Vercel · Daytona · MiniMax · BEM',
     caps: ['Program ownership', 'Community'],
+    tier: 2,
     href: 'https://luma.com/ic3l89gi',
     cover: '/events/luma/women.jpg',
     post: 'https://www.linkedin.com/posts/courtneythko_womenintech-buildwhatyoulove-aivalley-activity-7429241914459303938-4MG5',
@@ -310,6 +315,7 @@ const PROGRAMS: Program[] = [
     role: 'Co-host',
     partners: 'EPIC Connector × Allscale · FounderGro',
     caps: ['GTM', 'Strategic partnerships'],
+    tier: 3,
     href: 'https://luma.com/GTCDEMODAY',
     cover: '/events/luma/gtc-demoday.jpg',
   },
@@ -321,6 +327,7 @@ const PROGRAMS: Program[] = [
     role: 'Lead organiser',
     partners: 'AI Valley · Molly Tea',
     caps: ['Community', 'GTM'],
+    tier: 2,
     href: 'https://luma.com/puy9vbok',
     cover: '/events/luma/molly-tea.jpg',
   },
@@ -332,6 +339,7 @@ const PROGRAMS: Program[] = [
     role: 'Helped organise — a side project taken on after the AI Valley program',
     partners: 'AIRA · GPT DAO · Cheetah Community · LOOMUS · EpicConnector',
     caps: ['Community'],
+    tier: 3,
     href: 'https://luma.com/wkolq6uc',
     cover: '/events/luma/agi-summit.jpg',
   },
@@ -343,6 +351,7 @@ const PROGRAMS: Program[] = [
     role: 'Program coordination',
     partners: 'The AI Collective · AI Valley · MiniMax',
     caps: ['Community', 'Strategic partnerships'],
+    tier: 3,
     href: 'https://luma.com/aic-sf-3-21?tk=C8DbIO',
     cover: '/events/luma/minimax.jpg',
   },
@@ -354,6 +363,7 @@ const PROGRAMS: Program[] = [
     role: 'Program coordination',
     partners: 'AI Valley · HAC.ai · Boundless Immigration',
     caps: ['Community', 'Strategic partnerships'],
+    tier: 3,
     href: 'https://luma.com/6re61lly',
     cover: '/events/luma/builders-salon.jpg',
   },
@@ -365,12 +375,96 @@ const PROGRAMS: Program[] = [
     role: 'Marketing and sponsor coordination — and on the day, running judging across Dify, GMI Cloud and HydraDB',
     partners: 'GMI Cloud · Photon · HydraDB · Dify',
     caps: ['GTM', 'Strategic partnerships', 'Community'],
+    tier: 3,
     href: 'https://luma.com/snixr7yb',
     cover: '/events/luma/agent-recall.jpg',
     post: 'https://www.linkedin.com/feed/update/urn:li:activity:7443396471057485824',
   },
 ]
 
+
+const TIERS = [
+  {
+    t: 1 as const,
+    k: 'Owned end to end',
+    v: 'Mine from the brief to the write-up — partner, rules, funnel, judging.',
+  },
+  {
+    t: 2 as const,
+    k: 'Ran the program',
+    v: 'Responsible for the thing happening: the calendar, the guests, the room, the follow-through.',
+  },
+  {
+    t: 3 as const,
+    k: 'Partnered and coordinated',
+    v: 'Brought in sponsors and partners, and kept the moving parts aligned on the day.',
+  },
+]
+
+function ProgramCard({ p, i }: { p: Program; i: number }) {
+  return (
+    <li
+      style={{ animation: `annot-in .4s ${i * 0.05}s ease-out both` }}
+      className={`group/p flex flex-col overflow-hidden rounded-[1.4rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)] ${
+        p.lead
+          ? 'border-rose/40 bg-rose/[0.05] hover:border-rose/60 sm:col-span-2'
+          : 'border-plum/10 bg-white/60 hover:border-plum/25 hover:bg-white'
+      }`}
+    >
+      <a
+        href={p.href}
+        target="_blank"
+        rel="noreferrer"
+        className="relative block overflow-hidden"
+        aria-label={`${p.name} — open the event page`}
+      >
+        <img
+          src={p.cover}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          className={`w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03] ${
+            p.lead ? 'aspect-[3/1]' : 'aspect-[2/1]'
+          }`}
+        />
+        <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
+          Luma <span aria-hidden>↗</span>
+        </span>
+      </a>
+
+      <div className="flex flex-1 flex-col p-5 md:p-6">
+        <div className="flex items-start justify-between gap-4">
+          <h3 className="font-serif text-[17px] font-light leading-snug text-plum">{p.name}</h3>
+          <span className="shrink-0 text-right">
+            <span className="block font-serif text-xl font-light leading-none text-rose">
+              {p.n?.toLocaleString()}
+            </span>
+            <span className="mt-1 block text-[10.5px] leading-tight text-plum-faint">
+              {p.size.replace(/^[\d,]+\s*/, '')}
+            </span>
+          </span>
+        </div>
+        <p className="mt-1.5 text-[12px] leading-snug text-plum-faint">
+          {p.where} · {p.partners}
+        </p>
+        {p.role && <p className="mt-3 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>}
+        {p.post && (
+          <a
+            href={p.post}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-auto inline-flex items-center gap-1.5 pt-3.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
+          >
+            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
+              <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
+            </svg>
+            I wrote this one up
+          </a>
+        )}
+      </div>
+    </li>
+  )
+}
 
 function ProgramMatrix() {
   const [cap, setCap] = useState<string | null>(null)
@@ -388,7 +482,7 @@ function ProgramMatrix() {
               : 'border-plum/15 bg-white/70 text-plum-muted hover:text-plum'
           }`}
         >
-          All nine
+          By ownership
         </button>
         {CAPS.map((c) => (
           <button
@@ -406,85 +500,76 @@ function ProgramMatrix() {
         ))}
       </div>
 
-      <ul className="mt-6 grid gap-5 sm:grid-cols-2">
-        {shown.map((p, i) => (
-          <li
-            key={p.name}
-            style={{ animation: `annot-in .4s ${i * 0.05}s ease-out both` }}
-            className={`group/p flex flex-col overflow-hidden rounded-[1.4rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)] ${
-              p.lead
-                ? 'border-rose/40 bg-rose/[0.05] hover:border-rose/60 sm:col-span-2'
-                : 'border-plum/10 bg-white/60 hover:border-plum/25 hover:bg-white'
-            }`}
-          >
-            {/* luma 封面 */}
-            <a
-              href={p.href}
-              target="_blank"
-              rel="noreferrer"
-              className="relative block overflow-hidden"
-              aria-label={`${p.name} — open the event page`}
-            >
-              <img
-                src={p.cover}
-                alt=""
-                aria-hidden
-                loading="lazy"
-                className={`w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03] ${
-                  p.lead ? 'aspect-[3/1]' : 'aspect-[2/1]'
-                }`}
-              />
-              <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
-                Luma <span aria-hidden>↗</span>
-              </span>
-              {p.lead && (
-                <span className="absolute left-3 top-3 rounded-full bg-rose px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-sm">
-                  led end to end
-                </span>
-              )}
-            </a>
-
-            <div className="flex flex-1 flex-col p-5 md:p-6">
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="font-serif text-[17px] font-light leading-snug text-plum">
-                  {p.name}
-                </h3>
-                <span className="shrink-0 text-right">
-                  <span className="block font-serif text-xl font-light leading-none text-rose">
-                    {p.n?.toLocaleString()}
-                  </span>
-                  <span className="mt-1 block text-[10.5px] leading-tight text-plum-faint">
-                    {p.size.replace(/^[\d,]+\s*/, '')}
-                  </span>
+      {/* 无筛选时按主导深度分三层；筛选后铺平 */}
+      {cap === null ? (
+        TIERS.map((t) => {
+          const rows = PROGRAMS.filter((p) => p.tier === t.t)
+          if (rows.length === 0) return null
+          return (
+            <section key={t.k} className="mt-9 first:mt-7">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <h3 className="font-serif text-[19px] font-light text-plum">{t.k}</h3>
+                <span className="text-[11px] uppercase tracking-label text-plum-faint">
+                  {rows.length} {rows.length === 1 ? 'program' : 'programs'}
                 </span>
               </div>
-              <p className="mt-1.5 text-[12px] leading-snug text-plum-faint">
-                {p.where} · {p.partners}
-              </p>
-              {p.role && (
-                <p className="mt-3 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>
-              )}
-              {p.post && (
-                <a
-                  href={p.post}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-auto inline-flex items-center gap-1.5 pt-3.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
-                >
-                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
-                    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
-                  </svg>
-                  I wrote this one up
-                </a>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
+              <p className="mt-1 max-w-xl text-[13px] leading-relaxed text-plum-muted">{t.v}</p>
+              <ul className="mt-4 grid gap-5 sm:grid-cols-2">
+                {rows.map((p, i) => (
+                  <ProgramCard key={p.name} p={p} i={i} />
+                ))}
+              </ul>
+            </section>
+          )
+        })
+      ) : (
+        <ul className="mt-6 grid gap-5 sm:grid-cols-2">
+          {shown.map((p, i) => (
+            <ProgramCard key={p.name} p={p} i={i} />
+          ))}
+        </ul>
+      )}
 
       {shown.length === 0 && (
         <p className="mt-6 font-hand text-[15px] text-plum-muted">nothing tagged with that yet ✦</p>
       )}
+    </div>
+  )
+}
+
+/* ── 合作方名录：strategic partnership 的直接证据 ──────────────── */
+const PARTNER_GROUPS = [
+  { k: 'Model labs & platforms', v: ['Z.ai', 'MiniMax', 'Dify', 'GMI Cloud', 'HydraDB', 'Photon', 'Replit', 'Vercel', 'Daytona', 'BEM', 'Devpost'] },
+  { k: 'Communities & convenors', v: ['AI Valley', 'The AI Collective', 'EPIC Connector', 'Bond AI', 'AIRA', 'GPT DAO', 'Cheetah Community', 'LOOMUS', 'FounderGro'] },
+  { k: 'Capital, venue & services', v: ['Sky9 Capital', 'Allscale', 'Peak Mojo', 'Manycore Tech', 'HAC.ai', 'Boundless Immigration', 'Molly Tea'] },
+]
+
+function PartnerWall() {
+  return (
+    <div className="rounded-[1.6rem] border border-plum/10 bg-white/60 p-6 md:p-8">
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+          Who was on the other side of these programs
+        </p>
+        <p className="font-hand text-[15px] text-plum-muted">every one of them, a conversation ✦</p>
+      </div>
+      <div className="mt-6 grid gap-7 md:grid-cols-3">
+        {PARTNER_GROUPS.map((g) => (
+          <div key={g.k}>
+            <p className="text-[12px] font-medium text-plum">{g.k}</p>
+            <ul className="mt-3 flex flex-wrap gap-1.5">
+              {g.v.map((n) => (
+                <li
+                  key={n}
+                  className="rounded-full border border-plum/12 bg-white/70 px-2.5 py-1 text-[11.5px] text-plum-muted"
+                >
+                  {n}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -662,6 +747,10 @@ export function AIValleyCase() {
         />
         <Reveal className="mt-8" y={24}>
           <ProgramMatrix />
+        </Reveal>
+
+        <Reveal className="mt-10" y={24}>
+          <PartnerWall />
         </Reveal>
 
         {/* ── 三 · 打法 ─────────────────────────────────────────── */}
