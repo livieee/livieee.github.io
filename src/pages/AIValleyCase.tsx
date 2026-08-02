@@ -599,6 +599,89 @@ function Outbound() {
   )
 }
 
+/* ── 炉边谈的当天流程：来自我参与准备的 Speaker & Moderator Guide ──── */
+const PANELS = [
+  {
+    t: '6:10',
+    k: 'Opening keynotes',
+    v: 'Manycore Tech · Z.ai',
+    n: 2,
+    q: 0,
+  },
+  {
+    t: '6:30',
+    k: 'The distribution challenge',
+    v: 'Scaling AI products in the agent era',
+    n: 4,
+    q: 6,
+  },
+  {
+    t: '7:10',
+    k: 'Building in the age of AI',
+    v: 'YC founders on PMF, pivots and what actually works',
+    n: 4,
+    q: 7,
+  },
+  {
+    t: '7:50',
+    k: 'Beyond the horizon',
+    v: 'Physical AI · memory · spatial computing · agents in production',
+    n: 4,
+    q: 8,
+  },
+]
+
+function RunOfShow() {
+  return (
+    <div className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:p-8">
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+          And then the night has to run
+        </p>
+        <p className="font-hand text-[15px] text-plum-muted">from the guest brief ✦</p>
+      </div>
+
+      <p className="mt-4 max-w-2xl text-[13.5px] leading-relaxed text-plum-muted">
+        Three hours, three panels, fourteen speakers. Inviting them is the easy half — every panel
+        also shipped with its own set of prepared questions, so no one repeated the same intro and
+        the conversation went somewhere specific.
+      </p>
+
+      <ol className="mt-6 space-y-2">
+        {PANELS.map((p, i) => (
+          <li
+            key={p.k}
+            style={{ animation: `annot-in .45s ${i * 0.07}s ease-out both` }}
+            className="flex flex-col gap-2 rounded-[1.1rem] border border-plum/10 bg-white/70 px-4 py-3 sm:flex-row sm:items-center sm:gap-5"
+          >
+            <span className="shrink-0 font-serif text-[15px] leading-none text-rose sm:w-14">
+              {p.t}
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[13.5px] font-medium leading-snug text-plum">{p.k}</span>
+              <span className="mt-0.5 block text-[12px] leading-snug text-plum-faint">{p.v}</span>
+            </span>
+            <span className="flex shrink-0 items-center gap-2">
+              <span className="rounded-full bg-plum/[0.06] px-2.5 py-1 text-[11px] text-plum-muted">
+                {p.n} speakers
+              </span>
+              {p.q > 0 && (
+                <span className="rounded-full bg-rose/10 px-2.5 py-1 text-[11px] text-rose">
+                  {p.q} questions prepped
+                </span>
+              )}
+            </span>
+          </li>
+        ))}
+      </ol>
+
+      <p className="mt-4 border-t border-plum/10 pt-3.5 text-[12px] text-plum-faint">
+        2026 GTC Fireside Talk · Palo Alto · 5:30–8:30 PM · 413 attendees
+      </p>
+    </div>
+  )
+}
+
 /* ── 合作方名录：strategic partnership 的直接证据 ──────────────── */
 const PARTNER_GROUPS: Array<{ k: string; v: Array<{ n: string; l?: string }> }> = [
   {
@@ -890,6 +973,10 @@ export function AIValleyCase() {
 
         <Reveal className="mt-10" y={24}>
           <Outbound />
+        </Reveal>
+
+        <Reveal className="mt-6" y={24}>
+          <RunOfShow />
         </Reveal>
 
         {/* ── 三 · 合作方 ──────────────────────────────────────── */}
