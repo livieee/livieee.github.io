@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
-import { Glyph, type GlyphName } from '@/components/Glyph'
 
 /**
  * Bosch × CMU 项目一：多智能体 schema 抽取（对外名 Schema Extraction Agents）。
@@ -213,24 +212,6 @@ function ArchWalkthrough() {
 }
 
 /* ── 信任层三支柱 ────────────────────────────────────────────── */
-const TRUST = [
-  {
-    icon: 'target' as GlyphName,
-    title: 'Confidence scoring drives the system',
-    body: 'Every field gets a score. Scores decide what ships, what retries, and what asks a human — YAML never fails silently.',
-  },
-  {
-    icon: 'retry' as GlyphName,
-    title: 'Retry with control, not hope',
-    body: 'LangGraph routes low-confidence fields back to the Generator — partial retries, max 3 rounds, best-YAML selection at the end.',
-  },
-  {
-    icon: 'ledger' as GlyphName,
-    title: 'Every score is logged',
-    body: "Full token trace and score logs make the pipeline explainable — trust you can audit, not trust you're asked for.",
-  },
-]
-
 /* ── 对比竞品 ────────────────────────────────────────────────── */
 const COMPARE = [
   { dim: 'Trust layer', them: 'None / manual fix', us: 'Validator + scoring + retry' },
@@ -238,6 +219,92 @@ const COMPARE = [
   { dim: 'Modularity', them: 'Limited or monolithic', us: 'Fully modular agents' },
   { dim: 'Cost · 3-page PDF', them: '~$0.06', us: '$0.007–0.03' },
 ]
+
+/* ── 原始手绘架构：默认收起，需要时展开 ────────────────────── */
+function OriginalDoc() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex items-center gap-2 text-[12.5px] font-medium text-[#4E6E96] transition-colors hover:text-plum"
+      >
+        <span aria-hidden className={`transition-transform duration-300 ${open ? 'rotate-90' : ''}`}>▸</span>
+        {open ? 'Hide the original design doc' : 'See the original design doc I drew'}
+      </button>
+      <div
+        className="overflow-hidden transition-all duration-500"
+        style={{ maxHeight: open ? 1200 : 0, opacity: open ? 1 : 0 }}
+      >
+        <figure className="mt-4 rotate-[-0.5deg] overflow-hidden rounded-[1.2rem] border border-plum/10 bg-white p-3 shadow-[0_24px_54px_-30px_rgba(78,110,150,0.5)] transition-transform duration-500 hover:rotate-0 md:p-4">
+          <img
+            src="/bosch/interchat-architecture.jpg"
+            alt="The original 16-step architecture I drew, from PDF upload through the multi-agent orchestrator to trusted YAML"
+            loading="lazy"
+            className="w-full rounded-lg"
+          />
+          <figcaption className="mt-3 px-1 font-hand text-[15px] text-plum-muted">
+            all 16 steps, before it became the walkthrough above ✦
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  )
+}
+
+/* ── 评测对比条：进入视口时生长 ─────────────────────────────── */
+function EvalBars() {
+  const ref = useRef<HTMLDivElement>(null)
+  const [on, setOn] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setOn(true), { threshold: 0.4 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref} className="space-y-6">
+      {[
+        { label: 'Generator only', value: '56.6%', w: '56.6%', tone: 'bg-plum/25', text: 'text-plum-muted', size: 'text-3xl', delay: 0 },
+      ].map((r) => (
+        <div key={r.label}>
+          <div className="flex items-baseline justify-between">
+            <span className="text-[12px] uppercase tracking-label text-plum-muted">{r.label}</span>
+            <span className={`font-serif ${r.size} font-light ${r.text}`}>{r.value}</span>
+          </div>
+          <div className="mt-2 h-3 overflow-hidden rounded-full bg-white">
+            <div
+              className={`h-full rounded-full ${r.tone}`}
+              style={{ width: on ? r.w : '0%', transition: 'width 1s cubic-bezier(.4,0,.2,1)' }}
+            />
+          </div>
+        </div>
+      ))}
+
+      <div>
+        <div className="flex items-baseline justify-between">
+          <span className="text-[12px] uppercase tracking-label text-[#4E6E96]">+ Validator &amp; retry</span>
+          <span className="font-serif text-5xl font-light text-[#4E6E96]">
+            <CountUp value={97.2} suffix="%" />
+          </span>
+        </div>
+        <div className="mt-2 h-3 overflow-hidden rounded-full bg-white">
+          <div
+            className="h-full rounded-full bg-[#4E6E96]"
+            style={{ width: on ? '97.2%' : '0%', transition: 'width 1.1s cubic-bezier(.4,0,.2,1) .22s' }}
+          />
+        </div>
+      </div>
+
+      <p className="font-hand text-[15px] text-plum-muted">
+        coverage: 100% on both evals — nothing skipped ✦
+      </p>
+    </div>
+  )
+}
 
 export function BoschSchemaCase() {
   return (
@@ -298,50 +365,9 @@ export function BoschSchemaCase() {
           <ArchWalkthrough />
         </Reveal>
 
-        {/* ── 原始设计图（真实工件） ───────────────────────────── */}
-        <Reveal className="mt-16">
-          <div className="relative mx-auto max-w-4xl">
-            <span
-              aria-hidden
-              className="absolute -top-3 left-1/2 z-10 h-6 w-24 -translate-x-1/2 rotate-[-3deg] rounded-[3px] bg-[#DCE7F2]/90 shadow-sm"
-            />
-            <figure className="rotate-[-0.6deg] rounded-[1.4rem] border border-plum/10 bg-white p-4 shadow-[0_28px_60px_-30px_rgba(78,110,150,0.5)] transition-transform duration-500 hover:rotate-0 md:p-6">
-              <img
-                src="/bosch/interchat-architecture.jpg"
-                alt="The original 16-step architecture I designed: application layer with the tool UI and PDF parsing, a multi-agent orchestrator with schema generator, validation/enrichment, human-in-the-loop and evaluation agents, and an AI layer with the LLM API and LangGraph"
-                loading="lazy"
-                className="w-full rounded-lg"
-              />
-              <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-2 px-1">
-                <span className="text-[11.5px] text-plum-faint">
-                  The original design doc — all 16 steps, from PDF upload to trusted YAML
-                </span>
-                <span className="font-hand text-[15px] text-[#4E6E96]">
-                  drawn by me — the walkthrough above is its distilled version ✦
-                </span>
-              </figcaption>
-            </figure>
-          </div>
-        </Reveal>
-
-        {/* ── 信任层 ───────────────────────────────────────────── */}
-        <Reveal className="mt-20">
-          <p className="label-text mb-3">The trust layer</p>
-          <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
-            The one feature competitors didn't have
-          </h2>
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {TRUST.map((t) => (
-              <div
-                key={t.title}
-                className="group/t rounded-[1.4rem] border border-plum/10 bg-white/70 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#7FA3CC]/50 hover:bg-white hover:shadow-[0_18px_40px_-18px_rgba(78,110,150,0.35)]"
-              >
-                <Glyph name={t.icon} className="h-7 w-7 text-[#4E6E96]" />
-                <h3 className="mt-3 font-serif text-lg font-light text-plum">{t.title}</h3>
-                <p className="mt-2 text-[13.5px] leading-relaxed text-plum-muted">{t.body}</p>
-              </div>
-            ))}
-          </div>
+        {/* ── 原稿：折叠在走查之下 ─────────────────────────────── */}
+        <Reveal className="mt-5">
+          <OriginalDoc />
         </Reveal>
 
         {/* ── 真实评分模型（来自我写的 Validator PRD） ──────────── */}
@@ -397,7 +423,9 @@ export function BoschSchemaCase() {
 
                 <p className="mt-5 border-t border-plum/10 pt-3.5 text-[12.5px] leading-relaxed text-plum-muted">
                   Scoring is semantically tolerant by design — “float” ≈ “continuous”, “UID” ≈ “User
-                  ID” — so the gate rejects real errors, not harmless wording.
+                  ID” — so the gate rejects real errors, not harmless wording. Every score, failure
+                  type and final decision is logged, which is what makes the pipeline auditable
+                  rather than merely confident.
                 </p>
               </div>
             </div>
@@ -422,31 +450,7 @@ export function BoschSchemaCase() {
                   required.
                 </p>
               </div>
-              <div className="space-y-6">
-                <div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-[12px] uppercase tracking-label text-plum-muted">Generator only</span>
-                    <span className="font-serif text-3xl font-light text-plum-muted">56.6%</span>
-                  </div>
-                  <div className="mt-2 h-3 overflow-hidden rounded-full bg-white">
-                    <div className="h-full rounded-full bg-plum/25" style={{ width: '56.6%' }} />
-                  </div>
-                </div>
-                <div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-[12px] uppercase tracking-label text-[#4E6E96]">+ Validator & retry</span>
-                    <span className="font-serif text-5xl font-light text-[#4E6E96]">
-                      <CountUp value={97.2} suffix="%" />
-                    </span>
-                  </div>
-                  <div className="mt-2 h-3 overflow-hidden rounded-full bg-white">
-                    <div className="h-full rounded-full bg-[#4E6E96]" style={{ width: '97.2%' }} />
-                  </div>
-                </div>
-                <p className="font-hand text-[15px] text-plum-muted">
-                  coverage: 100% on both evals — nothing skipped ✦
-                </p>
-              </div>
+              <EvalBars />
             </div>
           </div>
         </Reveal>
@@ -531,6 +535,26 @@ export function BoschSchemaCase() {
               </span>
             </a>
           </div>
+        </Reveal>
+
+        {/* ── 现场 ─────────────────────────────────────────────── */}
+        <Reveal className="mt-16" y={28}>
+          <figure className="overflow-hidden rounded-[1.6rem] border border-plum/10 bg-white p-3 shadow-[0_26px_58px_-30px_rgba(58,36,64,0.45)] md:p-4">
+            <img
+              src="/bosch/ic/team.jpg"
+              alt="Final presentation at Bosch Research in Sunnyvale — the team presenting, the campus, and the full group afterwards"
+              loading="lazy"
+              className="w-full rounded-[1.1rem]"
+            />
+            <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-2 px-1.5 pb-1">
+              <span className="text-[12px] text-plum-faint">
+                Final presentation · Bosch Research, Sunnyvale
+              </span>
+              <span className="font-hand text-[15px] text-[#4E6E96]">
+                the day we handed it over ✦
+              </span>
+            </figcaption>
+          </figure>
         </Reveal>
 
         {/* ── 它后来长成了什么 ──────────────────────────────────── */}
