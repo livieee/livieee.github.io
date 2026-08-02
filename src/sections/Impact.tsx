@@ -80,7 +80,7 @@ export function Impact() {
         </h2>
         <Reveal delay={0.12}>
           <p className="mt-4 font-hand text-[18px] text-plum-muted md:text-[19px]">
-            four chapters, one throughline —{' '}
+            five chapters, one throughline —{' '}
             <span className="text-orchid">make it adopted, not just shipped ✦</span>
           </p>
         </Reveal>
@@ -293,11 +293,11 @@ export function Impact() {
                     <img src="/logos/cmu-wordmark.png" alt="Carnegie Mellon University" className="h-9 w-auto rounded-lg" />
                   </div>
                   <h3 className="font-serif text-2xl font-light leading-snug text-plum md:text-[1.9rem]">
-                    Making enterprise analytics easier to ask, explore, and reuse
+                    Three disconnected tools, one continuous pipeline
                   </h3>
                   <p className="mt-5 text-[15px] leading-relaxed text-plum-muted">
-                    Three disconnected tools, unified into one workspace — natural-language SQL,
-                    Python analysis and visualization, sharing a single session.
+                    Enterprise teams lost the thread between query, analysis and charts. I designed
+                    the workspace that holds it — so the answer never has to be re-explained.
                   </p>
                   <div className="mt-6 flex flex-wrap gap-2">
                     <Tag>Product Strategy</Tag>

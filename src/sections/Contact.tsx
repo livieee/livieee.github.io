@@ -32,7 +32,7 @@ export function Contact() {
         <Reveal delay={0.3}>
           <p className="mt-8 max-w-xl text-base leading-relaxed text-plum-muted md:text-lg">
             I'm open to conversations about AI product operations, GTM strategy, partnerships,
-            ecosystem programs, and thoughtful collaborations.
+            ecosystem programs, and collaborations worth building slowly.
           </p>
         </Reveal>
 
@@ -76,7 +76,7 @@ export function Contact() {
         <Reveal delay={0.6}>
           <p className="mt-14 flex items-center gap-3 text-[13px] text-plum-faint">
             <span className="inline-block h-1.5 w-1.5 animate-pulse-soft rounded-full bg-orchid" />
-            Based in the San Francisco Bay Area · Open to thoughtful conversations
+            Based in the San Francisco Bay Area · Always up for a good conversation
           </p>
         </Reveal>
       </div>
