@@ -301,50 +301,97 @@ function EvalBars() {
   )
 }
 
-/* ── 成本对比：进入视口时生长 ───────────────────────────────── */
+/* ── 成本随页数增长：计价单位的差别画出来 ────────────────────── */
+const PAGES = [1, 3, 5, 10]
+const THEIRS = PAGES.map((n) => n * 0.02)          // 每页 $0.02
+const OURS_LO = 0.007
+const OURS_HI = 0.03                                // 每份抽取任务，与页数无关
+
 function CostCompare() {
   const ref = useRef<HTMLDivElement>(null)
   const [on, setOn] = useState(false)
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && setOn(true), { threshold: 0.4 })
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setOn(true), { threshold: 0.35 })
     io.observe(el)
     return () => io.disconnect()
   }, [])
 
+  /* 画布 */
+  const W = 560, H = 250, L = 56, R = 22, T = 18, B = 42
+  const maxY = 0.22
+  const x = (i: number) => L + (i / (PAGES.length - 1)) * (W - L - R)
+  const y = (v: number) => T + (1 - v / maxY) * (H - T - B)
+  const theirsPath = THEIRS.map((v, i) => `${i ? 'L' : 'M'}${x(i)} ${y(v)}`).join(' ')
+
   return (
     <div ref={ref} className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:p-8">
-      <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-        Cost to process a 3-page PDF
-      </p>
-
-      <div className="mt-6 space-y-6">
-        {[
-          { label: 'Unstructured.io · billed per page', price: '~$0.06', w: '100%', tone: 'bg-plum/22', text: 'text-plum-muted', size: 'text-2xl md:text-3xl', d: '0s' },
-          { label: 'Ours · billed per YAML task', price: '$0.007–0.03', w: '38%', tone: 'bg-[#4E6E96]', text: 'text-[#4E6E96]', size: 'text-3xl md:text-4xl', d: '.22s' },
-        ].map((r) => (
-          <div key={r.label}>
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <span className="text-[12px] uppercase tracking-label text-plum-muted">{r.label}</span>
-              <span className={`font-serif font-light ${r.size} ${r.text}`}>{r.price}</span>
-            </div>
-            <div className="mt-2 h-3 overflow-hidden rounded-full bg-cream-soft">
-              <div
-                className={`h-full rounded-full ${r.tone}`}
-                style={{ width: on ? r.w : '0%', transition: `width 1s cubic-bezier(.4,0,.2,1) ${r.d}` }}
-              />
-            </div>
-          </div>
-        ))}
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+          Cost as a document gets longer
+        </p>
+        <p className="font-hand text-[15px] text-plum-muted">the unit matters more than the number ✦</p>
       </div>
 
-      <div className="mt-7 grid gap-4 border-t border-plum/10 pt-5 sm:grid-cols-2">
+      <svg viewBox={`0 0 ${W} ${H}`} className="mt-5 w-full" role="img" aria-label="Cost by page count: per-page billing rises linearly to about twenty cents at ten pages, while per-task billing stays between under one cent and three cents regardless of length">
+        {/* 网格与刻度 */}
+        {[0, 0.05, 0.1, 0.15, 0.2].map((v) => (
+          <g key={v}>
+            <line x1={L} x2={W - R} y1={y(v)} y2={y(v)} stroke="#E7E0EA" strokeWidth="1" />
+            <text x={L - 9} y={y(v) + 3.5} textAnchor="end" fontSize="9.5" fill="#9A87A0">
+              ${v.toFixed(2)}
+            </text>
+          </g>
+        ))}
+        {PAGES.map((n, i) => (
+          <text key={n} x={x(i)} y={H - 16} textAnchor="middle" fontSize="10" fill="#9A87A0">
+            {n} {n === 1 ? 'page' : 'pages'}
+          </text>
+        ))}
+
+        {/* 我们的区间：与页数无关，横向恒定带 */}
+        <rect
+          x={L} y={y(OURS_HI)} width={W - L - R} height={y(OURS_LO) - y(OURS_HI)}
+          fill="#4E6E96" opacity={on ? 0.16 : 0}
+          style={{ transition: 'opacity .7s .5s' }}
+        />
+        <line
+          x1={L} x2={W - R} y1={y(OURS_HI)} y2={y(OURS_HI)}
+          stroke="#4E6E96" strokeWidth="2.2" strokeDasharray={W}
+          strokeDashoffset={on ? 0 : W}
+          style={{ transition: 'stroke-dashoffset 1.1s .45s cubic-bezier(.4,0,.2,1)' }}
+        />
+
+        {/* 他们的线：随页数线性上升 */}
+        <path
+          d={theirsPath} fill="none" stroke="#B08A9A" strokeWidth="2.2"
+          strokeDasharray="700" strokeDashoffset={on ? 0 : 700}
+          style={{ transition: 'stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)' }}
+        />
+        {THEIRS.map((v, i) => (
+          <circle key={i} cx={x(i)} cy={y(v)} r="3.4" fill="#B08A9A"
+            opacity={on ? 1 : 0} style={{ transition: `opacity .4s ${0.5 + i * 0.12}s` }} />
+        ))}
+
+        {/* 标注 */}
+        <text x={x(3) - 6} y={y(THEIRS[3]) - 10} textAnchor="end" fontSize="10.5" fill="#B08A9A">
+          per page · $0.20
+        </text>
+        <text x={W - R} y={y(OURS_HI) - 9} textAnchor="end" fontSize="10.5" fill="#4E6E96">
+          per extraction task · $0.007–0.03
+        </text>
+      </svg>
+
+      <div className="mt-5 grid gap-4 border-t border-plum/10 pt-5 sm:grid-cols-2">
         <p className="text-[13px] leading-relaxed text-plum-muted">
-          Priced per task, not per page — cost scales with work done, not paper.
+          Their unit is a page, ours is a document — so their line climbs with paper while ours
+          stays where the work is.
         </p>
         <p className="text-[13px] leading-relaxed text-plum-muted">
-          Agents stay modular and independently replaceable, where the alternatives ship monolithic.
+          At three pages that is <span className="font-medium text-plum">~$0.06</span> against{' '}
+          <span className="font-medium text-[#4E6E96]">$0.007–0.03</span>. Modelled from published
+          billing units, not a benchmark run.
         </p>
       </div>
     </div>
@@ -384,20 +431,8 @@ function SilentFailure() {
   return (
     <div className="grid gap-5 md:grid-cols-2">
       {[
-        {
-          tone: 'ok',
-          tag: 'What the source says',
-          name: 'annual_revenue',
-          desc: 'Total sales in USD, per supplier',
-          type: 'float',
-        },
-        {
-          tone: 'bad',
-          tag: 'What a confident model can return',
-          name: 'Column3',
-          desc: 'Customer name',
-          type: 'string',
-        },
+        { tone: 'ok', tag: 'What the source says', name: 'annual_revenue', desc: 'Total sales in USD, per supplier', type: 'float' },
+        { tone: 'bad', tag: 'What a confident model can return', name: 'Column3', desc: 'Customer name', type: 'string' },
       ].map((c) => (
         <div
           key={c.tag}
@@ -407,11 +442,7 @@ function SilentFailure() {
         >
           <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">{c.tag}</p>
           <dl className="mt-4 space-y-2 font-mono text-[12.5px] leading-relaxed">
-            {[
-              ['name', c.name],
-              ['description', c.desc],
-              ['type', c.type],
-            ].map(([k, v]) => (
+            {([['name', c.name], ['description', c.desc], ['type', c.type]] as const).map(([k, v]) => (
               <div key={k} className="flex gap-3">
                 <dt className="w-[86px] shrink-0 text-plum-faint">{k}</dt>
                 <dd className={c.tone === 'ok' ? 'text-plum' : 'text-rose'}>{v}</dd>
