@@ -372,7 +372,7 @@ const PROGRAMS: Program[] = [
     where: 'Sky9 Capital, San Francisco',
     size: '358 registered · 50 engineers, 8 hours',
     n: 358,
-    role: 'Ran marketing and sponsor coordination, then on the day kept judging aligned across Dify, GMI Cloud and HydraDB.',
+    role: 'Ran marketing and sponsor coordination — including the perk creative that turned a sponsor into a sign-up incentive — then kept judging aligned across Dify, GMI Cloud and HydraDB on the day.',
     partners: 'GMI Cloud · Photon · HydraDB · Dify',
     caps: ['GTM', 'Strategic partnerships', 'Community'],
     tier: 3,
@@ -603,12 +603,17 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
     alt: 'The full cohort of Build What You Love — Women in Tech Hackathon, on stage after demos',
     cap: 'Build What You Love · Women in Tech Hackathon — San Francisco, 14 February 2026',
   },
+  {
+    src: '/events/gmi-perk.jpg',
+    alt: 'Sponsor perk graphic — a GMI-branded tumbler held up in the GMI Cloud office, captioned “First 20 AI Valley sign-ups get a FREE GMI MUG!”',
+    cap: 'Sponsor perk creative I made for GMI Cloud — Total Agent Recall Hackathon',
+  },
 ]
 
 function EventPhotos() {
   if (PHOTOS.length === 0) return null
   return (
-    <div className={`grid gap-4 ${PHOTOS.length > 1 ? 'sm:grid-cols-2' : ''}`}>
+    <div className={`grid items-start gap-4 ${PHOTOS.length > 1 ? 'sm:grid-cols-2' : ''}`}>
       {PHOTOS.map((ph) => (
         <figure key={ph.src} className="overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white p-3">
           <img src={ph.src} alt={ph.alt} loading="lazy" className="w-full rounded-[1rem]" />
