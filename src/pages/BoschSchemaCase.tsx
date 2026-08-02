@@ -777,6 +777,32 @@ function SilentFailure() {
   )
 }
 
+/* ── 统一的章节头：细线 + 标签 + 标题 + 可选导语 ──────────────── */
+function Chapter({
+  label,
+  title,
+  intro,
+  className = 'mt-24',
+}: {
+  label: string
+  title: string
+  intro?: string
+  className?: string
+}) {
+  return (
+    <Reveal className={className}>
+      <div className="mb-3 flex items-center gap-3">
+        <span aria-hidden className="h-px w-8 shrink-0 bg-plum/20" />
+        <p className="label-text">{label}</p>
+      </div>
+      <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
+        {title}
+      </h2>
+      {intro && <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">{intro}</p>}
+    </Reveal>
+  )
+}
+
 export function BoschSchemaCase() {
   return (
     <main className="min-h-screen bg-cream">
@@ -843,34 +869,29 @@ export function BoschSchemaCase() {
           />
         </Reveal>
 
-        {/* ── 问题 ─────────────────────────────────────────────── */}
-        <Reveal className="mt-20">
-          <p className="label-text mb-3">The problem</p>
-          <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
-            An LLM always returns something. That's the problem.
-          </h2>
-          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-            Ask a model to read a PDF and it will hand back a clean, confident schema every time —
-            including when it is wrong. Downstream, a chart reads that field name and plots it. The
-            failure is silent, and it looks like data.
-          </p>
-        </Reveal>
+        {/* ── 一 · 问题 ────────────────────────────────────────── */}
+        <Chapter
+          label="The problem"
+          title="An LLM always returns something. That's the problem."
+          intro="Ask a model to read a PDF and it will hand back a clean, confident schema every time — including when it is wrong. Downstream, a chart reads that field name and plots it. The failure is silent, and it looks like data."
+          className="mt-20"
+        />
         <Reveal className="mt-8" y={28}>
           <SilentFailure />
         </Reveal>
 
-        {/* ── 交互式架构走查 ──────────────────────────────────── */}
-        <Reveal className="mt-14" y={32}>
+        {/* ── 二 · 系统怎么工作（走查 + 原稿 + 评分门） ──────────── */}
+        <Chapter
+          label="How it works"
+          title="A generator that drafts — and a layer that decides what ships"
+        />
+        <Reveal className="mt-8" y={32}>
           <ArchWalkthrough />
         </Reveal>
-
-        {/* ── 原稿：折叠在走查之下 ─────────────────────────────── */}
         <Reveal className="mt-5">
           <OriginalDoc />
         </Reveal>
-
-        {/* ── 真实评分模型（来自我写的 Validator PRD） ──────────── */}
-        <Reveal className="mt-12" y={28}>
+        <Reveal className="mt-6" y={28}>
           <div className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:p-8">
             <div className="flex flex-wrap items-baseline justify-between gap-3">
               <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
@@ -883,13 +904,8 @@ export function BoschSchemaCase() {
           </div>
         </Reveal>
 
-        {/* ── 我的判断 ─────────────────────────────────────────── */}
-        <Reveal className="mt-20">
-          <p className="label-text mb-3">The calls I made</p>
-          <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
-            Four choices, and what I chose against
-          </h2>
-        </Reveal>
+        {/* ── 三 · 我的判断 ────────────────────────────────────── */}
+        <Chapter label="The calls I made" title="Four choices, and what I chose against" />
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {CALLS.map((c, i) => (
             <Reveal key={c.n} delay={i * 0.06}>
@@ -904,151 +920,63 @@ export function BoschSchemaCase() {
               </div>
             </Reveal>
           ))}
-        </div>
-
-        {/* ── 评测结果 ─────────────────────────────────────────── */}
-        <Reveal className="mt-20">
-          <p className="label-text mb-3">The proof</p>
-          <div className="rounded-[2rem] border border-[#7FA3CC]/25 bg-[#EFF5FB]/60 p-8 md:p-12">
-            <div className="grid items-center gap-10 md:grid-cols-2">
-              <div>
-                <h2 className="font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
-                  Generator alone guessed.
-                  <br />
-                  The trust layer knew.
-                </h2>
-                <p className="mt-4 max-w-md text-[14px] leading-relaxed text-plum-muted">
-                  Two evaluations across four public datasets — Iris, Mushroom, NPHA, Wine Quality.
-                  The validator, semantic tolerance and retry loop took average accuracy from 56.6%
-                  to 97.2%, at full coverage, with no human fixes.
-                </p>
-              </div>
-              <EvalBars />
-            </div>
-          </div>
-        </Reveal>
-
-        {/* ── 第一次评测我们自己错了 ───────────────────────────── */}
-        <Reveal className="mt-12" y={28}>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-[1.6rem] border border-[#C79A4B]/35 bg-champagne/25 p-7">
-              <p className="font-hand text-[16px] text-[#9A7B3E]">what the first eval got wrong ✦</p>
-              <p className="mt-3 text-[14px] leading-relaxed text-plum-muted">
-                Part of that 56.6% wasn’t the system failing — it was our rubric. We were scoring
-                <span className="mx-1 font-mono text-[13px] text-plum">float</span>against
-                <span className="mx-1 font-mono text-[13px] text-plum">continuous</span>as a defect.
-                So I fixed the evaluation, not just the model: semantic tolerance, with the rules
-                verified by hand. We also swapped word-count estimates for tiktoken, so the cost
-                numbers measured what we were actually spending.
+          <Reveal className="md:col-span-2" delay={0.24}>
+            <div className="flex flex-col gap-3 rounded-[1.6rem] border border-plum/10 bg-white/50 p-7 md:flex-row md:items-center md:gap-8">
+              <p className="shrink-0 font-hand text-[16px] text-plum-muted md:w-44">
+                and what it cost ✦
               </p>
-            </div>
-            <div className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-7">
-              <p className="font-hand text-[16px] text-plum-muted">and what it cost ✦</p>
-              <p className="mt-3 text-[14px] leading-relaxed text-plum-muted">
+              <p className="text-[14px] leading-relaxed text-plum-muted">
                 A validator that scores every field and can retry three times is slower and burns
                 more tokens than generating once. That was the trade: latency and spend in exchange
                 for output you can put a number on. For a schema every downstream chart depends on,
                 I’d make it again.
               </p>
             </div>
+          </Reveal>
+        </div>
+
+        {/* ── 四 · 证据（评测 + 自查 + 成本对比） ────────────────── */}
+        <Chapter
+          label="The proof"
+          title="Generator alone guessed. The trust layer knew."
+          intro="Two evaluations across four public datasets — Iris, Mushroom, NPHA, Wine Quality. The validator, semantic tolerance and retry loop took average accuracy from 56.6% to 97.2%, at full coverage, with no human fixes."
+        />
+        <Reveal className="mt-8" y={28}>
+          <div className="rounded-[2rem] border border-[#7FA3CC]/25 bg-[#EFF5FB]/60 p-8 md:p-12">
+            <EvalBars />
           </div>
         </Reveal>
 
-        {/* ── 竞品对比：只留未讲过的差异 ───────────────────────── */}
-        <Reveal className="mt-20">
-          <p className="label-text mb-3">Against the market</p>
-          <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
+        <Reveal className="mt-6" y={24}>
+          <div className="flex flex-col gap-3 rounded-[1.6rem] border border-[#C79A4B]/35 bg-champagne/25 p-7 md:flex-row md:gap-8">
+            <p className="shrink-0 font-hand text-[16px] text-[#9A7B3E] md:w-44">
+              what the first eval got wrong ✦
+            </p>
+            <p className="text-[14px] leading-relaxed text-plum-muted">
+              Part of that 56.6% wasn’t the system failing — it was our rubric. We were scoring
+              <span className="mx-1 font-mono text-[13px] text-plum">float</span>against
+              <span className="mx-1 font-mono text-[13px] text-plum">continuous</span>as a defect.
+              So I fixed the evaluation, not just the model: semantic tolerance, with the rules
+              verified by hand. We also swapped word-count estimates for tiktoken, so the cost
+              numbers measured what we were actually spending.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal className="mt-12">
+          <h3 className="max-w-2xl font-serif text-xl font-light leading-snug text-plum md:text-2xl">
             Cheaper to run — and able to show its work
-          </h2>
-          <div className="mt-8">
+          </h3>
+          <div className="mt-6">
             <CostCompare />
           </div>
         </Reveal>
 
-        {/* ── 技术栈 + 公开记录 ────────────────────────────────── */}
-        <Reveal className="mt-16">
-          <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-            <div className="rounded-[1.4rem] border border-plum/10 bg-white/60 px-6 py-5">
-              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-                What it runs on
-              </p>
-              <ul className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-3">
-                {[
-                  { src: '/bosch/stack/openai.png', alt: 'OpenAI' },
-                  { src: '/bosch/stack/langchain.svg', alt: 'LangGraph' },
-                  { src: '/bosch/stack/fastapi.svg', alt: 'FastAPI' },
-                  { src: '/bosch/stack/python.svg', alt: 'Python' },
-                  { src: '/bosch/stack/tesseract.png', alt: 'Tesseract OCR' },
-                  { src: '/bosch/stack/docker.svg', alt: 'Docker' },
-                ].map((t) => (
-                  <li key={t.alt} className="flex items-center gap-1.5">
-                    <img src={t.src} alt="" aria-hidden loading="lazy" className="h-[18px] w-[18px] object-contain" />
-                    <span className="text-[11.5px] text-plum-muted">{t.alt}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-4 border-t border-plum/10 pt-3.5 text-[12.5px] leading-relaxed text-plum-muted">
-                OCR for image-heavy pages · containerised for deployment
-              </p>
-            </div>
-
-            <a
-              href="https://www.linkedin.com/posts/olivia-zerun-xiao_aiforproductmanagers-boschresearch-ai-activity-7345267527628849152-37t5"
-              target="_blank"
-              rel="noreferrer"
-              className="group/li flex flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-[#0A66C2]/40 hover:shadow-[0_18px_40px_-20px_rgba(10,102,194,0.3)]"
-            >
-              {/* 帖子头部 */}
-              <div className="flex items-center gap-3 px-5 pt-5">
-                <img
-                  src="/theta/olivia-cmu-avatar.jpg"
-                  alt=""
-                  aria-hidden
-                  className="h-10 w-10 shrink-0 rounded-full object-cover"
-                />
-                <div className="min-w-0 flex-1">
-                  <p className="text-[13px] font-medium leading-tight text-plum">Olivia Xiao</p>
-                  <p className="truncate text-[11.5px] leading-tight text-plum-faint">
-                    Wrote this up when we shipped it
-                  </p>
-                </div>
-                <svg viewBox="0 0 24 24" className="h-[18px] w-[18px] shrink-0" fill="#0A66C2" aria-hidden>
-                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
-                </svg>
-              </div>
-
-              {/* 正文摘录 */}
-              <p className="mt-3.5 px-5 text-[13px] leading-relaxed text-plum-muted">
-                The corner cases we chased — nested tables, image-heavy PDFs, type mismatches — and
-                the four roles behind it.
-              </p>
-
-              {/* 互动与入口 */}
-              <div className="mt-4 flex items-center justify-between border-t border-plum/8 px-5 py-3.5">
-                <span className="flex items-center gap-1.5 text-[11.5px] text-plum-faint">
-                  <span aria-hidden className="flex -space-x-1">
-                    {['#0A66C2', '#D193A8', '#8FAE8B'].map((c) => (
-                      <span key={c} className="h-3.5 w-3.5 rounded-full ring-2 ring-white" style={{ backgroundColor: c }} />
-                    ))}
-                  </span>
-                  36 reactions · 1 comment
-                </span>
-                <span className="inline-flex items-center gap-1 text-[12px] font-medium text-[#0A66C2]">
-                  Read post
-                  <span aria-hidden className="transition-transform duration-300 group-hover/li:translate-x-0.5">↗</span>
-                </span>
-              </div>
-            </a>
-          </div>
-        </Reveal>
-
-        {/* ── 交付时留下的路线 ─────────────────────────────────── */}
-        <Reveal className="mt-20">
-          <p className="label-text mb-3">What we handed over</p>
-          <h2 className="max-w-2xl font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
-            A working system, and an argued case for what comes next
-          </h2>
-        </Reveal>
+        {/* ── 五 · 交付时留下的路线 ────────────────────────────── */}
+        <Chapter
+          label="What comes next"
+          title="A working system, and an argued case for what follows"
+        />
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {[
             {
@@ -1103,6 +1031,84 @@ export function BoschSchemaCase() {
               </span>
             </figcaption>
           </figure>
+        </Reveal>
+
+        {/* ── 存档：技术栈 + 公开记录 ───────────────────────────── */}
+        <Reveal className="mt-16">
+          <div className="mb-4 flex items-center gap-3">
+            <span aria-hidden className="h-px w-8 shrink-0 bg-plum/20" />
+            <p className="label-text">For the record</p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <div className="rounded-[1.4rem] border border-plum/10 bg-white/60 px-6 py-5">
+              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+                What it runs on
+              </p>
+              <ul className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-3">
+                {[
+                  { src: '/bosch/stack/openai.png', alt: 'OpenAI' },
+                  { src: '/bosch/stack/langchain.svg', alt: 'LangGraph' },
+                  { src: '/bosch/stack/fastapi.svg', alt: 'FastAPI' },
+                  { src: '/bosch/stack/python.svg', alt: 'Python' },
+                  { src: '/bosch/stack/tesseract.png', alt: 'Tesseract OCR' },
+                  { src: '/bosch/stack/docker.svg', alt: 'Docker' },
+                ].map((t) => (
+                  <li key={t.alt} className="flex items-center gap-1.5">
+                    <img src={t.src} alt="" aria-hidden loading="lazy" className="h-[18px] w-[18px] object-contain" />
+                    <span className="text-[11.5px] text-plum-muted">{t.alt}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 border-t border-plum/10 pt-3.5 text-[12.5px] leading-relaxed text-plum-muted">
+                OCR for image-heavy pages · containerised for deployment
+              </p>
+            </div>
+
+            <a
+              href="https://www.linkedin.com/posts/olivia-zerun-xiao_aiforproductmanagers-boschresearch-ai-activity-7345267527628849152-37t5"
+              target="_blank"
+              rel="noreferrer"
+              className="group/li flex flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-[#0A66C2]/40 hover:shadow-[0_18px_40px_-20px_rgba(10,102,194,0.3)]"
+            >
+              <div className="flex items-center gap-3 px-5 pt-5">
+                <img
+                  src="/theta/olivia-cmu-avatar.jpg"
+                  alt=""
+                  aria-hidden
+                  className="h-10 w-10 shrink-0 rounded-full object-cover"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-[13px] font-medium leading-tight text-plum">Olivia Xiao</p>
+                  <p className="truncate text-[11.5px] leading-tight text-plum-faint">
+                    Wrote this up when we shipped it
+                  </p>
+                </div>
+                <svg viewBox="0 0 24 24" className="h-[18px] w-[18px] shrink-0" fill="#0A66C2" aria-hidden>
+                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
+                </svg>
+              </div>
+
+              <p className="mt-3.5 px-5 text-[13px] leading-relaxed text-plum-muted">
+                The corner cases we chased — nested tables, image-heavy PDFs, type mismatches — and
+                the four roles behind it.
+              </p>
+
+              <div className="mt-4 flex items-center justify-between border-t border-plum/8 px-5 py-3.5">
+                <span className="flex items-center gap-1.5 text-[11.5px] text-plum-faint">
+                  <span aria-hidden className="flex -space-x-1">
+                    {['#0A66C2', '#D193A8', '#8FAE8B'].map((c) => (
+                      <span key={c} className="h-3.5 w-3.5 rounded-full ring-2 ring-white" style={{ backgroundColor: c }} />
+                    ))}
+                  </span>
+                  36 reactions · 1 comment
+                </span>
+                <span className="inline-flex items-center gap-1 text-[12px] font-medium text-[#0A66C2]">
+                  Read post
+                  <span aria-hidden className="transition-transform duration-300 group-hover/li:translate-x-0.5">↗</span>
+                </span>
+              </div>
+            </a>
+          </div>
         </Reveal>
 
         {/* ── 它后来长成了什么 ──────────────────────────────────── */}
