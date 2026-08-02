@@ -51,46 +51,47 @@ type Stage = {
 
 const STAGES: Stage[] = [
   {
-    k: 'Partner',
+    k: 'The brief',
     g: 'handshake',
     c: '#D193A8',
-    head: 'Get a model lab to put its name on it',
-    body: 'A community challenge only matters to developers if the lab behind the model is genuinely in it. I brought Z.ai in as the model and prize partner, and AI Valley as the community host — so builders were shipping on GLM 5.1 with the people who made it watching.',
-    proof: 'Z.ai · AI Valley — co-presented',
+    head: 'Z.ai wasn’t asking for a hackathon',
+    body: 'GLM 5.1 was about to launch. What a new model needs at that moment isn’t a leaderboard — it’s proof that real developers can do real work on it, and use cases the lab can point at. I took the brief as a launch problem and designed the program backwards from it.',
+    proof: 'Warm up the launch · surface real use cases',
   },
   {
-    k: 'Prize',
+    k: 'The bar',
     g: 'target',
     c: '#C79A4B',
-    head: 'Design prizes that pull in different directions',
-    body: 'One cash prize only rewards the single best team. I split the pool three ways so depth, breadth and storytelling each had somewhere to land — a $5,000 grand prize, a Builder Award for the top five, and a Showcase Award for the projects that explained themselves best.',
-    proof: '$5,000 grand prize · Builder Award ×5 · Showcase Award ×3',
+    head: 'Write down what “good” means, before anyone builds',
+    body: 'Use cases only help a launch if they survive scrutiny. So the builder guide said it plainly: a working product, not a mockup. Multi-step reasoning or tool use, not one API call. A named user and problem. An architecture diagram. A README another developer could actually follow.',
+    proof: 'Builder Guide — 5 explicit criteria',
   },
   {
-    k: 'Judge',
-    g: 'ledger',
-    c: '#7A9CC6',
-    head: 'Write the bar down before anyone submits',
-    body: 'Judging criteria written after submissions arrive are just taste. I published them up front — real use case, system depth, execution quality, and genuine use of GLM 5.1 — with a separate rubric for the Showcase Award: clear demo, strong storytelling, shareability.',
-    proof: 'Two rubrics · community panel + Z.ai judge',
-  },
-  {
-    k: 'Recruit',
+    k: 'The funnel',
     g: 'mic',
     c: '#B98ACB',
-    head: 'Developer relations, not a launch post',
-    body: 'A one-week async window means the funnel has to fill fast and stay warm. I ran the outbound and the channel — a Discord for questions and progress, so builders got answers during the build instead of guessing at the rules.',
-    proof: '221 registered builders in one week',
+    head: 'Take a week-long async window seriously',
+    body: 'No venue, no stage — the whole program lived in a funnel. API access form, GLM Pro for every participant, a Discord gate to unlock the build channel, and answers during the build instead of after it. 221 developers came through in one week.',
+    proof: '221 registered builders · 30 Mar – 6 Apr',
   },
   {
-    k: 'Showcase',
+    k: 'Distribution',
+    g: 'parallel',
+    c: '#7A9CC6',
+    head: 'Put the distribution inside the rules',
+    body: 'Every submission had to ship a public repo, an X thread with the tag, and a 2–3 minute demo of the thing actually running. That wasn’t admin — it meant each of the 221 builders produced launch material for GLM 5.1 whether or not they won.',
+    proof: 'Public repo + X thread + demo, required',
+  },
+  {
+    k: 'The payoff',
     g: 'laurel',
     c: '#8FAE8B',
-    head: 'Make winning worth more than the cash',
-    body: 'The prize that developers actually wanted was distribution. Winning projects were featured by Z.ai across its own channels and site — so a week of work turned into an audience, not just a payout.',
-    proof: 'Featured on Z.ai channels · winners announced Apr 9',
+    head: 'Three projects Z.ai put its own name behind',
+    body: 'The prize builders actually wanted was distribution, so that was the prize: the top three were reposted by Z.ai and published on its site. Three agentic products the lab could point to as evidence, from a community that didn’t exist around GLM 5.1 a week earlier.',
+    proof: 'Top 3 featured on Z.ai’s own channels',
   },
 ]
+
 
 function FlagshipStages() {
   const [open, setOpen] = useState(0)
@@ -149,6 +150,66 @@ function FlagshipStages() {
             </p>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── 最终被 Z.ai 官方转发的三个项目 ─────────────────────────── */
+const FEATURED = [
+  {
+    name: 'OSAP',
+    by: '@Maaztwts',
+    what: 'Stops the constant tab-switching between Slack, GitHub and Notion — GLM 5.1 as the reasoning layer over multi-step cross-app tasks, with persistent memory of your workflow habits.',
+    href: 'https://x.com/Zai_org/status/2042996323037917227',
+  },
+  {
+    name: 'Builddy',
+    by: '@Neelkamalshah',
+    what: 'Text prompt to a deployed web app in one run. Six agents coordinate everything from system design through to deployment.',
+    href: 'https://x.com/Zai_org/status/2043000894174994519',
+  },
+  {
+    name: 'CodeTribunal',
+    by: '@AmineYagoube',
+    what: 'An “AI courtroom” for auditing freelance code — GLM 5.1 agents argue as prosecutor and defense to surface logical risks a linter would miss.',
+    href: 'https://x.com/Zai_org/status/2043001835099951474',
+  },
+]
+
+function FeaturedProjects() {
+  return (
+    <div>
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+          What Z.ai ended up featuring
+        </p>
+        <p className="font-hand text-[15px] text-plum-muted">the point of the whole thing ✦</p>
+      </div>
+      <div className="mt-5 grid gap-4 md:grid-cols-3">
+        {FEATURED.map((f, i) => (
+          <a
+            key={f.name}
+            href={f.href}
+            target="_blank"
+            rel="noreferrer"
+            style={{ animation: `annot-in .45s ${i * 0.08}s ease-out both` }}
+            className="group/f flex flex-col rounded-[1.4rem] border border-plum/10 bg-white/70 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-plum/30 hover:bg-white"
+          >
+            <div className="flex items-baseline justify-between gap-2">
+              <h4 className="font-serif text-[18px] font-light text-plum">{f.name}</h4>
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0 text-plum-faint" fill="currentColor" aria-hidden>
+                <path d="M18.9 1.6h3.7l-8.1 9.2 9.5 12.6h-7.4l-5.8-7.6-6.7 7.6H.4l8.6-9.9L0 1.6h7.6l5.2 6.9zm-1.3 19.6h2L6.5 3.7H4.3z" />
+              </svg>
+            </div>
+            <p className="mt-0.5 text-[12px] text-plum-faint">{f.by}</p>
+            <p className="mt-3 text-[13px] leading-relaxed text-plum-muted">{f.what}</p>
+            <span className="mt-auto pt-3.5 text-[12px] font-medium text-plum-muted transition-colors group-hover/f:text-plum">
+              Reposted by Z.ai
+              <span aria-hidden className="ml-1 inline-block transition-transform duration-300 group-hover/f:translate-x-0.5">↗</span>
+            </span>
+          </a>
+        ))}
       </div>
     </div>
   )
@@ -529,8 +590,8 @@ export function AIValleyCase() {
                 suffix: '+',
                 label: 'builders, founders and investors registered across these programs',
               },
-              { n: 221, label: 'developers in one week-long global build challenge' },
-              { n: 9, label: 'programs — hackathons, talks, demo days, salons' },
+              { n: 221, label: 'developers in the GLM 5.1 launch challenge I designed and ran' },
+              { n: 3, label: 'of their projects reposted by Z.ai and published on its site' },
             ]}
           />
         </Reveal>
@@ -539,12 +600,15 @@ export function AIValleyCase() {
         <Chapter
           n="01"
           label="The one I owned end to end"
-          title="Build with GLM 5.1 — a global challenge, run like a launch"
-          intro="Z.ai wanted developers building real things on GLM 5.1. I ran it as a product: a model lab as partner, a prize structure that rewarded three different kinds of good, a published rubric, and a Discord where builders got answers mid-build."
+          title="Build with GLM 5.1 — a model launch, run as a builder programme"
+          intro="GLM 5.1 was about to launch, and Z.ai needed real use cases to point at. I designed and ran the whole programme backwards from that — the submission bar, the funnel, and the rule that turned every entry into launch material."
           className="mt-20"
         />
         <Reveal className="mt-8" y={28}>
           <FlagshipStages />
+        </Reveal>
+        <Reveal className="mt-8" y={24}>
+          <FeaturedProjects />
         </Reveal>
         <Reveal className="mt-5">
           <div className="flex flex-col gap-3 rounded-[1.4rem] border border-plum/10 bg-white/50 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
