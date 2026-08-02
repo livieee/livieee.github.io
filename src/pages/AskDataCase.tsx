@@ -852,122 +852,86 @@ function AnnotatedShot() {
   )
 }
 
-/* ── 06c · 架构分层聚光灯 ───────────────────────────────────── */
-/* ── 05b · 架构：原生 SVG，逐个组件可点 ─────────────────────── */
-type ArchNode = { id: string; col: number; band: number; label: string; sub?: string; note: string; wide?: boolean }
+/* ── 05b · 架构：真实架构图 + 逐组件热区 ────────────────────── */
+type Hot = { id: string; x: number; y: number; w: number; h: number; band: string; label: string; note: string }
 
-const BANDS = [
-  { y: 34, h: 64, label: 'WHAT USERS TOUCH' },
-  { y: 134, h: 40, label: 'EDGE' },
-  { y: 210, h: 64, label: 'ORCHESTRATION — WHERE THE INTEGRATION LIVES' },
-  { y: 310, h: 80, label: 'SERVICES' },
-  { y: 426, h: 64, label: 'DATA & MODELS' },
+const HOTS: Hot[] = [
+  { id: 'sql', x: 0.025, y: 0.078, w: 0.220, h: 0.104, band: 'What users touch', label: 'SQL mode', note: 'Natural language in, an editable query out.' },
+  { id: 'analytics', x: 0.255, y: 0.078, w: 0.237, h: 0.104, band: 'What users touch', label: 'Analytics', note: 'Python analysis on the result you just produced — no re-upload.' },
+  { id: 'viz', x: 0.502, y: 0.078, w: 0.233, h: 0.104, band: 'What users touch', label: 'Visualization', note: 'Conversational charting, with every refinement logged.' },
+  { id: 'schema', x: 0.745, y: 0.078, w: 0.230, h: 0.104, band: 'What users touch', label: 'Schema', note: 'Where teams correct the metadata the AI reads.' },
+
+  { id: 'proxy', x: 0.012, y: 0.245, w: 0.973, h: 0.100, band: 'Edge', label: 'Reverse proxy', note: 'One address in front of services that were never designed to sit together.' },
+
+  { id: 'orch', x: 0.025, y: 0.452, w: 0.220, h: 0.115, band: 'Orchestration', label: 'Orchestration', note: 'Routes each request to whichever service can answer it.' },
+  { id: 'session', x: 0.255, y: 0.452, w: 0.237, h: 0.115, band: 'Orchestration', label: 'Session management', note: 'The digital thread. Schema and history live here — not in the user’s head.' },
+  { id: 'logic', x: 0.502, y: 0.452, w: 0.233, h: 0.115, band: 'Orchestration', label: 'Business logic', note: 'The rules deciding what unlocks, what locks, what retries.' },
+  { id: 'integration', x: 0.745, y: 0.452, w: 0.230, h: 0.115, band: 'Orchestration', label: 'Integration', note: 'Where three separate products were finally stitched into one flow.' },
+
+  { id: 'kb', x: 0.012, y: 0.602, w: 0.233, h: 0.215, band: 'Services', label: 'Knowledge engine', note: 'Validated enterprise metadata — the reason generated queries are accurate.' },
+  { id: 'agent', x: 0.255, y: 0.602, w: 0.237, h: 0.215, band: 'Services', label: 'Query agent', note: 'Translates the question into SQL, grounded in the knowledge engine.' },
+  { id: 'exec', x: 0.502, y: 0.602, w: 0.238, h: 0.215, band: 'Services', label: 'Executor', note: 'Runs the query — and owns the failure path when it cannot.' },
+  { id: 'vizsvc', x: 0.750, y: 0.602, w: 0.235, h: 0.215, band: 'Services', label: 'Visualization service', note: 'The existing charting engine, reused rather than rebuilt.' },
+
+  { id: 'pg', x: 0.012, y: 0.852, w: 0.233, h: 0.118, band: 'Data & models', label: 'PostgreSQL', note: 'Where the corrected schema knowledge persists.' },
+  { id: 'redis', x: 0.255, y: 0.852, w: 0.237, h: 0.118, band: 'Data & models', label: 'Redis', note: 'Keeps sessions responsive across the round-trip.' },
+  { id: 'llm', x: 0.502, y: 0.852, w: 0.238, h: 0.118, band: 'Data & models', label: 'Azure OpenAI', note: 'The model, kept behind our own layer so it can be swapped.' },
+  { id: 'customer', x: 0.750, y: 0.852, w: 0.235, h: 0.118, band: 'Data & models', label: 'Customer database', note: 'Live enterprise data we can never touch directly — the constraint that shaped everything above it.' },
 ]
-
-const ARCH: ArchNode[] = [
-  { id: 'sql', col: 0, band: 0, label: 'SQL', sub: 'ask in words', note: 'Natural language in, an editable query out.' },
-  { id: 'analytics', col: 1, band: 0, label: 'Analytics', sub: 'python', note: 'Python analysis on the result you just produced — no re-upload.' },
-  { id: 'viz', col: 2, band: 0, label: 'Visualization', sub: 'charts', note: 'Conversational charting, with every refinement logged.' },
-  { id: 'schema', col: 3, band: 0, label: 'Schema', sub: 'metadata', note: 'Where teams correct the metadata the AI reads.' },
-
-  { id: 'proxy', col: 0, band: 1, wide: true, label: 'Reverse proxy', sub: 'one origin, three services', note: 'One address in front of services that were never designed to sit together.' },
-
-  { id: 'orch', col: 0, band: 2, label: 'Orchestration', note: 'Routes each request to whichever service can answer it.' },
-  { id: 'session', col: 1, band: 2, label: 'Session', note: 'The digital thread. Schema and history live here — not in the user’s head.' },
-  { id: 'logic', col: 2, band: 2, label: 'Business logic', note: 'The rules deciding what unlocks, what locks, what retries.' },
-  { id: 'integration', col: 3, band: 2, label: 'Integration', note: 'Where three separate products were finally stitched into one flow.' },
-
-  { id: 'kb', col: 0, band: 3, label: 'Knowledge engine', sub: 'metadata + validation', note: 'Validated enterprise metadata — the reason generated queries are accurate.' },
-  { id: 'agent', col: 1, band: 3, label: 'Query agent', sub: 'NL → SQL', note: 'Translates the question, grounded in the knowledge engine.' },
-  { id: 'exec', col: 2, band: 3, label: 'Executor', sub: 'run + fail well', note: 'Runs the query — and owns the failure path when it cannot.' },
-  { id: 'vizsvc', col: 3, band: 3, label: 'Viz service', sub: 'interactive', note: 'The existing charting engine, reused rather than rebuilt.' },
-
-  { id: 'pg', col: 0, band: 4, label: 'PostgreSQL', sub: 'metadata store', note: 'Where the corrected schema knowledge persists.' },
-  { id: 'redis', col: 1, band: 4, label: 'Redis', sub: 'cache & queue', note: 'Keeps sessions responsive across the round-trip.' },
-  { id: 'llm', col: 2, band: 4, label: 'LLM service', sub: 'Azure OpenAI', note: 'The model, kept behind our own layer so it can be swapped.' },
-  { id: 'customer', col: 3, band: 4, label: 'Customer DB', sub: 'behind the wall', note: 'Live enterprise data we can never touch directly. The constraint that shaped everything above it.' },
-]
-
-const COL_X = [20, 234, 448, 662]
-const COL_W = 196
 
 function ArchLayers() {
   const [id, setId] = useState('session')
-  const active = ARCH.find((n) => n.id === id)!
+  const a = HOTS.find((h) => h.id === id)!
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-      <div className="rounded-[1.4rem] border border-plum/10 bg-white p-4 shadow-[0_20px_46px_-26px_rgba(78,110,150,0.4)] md:p-6">
-        <svg viewBox="0 0 878 512" className="w-full" role="img" aria-label="System architecture: one frontend over a reverse proxy, an orchestration layer, four services, and the data and model layer">
-          {BANDS.map((b, i) => (
-            <g key={i}>
-              <rect x="14" y={b.y - 8} width="850" height={b.h + 16} rx="14" fill="#F7F4EF" opacity={ARCH.find((n) => n.id === id)!.band === i ? 0.9 : 0.45} style={{ transition: 'opacity .35s' }} />
-              <text x="20" y={b.y - 15} fontSize="8.5" letterSpacing="1.4" fill="#9A87A0">{b.label}</text>
-            </g>
+    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+      <div className="rounded-[1.4rem] border border-plum/10 bg-white p-3 shadow-[0_20px_46px_-26px_rgba(78,110,150,0.4)] md:p-5">
+        <div className="relative">
+          <img
+            src="/bosch/askdata-architecture.png"
+            alt="System architecture: one frontend over a reverse proxy, an orchestration layer, four services, and the data and model layer"
+            className="w-full"
+            loading="eager"
+          />
+          {HOTS.map((h) => (
+            <button
+              key={h.id}
+              type="button"
+              onMouseEnter={() => setId(h.id)}
+              onClick={() => setId(h.id)}
+              aria-label={h.label}
+              className={`absolute rounded-[7px] transition-all duration-300 ${
+                h.id === id
+                  ? 'ring-2 ring-[#3A2440] ring-offset-1 ring-offset-white'
+                  : 'ring-0 hover:ring-2 hover:ring-[#7FA3CC]/70'
+              }`}
+              style={{
+                left: `${h.x * 100}%`,
+                top: `${h.y * 100}%`,
+                width: `${h.w * 100}%`,
+                height: `${h.h * 100}%`,
+                boxShadow: h.id === id ? '0 10px 26px -10px rgba(58,36,64,0.45)' : undefined,
+              }}
+            />
           ))}
-
-          {/* 层间连线 */}
-          {[[98, 134], [174, 210], [274, 310], [390, 426]].map(([y1, y2], i) =>
-            COL_X.map((x) => (
-              <path key={`${i}-${x}`} d={`M${x + COL_W / 2} ${y1} V${y2}`} stroke="#C9D9EA" strokeWidth="1.2" strokeDasharray="3 3" />
-            )),
-          )}
-
-          {ARCH.map((n) => {
-            const b = BANDS[n.band]
-            const x = n.wide ? 20 : COL_X[n.col]
-            const w = n.wide ? 844 : COL_W
-            const on = n.id === id
-            return (
-              <g key={n.id} onClick={() => setId(n.id)} onMouseEnter={() => setId(n.id)} style={{ cursor: 'pointer' }}>
-                <rect
-                  x={x}
-                  y={b.y}
-                  width={w}
-                  height={b.h}
-                  rx="11"
-                  fill={on ? '#DCE7F2' : '#FFFFFF'}
-                  stroke={on ? '#3A2440' : '#B9CDE4'}
-                  strokeWidth={on ? 2 : 1.2}
-                  style={{ transition: 'fill .3s, stroke .3s' }}
-                />
-                <text
-                  x={x + w / 2}
-                  y={b.y + (n.sub ? b.h / 2 - 2 : b.h / 2 + 4)}
-                  textAnchor="middle"
-                  fontSize="12.5"
-                  fontFamily="Georgia, serif"
-                  fill="#3A2440"
-                >
-                  {n.label}
-                </text>
-                {n.sub && (
-                  <text x={x + w / 2} y={b.y + b.h / 2 + 14} textAnchor="middle" fontSize="9.5" fill="#9A87A0">
-                    {n.sub}
-                  </text>
-                )}
-              </g>
-            )
-          })}
-        </svg>
+        </div>
       </div>
 
       <div className="lg:sticky lg:top-32">
         <div className="rounded-2xl border border-plum/10 bg-white/80 p-6 backdrop-blur-sm">
-          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-            {BANDS[active.band].label.split(' —')[0]}
-          </p>
-          <h3 className="mt-2 font-serif text-lg font-light text-plum">{active.label}</h3>
-          <p className="mt-2 min-h-[76px] text-[14px] leading-relaxed text-plum-muted">{active.note}</p>
+          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">{a.band}</p>
+          <h3 className="mt-2 font-serif text-lg font-light text-plum">{a.label}</h3>
+          <p className="mt-2 min-h-[76px] text-[14px] leading-relaxed text-plum-muted">{a.note}</p>
         </div>
-        <p className="mt-3 font-hand text-[15px] text-plum-muted">tap any box ✦</p>
+        <p className="mt-3 font-hand text-[15px] text-plum-muted">tap any component ✦</p>
 
-        {/* 真实技术栈 */}
         <div className="mt-4 rounded-2xl border border-plum/10 bg-white/60 px-5 py-4">
           <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">What it runs on</p>
           <ul className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-3">
             {[
               { src: '/bosch/stack/react.svg', alt: 'React' },
+              { src: '/bosch/stack/typescript.svg', alt: 'TypeScript' },
+              { src: '/bosch/stack/nginx.svg', alt: 'Nginx' },
               { src: '/bosch/stack/fastapi.svg', alt: 'FastAPI' },
               { src: '/bosch/stack/django.svg', alt: 'Django' },
               { src: '/bosch/stack/postgresql.svg', alt: 'PostgreSQL' },
