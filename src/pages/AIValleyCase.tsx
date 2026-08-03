@@ -737,81 +737,45 @@ const PANELS: Array<{ t: string; k: string; v: string; n: number; q: number; qs?
 
 function RunOfShow() {
   return (
-    <div className="rounded-[1.6rem] border border-plum/10 bg-white/70 p-6 md:p-8">
+    <div className="rounded-[1.2rem] border border-plum/10 bg-white/70 p-5">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
           And then the night has to run
         </p>
-        <p className="font-hand text-[15px] text-plum-muted">from the guest brief ✦</p>
+        <p className="font-hand text-[14px] text-plum-muted">from the guest brief ✦</p>
       </div>
 
-      <p className="mt-4 max-w-2xl text-[13.5px] leading-relaxed text-plum-muted">
-        Three hours, three panels, fourteen speakers. Inviting them is the easy half — every panel
-        also shipped with its own set of prepared questions, so no one repeated the same intro and
-        the conversation went somewhere specific.
+      <p className="mt-3 text-[12.5px] leading-relaxed text-plum-muted">
+        Three hours, three panels — each shipped with its own prepared questions, so the
+        conversation went somewhere specific.
       </p>
 
-      <figure className="mt-5">
-        <div className="overflow-hidden rounded-[1.1rem] border border-plum/10">
-          <img
-            src="/events/gtc-fireside.jpg"
-            alt="Panel 3 of the 2026 GTC Fireside Talk in progress — four speakers on stage, the screen behind them reading Beyond the Horizon: Next Frontier of AI"
-            loading="lazy"
-            className="aspect-[16/9] w-full object-cover"
-          />
-        </div>
-        <figcaption className="mt-2.5 flex flex-wrap items-baseline justify-between gap-2 px-1">
-          <span className="text-[12px] text-plum-faint">
-            Panel 3 running — Palo Alto, 16 March 2026
-          </span>
-          <span className="font-hand text-[14px] text-plum-muted">7:50 on the sheet ✦</span>
-        </figcaption>
-      </figure>
-
-      <ol className="mt-6 space-y-2">
-        {PANELS.map((p, i) => (
-          <li
-            key={p.k}
-            style={{ animation: `annot-in .45s ${i * 0.07}s ease-out both` }}
-            className="rounded-[1.1rem] border border-plum/10 bg-white/70 px-4 py-3"
-          >
-            <span className="flex items-baseline gap-3">
-              <span className="shrink-0 font-serif text-[15px] leading-none text-rose">{p.t}</span>
-              <span className="text-[13.5px] font-medium leading-snug text-plum">{p.k}</span>
-            </span>
-            <span className="mt-1 block text-[12px] leading-snug text-plum-faint">{p.v}</span>
-            <span className="mt-2 flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-plum/[0.06] px-2.5 py-1 text-[11px] leading-none text-plum-muted">
-                {p.n} speakers
-              </span>
-              {p.q > 0 && (
-                <span className="rounded-full bg-rose/10 px-2.5 py-1 text-[11px] leading-none text-rose">
-                  {p.q} questions prepped
-                </span>
-              )}
-            </span>
-            {p.qs && (
-              <span className="mt-2.5 block space-y-2 border-t border-plum/8 pt-2.5">
-                <span className="block font-hand text-[13px] text-plum-muted">two I proposed ✦</span>
-                {p.qs.map((q) => (
-                  <span key={q.slice(0, 24)} className="block border-l-2 border-rose/30 pl-2.5 text-[12px] italic leading-relaxed text-plum-muted">
-                    “{q}”
-                  </span>
-                ))}
+      <ol className="mt-4 space-y-1.5">
+        {PANELS.map((p) => (
+          <li key={p.k} className="flex items-baseline gap-3">
+            <span className="w-9 shrink-0 font-serif text-[13.5px] leading-none text-rose">{p.t}</span>
+            <span className="min-w-0 flex-1 text-[12.5px] font-medium leading-snug text-plum">{p.k}</span>
+            {p.q > 0 && (
+              <span className="shrink-0 rounded-full bg-rose/10 px-2 py-[3px] text-[10.5px] leading-none text-rose">
+                {p.q} questions prepped
               </span>
             )}
           </li>
         ))}
       </ol>
 
-      <p className="mt-4 border-t border-plum/10 pt-3.5 text-[12px] text-plum-faint">
-        2026 GTC Fireside Talk · Palo Alto · 5:30–8:30 PM
-      </p>
+      <div className="mt-4 space-y-2 border-t border-plum/8 pt-3">
+        <p className="font-hand text-[13px] text-plum-muted">two I proposed for Panel 3 ✦</p>
+        {PANELS.find((p) => p.qs)?.qs?.map((q) => (
+          <p key={q.slice(0, 24)} className="border-l-2 border-rose/30 pl-2.5 text-[12px] italic leading-relaxed text-plum-muted">
+            “{q}”
+          </p>
+        ))}
+      </div>
     </div>
   )
 }
 
-/* ── 合作方名录：strategic partnership 的直接证据 ──────────────── */
 const PARTNER_GROUPS: Array<{ k: string; v: Array<{ n: string; l?: string }> }> = [
   {
     k: 'Model labs & platforms',
