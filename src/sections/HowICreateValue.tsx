@@ -532,26 +532,11 @@ export function HowICreateValue() {
         <p className="label-text mb-6">Work Philosophy</p>
       </Reveal>
       <h2 className="max-w-3xl font-serif text-[clamp(1.9rem,4.5vw,3.2rem)] font-light leading-[1.15] text-plum">
-        <WordReveal text="Analytical in approach." />{' '}
+        <WordReveal text="Every project above runs on" />{' '}
         <span className="italic text-orchid">
-          <WordReveal text="Human in execution." delay={0.3} />
+          <WordReveal text="the same seven strengths." delay={0.3} />
         </span>
       </h2>
-
-      <Reveal className="mt-8">
-        <p className="max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-          Every “complex system” I’ve worked on turned out to be people trying to get something
-          done. So I start with how they actually work — then build the structure that makes the
-          work feel lighter: specs, programs, partnerships.
-        </p>
-      </Reveal>
-
-      <Reveal className="mt-5">
-        <p className="max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-          Underneath every project above, the same seven strengths keep showing up — so I made
-          them into <span className="italic text-orchid">a deck</span>.
-        </p>
-      </Reveal>
 
       {/* ── ① 四个领域：环形牌阵，点击抽出 ─────────────────────── */}
       <Reveal className="mt-16">
