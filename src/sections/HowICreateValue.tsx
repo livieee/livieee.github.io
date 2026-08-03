@@ -441,59 +441,86 @@ const LINES = [
   { k: 'Programs & community', v: 'Luma, Devpost, Discord' },
 ]
 
-/** 盘子上的摆法：外圈 7 个、内圈 4 个，坐标是百分比 */
+/** 法阵上的摆法：外环 7 枚符印、内环 4 枚，坐标是百分比（圆心 50,50） */
 const PLATE = [
-  { n: 'Figma', l: '/logos/tools/figma.jpg', x: 50, y: 15 },
-  { n: 'Claude', l: '/logos/tools/claude.jpg', x: 77, y: 27 },
-  { n: 'Notion', l: '/logos/tools/notion.jpg', x: 86, y: 55 },
-  { n: 'Luma', l: '/logos/tools/luma.jpg', x: 69, y: 81 },
-  { n: 'Devpost', l: '/logos/tools/devpost.jpg', x: 38, y: 86 },
-  { n: 'Miro', l: '/logos/tools/miro.jpg', x: 14, y: 62 },
-  { n: 'GitHub Actions', l: '/logos/tools/github.jpg', x: 18, y: 30 },
-  { n: 'OpenAI', l: '/logos/tools/openai.png', x: 41, y: 42 },
-  { n: 'Playwright', l: '/logos/tools/playwright.svg', x: 63, y: 46 },
-  { n: 'Tableau', l: '/logos/tools/tableau.jpg', x: 39, y: 66 },
-  { n: 'Discord', l: '/logos/tools/discord.jpg', x: 62, y: 68 },
+  { n: 'Figma', l: '/logos/tools/figma.jpg', x: 50, y: 6 },
+  { n: 'Claude', l: '/logos/tools/claude.jpg', x: 84.4, y: 22.6 },
+  { n: 'Notion', l: '/logos/tools/notion.jpg', x: 92.9, y: 59.8 },
+  { n: 'Luma', l: '/logos/tools/luma.jpg', x: 69.1, y: 89.6 },
+  { n: 'Devpost', l: '/logos/tools/devpost.jpg', x: 30.9, y: 89.6 },
+  { n: 'Miro', l: '/logos/tools/miro.jpg', x: 7.1, y: 59.8 },
+  { n: 'GitHub Actions', l: '/logos/tools/github.jpg', x: 15.6, y: 22.6 },
+  { n: 'OpenAI', l: '/logos/tools/openai.png', x: 64.1, y: 35.9 },
+  { n: 'Playwright', l: '/logos/tools/playwright.svg', x: 64.1, y: 64.1 },
+  { n: 'Tableau', l: '/logos/tools/tableau.jpg', x: 35.9, y: 64.1 },
+  { n: 'Discord', l: '/logos/tools/discord.jpg', x: 35.9, y: 35.9 },
 ]
 
-/** 手绘的盘子 + 叉子 —— 纯 SVG */
-function PlateSketch({ className = '' }: { className?: string }) {
-  const scallops = Array.from({ length: 28 }).map((_, i) => {
+/** 工具法阵 —— 和牌阵地面的金色魔法阵同一套语言 */
+function ToolSeal({ className = '' }: { className?: string }) {
+  const G = '#C9A05C'
+  const ticks = Array.from({ length: 28 }).map((_, i) => {
     const a = (i / 28) * Math.PI * 2
-    const a2 = ((i + 1) / 28) * Math.PI * 2
-    const r = 96
-    return `M${100 + Math.cos(a) * r} ${100 + Math.sin(a) * r} A6 6 0 0 1 ${100 + Math.cos(a2) * r} ${100 + Math.sin(a2) * r}`
+    return { x: 100 + Math.cos(a) * 82, y: 100 + Math.sin(a) * 82 }
   })
   return (
     <svg viewBox="0 0 200 200" className={className} fill="none" aria-hidden>
-      <circle cx="100" cy="100" r="94" fill="#FFFFFF" fillOpacity="0.85" />
-      <circle cx="100" cy="100" r="94" stroke="#3A2440" strokeOpacity="0.13" strokeWidth="1.1" />
-      <circle cx="100" cy="100" r="80" stroke="#3A2440" strokeOpacity="0.09" strokeWidth="0.9" />
-      <circle cx="100" cy="100" r="72" stroke="#3A2440" strokeOpacity="0.06" strokeWidth="0.8" />
-      {scallops.map((d, i) => (
-        <path key={i} d={d} stroke="#3A2440" strokeOpacity="0.1" strokeWidth="0.9" />
-      ))}
-    </svg>
-  )
-}
+      {/* 中心淡粉光 */}
+      <defs>
+        <radialGradient id="toolseal-wash" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor="#F8BFD3" stopOpacity="0.35" />
+          <stop offset="0.7" stopColor="#F8BFD3" stopOpacity="0.12" />
+          <stop offset="1" stopColor="#F8BFD3" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <circle cx="100" cy="100" r="90" fill="url(#toolseal-wash)" />
 
-function ForkSketch({ className = '' }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 40 150"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.6}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M12 6v34" />
-      <path d="M20 6v34" />
-      <path d="M28 6v34" />
-      <path d="M8 40c0 8 4 12 12 12s12-4 12-12" />
-      <path d="M20 52v92" />
+      {/* 外环两圈 + 刻度点 */}
+      <circle cx="100" cy="100" r="97" stroke={G} strokeOpacity="0.55" strokeWidth="1.1" />
+      <circle cx="100" cy="100" r="92" stroke={G} strokeOpacity="0.3" strokeWidth="0.7" />
+      {ticks.map((t, i) => (
+        <circle key={i} cx={t.x} cy={t.y} r="1.1" fill={G} fillOpacity="0.5" />
+      ))}
+      <circle cx="100" cy="100" r="76" stroke={G} strokeOpacity="0.22" strokeWidth="0.7" strokeDasharray="2 5" />
+
+      {/* 内环 + 八芒星（两个错位正方形） */}
+      <circle cx="100" cy="100" r="52" stroke={G} strokeOpacity="0.5" strokeWidth="0.9" />
+      <rect x="63.2" y="63.2" width="73.5" height="73.5" stroke={G} strokeOpacity="0.4" strokeWidth="0.8" />
+      <rect
+        x="63.2"
+        y="63.2"
+        width="73.5"
+        height="73.5"
+        stroke={G}
+        strokeOpacity="0.4"
+        strokeWidth="0.8"
+        transform="rotate(45 100 100)"
+      />
+      <circle cx="100" cy="100" r="30" stroke={G} strokeOpacity="0.35" strokeWidth="0.7" />
+
+      {/* 日月 —— 呼应卡面 */}
+      <circle cx="34" cy="100" r="7" stroke={G} strokeOpacity="0.55" strokeWidth="0.9" />
+      <path d="M32 94.6a7 7 0 1 0 4.8 12.2 8.6 8.6 0 0 1-4.8-12.2Z" fill={G} fillOpacity="0.4" />
+      <circle cx="166" cy="100" r="6" fill={G} fillOpacity="0.45" />
+      {Array.from({ length: 8 }).map((_, i) => {
+        const a = (i / 8) * Math.PI * 2
+        return (
+          <line
+            key={'r' + i}
+            x1={166 + Math.cos(a) * 8}
+            y1={100 + Math.sin(a) * 8}
+            x2={166 + Math.cos(a) * 11.5}
+            y2={100 + Math.sin(a) * 11.5}
+            stroke={G}
+            strokeOpacity="0.5"
+            strokeWidth="0.9"
+          />
+        )
+      })}
+
+      {/* 中央金星 */}
+      <path d={starPath(100, 100, 16, 6.5)} fill="#E8B64C" fillOpacity="0.85" stroke="#C0913C" strokeWidth="0.8" />
+      <circle cx="100" cy="100" r="2.2" fill="#FFF3D8" />
     </svg>
   )
 }
@@ -886,54 +913,101 @@ export function HowICreateValue() {
         </p>
       </Reveal>
 
-      {/* ── ② What I bring to the table ───────────────────────── */}
-      <Reveal className="mt-6" y={28}>
-        <div className="relative overflow-hidden rounded-[1.6rem] border border-plum/10 bg-white/55 px-6 pb-8 pt-7 md:px-9 md:pb-10">
-          <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-              What I bring to the table
-            </p>
-            <p className="font-hand text-[15px] text-plum-muted">
-              what I actually open on a weekday ✦
-            </p>
-          </div>
+      {/* ── ② 工具法阵：What I bring to the table ───────────────── */}
+      <Reveal className="mt-8" y={28}>
+        <div className="relative">
+          {/* 飘落的樱花瓣 */}
+          {[
+            { left: 8, size: 14, dur: 12, delay: 0.6 },
+            { left: 24, size: 18, dur: 10, delay: 3.2 },
+            { left: 47, size: 12, dur: 14, delay: 1.4 },
+            { left: 68, size: 17, dur: 11, delay: 5 },
+            { left: 88, size: 13, dur: 13, delay: 2.2 },
+          ].map((pt, i) => (
+            <svg
+              key={'tp' + i}
+              viewBox="0 0 20 20"
+              aria-hidden
+              className="pointer-events-none absolute -top-2 z-20"
+              style={{
+                left: `${pt.left}%`,
+                width: pt.size,
+                height: pt.size,
+                animation: `petal-drift ${pt.dur}s ${pt.delay}s linear infinite`,
+              }}
+            >
+              <defs>
+                <linearGradient id={'toolpetal' + i} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor={i % 2 === 0 ? '#FBD0DF' : '#F8BFD3'} />
+                  <stop offset="1" stopColor={i % 2 === 1 ? '#EE8FB4' : '#F3A3C2'} />
+                </linearGradient>
+              </defs>
+              <path
+                d="M10 17C6 13 4.2 9 5.6 5.6 6.9 2.9 9 2.3 10 4.2 11 2.3 13.1 2.9 14.4 5.6 15.8 9 14 13 10 17Z"
+                fill={'url(#toolpetal' + i + ')'}
+                stroke="#E87BA4"
+                strokeOpacity="0.45"
+                strokeWidth="0.5"
+              />
+            </svg>
+          ))}
 
-          <div className="mt-6 grid items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
-            {/* 左：分类清单 */}
-            <ul className="space-y-3">
-              {LINES.map((r) => (
-                <li key={r.k}>
-                  <span className="block font-hand text-[15px] text-plum-muted">{r.k}</span>
-                  <span className="mt-0.5 block text-[14px] leading-snug text-plum">{r.v}</span>
-                </li>
-              ))}
-            </ul>
+          <div className="grid items-center gap-12 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]">
+            {/* 左：清单 */}
+            <div>
+              <h3 className="font-serif text-[clamp(1.4rem,2.6vw,1.9rem)] font-light leading-tight text-plum">
+                What I bring <span className="italic text-orchid">to the table</span>
+              </h3>
+              <p className="mt-2 font-hand text-[15px] text-plum-muted">
+                what I actually open on a weekday ✦
+              </p>
+              <ul className="mt-6 space-y-4">
+                {LINES.map((r) => (
+                  <li key={r.k} className="flex gap-2.5">
+                    <span aria-hidden className="mt-[3px] text-[10px] text-[#C0913C]">
+                      ✦
+                    </span>
+                    <span>
+                      <span className="block font-hand text-[15px] text-plum-muted">{r.k}</span>
+                      <span className="mt-0.5 block text-[14px] leading-snug text-plum">{r.v}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-            {/* 右：盘子 + logo 摆成一圈 */}
-            <div className="relative mx-auto w-full max-w-[380px]">
-              <div className="relative aspect-square">
-                <PlateSketch className="absolute inset-0 h-full w-full drop-shadow-[0_18px_38px_rgba(58,36,64,0.16)]" />
+            {/* 右：金色法阵 + 符印 */}
+            <div className="relative mx-auto w-full max-w-[420px]">
+              {/* 暖光 */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[115%] w-[115%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                style={{
+                  background:
+                    'radial-gradient(circle, rgba(232,182,76,0.14) 0%, rgba(248,191,211,0.10) 45%, rgba(248,191,211,0) 70%)',
+                }}
+              />
+              <div className="relative aspect-square" style={{ animation: 'seal-breathe 7s ease-in-out infinite' }}>
+                <ToolSeal className="absolute inset-0 h-full w-full" />
                 {PLATE.map((t, i) => (
                   <span
                     key={t.n}
-                    title={t.n}
                     style={{
                       left: `${t.x}%`,
                       top: `${t.y}%`,
                       animation: `annot-in .55s ${0.08 * i}s ease-out both`,
                     }}
-                    className="group/tool absolute z-10 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-[10px] bg-white shadow-[0_6px_14px_-6px_rgba(58,36,64,0.5)] ring-1 ring-plum/10 transition-transform duration-300 hover:-translate-y-[calc(50%+4px)] hover:scale-110"
+                    className="group/tool absolute z-10 -translate-x-1/2 -translate-y-1/2"
                   >
-                    <img
-                      src={t.l}
-                      alt={t.n}
-                      loading="lazy"
-                      className="h-full w-full object-contain"
-                    />
+                    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_8px_18px_-8px_rgba(206,78,130,0.55)] ring-1 ring-[#C9A05C]/50 transition-transform duration-300 group-hover/tool:-translate-y-1 group-hover/tool:scale-110">
+                      <img src={t.l} alt={t.n} loading="lazy" className="h-full w-full object-contain" />
+                    </span>
+                    <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap font-hand text-[12px] text-plum-muted opacity-0 transition-opacity duration-300 group-hover/tool:opacity-100">
+                      {t.n}
+                    </span>
                   </span>
                 ))}
               </div>
-              <ForkSketch className="absolute -left-6 bottom-2 h-[62%] w-auto text-plum/25" />
             </div>
           </div>
         </div>
