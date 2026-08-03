@@ -258,3 +258,12 @@
   25%  { opacity: 1; }
   100% { opacity: 0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.15) rotate(90deg); }
 }
+
+/* 抽卡：先从环上拔起（只升不翻），再翻面落定（覆盖旧定义） */
+@keyframes card-reveal {
+  0%   { transform: translateY(130px) rotateY(0deg) scale(.56); }
+  32%  { transform: translateY(-46px) rotateY(0deg) scale(.9); }
+  55%  { transform: translateY(-30px) rotateY(96deg) scale(1); }
+  78%  { transform: translateY(-8px) rotateY(176deg) scale(1.05); }
+  100% { transform: translateY(0) rotateY(180deg) scale(1); }
+}

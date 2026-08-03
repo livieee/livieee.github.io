@@ -27,6 +27,7 @@ type Card = {
 const HAND: Card[] = [
   {
     name: 'THE CREATE',
+    img: '/cards/create.webp',
     zi: '創',
     suit: 'spark',
     title: 'AI Product & Product Operations',
@@ -35,6 +36,7 @@ const HAND: Card[] = [
   },
   {
     name: 'THE LIGHT',
+    img: '/cards/light.webp',
     zi: '光',
     suit: 'target',
     title: 'GTM Strategy & Adoption',
@@ -725,9 +727,8 @@ export function HowICreateValue() {
                     transform: !dealt
                       ? `translate(-50%, -50%) rotate(${(i - 3) * 2.5}deg) scale(0.92)`
                       : `translate(-50%, -50%) rotateY(${(i * 360) / 7}deg) translateZ(252px)`,
-                    transition: 'transform .95s cubic-bezier(.2,.75,.2,1), opacity .6s',
+                    transition: 'transform .95s cubic-bezier(.2,.75,.2,1)',
                     transitionDelay: dealt ? `${i * 0.1}s` : '0s',
-                    opacity: active !== null ? 0.25 : 1,
                     pointerEvents: dealt && active === null ? 'auto' : 'none',
                   }}
                 >
@@ -737,13 +738,23 @@ export function HowICreateValue() {
                   >
                     <span
                       className="absolute inset-0 overflow-hidden rounded-[1rem] shadow-[0_16px_36px_-16px_rgba(58,36,64,0.42)]"
-                      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(0deg) translateZ(0.4px)' }}
+                      style={{
+                        backfaceVisibility: 'hidden',
+                        transform: 'rotateY(0deg) translateZ(0.4px)',
+                        opacity: active === i ? 0 : active !== null ? 0.25 : 1,
+                        transition: 'opacity .5s',
+                      }}
                     >
                       <CardBack />
                     </span>
                     <span
                       className="absolute inset-0 overflow-hidden rounded-[1rem] shadow-[0_16px_36px_-16px_rgba(58,36,64,0.42)]"
-                      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg) translateZ(0.4px)' }}
+                      style={{
+                        backfaceVisibility: 'hidden',
+                        transform: 'rotateY(180deg) translateZ(0.4px)',
+                        opacity: active === i ? 0 : active !== null ? 0.25 : 1,
+                        transition: 'opacity .5s',
+                      }}
                     >
                       {c.img ? (
                         <img src={c.img} alt="" aria-hidden loading="lazy" className="h-full w-full object-cover" />
@@ -828,7 +839,7 @@ export function HowICreateValue() {
                   className="relative block h-full w-full"
                   style={{
                     transformStyle: 'preserve-3d',
-                    animation: 'card-reveal .85s cubic-bezier(.2,.75,.2,1) both',
+                    animation: 'card-reveal 1.15s cubic-bezier(.25,.7,.25,1) both',
                   }}
                 >
                   <span
