@@ -529,12 +529,12 @@ export function HowICreateValue() {
   return (
     <section id="capabilities" className="mx-auto max-w-6xl px-6 py-28 md:px-10 md:py-36">
       <Reveal>
-        <p className="label-text mb-6">Work Philosophy</p>
+        <p className="label-text mb-6">How I Work</p>
       </Reveal>
       <h2 className="max-w-3xl font-serif text-[clamp(1.9rem,4.5vw,3.2rem)] font-light leading-[1.15] text-plum">
-        <WordReveal text="The value I create," />{' '}
+        <WordReveal text="The magic" />{' '}
         <span className="italic text-orchid">
-          <WordReveal text="across every project." delay={0.3} />
+          <WordReveal text="behind the work." delay={0.3} />
         </span>
       </h2>
 
