@@ -12,8 +12,10 @@ import { Reveal, WordReveal } from '@/components/Reveal'
  */
 
 type Card = {
-  /** 牌名（顶部名牌） */
+  /** 牌名（底部缎带） */
   name: string
+  /** 星顶单字 */
+  zi: string
   suit: 'spark' | 'target' | 'hands' | 'clock' | 'flow' | 'globe' | 'heart'
   title: string
   quote: string
@@ -23,6 +25,7 @@ type Card = {
 const HAND: Card[] = [
   {
     name: 'THE CREATE',
+    zi: '創',
     suit: 'spark',
     title: 'AI Product & Product Operations',
     quote: 'Turning user needs and messy cross-functional input into clear priorities and workflows that ship.',
@@ -30,6 +33,7 @@ const HAND: Card[] = [
   },
   {
     name: 'THE LIGHT',
+    zi: '光',
     suit: 'target',
     title: 'GTM Strategy & Adoption',
     quote: 'Connecting what a product can do to the people who need it — launches, narratives, adoption.',
@@ -37,6 +41,7 @@ const HAND: Card[] = [
   },
   {
     name: 'THE MIRROR',
+    zi: '鏡',
     suit: 'hands',
     title: 'Strategic Partnerships',
     quote: 'Turning promising conversations into collaborations both sides keep showing up for.',
@@ -44,6 +49,7 @@ const HAND: Card[] = [
   },
   {
     name: 'THE FLOWER',
+    zi: '花',
     suit: 'clock',
     title: 'Ecosystem & Program Execution',
     quote: 'Bringing companies, researchers and communities into the same room — and giving it a shape.',
@@ -51,6 +57,7 @@ const HAND: Card[] = [
   },
   {
     name: 'THE SHIELD',
+    zi: '盾',
     suit: 'flow',
     title: 'Agentic Coding & Automation',
     quote: 'Traceable, retryable, human-overridable — systems that guard their own quality.',
@@ -58,6 +65,7 @@ const HAND: Card[] = [
   },
   {
     name: 'THE DREAM',
+    zi: '夢',
     suit: 'globe',
     title: 'Cross-Cultural Fluency',
     quote: 'One dream, spoken in two languages — at home in both US and China AI ecosystems.',
@@ -65,6 +73,7 @@ const HAND: Card[] = [
   },
   {
     name: 'HOPE',
+    zi: '望',
     suit: 'heart',
     title: 'Warmth & Follow-Through',
     quote: 'I follow through and communicate clearly — so people would choose to work together again.',
@@ -138,70 +147,121 @@ function Suit({ name, className = '' }: { name: Card['suit']; className?: string
   )
 }
 
-/** 牌背：粉金 + 大翼星纹章（Sakura 牌背式版式，原创绘制） */
+function starPath(cx: number, cy: number, R: number, r: number) {
+  let d = ''
+  for (let i = 0; i < 10; i++) {
+    const rad = i % 2 === 0 ? R : r
+    const a = (i * Math.PI) / 5 - Math.PI / 2
+    d += `${i === 0 ? 'M' : 'L'}${(cx + Math.cos(a) * rad).toFixed(1)} ${(cy + Math.sin(a) * rad).toFixed(1)} `
+  }
+  return d + 'Z'
+}
+
+/** 牌背：大金星罗盘纹章（参考 Sakura 牌背几何结构，原创绘制） */
 function CardBack() {
+  const star = (cx: number, cy: number, R: number, r: number) => {
+    let d = ''
+    for (let i = 0; i < 10; i++) {
+      const rad = i % 2 === 0 ? R : r
+      const a = (i * Math.PI) / 5 - Math.PI / 2
+      d += `${i === 0 ? 'M' : 'L'}${(cx + Math.cos(a) * rad).toFixed(1)} ${(cy + Math.sin(a) * rad).toFixed(1)} `
+    }
+    return d + 'Z'
+  }
   return (
     <svg viewBox="0 0 160 240" className="h-full w-full" aria-hidden>
       <defs>
         <linearGradient id="cb-pink" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#F8CEDF" />
-          <stop offset="1" stopColor="#F2B2CC" />
+          <stop offset="0" stopColor="#F4A8C4" />
+          <stop offset="1" stopColor="#EF97B8" />
         </linearGradient>
       </defs>
-      <rect x="4" y="4" width="152" height="232" rx="12" fill="url(#cb-pink)" />
-      <rect x="9" y="9" width="142" height="222" rx="9" fill="none" stroke="#C9A05C" strokeWidth="2" />
-      <rect x="13.5" y="13.5" width="133" height="213" rx="7" fill="none" stroke="#C9A05C" strokeOpacity="0.5" strokeWidth="0.9" />
+      <rect x="3" y="3" width="154" height="234" rx="12" fill="url(#cb-pink)" />
+      {/* 内框（浅粉field + 奶白描边） */}
+      <rect x="10" y="10" width="140" height="220" rx="13" fill="#F6BAD0" stroke="#FFF1F5" strokeWidth="3" />
 
-      {/* 大翼星纹章 */}
-      <circle cx="80" cy="120" r="52" fill="none" stroke="#C9A05C" strokeOpacity="0.7" strokeWidth="1.2" />
-      <circle cx="80" cy="120" r="44" fill="none" stroke="#C9A05C" strokeOpacity="0.32" strokeWidth="0.8" />
-      {/* 左翼 */}
-      <path
-        d="M52 114c-18-15-39-13-48 4 12-2 20 1 28 7-8 1-15 4-21 11 11 2 21 1 31-4 4-3 8-8 10-18Z"
-        fill="#FFF7F0"
-        stroke="#C9A05C"
-        strokeWidth="1"
-        strokeLinejoin="round"
-      />
-      {/* 右翼 */}
-      <path
-        d="M108 114c18-15 39-13 48 4-12-2-20 1-28 7 8 1 15 4 21 11-11 2-21 1-31-4-4-3-8-8-10-18Z"
-        fill="#FFF7F0"
-        stroke="#C9A05C"
-        strokeWidth="1"
-        strokeLinejoin="round"
-      />
-      {/* 金色五角星 */}
-      <path
-        d="M80 98 L84.9 112.3 L100 112.6 L88 121.7 L92.3 136 L80 127.4 L67.7 136 L72 121.7 L60 112.6 L75.1 112.3 Z"
-        fill="#F5CF57"
-        stroke="#C0913C"
-        strokeWidth="1.2"
-        strokeLinejoin="round"
-      />
-      {/* 星下新月 */}
-      <path d="M69 148a13 13 0 0 0 20 4 11 11 0 0 1-20-4Z" fill="#DBB06C" />
-
-      {/* 上下小星点缀 */}
+      {/* 四角金星 */}
       {[
-        [80, 34],
-        [80, 206],
+        [19, 19],
+        [141, 19],
+        [19, 221],
+        [141, 221],
       ].map(([x, y]) => (
-        <path
-          key={`${x}-${y}`}
-          d={`M${x} ${y - 6}l2.2 4.4 4.4 2.2-4.4 2.2-2.2 4.4-2.2-4.4-4.4-2.2 4.4-2.2Z`}
-          fill="#C9A05C"
-          fillOpacity="0.7"
-        />
+        <path key={`s${x}-${y}`} d={star(x, y, 8, 3.4)} fill="#F5C838" stroke="#C9951F" strokeWidth="0.8" strokeLinejoin="round" />
       ))}
-      {/* 角落点缀 */}
+
+      {/* 罗盘环 */}
+      <circle cx="80" cy="120" r="62" fill="#F9D3E1" stroke="#E0447F" strokeWidth="8" />
+      <circle cx="80" cy="120" r="53.5" fill="none" stroke="#C13B6E" strokeWidth="1" strokeOpacity="0.7" />
+      <circle cx="80" cy="120" r="66.5" fill="none" stroke="#C13B6E" strokeWidth="0.8" strokeOpacity="0.55" />
+      {/* 环上符纹 */}
+      {Array.from({ length: 12 }).map((_, i) => {
+        const a = (i / 12) * Math.PI * 2
+        const x = 80 + Math.cos(a) * 62
+        const y = 120 + Math.sin(a) * 62
+        return i % 3 === 0 ? null : (
+          <circle key={'g' + i} cx={x} cy={y} r="1.6" fill="#FFF1F5" fillOpacity="0.9" />
+        )
+      })}
+
+      {/* 八芒罗盘（两个套叠方形的投影） */}
+      <path d="M80 68 L128 120 L80 172 L32 120 Z" fill="none" stroke="#E58AAE" strokeWidth="1.2" />
+      <path d="M46 86 L114 86 L114 154 L46 154 Z" fill="none" stroke="#E58AAE" strokeWidth="1.2" />
+
+      {/* 大金星（带切面线） */}
+      <path d={star(80, 120, 36, 14.5)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.6" strokeLinejoin="round" />
+      {Array.from({ length: 5 }).map((_, i) => {
+        const a = (i * 2 * Math.PI) / 5 - Math.PI / 2
+        return (
+          <line
+            key={'f' + i}
+            x1="80"
+            y1="120"
+            x2={80 + Math.cos(a) * 36}
+            y2={120 + Math.sin(a) * 36}
+            stroke="#D89B22"
+            strokeWidth="0.9"
+            strokeOpacity="0.8"
+          />
+        )
+      })}
+
+      {/* 左：环中新月 */}
+      <circle cx="21" cy="120" r="11" fill="#F9D3E1" stroke="#E0447F" strokeWidth="3.5" />
+      <path d="M17 113a8.5 8.5 0 1 0 9 2 7 7 0 0 1-9-2Z" fill="#F5C838" stroke="#C9951F" strokeWidth="0.7" />
+      {/* 右：太阳 */}
+      <circle cx="139" cy="120" r="7" fill="#F5C838" stroke="#C9951F" strokeWidth="0.8" />
+      {Array.from({ length: 12 }).map((_, i) => {
+        const a = (i / 12) * Math.PI * 2
+        return (
+          <line
+            key={'r' + i}
+            x1={139 + Math.cos(a) * 8.5}
+            y1={120 + Math.sin(a) * 8.5}
+            x2={139 + Math.cos(a) * (i % 2 === 0 ? 14 : 11)}
+            y2={120 + Math.sin(a) * (i % 2 === 0 ? 14 : 11)}
+            stroke="#E8A62B"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
+        )
+      })}
+
+      {/* 上下红盾节点 */}
       {[
-        [24, 30],
-        [136, 30],
-        [24, 210],
-        [136, 210],
+        [80, 56],
+        [80, 184],
       ].map(([x, y]) => (
-        <circle key={`c${x}-${y}`} cx={x} cy={y} r="2.2" fill="#C9A05C" fillOpacity="0.55" />
+        <g key={`sh${x}-${y}`}>
+          <path
+            d={`M${x - 5.5} ${y - 6}h11v6.5c0 3.6-2.4 6-5.5 7.5-3.1-1.5-5.5-3.9-5.5-7.5Z`}
+            fill="#B3222E"
+            stroke="#7E1620"
+            strokeWidth="0.9"
+            strokeLinejoin="round"
+          />
+          <circle cx={x} cy={y} r="1.6" fill="#F5C838" />
+        </g>
       ))}
     </svg>
   )
@@ -345,12 +405,47 @@ export function HowICreateValue() {
               filter: active !== null ? 'drop-shadow(0 0 12px rgba(199,154,75,0.4))' : 'none',
             }}
           >
-            <ellipse cx="400" cy="150" rx="380" ry="120" stroke="#C9A45C" strokeOpacity="0.6" strokeWidth="1.6" />
+            <ellipse cx="400" cy="150" rx="380" ry="120" stroke="#C9A45C" strokeOpacity="0.8" strokeWidth="2.4" />
+            <ellipse cx="400" cy="150" rx="356" ry="112" stroke="#C9A45C" strokeOpacity="0.55" strokeWidth="1.2" />
+            {Array.from({ length: 28 }).map((_, i) => {
+              const a2 = (i / 28) * Math.PI * 2
+              return (
+                <line
+                  key={'tick' + i}
+                  x1={400 + Math.cos(a2) * 356}
+                  y1={150 + Math.sin(a2) * 112}
+                  x2={400 + Math.cos(a2) * 380}
+                  y2={150 + Math.sin(a2) * 120}
+                  stroke="#C9A45C"
+                  strokeOpacity="0.45"
+                  strokeWidth="1"
+                />
+              )
+            })}
+            {/* 八芒罗盘（两个套叠方形的投影） */}
+            <path d="M400 57 L700 150 L400 243 L100 150 Z" stroke="#D193A8" strokeOpacity="0.5" strokeWidth="1.2" fill="none" strokeLinejoin="round" />
+            <path d="M188 84 L612 84 L612 216 L188 216 Z" stroke="#D193A8" strokeOpacity="0.5" strokeWidth="1.2" fill="none" strokeLinejoin="round" />
             <ellipse cx="400" cy="150" rx="366" ry="115" stroke="#C9A45C" strokeOpacity="0.35" strokeWidth="0.9" strokeDasharray="7 11" />
             <ellipse cx="400" cy="150" rx="322" ry="101" stroke="#C9A45C" strokeOpacity="0.35" strokeWidth="1" />
             <ellipse cx="400" cy="150" rx="236" ry="74" stroke="#C9A45C" strokeOpacity="0.4" strokeWidth="1" />
             <ellipse cx="400" cy="150" rx="150" ry="47" stroke="#C9A45C" strokeOpacity="0.3" strokeWidth="0.9" strokeDasharray="4 8" />
-            <ellipse cx="400" cy="150" rx="60" ry="19" stroke="#C9A45C" strokeOpacity="0.4" strokeWidth="0.9" />
+            <ellipse cx="400" cy="150" rx="60" ry="19" stroke="#C9A45C" strokeOpacity="0.55" strokeWidth="1.2" />
+            {Array.from({ length: 12 }).map((_, i) => {
+              const a3 = (i / 12) * Math.PI * 2
+              return (
+                <line
+                  key={'sun' + i}
+                  x1={400 + Math.cos(a3) * 66}
+                  y1={150 + Math.sin(a3) * 21}
+                  x2={400 + Math.cos(a3) * 88}
+                  y2={150 + Math.sin(a3) * 28}
+                  stroke="#C9A45C"
+                  strokeOpacity="0.5"
+                  strokeWidth="1.1"
+                  strokeLinecap="round"
+                />
+              )
+            })}
             <circle cx="400" cy="150" r="4.5" fill="#C9A45C" fillOpacity="0.6" />
             {/* 六芒星 */}
             <path d="M400 56 659.8 197 140.2 197Z" stroke="#C9A45C" strokeOpacity="0.42" strokeWidth="1.1" strokeLinejoin="round" />
@@ -397,6 +492,8 @@ export function HowICreateValue() {
             { left: 85, size: 12, dur: 14, delay: 5.8 },
             { left: 92, size: 16, dur: 11.5, delay: 3 },
             { left: 97, size: 11, dur: 12.5, delay: 7.4 },
+            { left: 18, size: 22, dur: 12, delay: 8.6 },
+            { left: 63, size: 21, dur: 13.8, delay: 9.5 },
           ].map((pt, i) => (
             <svg
               key={'p' + i}
@@ -410,10 +507,18 @@ export function HowICreateValue() {
                 animation: `petal-drift ${pt.dur}s ${pt.delay}s linear infinite`,
               }}
             >
+              <defs>
+                <linearGradient id={'petal' + i} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor={i % 3 === 0 ? '#FBD0DF' : '#F8BFD3'} />
+                  <stop offset="1" stopColor={i % 3 === 1 ? '#EE8FB4' : '#F3A3C2'} />
+                </linearGradient>
+              </defs>
               <path
-                d="M10 1.5C13.6 4.8 14.6 9.6 10 14.5 5.4 9.6 6.4 4.8 10 1.5Z"
-                fill={i % 3 === 0 ? '#F6B5CD' : i % 3 === 1 ? '#F19CBC' : '#FBCBDD'}
-                fillOpacity="0.92"
+                d="M10 17C6 13 4.2 9 5.6 5.6 6.9 2.9 9 2.3 10 4.2 11 2.3 13.1 2.9 14.4 5.6 15.8 9 14 13 10 17Z"
+                fill={'url(#petal' + i + ')'}
+                stroke="#E87BA4"
+                strokeOpacity="0.45"
+                strokeWidth="0.5"
               />
             </svg>
           ))}
@@ -506,6 +611,29 @@ export function HowICreateValue() {
                   animation: 'halo-in .8s ease-out both, glow-soft 2.8s 1s ease-in-out infinite',
                 }}
               />
+              {[
+                { tx: '-150px', ty: '-90px' },
+                { tx: '150px', ty: '-84px' },
+                { tx: '-180px', ty: '30px' },
+                { tx: '182px', ty: '36px' },
+                { tx: '-70px', ty: '-160px' },
+                { tx: '76px', ty: '-166px' },
+              ].map((sp, i) => (
+                <span
+                  key={'spark' + i}
+                  aria-hidden
+                  className="pointer-events-none absolute left-1/2 top-[43%] z-40 text-[15px] text-[#E9B54C]"
+                  style={
+                    {
+                      '--tx': sp.tx,
+                      '--ty': sp.ty,
+                      animation: `sparkle-burst .9s ${0.35 + i * 0.05}s ease-out both`,
+                    } as React.CSSProperties
+                  }
+                >
+                  ✦
+                </span>
+              ))}
               <button
                 type="button"
                 onClick={putBack}
@@ -527,65 +655,113 @@ export function HowICreateValue() {
                     <CardBack />
                   </span>
 
-                  {/* 牌面：与牌背同一套粉金框 */}
+                  {/* 牌面：星顶汉字 + 侧边日月 + 深粉画框 + 缎带名牌（参考正面版式） */}
                   <span
                     className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_26px_54px_-22px_rgba(58,36,64,0.45)]"
-                    style={{
-                      backfaceVisibility: 'hidden',
-                      transform: 'rotateY(180deg)',
-                      background: 'linear-gradient(135deg, #F8CEDF 0%, #F2B2CC 100%)',
-                    }}
+                    style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                   >
-                    <span className="absolute inset-[6px] rounded-[0.85rem] border-2 border-[#C9A05C]" />
-                    <span className="absolute inset-[11px] rounded-[0.7rem] border border-[#C9A05C]/50 bg-[#FFF9F2]" />
+                    <svg viewBox="0 0 244 386" className="absolute inset-0 h-full w-full" aria-hidden>
+                      <defs>
+                        <linearGradient id="cf-pink" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0" stopColor="#F5AFC9" />
+                          <stop offset="1" stopColor="#EE9BBB" />
+                        </linearGradient>
+                      </defs>
+                      <rect x="0" y="0" width="244" height="386" rx="16" fill="url(#cf-pink)" />
+                      {/* 奶白衬纸 */}
+                      <rect x="13" y="15" width="218" height="344" rx="11" fill="#FFF6EE" stroke="#EFB8CD" strokeWidth="1" />
+                      {/* 深粉画框 */}
+                      <rect x="23" y="28" width="198" height="276" rx="14" fill="none" stroke="#EE86AD" strokeWidth="5" />
+                      <rect x="27" y="32" width="190" height="268" rx="12" fill="#CE4E82" stroke="#A83464" strokeWidth="2" />
 
-                    {/* 顶部名牌 */}
-                    <span className="absolute inset-x-0 top-[13px] flex justify-center">
-                      <span className="relative rounded-[3px] bg-[#DBB06C] px-4 py-[3px] shadow-sm">
-                        <span
-                          className="block text-[11px] font-semibold tracking-[0.28em] text-[#7C3B50]"
-                          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
-                        >
-                          {HAND[active].name}
-                        </span>
-                      </span>
-                    </span>
-                    {/* 底部落款 */}
-                    <span className="absolute inset-x-0 bottom-[13px] flex justify-center">
-                      <span className="rounded-[3px] bg-[#DBB06C]/85 px-3 py-[2px]">
-                        <span
-                          className="block text-[9px] font-semibold tracking-[0.3em] text-[#7C3B50]"
-                          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
-                        >
-                          OLIVIA
-                        </span>
-                      </span>
-                    </span>
+                      {/* 左日 右月 */}
+                      <circle cx="23" cy="166" r="8" fill="#F5C838" stroke="#C9951F" strokeWidth="0.9" />
+                      {Array.from({ length: 10 }).map((_, i) => {
+                        const a2 = (i / 10) * Math.PI * 2
+                        return (
+                          <line
+                            key={'sr' + i}
+                            x1={23 + Math.cos(a2) * 9.5}
+                            y1={166 + Math.sin(a2) * 9.5}
+                            x2={23 + Math.cos(a2) * 15}
+                            y2={166 + Math.sin(a2) * 15}
+                            stroke="#E8A62B"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                          />
+                        )
+                      })}
+                      <path
+                        d="M215 154a13.5 13.5 0 1 0 12 5 11 11 0 0 1-12-5Z"
+                        fill="#F5C838"
+                        stroke="#C9951F"
+                        strokeWidth="1"
+                      />
 
-                    <span className="relative flex h-full w-full flex-col px-6 pb-11 pt-12 text-left">
-                      <span className="flex items-center justify-center text-[#8A4258]">
+                      {/* 底部小金星 */}
+                      <path d={starPath(122, 300, 13, 5.4)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1" strokeLinejoin="round" />
+
+                      {/* 缎带名牌 */}
+                      <path d="M46 322 L26 333 L46 344 Z" fill="#E87BA4" stroke="#A83464" strokeWidth="1.4" strokeLinejoin="round" />
+                      <path d="M198 322 L218 333 L198 344 Z" fill="#E87BA4" stroke="#A83464" strokeWidth="1.4" strokeLinejoin="round" />
+                      <rect x="44" y="316" width="156" height="32" rx="4" fill="#F09CBC" stroke="#A83464" strokeWidth="1.6" />
+                      <text
+                        x="122"
+                        y="338"
+                        textAnchor="middle"
+                        fontSize="16"
+                        letterSpacing="2.5"
+                        fill="#43202E"
+                        style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontWeight: 700 }}
+                      >
+                        {HAND[active].name}
+                      </text>
+                      <text
+                        x="122"
+                        y="371"
+                        textAnchor="middle"
+                        fontSize="11"
+                        letterSpacing="5"
+                        fill="#B03A66"
+                        style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontWeight: 600 }}
+                      >
+                        OLIVIA
+                      </text>
+
+                      {/* 星顶汉字 */}
+                      <path d={starPath(122, 34, 30, 12.4)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.6" strokeLinejoin="round" />
+                      <text
+                        x="122"
+                        y="42"
+                        textAnchor="middle"
+                        fontSize="21"
+                        fill="#3F2430"
+                        style={{ fontFamily: 'Georgia, serif', fontWeight: 700 }}
+                      >
+                        {HAND[active].zi}
+                      </text>
+                    </svg>
+
+                    {/* 面板内容 */}
+                    <span className="absolute bottom-[96px] left-[38px] right-[38px] top-[74px] flex flex-col items-center text-center">
+                      <span className="flex items-center justify-center text-[#FFE9F2]">
                         <Suit name={HAND[active].suit} className="h-5 w-5" />
                       </span>
-
-                      <span className="mt-3 block text-center font-serif text-[19px] font-light leading-snug text-plum">
+                      <span className="mt-2 block font-serif text-[16px] font-medium leading-snug text-[#FFF3EA]">
                         {HAND[active].title}
                       </span>
-
-                      {/* 金色分隔线 */}
-                      <span aria-hidden className="mt-3 flex items-center gap-2">
-                        <span className="h-px flex-1 bg-[#C9A05C]/45" />
-                        <span className="text-[9px] text-[#C0913C]">◆</span>
-                        <span className="h-px flex-1 bg-[#C9A05C]/45" />
+                      <span aria-hidden className="mt-2 flex w-3/4 items-center gap-2">
+                        <span className="h-px flex-1 bg-[#F7C93C]/55" />
+                        <span className="text-[8px] text-[#F7C93C]">◆</span>
+                        <span className="h-px flex-1 bg-[#F7C93C]/55" />
                       </span>
-
-                      <span className="mt-3 block text-center font-hand text-[15px] leading-snug text-plum-muted">
+                      <span className="mt-2 block font-hand text-[13.5px] leading-snug text-[#FFE9F2]/95">
                         “{HAND[active].quote}”
                       </span>
-
-                      <span className="mt-auto block space-y-1.5 pt-4">
+                      <span className="mt-auto block space-y-1 pt-2">
                         {HAND[active].skills.map((sk) => (
-                          <span key={sk} className="flex items-baseline gap-2 text-[12.5px] text-plum-muted">
-                            <span aria-hidden className="text-[10px] text-[#C0913C]">
+                          <span key={sk} className="flex items-baseline justify-center gap-1.5 text-[11.5px] text-[#FFE9F2]/90">
+                            <span aria-hidden className="text-[9px] text-[#F7C93C]">
                               ✦
                             </span>
                             {sk}

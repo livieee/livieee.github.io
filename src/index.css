@@ -245,3 +245,16 @@
   30%  { opacity: .95; }
   100% { opacity: 0; transform: translate(-50%, -50%) scale(1.25); }
 }
+
+/* 抽牌：从法阵中升起（覆盖旧定义） */
+@keyframes card-reveal {
+  0%   { transform: translateY(170px) rotateY(0deg) scale(.5); }
+  55%  { transform: translateY(-16px) rotateY(150deg) scale(1.06); }
+  100% { transform: translateY(0) rotateY(180deg) scale(1); }
+}
+/* 星光迸散 */
+@keyframes sparkle-burst {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(.3); }
+  25%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.15) rotate(90deg); }
+}
