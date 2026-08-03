@@ -314,3 +314,11 @@ body {
   99.5%    { transform: scaleX(1); opacity: 0; }
   100%     { transform: scaleX(1); opacity: 1; }
 }
+
+/* 底部照片带：无缝横向滑动，hover 暂停 */
+@keyframes photo-reel {
+  to { transform: translateX(-50%); }
+}
+.animate-photo-reel {
+  animation: photo-reel 42s linear infinite;
+}

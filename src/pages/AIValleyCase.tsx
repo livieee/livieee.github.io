@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { Glyph, type GlyphName } from '@/components/Glyph'
@@ -478,13 +479,6 @@ const PROGRAMS: Program[] = [
     badge: 'On-site Coordination',
     weight: 'small',
     role: 'On-site coordination on the day — nine speakers, one schedule.',
-    snaps: [
-      {
-        src: '/events/minimax-day.jpg',
-        alt: 'Founders and builders over lunch between sessions at MiniMax AI Founder Day',
-        cap: 'lunch between sessions ✦',
-      },
-    ],
     partners: 'The AI Collective · AI Valley · MiniMax',
     caps: ['Community', 'Program ops'],
     tier: 3,
@@ -598,10 +592,9 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           <div className={`mt-3.5 grid gap-3 ${p.snaps.length > 1 ? 'grid-cols-2' : ''}`}>
             {p.snaps.map((sn) => (
               <figure key={sn.src}>
-                <img
+                <Zoomable
                   src={sn.src}
                   alt={sn.alt}
-                  loading="lazy"
                   className="h-28 w-full rounded-[0.9rem] border border-plum/10 object-cover"
                 />
                 <figcaption className="mt-1.5 font-hand text-[13px] leading-tight text-plum-muted">{sn.cap}</figcaption>
@@ -835,6 +828,37 @@ function RunOfShow() {
   )
 }
 
+/* ── 点开放大：全页图片通用灯箱 ─────────────────────────────── */
+function Zoomable({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)} className="block w-full cursor-zoom-in" aria-label={`View larger: ${alt}`}>
+        <img src={src} alt={alt} loading="lazy" className={className} />
+      </button>
+      {open &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-plum/85 p-4 backdrop-blur-sm md:p-10"
+            onClick={() => setOpen(false)}
+            role="dialog"
+            aria-modal="true"
+          >
+            <img src={src} alt={alt} className="max-h-[90vh] max-w-[94vw] rounded-2xl shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)]" />
+            <button
+              type="button"
+              aria-label="Close"
+              className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-xl text-white backdrop-blur transition-colors hover:bg-white/30"
+            >
+              ×
+            </button>
+          </div>,
+          document.body,
+        )}
+    </>
+  )
+}
+
 const PARTNER_GROUPS: Array<{ k: string; v: Array<{ n: string; l?: string }> }> = [
   {
     k: 'Model labs & platforms',
@@ -946,18 +970,32 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
     alt: 'Builders mid-build at an AI Valley hackathon',
     cap: 'AI Valley Hackathon — the room mid-build',
   },
+  {
+    src: '/events/minimax-day.jpg',
+    alt: 'Builders and founders talking over lunch between sessions',
+    cap: 'builders over lunch, between sessions',
+  },
 ]
 
 function EventPhotos() {
   if (PHOTOS.length === 0) return null
+  const reel = [...PHOTOS, ...PHOTOS]
   return (
-    <div className={`grid items-stretch gap-4 ${PHOTOS.length > 1 ? 'sm:grid-cols-3' : ''}`}>
-      {PHOTOS.map((ph) => (
-        <figure key={ph.src} className="flex flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white p-3">
-          <img src={ph.src} alt={ph.alt} loading="lazy" className="aspect-[4/3] w-full rounded-[1rem] object-cover" />
-          <figcaption className="mt-2.5 px-1 text-[12px] text-plum-faint">{ph.cap}</figcaption>
-        </figure>
-      ))}
+    <div className="relative overflow-hidden rounded-[1.4rem]">
+      <div className="animate-photo-reel flex w-max gap-4 hover:[animation-play-state:paused]">
+        {reel.map((ph, i) => (
+          <figure key={ph.src + i} className="w-[300px] shrink-0 sm:w-[360px]">
+            <Zoomable
+              src={ph.src}
+              alt={ph.alt}
+              className="aspect-[4/3] w-full rounded-[1.1rem] border border-plum/10 bg-white object-cover"
+            />
+            <figcaption className="mt-2 px-1 text-[12px] text-plum-faint">{ph.cap}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-cream to-transparent" />
+      <span aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-cream to-transparent" />
     </div>
   )
 }
