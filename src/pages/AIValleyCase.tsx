@@ -393,6 +393,12 @@ const PROGRAMS: Program[] = [
     cover: '/events/luma/agent-recall.jpg',
     posts: [
       {
+        label: 'The official recap',
+        text: '',
+        stats: '',
+        href: 'https://www.linkedin.com/feed/update/urn:li:activity:7444284495148634112',
+      },
+      {
         label: 'I wrote the recruiting post',
         text: 'A build day for ~50 engineers working on agent systems. Come in with an idea, leave with a working agent.\n\nNVIDIA GPUs, 170+ models, Dify for orchestration, HydraDB for memory. Judges from Microsoft, Amazon and YC. Mac Mini for the grand prize.\n\nFirst 20 AI Valley members through the door get a branded mug. Small room: fills fast.',
         stats: '19 reactions · 4 comments',
@@ -603,7 +609,22 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
 
         {(p.posts || p.ros) && (
           <div className="mt-auto flex flex-wrap gap-x-5 gap-y-2 pt-3.5">
-            {p.posts?.map((po, idx) => (
+            {p.posts?.map((po, idx) =>
+              po.text === '' ? (
+                <a
+                  key={po.label}
+                  href={po.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
+                >
+                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
+                    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
+                  </svg>
+                  {po.label}
+                  <span aria-hidden>↗</span>
+                </a>
+              ) : (
               <button
                 key={po.label}
                 type="button"
@@ -617,7 +638,8 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
                 {po.label}
                 <span aria-hidden className={`inline-block transition-transform duration-300 ${openIdx === idx ? 'rotate-180' : ''}`}>▾</span>
               </button>
-            ))}
+              ),
+            )}
             {p.ros && (
               <button
                 type="button"
