@@ -546,10 +546,17 @@ export function HowICreateValue() {
         </p>
       </Reveal>
 
+      <Reveal className="mt-5">
+        <p className="max-w-2xl text-[15px] leading-relaxed text-plum-muted">
+          Underneath every project above, the same seven strengths keep showing up — so I made
+          them into <span className="italic text-orchid">a deck</span>.
+        </p>
+      </Reveal>
+
       {/* ── ① 四个领域：环形牌阵，点击抽出 ─────────────────────── */}
       <Reveal className="mt-16">
         <p className="text-center font-hand text-[17px] text-plum-muted">
-          {active === null ? 'so — pick a card ✦' : 'tap it again to put it back ✦'}
+          {active === null ? 'go on — draw one ✦' : 'tap it again to put it back ✦'}
         </p>
       </Reveal>
 
