@@ -346,3 +346,15 @@ body {
   0%   { opacity: 0; transform: scale(0.86); }
   100% { opacity: 1; transform: scale(1); }
 }
+
+/* 荣誉卡：TaaLA 侧缓缓流动的脑波 */
+@keyframes eeg-drift {
+  to { transform: translateX(-50%); }
+}
+/* 中间连线朝被 hover 的一侧流动 */
+@keyframes thread-left {
+  to { stroke-dashoffset: -28; }
+}
+@keyframes thread-right {
+  to { stroke-dashoffset: 28; }
+}
