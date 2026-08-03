@@ -466,3 +466,11 @@ body {
   from { width: 0%; }
   to   { width: 100%; }
 }
+
+/* EEG 采样游标横扫 */
+@keyframes eeg-sweep {
+  from { transform: translateX(0); opacity: 0; }
+  8%   { opacity: .5; }
+  92%  { opacity: .5; }
+  to   { transform: translateX(300px); opacity: 0; }
+}

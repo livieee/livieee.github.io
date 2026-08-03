@@ -6,6 +6,7 @@ import { InstallationDemo } from '@/components/InstallationDemo'
 import { ChapterDeck, type Chapter } from '@/components/ChapterDeck'
 import { StateScrub } from '@/components/StateScrub'
 import { PhotoRail } from '@/components/PhotoRail'
+import { EEGTrace } from '@/components/EEGTrace'
 
 /**
  * Therapy as a Living Art —— IEEE Rising Stars 2026 Project Showcase 一等奖。
@@ -222,23 +223,8 @@ export function LivingArtCase() {
         <div className="grid items-center gap-5 md:grid-cols-[1fr_auto_1fr]">
           <div className="glass-panel p-6">
             <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-white/40">What the system sees</p>
-            <svg viewBox="0 0 300 96" className="h-[92px] w-full" fill="none" aria-hidden>
-              {[0, 1, 2, 3, 4].map((r) => (
-                <path
-                  key={r}
-                  d={`M0 ${12 + r * 18} ${Array.from({ length: 60 })
-                    .map((_, k) => `L${k * 5} ${12 + r * 18 + Math.sin(k * (0.32 + r * 0.14)) * (3 + r)}`)
-                    .join(' ')}`}
-                  stroke="#8FA6D8"
-                  strokeOpacity="0.55"
-                  strokeWidth="1.1"
-                  strokeDasharray="600"
-                  style={{ animation: `route-draw 2.4s ${r * 0.14}s ease-out both` }}
-                />
-              ))}
-            </svg>
-            <p className="mt-3 text-[12.5px] leading-snug text-white/40">δ · θ · α · β · γ</p>
-          </div>
+            <EEGTrace />
+                      </div>
 
           <p className="text-center font-hand text-[15px] text-[#CBB8F5]">
             raw signal → meaningful experience
