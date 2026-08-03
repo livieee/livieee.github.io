@@ -434,19 +434,29 @@ function CardFace({ card, content = false }: { card: Card; content?: boolean }) 
 }
 
 /* ── 桌上的工具：只列有据可查的 ──────────────────────────────── */
-/** 法阵上的摆法：外环 7 枚符印、内环 4 枚，坐标是百分比（圆心 50,50） */
+/** 法阵上的摆法：外环 12 枚符印、内环 7 枚，坐标是百分比（圆心 50,50） */
 const PLATE = [
-  { n: 'Figma', l: '/logos/tools/figma.jpg', x: 50, y: 6 },
-  { n: 'Claude', l: '/logos/tools/claude.jpg', x: 84.4, y: 22.6 },
-  { n: 'Notion', l: '/logos/tools/notion.jpg', x: 92.9, y: 59.8 },
-  { n: 'Luma', l: '/logos/tools/luma.jpg', x: 69.1, y: 89.6 },
-  { n: 'Devpost', l: '/logos/tools/devpost.jpg', x: 30.9, y: 89.6 },
-  { n: 'Miro', l: '/logos/tools/miro.jpg', x: 7.1, y: 59.8 },
-  { n: 'GitHub Actions', l: '/logos/tools/github.jpg', x: 15.6, y: 22.6 },
-  { n: 'OpenAI', l: '/logos/tools/openai.png', x: 64.1, y: 35.9 },
-  { n: 'Playwright', l: '/logos/tools/playwright.svg', x: 64.1, y: 64.1 },
-  { n: 'Tableau', l: '/logos/tools/tableau.jpg', x: 35.9, y: 64.1 },
-  { n: 'Discord', l: '/logos/tools/discord.jpg', x: 35.9, y: 35.9 },
+  // 外环 r=44%，从正上方起每 30°
+  { n: 'Claude', l: '/logos/tools/claude.jpg', x: 50, y: 6 },
+  { n: 'Cursor', l: '/logos/tools/cursor.png', x: 72, y: 11.9 },
+  { n: 'OpenAI', l: '/logos/tools/openai.png', x: 88.1, y: 28 },
+  { n: 'Figma', l: '/logos/tools/figma.jpg', x: 94, y: 50 },
+  { n: 'Notion', l: '/logos/tools/notion.jpg', x: 88.1, y: 72 },
+  { n: 'Python', l: '/logos/tools/python.png', x: 72, y: 88.1 },
+  { n: 'GitHub Actions', l: '/logos/tools/github.jpg', x: 50, y: 94 },
+  { n: 'Luma', l: '/logos/tools/luma.jpg', x: 28, y: 88.1 },
+  { n: 'Devpost', l: '/logos/tools/devpost.jpg', x: 11.9, y: 72 },
+  { n: 'Discord', l: '/logos/tools/discord.jpg', x: 6, y: 50 },
+  { n: 'LinkedIn', l: '/logos/tools/linkedin.png', x: 11.9, y: 28 },
+  { n: 'X', l: '/logos/tools/x.png', x: 28, y: 11.9 },
+  // 内环 r=22%，从正上方起每 51.4°
+  { n: 'LangGraph', l: '/logos/tools/langgraph.png', x: 50, y: 28 },
+  { n: 'Playwright', l: '/logos/tools/playwright.svg', x: 67.2, y: 36.3 },
+  { n: 'Tableau', l: '/logos/tools/tableau.jpg', x: 71.4, y: 54.9 },
+  { n: 'Streamlit', l: '/logos/tools/streamlit.png', x: 59.5, y: 69.8 },
+  { n: 'Databricks', l: '/logos/tools/databricks.png', x: 40.5, y: 69.8 },
+  { n: 'Airtable', l: '/logos/tools/airtable.png', x: 28.6, y: 54.9 },
+  { n: 'Miro', l: '/logos/tools/miro.jpg', x: 32.8, y: 36.3 },
 ]
 
 /** 工具法阵 —— 和牌阵地面的金色魔法阵同一套语言 */
