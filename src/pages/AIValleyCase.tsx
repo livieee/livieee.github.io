@@ -256,8 +256,16 @@ type Program = {
   href: string
   /** luma 封面 */
   cover: string
-  /** 她自己写的公开记录 */
-  post?: string
+  /** 关联的 LinkedIn 帖：点击卡片内展开 */
+  post?: {
+    label: string
+    author?: string
+    avatar?: string | null
+    sub?: string
+    text: string
+    stats: string
+    href: string
+  }
   lead?: boolean
 }
 
@@ -282,7 +290,12 @@ const PROGRAMS: Program[] = [
     tier: 1,
     href: 'https://luma.com/32jfoybh',
     cover: '/events/luma/glm.jpg',
-    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256',
+    post: {
+      label: 'I wrote the launch post',
+      text: 'Most people talk about AI. This is where you actually build with it.\n\nGLM 5.1 is here, and we’re kicking off a 1-week global builder sprint to see what people can really do with it. No pitches. No fluff. Just builders shipping real things.',
+      stats: '7 reactions · 1 comment',
+      href: 'https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256',
+    },
     lead: true,
   },
   {
@@ -310,6 +323,15 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/ic3l89gi',
     cover: '/events/luma/women.jpg',
+    post: {
+      label: 'The organiser’s write-up',
+      author: 'Courtney Ko',
+      avatar: null,
+      sub: 'AI Valley · organiser of Build What You Love',
+      text: '150+ women in one room in San Francisco, building on Valentine’s Day. Spaces where women in STEM felt supported, confident, and ambitious — women who showed up not to impress anyone, but to build what they love.\n\nVolunteers: Olivia Xiao, Kathy Men, Amy Wang, Uche Oh, Andrew Flores.',
+      stats: '215 reactions · 59 comments',
+      href: 'https://www.linkedin.com/posts/courtneythko_womenintech-buildwhatyoulove-aivalley-activity-7429241914459303938-4MG5',
+    },
   },
   {
     name: '2026 GTC AI Demo Day',
@@ -388,13 +410,19 @@ const PROGRAMS: Program[] = [
     tier: 3,
     href: 'https://luma.com/snixr7yb',
     cover: '/events/luma/agent-recall.jpg',
-    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7443396471057485824',
+    post: {
+      label: 'I wrote the recruiting post',
+      text: 'A build day for ~50 engineers working on agent systems. Come in with an idea, leave with a working agent.\n\nNVIDIA GPUs, 170+ models, Dify for orchestration, HydraDB for memory. Judges from Microsoft, Amazon and YC. Mac Mini for the grand prize.\n\nFirst 20 AI Valley members through the door get a branded mug. Small room: fills fast.',
+      stats: '19 reactions · 4 comments',
+      href: 'https://www.linkedin.com/feed/update/urn:li:activity:7443396471057485824',
+    },
   },
 ]
 
 
 
 function ProgramCard({ p, i }: { p: Program; i: number }) {
+  const [open, setOpen] = useState(false)
   return (
     <li
       style={{ animation: `annot-in .4s ${i * 0.05}s ease-out both` }}
@@ -453,17 +481,32 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
         </span>
         {p.role && <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>}
         {p.post && (
-          <a
-            href={p.post}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-auto inline-flex items-center gap-1.5 pt-3.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
-          >
-            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
-              <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
-            </svg>
-            I wrote this one up
-          </a>
+          <div className="mt-auto pt-3.5">
+            <button
+              type="button"
+              onClick={() => setOpen((o) => !o)}
+              aria-expanded={open}
+              className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
+            >
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
+                <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
+              </svg>
+              {p.post.label}
+              <span aria-hidden className={`inline-block transition-transform duration-300 ${open ? 'rotate-180' : ''}`}>▾</span>
+            </button>
+            {open && (
+              <div className="mt-3">
+                <LinkedInPost
+                  text={p.post.text}
+                  stats={p.post.stats}
+                  href={p.post.href}
+                  author={p.post.author}
+                  avatar={p.post.avatar}
+                  sub={p.post.sub}
+                />
+              </div>
+            )}
+          </div>
         )}
       </div>
     </li>
@@ -516,22 +559,6 @@ function ProgramMatrix() {
     </div>
   )
 }
-
-/* ── 我写的招募文案，以 LinkedIn 帖子的形态呈现 ────────────────── */
-const OUTBOUND = [
-  {
-    for: 'Build with GLM 5.1',
-    text: 'Most people talk about AI. This is where you actually build with it.\n\nGLM 5.1 is here, and we’re kicking off a 1-week global builder sprint to see what people can really do with it. No pitches. No fluff. Just builders shipping real things.\n\nWhy GLM 5.1? Built for multi-step reasoning and execution · strong at tool calling and long workflows · designed for real-world agents, not just prototypes.',
-    stats: '7 reactions · 1 comment',
-    href: 'https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256',
-  },
-  {
-    for: 'Total Agent Recall',
-    text: 'A build day for ~50 engineers working on agent systems. Come in with an idea, leave with a working agent.\n\nNVIDIA GPUs, 170+ models, Dify for orchestration, HydraDB for memory, Photon for interfaces. Judges from Microsoft, Amazon and YC. Mac Mini for the grand prize.\n\nFirst 20 AI Valley members through the door get a branded mug. Small room: fills fast.',
-    stats: '19 reactions · 4 comments',
-    href: 'https://www.linkedin.com/feed/update/urn:li:activity:7443396471057485824',
-  },
-]
 
 function LinkedInPost({
   text,
@@ -600,24 +627,6 @@ function LinkedInPost({
         )}
       </div>
     </a>
-  )
-}
-
-function Outbound() {
-  return (
-    <div>
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-          How the rooms actually filled
-        </p>
-        <p className="font-hand text-[15px] text-plum-muted">the copy is mine ✦</p>
-      </div>
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {OUTBOUND.map((o, i) => (
-          <LinkedInPost key={o.for} {...o} i={i} />
-        ))}
-      </div>
-    </div>
   )
 }
 
@@ -838,10 +847,10 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
 function EventPhotos() {
   if (PHOTOS.length === 0) return null
   return (
-    <div className={`grid items-start gap-4 ${PHOTOS.length > 1 ? 'sm:grid-cols-2' : ''}`}>
+    <div className={`grid items-stretch gap-4 ${PHOTOS.length > 1 ? 'sm:grid-cols-3' : ''}`}>
       {PHOTOS.map((ph) => (
-        <figure key={ph.src} className="overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white p-3">
-          <img src={ph.src} alt={ph.alt} loading="lazy" className="w-full rounded-[1rem]" />
+        <figure key={ph.src} className="flex flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white p-3">
+          <img src={ph.src} alt={ph.alt} loading="lazy" className="aspect-[4/3] w-full rounded-[1rem] object-cover" />
           <figcaption className="mt-2.5 px-1 text-[12px] text-plum-faint">{ph.cap}</figcaption>
         </figure>
       ))}
@@ -1007,13 +1016,9 @@ export function AIValleyCase() {
           n="03"
           label="The paper trail"
           title="What running one actually looks like"
-          intro="Two artifacts every program lives or dies by — the outbound copy that fills the room, and the minute-by-minute guide that keeps it on rails once it’s full."
+          intro="The recruiting posts live on their program cards above — this is the other half of the paper trail: the minute-by-minute speaker guide that keeps a twenty-speaker night on rails."
         />
         <Reveal className="mt-8" y={24}>
-          <Outbound />
-        </Reveal>
-
-        <Reveal className="mt-6" y={24}>
           <RunOfShow />
         </Reveal>
 
@@ -1063,18 +1068,6 @@ export function AIValleyCase() {
             <p className="label-text">For the record</p>
           </div>
           <EventPhotos />
-          <div className="mt-4 md:max-w-[52%]">
-            <LinkedInPost
-              author="Courtney Ko"
-              avatar={null}
-              sub="AI Valley · organiser of Build What You Love"
-              text={
-                '150+ women in one room in San Francisco, building on Valentine’s Day. Spaces where women in STEM felt supported, confident, and ambitious — women who showed up not to impress anyone, but to build what they love.\n\nVolunteers: Olivia Xiao, Kathy Men, Amy Wang, Uche Oh, Andrew Flores.'
-              }
-              stats="215 reactions · 59 comments"
-              href="https://www.linkedin.com/posts/courtneythko_womenintech-buildwhatyoulove-aivalley-activity-7429241914459303938-4MG5"
-            />
-          </div>
         </Reveal>
 
         {/* ── 收尾 ─────────────────────────────────────────────── */}
