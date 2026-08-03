@@ -317,7 +317,16 @@ const PROGRAMS: Program[] = [
     badge: 'Co-host · Program Host',
     weight: 'medium',
     ros: true,
-    role: 'Co-host & program host — sourced the partners, shaped the panel topics, invited and researched every speaker, then hosted the night.',
+    role: 'Co-host & program host — sourced the partners, invited every speaker, wrote the moderators’ speaker briefs, proposed panel questions after coordinating with the speakers, then hosted the night.',
+    post: {
+      label: 'A panelist I invited, afterwards',
+      author: 'Prasen Shelar',
+      avatar: null,
+      sub: 'Axari · Panel 3 speaker',
+      text: 'Spent Monday evening on a panel debating where AI is actually going, not the hype version.\n\nThe question I kept coming back to: most AI demos work perfectly in controlled environments. The real world is messy, noisy, and deeply contextual. That gap is where the interesting problems live.',
+      stats: '#agenticai · posted after the night',
+      href: 'https://www.linkedin.com/posts/prasen-s_agenticai-cybersecurity-axari-activity-7440470031613980672-4PQr',
+    },
     partners: 'EPIC Connector · Peak Mojo · Manycore Tech · Z.ai',
     caps: ['Strategic partnerships', 'Community', 'Program ownership'],
     tier: 2,
@@ -667,7 +676,7 @@ function LinkedInPost({
 }
 
 /* ── 炉边谈的当天流程：来自我参与准备的 Speaker & Moderator Guide ──── */
-const PANELS = [
+const PANELS: Array<{ t: string; k: string; v: string; n: number; q: number; qs?: string[] }> = [
   {
     t: '6:10',
     k: 'Opening keynotes',
@@ -695,6 +704,10 @@ const PANELS = [
     v: 'Physical AI · memory · spatial computing · agents in production',
     n: 4,
     q: 8,
+    qs: [
+      'Is open-source AI infrastructure like OpenClaw the winning strategy for 2026–2027 — and as agents get easier to build, where does the boundary lie between what AI can automate and what should remain fundamentally human?',
+      'As AI moves from stateless tools to agents that remember us over time, how do you see persistent memory evolving — in the technology itself, and in how humans and AI interact?',
+    ],
   },
 ]
 
@@ -753,6 +766,16 @@ function RunOfShow() {
                 </span>
               )}
             </span>
+            {p.qs && (
+              <span className="mt-2.5 block space-y-2 border-t border-plum/8 pt-2.5">
+                <span className="block font-hand text-[13px] text-plum-muted">two I proposed ✦</span>
+                {p.qs.map((q) => (
+                  <span key={q.slice(0, 24)} className="block border-l-2 border-rose/30 pl-2.5 text-[12px] italic leading-relaxed text-plum-muted">
+                    “{q}”
+                  </span>
+                ))}
+              </span>
+            )}
           </li>
         ))}
       </ol>
