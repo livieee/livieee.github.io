@@ -354,7 +354,7 @@ function CardArt({ name }: { name: string }) {
 }
 
 /** 牌面（自绘版，供缺扫图的牌用）：星顶汉字 + 深粉画框 + 象征物画 + 缎带名牌 */
-function CardFace({ card }: { card: Card }) {
+function CardFace({ card, content = false }: { card: Card; content?: boolean }) {
   return (
     <svg viewBox="0 0 244 540" className="absolute inset-0 h-full w-full" aria-hidden>
       <defs>
@@ -366,7 +366,7 @@ function CardFace({ card }: { card: Card }) {
       <rect x="0" y="0" width="244" height="540" rx="16" fill="url(#cf-pink)" />
       <rect x="13" y="15" width="218" height="510" rx="11" fill="#FFF6EE" stroke="#EFB8CD" strokeWidth="1" />
       <rect x="23" y="28" width="198" height="438" rx="14" fill="none" stroke="#EE86AD" strokeWidth="5" />
-      <rect x="27" y="32" width="190" height="430" rx="12" fill="#CE4E82" stroke="#A83464" strokeWidth="2" />
+      <rect x="27" y="32" width="190" height="430" rx="12" fill={content ? '#FFF9F3' : '#CE4E82'} stroke="#A83464" strokeWidth="2" />
 
       {/* 左日 右月 */}
       <circle cx="23" cy="250" r="8" fill="#F5C838" stroke="#C9951F" strokeWidth="0.9" />
@@ -387,10 +387,12 @@ function CardFace({ card }: { card: Card }) {
       })}
       <path d="M215 238a13.5 13.5 0 1 0 12 5 11 11 0 0 1-12-5Z" fill="#F5C838" stroke="#C9951F" strokeWidth="1" />
 
-      {/* 中央象征物 */}
-      <g transform="translate(122 240)">
-        <CardArt name={card.name} />
-      </g>
+      {/* 中央象征物（content 版不画，留给文字） */}
+      {!content && (
+        <g transform="translate(122 240)">
+          <CardArt name={card.name} />
+        </g>
+      )}
 
       {/* 底部金星 + 缎带名牌 */}
       <path d={starPath(122, 462, 13, 5.4)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1" strokeLinejoin="round" />
@@ -841,41 +843,35 @@ export function HowICreateValue() {
                     className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_26px_54px_-22px_rgba(58,36,64,0.45)]"
                     style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                   >
-                    {HAND[active].img ? (
-                      <img src={HAND[active].img} alt={HAND[active].name} className="h-full w-full object-cover" />
-                    ) : (
-                      <CardFace card={HAND[active]} />
-                    )}
+                    <CardFace card={HAND[active]} content />
+                    <span className="absolute bottom-[17%] left-[13%] right-[13%] top-[13%] flex flex-col items-center text-center">
+                      <span className="flex items-center justify-center text-[#B03A66]">
+                        <Suit name={HAND[active].suit} className="h-[18px] w-[18px]" />
+                      </span>
+                      <span className="mt-2 block font-serif text-[15.5px] font-medium leading-snug text-plum">
+                        {HAND[active].title}
+                      </span>
+                      <span aria-hidden className="mt-2 flex w-3/4 items-center gap-2">
+                        <span className="h-px flex-1 bg-[#C9A05C]/55" />
+                        <span className="text-[8px] text-[#C0913C]">◆</span>
+                        <span className="h-px flex-1 bg-[#C9A05C]/55" />
+                      </span>
+                      <span className="mt-2 block font-hand text-[13px] leading-snug text-plum-muted">
+                        “{HAND[active].quote}”
+                      </span>
+                      <span className="mt-auto block space-y-1 pb-1">
+                        {HAND[active].skills.map((sk) => (
+                          <span key={sk} className="flex items-baseline justify-center gap-1.5 text-[11px] text-plum-muted">
+                            <span aria-hidden className="text-[8.5px] text-[#C0913C]">✦</span>
+                            {sk}
+                          </span>
+                        ))}
+                      </span>
+                    </span>
                   </span>
                 </span>
               </button>
 
-              {/* 牌旁说明卡 */}
-              <span
-                className="pointer-events-none absolute bottom-[2%] left-1/2 z-40 w-[88%] -translate-x-1/2 rounded-2xl border border-[#EFB8CD] bg-white/95 p-4 text-left shadow-[0_18px_40px_-18px_rgba(58,36,64,0.4)] backdrop-blur-sm md:bottom-auto md:left-[calc(50%+128px)] md:top-[43%] md:w-[235px] md:-translate-y-1/2 md:translate-x-0"
-                style={{ animation: 'annot-in .5s .55s ease-out both' }}
-              >
-                <span className="flex items-center gap-2 text-plum">
-                  <Suit name={HAND[active].suit} className="h-4 w-4 shrink-0 text-[#B03A66]" />
-                  <span className="font-serif text-[15px] font-medium leading-snug">{HAND[active].title}</span>
-                </span>
-                <span aria-hidden className="mt-2 flex items-center gap-2">
-                  <span className="h-px flex-1 bg-[#C9A05C]/50" />
-                  <span className="text-[8px] text-[#C0913C]">◆</span>
-                  <span className="h-px flex-1 bg-[#C9A05C]/50" />
-                </span>
-                <span className="mt-2 block font-hand text-[13.5px] leading-snug text-plum-muted">
-                  “{HAND[active].quote}”
-                </span>
-                <span className="mt-2.5 block space-y-1">
-                  {HAND[active].skills.map((sk) => (
-                    <span key={sk} className="flex items-baseline gap-1.5 text-[11.5px] text-plum-muted">
-                      <span aria-hidden className="text-[9px] text-[#C0913C]">✦</span>
-                      {sk}
-                    </span>
-                  ))}
-                </span>
-              </span>
             </>
           )}
         </div>
