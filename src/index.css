@@ -204,3 +204,21 @@
   0%, 100% { opacity: .55; transform: translateX(-50%) scale(1); }
   50%      { opacity: 1;   transform: translateX(-50%) scale(1.08); }
 }
+
+/* 环形牌阵与樱花 */
+@keyframes ring-spin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+@keyframes card-reveal {
+  0%   { transform: rotateY(0deg) scale(.68) translateY(60px); }
+  55%  { transform: rotateY(90deg) scale(.94) translateY(14px); }
+  100% { transform: rotateY(180deg) scale(1) translateY(0); }
+}
+@keyframes petal-drift {
+  0%   { transform: translate(0, -14px) rotate(0deg); opacity: 0; }
+  8%   { opacity: .9; }
+  50%  { transform: translate(26px, 260px) rotate(150deg); }
+  92%  { opacity: .7; }
+  100% { transform: translate(-14px, 540px) rotate(300deg); opacity: 0; }
+}

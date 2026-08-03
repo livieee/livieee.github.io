@@ -273,24 +273,23 @@ export function HowICreateValue() {
         </p>
       </Reveal>
 
-      {/* ── ① 四个领域：扇面抽牌 ─────────────────────────────── */}
+      {/* ── ① 四个领域：环形牌阵，点击抽出 ─────────────────────── */}
       <Reveal className="mt-16">
         <p className="text-center font-hand text-[17px] text-plum-muted">
           {active === null ? 'so — pick a card ✦' : 'tap it again to put it back ✦'}
         </p>
       </Reveal>
 
-      <Reveal className="mt-6" y={30}>
+      <Reveal className="mt-4" y={30}>
         <div
           ref={fanRef}
-          className="relative mx-auto h-[520px] w-full max-w-4xl select-none"
-          style={{ perspective: '1400px' }}
+          className="relative mx-auto h-[540px] w-full max-w-4xl select-none"
+          style={{ perspective: '1500px' }}
         >
-          {/* 法阵 */}
+          {/* 法阵（静止，不旋转） */}
           <svg
             viewBox="0 0 400 160"
-            className="pointer-events-none absolute bottom-[8%] left-1/2 w-[78%] -translate-x-1/2"
-            style={{ animation: 'seal-turn 46s linear infinite' }}
+            className="pointer-events-none absolute bottom-[5%] left-1/2 w-[80%] -translate-x-1/2"
             fill="none"
             aria-hidden
           >
@@ -317,7 +316,7 @@ export function HowICreateValue() {
           {/* 法阵中心的呼吸光 */}
           <span
             aria-hidden
-            className="pointer-events-none absolute bottom-[6%] left-1/2 h-[140px] w-[300px] -translate-x-1/2 rounded-full"
+            className="pointer-events-none absolute bottom-[4%] left-1/2 h-[140px] w-[300px] -translate-x-1/2 rounded-full"
             style={{
               background:
                 'radial-gradient(ellipse, rgba(199,154,75,0.2) 0%, rgba(185,138,203,0.1) 50%, rgba(255,255,255,0) 72%)',
@@ -325,101 +324,130 @@ export function HowICreateValue() {
             }}
           />
 
-          {/* 飘落的碎光 */}
-          {[12, 28, 46, 63, 81, 92].map((left, i) => (
-            <span
-              key={left}
+          {/* 樱花瓣飘落 */}
+          {[
+            { left: 8, size: 15, dur: 11, delay: 0 },
+            { left: 22, size: 11, dur: 13.5, delay: 2.2 },
+            { left: 38, size: 17, dur: 10, delay: 4.8 },
+            { left: 55, size: 12, dur: 14.5, delay: 1.1 },
+            { left: 70, size: 16, dur: 11.8, delay: 3.6 },
+            { left: 84, size: 12, dur: 13, delay: 5.4 },
+            { left: 93, size: 14, dur: 10.6, delay: 2.9 },
+            { left: 47, size: 10, dur: 15.5, delay: 7.1 },
+          ].map((pt, i) => (
+            <svg
+              key={i}
+              viewBox="0 0 20 20"
               aria-hidden
-              className="pointer-events-none absolute top-0 h-1 w-1 rounded-full bg-lavender-deep/45"
+              className="pointer-events-none absolute -top-2"
               style={{
-                left: `${left}%`,
-                animation: `petal-fall ${9 + i * 1.7}s ${i * 1.4}s linear infinite`,
+                left: `${pt.left}%`,
+                width: pt.size,
+                height: pt.size,
+                animation: `petal-drift ${pt.dur}s ${pt.delay}s linear infinite`,
               }}
-            />
+            >
+              <path
+                d="M10 1.5C13.6 4.8 14.6 9.6 10 14.5 5.4 9.6 6.4 4.8 10 1.5Z"
+                fill={i % 2 === 0 ? '#EDC3D3' : '#E4AFC6'}
+                fillOpacity="0.8"
+              />
+            </svg>
           ))}
 
-          {active !== null && (
-            <span
-              aria-hidden
-              className="pointer-events-none absolute left-1/2 top-[26%] h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          {/* 环形牌阵：缓慢公转，选中时暂停 */}
+          <div
+            className="absolute left-1/2 top-[44%]"
+            style={{
+              transformStyle: 'preserve-3d',
+              transform: 'translate(-50%, -50%) rotateX(9deg)',
+            }}
+          >
+            <div
               style={{
-                background:
-                  'radial-gradient(circle, rgba(199,154,75,0.22) 0%, rgba(185,138,203,0.12) 45%, rgba(255,255,255,0) 70%)',
-                animation: 'halo-in .8s ease-out both',
+                transformStyle: 'preserve-3d',
+                animation: 'ring-spin 36s linear infinite',
+                animationPlayState: active === null && dealt ? 'running' : 'paused',
               }}
-            />
-          )}
+            >
+              {HAND.map((c, i) => (
+                <button
+                  key={c.rank}
+                  type="button"
+                  onClick={() => setActive(i)}
+                  aria-label={`Draw card ${c.rank} — ${c.title}`}
+                  className="absolute left-1/2 top-1/2 h-[286px] w-[182px] outline-none"
+                  style={{
+                    transform: `translate(-50%, -50%) rotateY(${i * 90}deg) translateZ(${dealt ? 225 : 0}px)`,
+                    transition: 'transform .9s cubic-bezier(.2,.75,.2,1), opacity .6s',
+                    transitionDelay: dealt ? `${i * 0.1}s` : '0s',
+                    opacity: !dealt ? 0 : active !== null ? 0.22 : 1,
+                    pointerEvents: active === null ? 'auto' : 'none',
+                  }}
+                >
+                  <span className="block h-full w-full overflow-hidden rounded-[1rem] shadow-[0_16px_36px_-18px_rgba(58,36,64,0.5)] transition-transform duration-300 hover:scale-[1.045]">
+                    <CardBack />
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
 
-          {HAND.map((c, i) => {
-            const isUp = active === i
-            const dimmed = active !== null && !isUp
-            const angle = -21 + i * 14
-            const lift = Math.abs(i - 1.5) * 14
-            return (
-              <button
-                key={c.rank}
-                type="button"
-                onClick={() => setActive(isUp ? null : i)}
-                aria-pressed={isUp}
-                aria-label={isUp ? `${c.title} — tap to put back` : `Draw the ${c.rank} card`}
-                className="group/card absolute left-1/2 top-[10%] h-[330px] w-[208px] outline-none"
+          {/* 抽出的牌：升到中央翻开 */}
+          {active !== null && (
+            <>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-[44%] h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full"
                 style={{
-                  transformOrigin: '50% 130%',
-                  transition: 'transform .8s cubic-bezier(.2,.75,.2,1), opacity .5s',
-                  transform: !dealt
-                    ? 'translateX(-50%) translateY(104px) rotate(0deg) scale(0.58)'
-                    : isUp
-                      ? 'translateX(-50%) translateY(24px) rotate(0deg) scale(1.16)'
-                      : `translateX(-50%) rotate(${angle}deg) translateY(${lift}px)`,
-                  transitionDelay: dealt ? `${i * 0.11}s` : '0s',
-                  animation:
-                    dealt && active === null
-                      ? `card-idle ${5.4 + i * 0.6}s ${i * 0.35}s ease-in-out infinite`
-                      : undefined,
-                  opacity: !dealt ? 0 : dimmed ? 0.32 : 1,
-                  zIndex: isUp ? 30 : 10 + i,
-                  filter: isUp ? 'drop-shadow(0 22px 44px rgba(199,154,75,0.32))' : undefined,
+                  background:
+                    'radial-gradient(circle, rgba(199,154,75,0.22) 0%, rgba(185,138,203,0.12) 45%, rgba(255,255,255,0) 70%)',
+                  animation: 'halo-in .8s ease-out both',
                 }}
+              />
+              <button
+                type="button"
+                onClick={() => setActive(null)}
+                aria-label={`${HAND[active].title} — tap to put back`}
+                className="absolute left-1/2 top-[44%] z-30 h-[340px] w-[214px] -translate-x-1/2 -translate-y-1/2 outline-none"
+                style={{ perspective: '1200px' }}
               >
                 <span
                   className="relative block h-full w-full"
                   style={{
                     transformStyle: 'preserve-3d',
-                    transition: 'transform .8s cubic-bezier(.2,.75,.2,1)',
-                    transform: isUp ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                    animation: 'card-reveal .85s cubic-bezier(.2,.75,.2,1) both',
                   }}
                 >
-                  {/* 牌背 */}
                   <span
-                    className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_16px_36px_-18px_rgba(58,36,64,0.55)] transition-transform duration-500 group-hover/card:-translate-y-2"
+                    className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_24px_52px_-20px_rgba(58,36,64,0.55)]"
                     style={{ backfaceVisibility: 'hidden' }}
                   >
                     <CardBack />
                   </span>
 
-                  {/* 牌面 */}
                   <span
-                    className="absolute inset-0 flex flex-col rounded-[1.1rem] border border-champagne-deep/40 bg-cream-soft px-5 py-5 shadow-[0_24px_52px_-20px_rgba(58,36,64,0.5)]"
+                    className="absolute inset-0 flex flex-col rounded-[1.1rem] border border-champagne-deep/40 bg-cream-soft px-5 py-5 text-left shadow-[0_24px_52px_-20px_rgba(58,36,64,0.5)]"
                     style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                   >
                     <span className="flex items-center justify-between">
                       <span className="flex flex-col items-center gap-0.5 text-plum">
-                        <span className="font-serif text-[20px] leading-none">{c.rank}</span>
-                        <Suit name={c.suit} className="h-3.5 w-3.5" />
+                        <span className="font-serif text-[20px] leading-none">{HAND[active].rank}</span>
+                        <Suit name={HAND[active].suit} className="h-3.5 w-3.5" />
                       </span>
                       <span aria-hidden className="h-px w-10 bg-plum/15" />
                     </span>
 
                     <span className="mt-5 block font-serif text-[17px] font-light leading-snug text-plum">
-                      {c.title}
+                      {HAND[active].title}
                     </span>
 
                     <span className="mt-3 block font-hand text-[15px] leading-snug text-plum-muted">
-                      “{c.quote}”
+                      “{HAND[active].quote}”
                     </span>
 
                     <span className="mt-auto block space-y-1 pt-4">
-                      {c.skills.map((sk) => (
+                      {HAND[active].skills.map((sk) => (
                         <span key={sk} className="flex items-baseline gap-1.5 text-[12px] text-plum-muted">
                           <span aria-hidden className="text-lavender-deep">
                             ·
@@ -431,8 +459,8 @@ export function HowICreateValue() {
                   </span>
                 </span>
               </button>
-            )
-          })}
+            </>
+          )}
         </div>
       </Reveal>
 
