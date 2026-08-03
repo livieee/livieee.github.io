@@ -514,57 +514,28 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
       style={{ animation: `annot-in .4s ${i * 0.05}s ease-out both` }}
       className={`group/p flex flex-col overflow-hidden rounded-[1.4rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)] ${
         lead
-          ? 'border-rose/40 bg-rose/[0.05] hover:border-rose/60 sm:flex-row'
+          ? 'border-rose/40 bg-rose/[0.05] hover:border-rose/60'
           : 'border-plum/10 bg-white/60 hover:border-plum/25 hover:bg-white'
       }`}
     >
-      {lead ? (
-        <div className="grid shrink-0 grid-cols-2 sm:w-[52%]">
-          {[
-            { href: p.href, img: p.cover, tag: 'Luma' },
-            { href: 'https://build-with-glm-5-1-challenge.devpost.com/', img: '/events/glm-devpost.jpg', tag: 'Devpost' },
-          ].map((m) => (
-            <a
-              key={m.tag}
-              href={m.href}
-              target="_blank"
-              rel="noreferrer"
-              className="group/m relative block overflow-hidden"
-              aria-label={`${p.name} — open on ${m.tag}`}
-            >
-              <img
-                src={m.img}
-                alt=""
-                aria-hidden
-                loading="lazy"
-                className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover/m:scale-[1.04] sm:aspect-auto sm:h-full"
-              />
-              <span className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-white/90 px-2 py-[3px] text-[10px] font-medium text-plum shadow-sm backdrop-blur">
-                {m.tag} <span aria-hidden>↗</span>
-              </span>
-            </a>
-          ))}
-        </div>
-      ) : (
-        <a
-          href={p.href}
-          target="_blank"
-          rel="noreferrer"
-          className="relative block shrink-0 overflow-hidden"
-          aria-label={`${p.name} — open the event page`}
-        >
-          <img
-            src={p.cover}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            className="aspect-[2/1] w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03]"
-          />
-          <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
-            Luma <span aria-hidden>↗</span>
-          </span>
-        </a>
-      )}
+      <a
+        href={p.href}
+        target="_blank"
+        rel="noreferrer"
+        className="relative block shrink-0 overflow-hidden"
+        aria-label={`${p.name} — open the event page`}
+      >
+        <img
+          src={p.cover}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          className="aspect-[2/1] w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03]"
+        />
+        <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
+          Luma <span aria-hidden>↗</span>
+        </span>
+      </a>
 
       <div className="flex flex-1 flex-col p-5 md:p-6">
         <div className="flex items-start justify-between gap-4">
@@ -693,6 +664,57 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
             <RunOfShow />
           </div>
         )}
+      </div>
+    </li>
+  )
+}
+
+/* ── 旗舰右卡：Devpost 挑战主页 ─────────────────────────────── */
+function DevpostCard() {
+  return (
+    <li className="group/p flex flex-col overflow-hidden rounded-[1.4rem] border border-rose/40 bg-rose/[0.05] transition-all duration-300 hover:-translate-y-1 hover:border-rose/60 hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)]">
+      <a
+        href="https://build-with-glm-5-1-challenge.devpost.com/"
+        target="_blank"
+        rel="noreferrer"
+        className="relative block shrink-0 overflow-hidden"
+        aria-label="Build with GLM 5.1 Challenge — open on Devpost"
+      >
+        <img
+          src="/events/glm-devpost-poster.jpg"
+          alt=""
+          aria-hidden
+          loading="lazy"
+          className="aspect-[2/1] w-full object-cover object-[50%_42%] transition-transform duration-700 group-hover/p:scale-[1.03]"
+        />
+        <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
+          Devpost <span aria-hidden>↗</span>
+        </span>
+      </a>
+      <div className="flex flex-1 flex-col p-5 md:p-6">
+        <div className="flex items-start justify-between gap-4">
+          <h3 className="font-serif text-[17px] font-light leading-snug text-plum">
+            Build with GLM 5.1 Challenge — the submission home
+          </h3>
+          <span className="shrink-0 text-right">
+            <span className="block font-serif text-xl font-light leading-none text-rose">$5,000</span>
+            <span className="mt-1 block text-[10.5px] leading-tight text-plum-faint">in cash prizes</span>
+          </span>
+        </div>
+        <p className="mt-1.5 flex items-baseline gap-1.5 text-[12px] leading-snug text-plum-faint">
+          <svg viewBox="0 0 12 12" className="h-[11px] w-[11px] shrink-0 translate-y-[1px]" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden>
+            <path d="M6 10.5C3.8 8.2 2.4 6.4 2.4 4.8a3.6 3.6 0 1 1 7.2 0c0 1.6-1.4 3.4-3.6 5.7Z" />
+            <circle cx="6" cy="4.8" r="1.3" />
+          </svg>
+          Online · Mar 30 – April 6, 2026
+        </p>
+        <p className="mt-1 text-[12px] leading-snug text-plum-faint">
+          <span className="font-hand text-[13px] text-plum-muted">with</span> Devpost · public project gallery
+        </p>
+        <p className="mt-3 text-[13px] leading-relaxed text-plum-muted">
+          Where the 221 submissions landed — judged against the bar I wrote, with the three winners
+          republished by Z.ai.
+        </p>
       </div>
     </li>
   )
@@ -1202,8 +1224,9 @@ export function AIValleyCase() {
           className="mt-20"
         />
         <Reveal className="mt-8" y={24}>
-          <ul className="grid">
+          <ul className="grid gap-5 sm:grid-cols-2">
             <ProgramCard p={PROGRAMS.find((x) => x.weight === 'flagship')!} i={0} />
+            <DevpostCard />
           </ul>
         </Reveal>
         <Reveal className="mt-6" y={28}>
