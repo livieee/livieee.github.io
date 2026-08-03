@@ -980,7 +980,14 @@ export function AIValleyCase() {
           <ProgramMatrix />
         </Reveal>
 
-        <Reveal className="mt-10" y={24}>
+        {/* ── 三 · 工作痕迹 ─────────────────────────────────────── */}
+        <Chapter
+          n="03"
+          label="The paper trail"
+          title="What running one actually looks like"
+          intro="Two artifacts every program lives or dies by — the outbound copy that fills the room, and the minute-by-minute guide that keeps it on rails once it’s full."
+        />
+        <Reveal className="mt-8" y={24}>
           <Outbound />
         </Reveal>
 
@@ -988,9 +995,9 @@ export function AIValleyCase() {
           <RunOfShow />
         </Reveal>
 
-        {/* ── 三 · 合作方 ──────────────────────────────────────── */}
+        {/* ── 四 · 合作方 ──────────────────────────────────────── */}
         <Chapter
-          n="03"
+          n="04"
           label="Who it was with"
           title="Every program is somebody saying yes first"
           intro="Model labs, communities, funds, venues — sourced, pitched and kept warm. This is the part of program work that never shows up in a photo."
@@ -999,9 +1006,9 @@ export function AIValleyCase() {
           <PartnerWall />
         </Reveal>
 
-        {/* ── 四 · 打法 ─────────────────────────────────────────── */}
+        {/* ── 五 · 打法 ─────────────────────────────────────────── */}
         <Chapter
-          n="04"
+          n="05"
           label="How I run one"
           title="The five things that happen every time"
         />
