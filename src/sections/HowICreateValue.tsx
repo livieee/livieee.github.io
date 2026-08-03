@@ -12,8 +12,9 @@ import { Reveal, WordReveal } from '@/components/Reveal'
  */
 
 type Card = {
-  rank: string
-  suit: 'spark' | 'target' | 'hands' | 'clock' | 'flow' | 'globe'
+  /** 牌名（顶部名牌） */
+  name: string
+  suit: 'spark' | 'target' | 'hands' | 'clock' | 'flow' | 'globe' | 'heart'
   title: string
   quote: string
   skills: string[]
@@ -21,46 +22,53 @@ type Card = {
 
 const HAND: Card[] = [
   {
-    rank: '01',
+    name: 'THE CREATE',
     suit: 'spark',
     title: 'AI Product & Product Operations',
     quote: 'Turning user needs and messy cross-functional input into clear priorities and workflows that ship.',
     skills: ['Product discovery', 'Customer research', 'Product analytics', 'AI workflow design'],
   },
   {
-    rank: '02',
+    name: 'THE LIGHT',
     suit: 'target',
     title: 'GTM Strategy & Adoption',
     quote: 'Connecting what a product can do to the people who need it — launches, narratives, adoption.',
     skills: ['GTM strategy', 'Product launches', 'Metric definition', 'A/B testing & funnels'],
   },
   {
-    rank: '03',
+    name: 'THE MIRROR',
     suit: 'hands',
     title: 'Strategic Partnerships',
     quote: 'Turning promising conversations into collaborations both sides keep showing up for.',
     skills: ['Partner programs', 'Stakeholder management', 'Executive communication'],
   },
   {
-    rank: '04',
+    name: 'THE FLOWER',
     suit: 'clock',
     title: 'Ecosystem & Program Execution',
     quote: 'Bringing companies, researchers and communities into the same room — and giving it a shape.',
     skills: ['Developer relations', 'Program design', 'Speaker sourcing', 'Cross-functional execution'],
   },
   {
-    rank: '05',
+    name: 'THE SHIELD',
     suit: 'flow',
     title: 'Agentic Coding & Automation',
-    quote: 'A daily pipeline that gathers, reads, retries and reports — before the workday starts.',
+    quote: 'Traceable, retryable, human-overridable — systems that guard their own quality.',
     skills: ['Agentic coding', 'Data pipelines', 'Vision-model OCR', 'CI & scheduling'],
   },
   {
-    rank: '06',
+    name: 'THE DREAM',
     suit: 'globe',
     title: 'Cross-Cultural Fluency',
-    quote: 'Bilingual 中文 / English — at home in both US and China AI ecosystems.',
-    skills: ['Bilingual communication', 'US–China ecosystems', 'Community bridge-building'],
+    quote: 'One dream, spoken in two languages — at home in both US and China AI ecosystems.',
+    skills: ['Bilingual 中文 / English', 'US–China ecosystems', 'Community bridge-building'],
+  },
+  {
+    name: 'HOPE',
+    suit: 'heart',
+    title: 'Warmth & Follow-Through',
+    quote: 'I follow through and communicate clearly — so people would choose to work together again.',
+    skills: ['Trust-building', 'Clear communication', 'Attentive to the room'],
   },
 ]
 
@@ -109,6 +117,9 @@ function Suit({ name, className = '' }: { name: Card['suit']; className?: string
         <path d="M3.2 11h15.6" />
       </>
     ),
+    heart: (
+      <path d="M11 18.4C6.2 14.9 3.2 11.9 3.2 8.6 3.2 6.2 5 4.4 7.3 4.4c1.5 0 2.9.8 3.7 2.1.8-1.3 2.2-2.1 3.7-2.1 2.3 0 4.1 1.8 4.1 4.2 0 3.3-3 6.3-7.8 9.8Z" />
+    ),
   }[name]
 
   return (
@@ -127,14 +138,8 @@ function Suit({ name, className = '' }: { name: Card['suit']; className?: string
   )
 }
 
-/** 牌背：粉金塔罗式结构（OLIVIA 饰带 + 翼星纹章 + 新月 + 太阳），原创绘制 */
+/** 牌背：粉金 + 大翼星纹章（Sakura 牌背式版式，原创绘制） */
 function CardBack() {
-  const sunRays = Array.from({ length: 8 }).map((_, i) => {
-    const a = (i * Math.PI) / 4
-    const cx = 80
-    const cy = 206
-    return `M${cx + Math.cos(a - 0.22) * 12} ${cy + Math.sin(a - 0.22) * 12} L${cx + Math.cos(a) * 21} ${cy + Math.sin(a) * 21} L${cx + Math.cos(a + 0.22) * 12} ${cy + Math.sin(a + 0.22) * 12} Z`
-  })
   return (
     <svg viewBox="0 0 160 240" className="h-full w-full" aria-hidden>
       <defs>
@@ -147,70 +152,56 @@ function CardBack() {
       <rect x="9" y="9" width="142" height="222" rx="9" fill="none" stroke="#C9A05C" strokeWidth="2" />
       <rect x="13.5" y="13.5" width="133" height="213" rx="7" fill="none" stroke="#C9A05C" strokeOpacity="0.5" strokeWidth="0.9" />
 
-      {/* 顶部饰带 */}
-      <path d="M36 24h88l6 9-6 9H36l-6-9Z" fill="#DBB06C" />
-      <path d="M36 24h88l6 9-6 9H36l-6-9Z" fill="none" stroke="#B98A44" strokeWidth="0.8" />
-      <text
-        x="80"
-        y="37.5"
-        textAnchor="middle"
-        fontSize="10.5"
-        letterSpacing="4.5"
-        fill="#8A4258"
-        style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontWeight: 600 }}
-      >
-        OLIVIA
-      </text>
-
-      {/* 翼星纹章 */}
-      <circle cx="80" cy="116" r="40" fill="none" stroke="#C9A05C" strokeOpacity="0.65" strokeWidth="1" />
-      <circle cx="80" cy="116" r="33" fill="none" stroke="#C9A05C" strokeOpacity="0.3" strokeWidth="0.7" />
+      {/* 大翼星纹章 */}
+      <circle cx="80" cy="120" r="52" fill="none" stroke="#C9A05C" strokeOpacity="0.7" strokeWidth="1.2" />
+      <circle cx="80" cy="120" r="44" fill="none" stroke="#C9A05C" strokeOpacity="0.32" strokeWidth="0.8" />
       {/* 左翼 */}
       <path
-        d="M56 112c-15-13-33-11-41 3 10-1 17 1 24 6-7 1-13 3-18 9 9 2 18 1 27-3 3-2 6-6 8-15Z"
+        d="M52 114c-18-15-39-13-48 4 12-2 20 1 28 7-8 1-15 4-21 11 11 2 21 1 31-4 4-3 8-8 10-18Z"
         fill="#FFF7F0"
         stroke="#C9A05C"
-        strokeWidth="0.9"
+        strokeWidth="1"
         strokeLinejoin="round"
       />
       {/* 右翼 */}
       <path
-        d="M104 112c15-13 33-11 41 3-10-1-17 1-24 6 7 1 13 3 18 9-9 2-18 1-27-3-3-2-6-6-8-15Z"
+        d="M108 114c18-15 39-13 48 4-12-2-20 1-28 7 8 1 15 4 21 11-11 2-21 1-31-4-4-3-8-8-10-18Z"
         fill="#FFF7F0"
         stroke="#C9A05C"
-        strokeWidth="0.9"
-        strokeLinejoin="round"
-      />
-      {/* 五角星 */}
-      <path
-        d="M80 100 L83.5 110.2 L94.3 110.4 L85.7 116.9 L88.8 127.1 L80 121 L71.2 127.1 L74.3 116.9 L65.7 110.4 L76.5 110.2 Z"
-        fill="#F5CF57"
-        stroke="#C0913C"
         strokeWidth="1"
         strokeLinejoin="round"
       />
+      {/* 金色五角星 */}
+      <path
+        d="M80 98 L84.9 112.3 L100 112.6 L88 121.7 L92.3 136 L80 127.4 L67.7 136 L72 121.7 L60 112.6 L75.1 112.3 Z"
+        fill="#F5CF57"
+        stroke="#C0913C"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
       {/* 星下新月 */}
-      <path d="M72 138a10.5 10.5 0 0 0 16 3 9 9 0 0 1-16-3Z" fill="#DBB06C" />
+      <path d="M69 148a13 13 0 0 0 20 4 11 11 0 0 1-20-4Z" fill="#DBB06C" />
 
-      {/* 底部太阳 */}
-      <circle cx="80" cy="206" r="10.5" fill="#E4B76E" stroke="#C0913C" strokeWidth="0.9" />
-      {sunRays.map((d, i) => (
-        <path key={i} d={d} fill="#DBB06C" fillOpacity="0.9" />
-      ))}
-
-      {/* 角落点缀 */}
+      {/* 上下小星点缀 */}
       {[
-        [22, 60],
-        [138, 60],
-        [22, 180],
-        [138, 180],
+        [80, 34],
+        [80, 206],
       ].map(([x, y]) => (
         <path
           key={`${x}-${y}`}
-          d={`M${x} ${y - 4.5}l1.7 3.5 3.5 1.7-3.5 1.7-1.7 3.5-1.7-3.5-3.5-1.7 3.5-1.7Z`}
+          d={`M${x} ${y - 6}l2.2 4.4 4.4 2.2-4.4 2.2-2.2 4.4-2.2-4.4-4.4-2.2 4.4-2.2Z`}
           fill="#C9A05C"
-          fillOpacity="0.6"
+          fillOpacity="0.7"
         />
+      ))}
+      {/* 角落点缀 */}
+      {[
+        [24, 30],
+        [136, 30],
+        [24, 210],
+        [136, 210],
+      ].map(([x, y]) => (
+        <circle key={`c${x}-${y}`} cx={x} cy={y} r="2.2" fill="#C9A05C" fillOpacity="0.55" />
       ))}
     </svg>
   )
@@ -333,47 +324,9 @@ export function HowICreateValue() {
       <Reveal className="mt-4" y={30}>
         <div
           ref={fanRef}
-          className="relative mx-auto h-[600px] w-full max-w-5xl select-none overflow-hidden rounded-[2rem] shadow-[0_30px_70px_-30px_rgba(30,25,60,0.55)]"
-          style={{
-            perspective: '1600px',
-            background:
-              'radial-gradient(120% 90% at 50% 18%, #26224A 0%, #191538 55%, #110E26 100%)',
-          }}
+          className="relative mx-auto h-[590px] w-full max-w-5xl select-none"
+          style={{ perspective: '1600px' }}
         >
-          {/* 星空 */}
-          {[
-            { x: 6, y: 12, s: 10, d: 3.2 },
-            { x: 16, y: 38, s: 7, d: 4.6 },
-            { x: 10, y: 70, s: 12, d: 5.4 },
-            { x: 26, y: 18, s: 8, d: 3.9 },
-            { x: 38, y: 8, s: 11, d: 4.4 },
-            { x: 55, y: 14, s: 7, d: 5.8 },
-            { x: 67, y: 6, s: 10, d: 3.4 },
-            { x: 80, y: 16, s: 13, d: 4.9 },
-            { x: 92, y: 10, s: 8, d: 3.7 },
-            { x: 94, y: 42, s: 11, d: 5.2 },
-            { x: 88, y: 72, s: 7, d: 4.1 },
-            { x: 72, y: 40, s: 6, d: 6.2 },
-            { x: 30, y: 52, s: 6, d: 5.1 },
-            { x: 50, y: 30, s: 8, d: 4.2 },
-            { x: 4, y: 46, s: 8, d: 6 },
-            { x: 62, y: 66, s: 9, d: 3.6 },
-          ].map((st, i) => (
-            <span
-              key={'s' + i}
-              aria-hidden
-              className="pointer-events-none absolute text-[#EFD9A0]"
-              style={{
-                left: `${st.x}%`,
-                top: `${st.y}%`,
-                fontSize: st.s,
-                animation: `star-twinkle ${st.d}s ${i * 0.4}s ease-in-out infinite`,
-              }}
-            >
-              ✦
-            </span>
-          ))}
-
           {/* 地面法阵 */}
           <svg
             viewBox="0 0 800 300"
@@ -383,7 +336,7 @@ export function HowICreateValue() {
             style={{
               transition: 'filter .6s, opacity .6s',
               opacity: active !== null ? 1 : 0.9,
-              filter: active !== null ? 'drop-shadow(0 0 18px rgba(233,199,120,0.55))' : 'none',
+              filter: active !== null ? 'drop-shadow(0 0 12px rgba(199,154,75,0.4))' : 'none',
             }}
           >
             <ellipse cx="400" cy="150" rx="380" ry="120" stroke="#C9A45C" strokeOpacity="0.6" strokeWidth="1.6" />
@@ -476,20 +429,20 @@ export function HowICreateValue() {
             >
               {HAND.map((c, i) => (
                 <button
-                  key={c.rank}
+                  key={c.name}
                   type="button"
                   onClick={() => setActive(i)}
-                  aria-label={`Draw card ${c.rank} — ${c.title}`}
+                  aria-label={`Draw ${c.name} — ${c.title}`}
                   className="absolute left-1/2 top-1/2 h-[295px] w-[188px] outline-none"
                   style={{
-                    transform: `translate(-50%, -50%) rotateY(${i * 60}deg) translateZ(${dealt ? 286 : 0}px)`,
+                    transform: `translate(-50%, -50%) rotateY(${(i * 360) / 7}deg) translateZ(${dealt ? 292 : 0}px)`,
                     transition: 'transform .9s cubic-bezier(.2,.75,.2,1), opacity .6s',
                     transitionDelay: dealt ? `${i * 0.1}s` : '0s',
                     opacity: !dealt ? 0 : active !== null ? 0.25 : 1,
                     pointerEvents: active === null ? 'auto' : 'none',
                   }}
                 >
-                  <span className="block h-full w-full overflow-hidden rounded-[1rem] shadow-[0_18px_40px_-16px_rgba(10,8,25,0.8)] transition-transform duration-300 hover:scale-[1.045]">
+                  <span className="block h-full w-full overflow-hidden rounded-[1rem] shadow-[0_16px_36px_-16px_rgba(58,36,64,0.42)] transition-transform duration-300 hover:scale-[1.045]">
                     <CardBack />
                   </span>
                 </button>
@@ -510,7 +463,7 @@ export function HowICreateValue() {
                 className="pointer-events-none absolute left-1/2 top-[43%] h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full"
                 style={{
                   background:
-                    'radial-gradient(circle, rgba(233,199,120,0.3) 0%, rgba(246,181,205,0.16) 45%, rgba(255,255,255,0) 70%)',
+                    'radial-gradient(circle, rgba(199,154,75,0.2) 0%, rgba(209,147,168,0.12) 45%, rgba(255,255,255,0) 70%)',
                   animation: 'halo-in .8s ease-out both',
                 }}
               />
@@ -529,7 +482,7 @@ export function HowICreateValue() {
                   }}
                 >
                   <span
-                    className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_30px_60px_-20px_rgba(10,8,25,0.85)]"
+                    className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_26px_54px_-22px_rgba(58,36,64,0.45)]"
                     style={{ backfaceVisibility: 'hidden' }}
                   >
                     <CardBack />
@@ -537,7 +490,7 @@ export function HowICreateValue() {
 
                   {/* 牌面：与牌背同一套粉金框 */}
                   <span
-                    className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_30px_60px_-20px_rgba(10,8,25,0.85)]"
+                    className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_26px_54px_-22px_rgba(58,36,64,0.45)]"
                     style={{
                       backfaceVisibility: 'hidden',
                       transform: 'rotateY(180deg)',
@@ -547,18 +500,35 @@ export function HowICreateValue() {
                     <span className="absolute inset-[6px] rounded-[0.85rem] border-2 border-[#C9A05C]" />
                     <span className="absolute inset-[11px] rounded-[0.7rem] border border-[#C9A05C]/50 bg-[#FFF9F2]" />
 
-                    <span className="relative flex h-full w-full flex-col px-6 pb-6 pt-5 text-left">
-                      <span className="flex items-center justify-between">
-                        <span className="flex flex-col items-center gap-0.5 text-[#8A4258]">
-                          <span className="font-serif text-[21px] leading-none">{HAND[active].rank}</span>
-                          <Suit name={HAND[active].suit} className="h-4 w-4" />
-                        </span>
-                        <span aria-hidden className="font-hand text-[13px] text-[#C0913C]">
-                          olivia ✦
+                    {/* 顶部名牌 */}
+                    <span className="absolute inset-x-0 top-[13px] flex justify-center">
+                      <span className="relative rounded-[3px] bg-[#DBB06C] px-4 py-[3px] shadow-sm">
+                        <span
+                          className="block text-[11px] font-semibold tracking-[0.28em] text-[#7C3B50]"
+                          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
+                        >
+                          {HAND[active].name}
                         </span>
                       </span>
+                    </span>
+                    {/* 底部落款 */}
+                    <span className="absolute inset-x-0 bottom-[13px] flex justify-center">
+                      <span className="rounded-[3px] bg-[#DBB06C]/85 px-3 py-[2px]">
+                        <span
+                          className="block text-[9px] font-semibold tracking-[0.3em] text-[#7C3B50]"
+                          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
+                        >
+                          OLIVIA
+                        </span>
+                      </span>
+                    </span>
 
-                      <span className="mt-4 block font-serif text-[19px] font-light leading-snug text-plum">
+                    <span className="relative flex h-full w-full flex-col px-6 pb-11 pt-12 text-left">
+                      <span className="flex items-center justify-center text-[#8A4258]">
+                        <Suit name={HAND[active].suit} className="h-5 w-5" />
+                      </span>
+
+                      <span className="mt-3 block text-center font-serif text-[19px] font-light leading-snug text-plum">
                         {HAND[active].title}
                       </span>
 
@@ -569,7 +539,7 @@ export function HowICreateValue() {
                         <span className="h-px flex-1 bg-[#C9A05C]/45" />
                       </span>
 
-                      <span className="mt-3 block font-hand text-[15.5px] leading-snug text-plum-muted">
+                      <span className="mt-3 block text-center font-hand text-[15px] leading-snug text-plum-muted">
                         “{HAND[active].quote}”
                       </span>
 
