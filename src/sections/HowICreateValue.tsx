@@ -676,6 +676,7 @@ export function HowICreateValue() {
   const ringTrail = useSparkTrail()
   const toolTrail = useSparkTrail()
   const [sealPaused, setSealPaused] = useState(false)
+  const [hoverTool, setHoverTool] = useState<string | null>(null)
   const putBack = () => {
     setActive(null)
     setFlash(true)
@@ -811,7 +812,7 @@ export function HowICreateValue() {
                 transform: 'translate(-50%, -50%) translateY(190px) rotateX(104deg)',
                 transformStyle: 'preserve-3d',
                 transition: 'filter .6s, opacity .6s',
-                opacity: active !== null ? 1 : 0.92,
+                opacity: active !== null ? 0.5 : 0.92,
                 filter: active !== null ? 'drop-shadow(0 0 14px rgba(199,154,75,0.45))' : 'none',
               }}
             >
@@ -1245,12 +1246,16 @@ export function HowICreateValue() {
                     {ring.items.map((t, i) => (
                       <span
                         key={t.n}
+                        className="group/tool pointer-events-auto absolute z-10 -translate-x-1/2 -translate-y-1/2"
+                        onPointerEnter={(e) => e.pointerType !== 'touch' && setHoverTool(t.n)}
+                        onPointerLeave={() => setHoverTool(null)}
                         style={{
                           left: `${t.x}%`,
                           top: `${t.y}%`,
-                          animation: `annot-in .55s ${0.08 * i}s ease-out both`,
+                          zIndex: hoverTool === t.n ? 30 : 10,
+                          opacity: hoverTool && hoverTool !== t.n ? 0.22 : 1,
+                          transition: 'opacity .35s ease',
                         }}
-                        className="group/tool pointer-events-auto absolute z-10 -translate-x-1/2 -translate-y-1/2"
                       >
                         <span
                           className="block"
@@ -1259,12 +1264,34 @@ export function HowICreateValue() {
                             animationPlayState: sealPaused ? 'paused' : 'running',
                           }}
                         >
-                        <span className="block" style={{ transform: 'rotateX(-16deg)' }}>
-                          <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_8px_18px_-8px_rgba(206,78,130,0.55)] ring-1 ring-[#C9A05C]/50 transition-transform duration-300 group-hover/tool:-translate-y-1 group-hover/tool:scale-110">
+                        <span
+                          className="block"
+                          style={{
+                            transform: 'rotateX(-16deg)',
+                            animation: `annot-in .55s ${0.08 * i}s ease-out both`,
+                          }}
+                        >
+                          <span
+                            className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-[#C9A05C]/50 transition-all duration-300 group-hover/tool:-translate-y-1 group-hover/tool:scale-[1.18]"
+                            style={{
+                              boxShadow:
+                                hoverTool === t.n
+                                  ? '0 0 0 3px rgba(232,182,76,0.28), 0 0 26px 6px rgba(232,182,76,0.45), 0 10px 22px -8px rgba(206,78,130,0.5)'
+                                  : '0 8px 18px -8px rgba(206,78,130,0.55)',
+                            }}
+                          >
                             <img src={t.l} alt={t.n} loading="lazy" className="h-full w-full object-contain" />
                           </span>
-                          <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap font-hand text-[12px] text-plum-muted opacity-0 transition-opacity duration-300 group-hover/tool:opacity-100">
-                            {t.n} · <span className="text-[#C0913C]">{t.c}</span>
+                          <span
+                            className="pointer-events-none absolute left-1/2 top-full z-40 mt-2.5 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-plum px-3 py-1.5 text-[12px] text-cream shadow-[0_12px_28px_-10px_rgba(58,36,64,0.6)] transition-all duration-300"
+                            style={{
+                              opacity: hoverTool === t.n ? 1 : 0,
+                              transform: `translate(-50%, ${hoverTool === t.n ? '0' : '-4px'})`,
+                            }}
+                          >
+                            <span className="font-medium">{t.n}</span>
+                            <span className="text-cream/45">/</span>
+                            <span className="text-cream/70">{t.c}</span>
                           </span>
                         </span>
                         </span>
