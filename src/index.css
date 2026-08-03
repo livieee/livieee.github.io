@@ -305,14 +305,25 @@ body {
   overflow-x: clip;
 }
 
-/* 魔法书翻页：大部分时间静止，然后一页从右绕书脊翻到左 */
+/* 魔法书翻页：起手轻卷，立起时纸页弯曲，落下带一点回弹 */
 @keyframes page-turn {
-  0%, 30%  { transform: scaleX(1); opacity: 1; }
-  52%      { transform: scaleX(-0.12) scaleY(1.05); opacity: 1; }
-  70%      { transform: scaleX(-1); opacity: 1; }
+  0%, 30%  { transform: scaleX(1) skewY(0deg); opacity: 1; }
+  40%      { transform: scaleX(0.72) skewY(-2.5deg); opacity: 1; }
+  52%      { transform: scaleX(-0.08) skewY(-5deg) scaleY(1.06); opacity: 1; }
+  64%      { transform: scaleX(-0.86) skewY(1.5deg); opacity: 1; }
+  70%      { transform: scaleX(-1) skewY(0deg); opacity: 1; }
   70.5%    { opacity: 0; }
   99.5%    { transform: scaleX(1); opacity: 0; }
   100%     { transform: scaleX(1); opacity: 1; }
+}
+
+/* 翻页浮影：立起时最深，落定即散 */
+@keyframes page-turn-shadow {
+  0%, 32%  { transform: scaleX(1); opacity: 0; }
+  46%      { transform: scaleX(0.5); opacity: 0.16; }
+  52%      { transform: scaleX(-0.06) scaleY(1.06); opacity: 0.22; }
+  62%      { transform: scaleX(-0.8); opacity: 0.1; }
+  70%, 100% { transform: scaleX(-1); opacity: 0; }
 }
 
 /* 底部照片带：无缝横向滑动，hover 暂停 */

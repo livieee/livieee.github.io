@@ -636,12 +636,12 @@ export function HowICreateValue() {
             setWand({ x: e.clientX - r.left, y: e.clientY - r.top })
           }}
           onPointerLeave={() => setWand(null)}
-          style={{ perspective: '1600px' }}
+          style={{ perspective: '2100px' }}
         >
           {/* 地面法阵 */}
           <svg
             viewBox="0 0 800 300"
-            className="pointer-events-none absolute bottom-[1%] left-1/2 w-[97%] -translate-x-1/2"
+            className="pointer-events-none absolute bottom-[4%] left-1/2 w-[680px] max-w-[94%] -translate-x-1/2"
             fill="none"
             aria-hidden
             style={{
@@ -788,7 +788,7 @@ export function HowICreateValue() {
             className="absolute left-1/2 top-[42%]"
             style={{
               transformStyle: 'preserve-3d',
-              transform: 'translate(-50%, -50%) rotateX(13deg)',
+              transform: 'translate(-50%, -46%) rotateX(15deg)',
             }}
           >
             <div
@@ -856,7 +856,7 @@ export function HowICreateValue() {
             <>
               <span
                 aria-hidden
-                className="pointer-events-none absolute bottom-[3%] left-1/2 h-[150px] w-[90%] -translate-x-1/2 rounded-[50%] border-2 border-rose/60"
+                className="pointer-events-none absolute bottom-[3%] left-1/2 h-[150px] w-[660px] max-w-[92%] -translate-x-1/2 rounded-[50%] border-2 border-rose/60"
                 style={{ animation: 'seal-cast .95s ease-out both' }}
               />
               <span
@@ -878,7 +878,7 @@ export function HowICreateValue() {
             <>
               <span
                 aria-hidden
-                className="pointer-events-none absolute bottom-[3%] left-1/2 h-[150px] w-[90%] -translate-x-1/2 rounded-[50%] border border-[#E9C778]/60"
+                className="pointer-events-none absolute bottom-[3%] left-1/2 h-[150px] w-[660px] max-w-[92%] -translate-x-1/2 rounded-[50%] border border-[#E9C778]/60"
                 style={{ animation: 'seal-cast 1.1s ease-out both' }}
               />
               <span
@@ -1051,6 +1051,18 @@ export function HowICreateValue() {
             ))}
             {/* 书签带 */}
             <path d="M100 84l3 14 5-6 6 4-3-13Z" fill="#E0447F" fillOpacity="0.8" />
+            {/* 翻页时投在右页上的浮影 */}
+            <path
+              d="M136 24C117 14 90 13 75 21l2 62c14-7 38-6 61 2Z"
+              fill="#8A6E84"
+              style={
+                {
+                  animation: 'page-turn-shadow 7s ease-in-out infinite',
+                  transformOrigin: '76px 52px',
+                  transformBox: 'view-box',
+                } as React.CSSProperties
+              }
+            />
             {/* 翻动的书页：绕书脊从右翻到左 */}
             <g
               style={
