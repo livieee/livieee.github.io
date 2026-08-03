@@ -222,3 +222,9 @@
   92%  { opacity: .7; }
   100% { transform: translate(-14px, 540px) rotate(300deg); opacity: 0; }
 }
+
+/* 抽牌瞬间法阵向外扩散的一圈光 */
+@keyframes seal-cast {
+  0%   { opacity: .9; transform: translateX(-50%) scale(.9); }
+  100% { opacity: 0;  transform: translateX(-50%) scale(1.45); }
+}

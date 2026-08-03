@@ -13,7 +13,7 @@ import { Reveal, WordReveal } from '@/components/Reveal'
 
 type Card = {
   rank: string
-  suit: 'spark' | 'target' | 'hands' | 'clock'
+  suit: 'spark' | 'target' | 'hands' | 'clock' | 'flow' | 'globe'
   title: string
   quote: string
   skills: string[]
@@ -48,6 +48,20 @@ const HAND: Card[] = [
     quote: 'Bringing companies, researchers and communities into the same room — and giving it a shape.',
     skills: ['Developer relations', 'Program design', 'Speaker sourcing', 'Cross-functional execution'],
   },
+  {
+    rank: '05',
+    suit: 'flow',
+    title: 'Agentic Coding & Automation',
+    quote: 'A daily pipeline that gathers, reads, retries and reports — before the workday starts.',
+    skills: ['Agentic coding', 'Data pipelines', 'Vision-model OCR', 'CI & scheduling'],
+  },
+  {
+    rank: '06',
+    suit: 'globe',
+    title: 'Cross-Cultural Fluency',
+    quote: 'Bilingual 中文 / English — at home in both US and China AI ecosystems.',
+    skills: ['Bilingual communication', 'US–China ecosystems', 'Community bridge-building'],
+  },
 ]
 
 function Suit({ name, className = '' }: { name: Card['suit']; className?: string }) {
@@ -79,6 +93,22 @@ function Suit({ name, className = '' }: { name: Card['suit']; className?: string
         <path d="M11 6.2V11l3.4 2.1" />
       </>
     ),
+    flow: (
+      <>
+        <circle cx="5" cy="11" r="2.4" />
+        <circle cx="17" cy="5.5" r="2.4" />
+        <circle cx="17" cy="16.5" r="2.4" />
+        <path d="M7.2 10 14.8 6.4" />
+        <path d="M7.2 12 14.8 15.6" />
+      </>
+    ),
+    globe: (
+      <>
+        <circle cx="11" cy="11" r="8.2" />
+        <ellipse cx="11" cy="11" rx="3.6" ry="8.2" />
+        <path d="M3.2 11h15.6" />
+      </>
+    ),
   }[name]
 
   return (
@@ -97,70 +127,61 @@ function Suit({ name, className = '' }: { name: Card['suit']; className?: string
   )
 }
 
-/** 牌背：原创的对称纹样，不复刻任何既有牌面 */
+/** 牌背：塔罗式结构（双层金边 + 饰带 + 太阳纹 + 新月小星），原创绘制 */
 function CardBack() {
+  const rays = Array.from({ length: 12 }).map((_, i) => {
+    const a = (i * Math.PI) / 6
+    return {
+      x1: 80 + Math.cos(a) * 14,
+      y1: 112 + Math.sin(a) * 14,
+      x2: 80 + Math.cos(a) * (i % 2 === 0 ? 24 : 19.5),
+      y2: 112 + Math.sin(a) * (i % 2 === 0 ? 24 : 19.5),
+    }
+  })
   return (
     <svg viewBox="0 0 160 230" className="h-full w-full" aria-hidden>
-      <rect x="6" y="6" width="148" height="218" rx="14" fill="#F3EDF4" />
-      <rect
-        x="13"
-        y="13"
-        width="134"
-        height="204"
-        rx="10"
-        fill="none"
-        stroke="#7A4A85"
-        strokeOpacity="0.3"
-        strokeWidth="1.2"
-      />
-      <rect
-        x="18"
-        y="18"
-        width="124"
-        height="194"
-        rx="8"
-        fill="none"
-        stroke="#7A4A85"
-        strokeOpacity="0.16"
-        strokeWidth="0.8"
-      />
-      {/* 中心徽记 */}
-      <g stroke="#7A4A85" strokeOpacity="0.42" fill="none" strokeLinecap="round">
-        <circle cx="80" cy="115" r="27" strokeWidth="1.1" />
-        <circle cx="80" cy="115" r="18" strokeWidth="0.8" strokeOpacity="0.3" />
-        {Array.from({ length: 12 }).map((_, i) => {
-          const a = (i * Math.PI) / 6
-          return (
-            <line
-              key={i}
-              x1={80 + Math.cos(a) * 30}
-              y1={115 + Math.sin(a) * 30}
-              x2={80 + Math.cos(a) * 37}
-              y2={115 + Math.sin(a) * 37}
-              strokeWidth="1"
-            />
-          )
-        })}
-        <path
-          d="M80 101c1.7 6.2 3.6 9 8.8 11-5.2 2-7.1 4.8-8.8 11-1.7-6.2-3.6-9-8.8-11 5.2-2 7.1-4.8 8.8-11Z"
-          strokeWidth="1.1"
-        />
-      </g>
-      {/* 四角小花饰 */}
+      <defs>
+        <linearGradient id="cb-rose" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#A9556B" />
+          <stop offset="1" stopColor="#7C3B50" />
+        </linearGradient>
+      </defs>
+      <rect x="4" y="4" width="152" height="222" rx="12" fill="url(#cb-rose)" />
+      <rect x="9" y="9" width="142" height="212" rx="9" fill="none" stroke="#E5C285" strokeWidth="2" />
+      <rect x="14" y="14" width="132" height="202" rx="7" fill="none" stroke="#E5C285" strokeOpacity="0.5" strokeWidth="0.9" />
+
+      {/* 四角卷纹 */}
       {[
-        [30, 36],
-        [130, 36],
-        [30, 194],
-        [130, 194],
-      ].map(([x, y]) => (
-        <path
-          key={`${x}-${y}`}
-          d={`M${x} ${y - 5}c.6 2.3 1.4 3.3 3.3 4.1-1.9.8-2.7 1.8-3.3 4.1-.6-2.3-1.4-3.3-3.3-4.1 1.9-.8 2.7-1.8 3.3-4.1Z`}
-          fill="none"
-          stroke="#7A4A85"
-          strokeOpacity="0.3"
-          strokeWidth="0.9"
-        />
+        'M22 34c1-8 6-13 14-14',
+        'M138 34c-1-8-6-13-14-14',
+        'M22 196c1 8 6 13 14 14',
+        'M138 196c-1 8-6 13-14 14',
+      ].map((d) => (
+        <path key={d} d={d} fill="none" stroke="#E5C285" strokeOpacity="0.85" strokeWidth="1.3" strokeLinecap="round" />
+      ))}
+
+      {/* 上下饰带 */}
+      <path d="M54 21h52l-4.5 6.5h-43z" fill="#E5C285" fillOpacity="0.9" />
+      <path d="M54 209h52l-4.5-6.5h-43z" fill="#E5C285" fillOpacity="0.9" />
+
+      {/* 中央太阳纹 */}
+      <circle cx="80" cy="112" r="35" fill="none" stroke="#EED3A0" strokeWidth="1.5" />
+      <circle cx="80" cy="112" r="28" fill="none" stroke="#EED3A0" strokeOpacity="0.45" strokeWidth="0.8" />
+      <circle cx="80" cy="112" r="11.5" fill="#EED3A0" fillOpacity="0.95" />
+      {rays.map((r, i) => (
+        <line key={i} x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} stroke="#EED3A0" strokeWidth="2.1" strokeLinecap="round" />
+      ))}
+
+      {/* 新月与小星 */}
+      <path d="M47 146a11 11 0 1 0 9.5-17.5 9 9 0 0 1-9.5 17.5Z" fill="#EED3A0" fillOpacity="0.9" />
+      <path d="M114 79l2.7 5.6 5.6 2.7-5.6 2.7-2.7 5.6-2.7-5.6-5.6-2.7 5.6-2.7Z" fill="#EED3A0" fillOpacity="0.92" />
+
+      {/* 边缘菱形点缀 */}
+      {[58, 80, 102].map((x) => (
+        <path key={'t' + x} d={`M${x} 36l3 3-3 3-3-3Z`} fill="#E5C285" fillOpacity="0.55" />
+      ))}
+      {[58, 80, 102].map((x) => (
+        <path key={'b' + x} d={`M${x} 188l3 3-3 3-3-3Z`} fill="#E5C285" fillOpacity="0.55" />
       ))}
     </svg>
   )
@@ -286,31 +307,64 @@ export function HowICreateValue() {
           className="relative mx-auto h-[540px] w-full max-w-4xl select-none"
           style={{ perspective: '1500px' }}
         >
-          {/* 法阵（静止，不旋转） */}
+          {/* 法阵：星形 + 符点环 + 太阳与新月（静止；抽牌时点亮） */}
           <svg
             viewBox="0 0 400 160"
             className="pointer-events-none absolute bottom-[5%] left-1/2 w-[80%] -translate-x-1/2"
             fill="none"
             aria-hidden
+            style={{
+              transition: 'filter .6s, opacity .6s',
+              opacity: active !== null ? 1 : 0.88,
+              filter: active !== null ? 'drop-shadow(0 0 14px rgba(199,154,75,0.5))' : 'none',
+            }}
           >
-            <ellipse cx="200" cy="80" rx="182" ry="58" stroke="#C79A4B" strokeOpacity="0.3" strokeWidth="1.1" />
-            <ellipse cx="200" cy="80" rx="150" ry="46" stroke="#C79A4B" strokeOpacity="0.18" strokeWidth="0.9" />
-            <ellipse cx="200" cy="80" rx="112" ry="34" stroke="#B98ACB" strokeOpacity="0.22" strokeWidth="0.9" />
-            {Array.from({ length: 24 }).map((_, i) => {
-              const a2 = (i / 24) * Math.PI * 2
+            <ellipse cx="200" cy="80" rx="182" ry="58" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.3" />
+            <ellipse cx="200" cy="80" rx="174" ry="54" stroke="#C79A4B" strokeOpacity="0.3" strokeWidth="0.9" />
+            {/* 符点环 */}
+            {Array.from({ length: 16 }).map((_, i) => {
+              const a2 = (i / 16) * Math.PI * 2
               return (
-                <line
-                  key={i}
-                  x1={200 + Math.cos(a2) * 150}
-                  y1={80 + Math.sin(a2) * 46}
-                  x2={200 + Math.cos(a2) * 182}
-                  y2={80 + Math.sin(a2) * 58}
-                  stroke="#C79A4B"
-                  strokeOpacity="0.22"
-                  strokeWidth="0.8"
+                <circle
+                  key={'d' + i}
+                  cx={200 + Math.cos(a2) * 163}
+                  cy={80 + Math.sin(a2) * 50}
+                  r="2.3"
+                  fill="#C79A4B"
+                  fillOpacity="0.45"
                 />
               )
             })}
+            {/* 内环 + 五角星 */}
+            <ellipse cx="200" cy="80" rx="120" ry="36" stroke="#C79A4B" strokeOpacity="0.4" strokeWidth="1" />
+            <path
+              d="M200 44 270.5 109.1 85.9 68.9 314.1 68.9 129.5 109.1Z"
+              stroke="#D193A8"
+              strokeOpacity="0.55"
+              strokeWidth="1.2"
+              strokeLinejoin="round"
+            />
+            {/* 中央太阳 */}
+            <ellipse cx="200" cy="80" rx="15" ry="11" stroke="#C79A4B" strokeOpacity="0.7" strokeWidth="1.2" />
+            {Array.from({ length: 12 }).map((_, i) => {
+              const a3 = (i / 12) * Math.PI * 2
+              return (
+                <line
+                  key={'r' + i}
+                  x1={200 + Math.cos(a3) * 18}
+                  y1={80 + Math.sin(a3) * 13}
+                  x2={200 + Math.cos(a3) * 26}
+                  y2={80 + Math.sin(a3) * 19}
+                  stroke="#C79A4B"
+                  strokeOpacity="0.55"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                />
+              )
+            })}
+            {/* 新月与小星 */}
+            <path d="M118 88a9 9 0 1 0 7.6-14 7.3 7.3 0 0 1-7.6 14Z" fill="#C79A4B" fillOpacity="0.5" />
+            <path d="M282 68l2 4.1 4.1 2-4.1 2-2 4.1-2-4.1-4.1-2 4.1-2Z" fill="#D193A8" fillOpacity="0.6" />
           </svg>
 
           {/* 法阵中心的呼吸光 */}
@@ -366,7 +420,7 @@ export function HowICreateValue() {
             <div
               style={{
                 transformStyle: 'preserve-3d',
-                animation: 'ring-spin 36s linear infinite',
+                animation: 'ring-spin 44s linear infinite',
                 animationPlayState: active === null && dealt ? 'running' : 'paused',
               }}
             >
@@ -378,7 +432,7 @@ export function HowICreateValue() {
                   aria-label={`Draw card ${c.rank} — ${c.title}`}
                   className="absolute left-1/2 top-1/2 h-[286px] w-[182px] outline-none"
                   style={{
-                    transform: `translate(-50%, -50%) rotateY(${i * 90}deg) translateZ(${dealt ? 225 : 0}px)`,
+                    transform: `translate(-50%, -50%) rotateY(${i * 60}deg) translateZ(${dealt ? 258 : 0}px)`,
                     transition: 'transform .9s cubic-bezier(.2,.75,.2,1), opacity .6s',
                     transitionDelay: dealt ? `${i * 0.1}s` : '0s',
                     opacity: !dealt ? 0 : active !== null ? 0.22 : 1,
@@ -396,6 +450,11 @@ export function HowICreateValue() {
           {/* 抽出的牌：升到中央翻开 */}
           {active !== null && (
             <>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute bottom-[5%] left-1/2 h-[120px] w-[78%] -translate-x-1/2 rounded-[50%] border border-champagne-deep/50"
+                style={{ animation: 'seal-cast 1.1s ease-out both' }}
+              />
               <span
                 aria-hidden
                 className="pointer-events-none absolute left-1/2 top-[44%] h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full"
