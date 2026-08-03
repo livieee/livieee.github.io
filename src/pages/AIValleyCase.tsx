@@ -971,6 +971,11 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
     cap: 'AI Valley Hackathon — the room mid-build',
   },
   {
+    src: '/events/agi-summit-room.jpg',
+    alt: 'The audience at the Humanity & AGI Summit 2026, Stanford Faculty Club — Olivia on staff in the room',
+    cap: 'Humanity & AGI Summit — Stanford Faculty Club, on staff',
+  },
+  {
     src: '/events/gtc-fireside.jpg',
     alt: 'Panel 3 of the 2026 GTC Fireside Talk in progress — four speakers on stage',
     cap: 'GTC Fireside Talk — Panel 3 running',
