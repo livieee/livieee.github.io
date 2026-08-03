@@ -234,3 +234,14 @@
   0%, 100% { opacity: .18; }
   50%      { opacity: .75; }
 }
+
+/* 柔和的呼吸光 / 收牌粉色绽放 */
+@keyframes glow-soft {
+  0%, 100% { opacity: .5; }
+  50%      { opacity: 1; }
+}
+@keyframes pink-bloom {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(.55); }
+  30%  { opacity: .95; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.25); }
+}

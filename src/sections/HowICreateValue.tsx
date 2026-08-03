@@ -275,6 +275,12 @@ function ForkSketch({ className = '' }: { className?: string }) {
 export function HowICreateValue() {
   const [active, setActive] = useState<number | null>(null)
   const [dealt, setDealt] = useState(false)
+  const [flash, setFlash] = useState(false)
+  const putBack = () => {
+    setActive(null)
+    setFlash(true)
+    window.setTimeout(() => setFlash(false), 950)
+  }
   const fanRef = useRef<HTMLDivElement>(null)
 
   // 进入视口时才「发牌」：四张从法阵中心散开
@@ -412,6 +418,17 @@ export function HowICreateValue() {
             </svg>
           ))}
 
+          {/* 牌圈后的暖金光 */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-[42%] h-[440px] w-[440px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(233,199,120,0.2) 0%, rgba(233,199,120,0.08) 45%, rgba(255,255,255,0) 68%)',
+              animation: 'glow-soft 5.5s ease-in-out infinite',
+            }}
+          />
+
           {/* 环形牌阵 */}
           <div
             className="absolute left-1/2 top-[42%]"
@@ -435,11 +452,13 @@ export function HowICreateValue() {
                   aria-label={`Draw ${c.name} — ${c.title}`}
                   className="absolute left-1/2 top-1/2 h-[295px] w-[188px] outline-none"
                   style={{
-                    transform: `translate(-50%, -50%) rotateY(${(i * 360) / 7}deg) translateZ(${dealt ? 292 : 0}px)`,
-                    transition: 'transform .9s cubic-bezier(.2,.75,.2,1), opacity .6s',
+                    transform: !dealt
+                      ? `translate(-50%, -50%) rotate(${(i - 3) * 2.5}deg) scale(0.92)`
+                      : `translate(-50%, -50%) rotateY(${(i * 360) / 7}deg) translateZ(292px)`,
+                    transition: 'transform .95s cubic-bezier(.2,.75,.2,1), opacity .6s',
                     transitionDelay: dealt ? `${i * 0.1}s` : '0s',
-                    opacity: !dealt ? 0 : active !== null ? 0.25 : 1,
-                    pointerEvents: active === null ? 'auto' : 'none',
+                    opacity: active !== null ? 0.25 : 1,
+                    pointerEvents: dealt && active === null ? 'auto' : 'none',
                   }}
                 >
                   <span className="block h-full w-full overflow-hidden rounded-[1rem] shadow-[0_16px_36px_-16px_rgba(58,36,64,0.42)] transition-transform duration-300 hover:scale-[1.045]">
@@ -449,6 +468,26 @@ export function HowICreateValue() {
               ))}
             </div>
           </div>
+
+          {/* 收牌时的粉色绽放 */}
+          {flash && (
+            <>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute bottom-[3%] left-1/2 h-[150px] w-[90%] -translate-x-1/2 rounded-[50%] border-2 border-rose/60"
+                style={{ animation: 'seal-cast .95s ease-out both' }}
+              />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-[43%] h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                style={{
+                  background:
+                    'radial-gradient(circle, rgba(209,147,168,0.4) 0%, rgba(246,181,205,0.2) 45%, rgba(255,255,255,0) 70%)',
+                  animation: 'pink-bloom .95s ease-out both',
+                }}
+              />
+            </>
+          )}
 
           {/* 抽出的牌 */}
           {active !== null && (
@@ -464,12 +503,12 @@ export function HowICreateValue() {
                 style={{
                   background:
                     'radial-gradient(circle, rgba(199,154,75,0.2) 0%, rgba(209,147,168,0.12) 45%, rgba(255,255,255,0) 70%)',
-                  animation: 'halo-in .8s ease-out both',
+                  animation: 'halo-in .8s ease-out both, glow-soft 2.8s 1s ease-in-out infinite',
                 }}
               />
               <button
                 type="button"
-                onClick={() => setActive(null)}
+                onClick={putBack}
                 aria-label={`${HAND[active].title} — tap to put back`}
                 className="absolute left-1/2 top-[43%] z-30 h-[386px] w-[244px] -translate-x-1/2 -translate-y-1/2 outline-none"
                 style={{ perspective: '1300px' }}
