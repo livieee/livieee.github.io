@@ -203,6 +203,64 @@ function SparkLayer({ sparks }: { sparks: Array<{ id: number; x: number; y: numb
   )
 }
 
+/** 地面法阵：正圆绘制，随父层 rotateX(90deg) 躺平成透视椭圆 */
+function GroundSeal() {
+  const G = '#C9A45C'
+  return (
+    <svg viewBox="0 0 800 800" className="h-full w-full" fill="none" aria-hidden>
+      <circle cx="400" cy="400" r="380" stroke={G} strokeOpacity="0.75" strokeWidth="2.4" />
+      <circle cx="400" cy="400" r="356" stroke={G} strokeOpacity="0.5" strokeWidth="1.2" />
+      {Array.from({ length: 28 }).map((_, i) => {
+        const a = (i / 28) * Math.PI * 2
+        return (
+          <line
+            key={'gt' + i}
+            x1={400 + Math.cos(a) * 356}
+            y1={400 + Math.sin(a) * 356}
+            x2={400 + Math.cos(a) * 380}
+            y2={400 + Math.sin(a) * 380}
+            stroke={G}
+            strokeOpacity="0.5"
+            strokeWidth="1.4"
+          />
+        )
+      })}
+      <circle cx="400" cy="400" r="300" stroke={G} strokeOpacity="0.32" strokeWidth="1" strokeDasharray="6 12" />
+      <circle cx="400" cy="400" r="196" stroke={G} strokeOpacity="0.45" strokeWidth="1.2" />
+      <rect x="261" y="261" width="278" height="278" stroke={G} strokeOpacity="0.35" strokeWidth="1" />
+      <rect
+        x="261"
+        y="261"
+        width="278"
+        height="278"
+        stroke={G}
+        strokeOpacity="0.35"
+        strokeWidth="1"
+        transform="rotate(45 400 400)"
+      />
+      <circle cx="400" cy="400" r="110" stroke={G} strokeOpacity="0.3" strokeWidth="1" />
+      <path d={starPath(400, 400, 74, 30)} fill="#E8B64C" fillOpacity="0.14" stroke="#C0913C" strokeOpacity="0.5" strokeWidth="1.2" />
+      {['北', '東', '南', '西'].map((t, i) => {
+        const a = (i / 4) * Math.PI * 2 - Math.PI / 2
+        return (
+          <text
+            key={t}
+            x={400 + Math.cos(a) * 338}
+            y={400 + Math.sin(a) * 338 + 7}
+            textAnchor="middle"
+            fontSize="22"
+            fill={G}
+            fillOpacity="0.55"
+            style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
+          >
+            {t}
+          </text>
+        )
+      })}
+    </svg>
+  )
+}
+
 /** 跟随指针的星杖光标（星头对准指针位置） */
 function WandCursor({ pos }: { pos: { x: number; y: number } | null }) {
   if (!pos) return null
@@ -675,90 +733,6 @@ export function HowICreateValue() {
           onPointerLeave={() => setWand(null)}
           style={{ perspective: '2100px' }}
         >
-          {/* 地面法阵 */}
-          <svg
-            viewBox="0 0 800 300"
-            className="pointer-events-none absolute bottom-[4%] left-1/2 w-[680px] max-w-[94%] -translate-x-1/2"
-            fill="none"
-            aria-hidden
-            style={{
-              transition: 'filter .6s, opacity .6s',
-              opacity: active !== null ? 1 : 0.9,
-              filter: active !== null ? 'drop-shadow(0 0 12px rgba(199,154,75,0.4))' : 'none',
-            }}
-          >
-            <ellipse cx="400" cy="150" rx="380" ry="120" stroke="#C9A45C" strokeOpacity="0.8" strokeWidth="2.4" />
-            <ellipse cx="400" cy="150" rx="356" ry="112" stroke="#C9A45C" strokeOpacity="0.55" strokeWidth="1.2" />
-            {Array.from({ length: 28 }).map((_, i) => {
-              const a2 = (i / 28) * Math.PI * 2
-              return (
-                <line
-                  key={'tick' + i}
-                  x1={400 + Math.cos(a2) * 356}
-                  y1={150 + Math.sin(a2) * 112}
-                  x2={400 + Math.cos(a2) * 380}
-                  y2={150 + Math.sin(a2) * 120}
-                  stroke="#C9A45C"
-                  strokeOpacity="0.45"
-                  strokeWidth="1"
-                />
-              )
-            })}
-            {/* 八芒罗盘（两个套叠方形的投影） */}
-            <path d="M400 57 L700 150 L400 243 L100 150 Z" stroke="#D193A8" strokeOpacity="0.5" strokeWidth="1.2" fill="none" strokeLinejoin="round" />
-            <path d="M188 84 L612 84 L612 216 L188 216 Z" stroke="#D193A8" strokeOpacity="0.5" strokeWidth="1.2" fill="none" strokeLinejoin="round" />
-            <ellipse cx="400" cy="150" rx="366" ry="115" stroke="#C9A45C" strokeOpacity="0.35" strokeWidth="0.9" strokeDasharray="7 11" />
-            <ellipse cx="400" cy="150" rx="322" ry="101" stroke="#C9A45C" strokeOpacity="0.35" strokeWidth="1" />
-            <ellipse cx="400" cy="150" rx="236" ry="74" stroke="#C9A45C" strokeOpacity="0.4" strokeWidth="1" />
-            <ellipse cx="400" cy="150" rx="150" ry="47" stroke="#C9A45C" strokeOpacity="0.3" strokeWidth="0.9" strokeDasharray="4 8" />
-            <ellipse cx="400" cy="150" rx="60" ry="19" stroke="#C9A45C" strokeOpacity="0.55" strokeWidth="1.2" />
-            {Array.from({ length: 12 }).map((_, i) => {
-              const a3 = (i / 12) * Math.PI * 2
-              return (
-                <line
-                  key={'sun' + i}
-                  x1={400 + Math.cos(a3) * 66}
-                  y1={150 + Math.sin(a3) * 21}
-                  x2={400 + Math.cos(a3) * 88}
-                  y2={150 + Math.sin(a3) * 28}
-                  stroke="#C9A45C"
-                  strokeOpacity="0.5"
-                  strokeWidth="1.1"
-                  strokeLinecap="round"
-                />
-              )
-            })}
-            <circle cx="400" cy="150" r="4.5" fill="#C9A45C" fillOpacity="0.6" />
-            {/* 六芒星 */}
-            <path d="M400 56 659.8 197 140.2 197Z" stroke="#C9A45C" strokeOpacity="0.42" strokeWidth="1.1" strokeLinejoin="round" />
-            <path d="M400 244 659.8 103 140.2 103Z" stroke="#C9A45C" strokeOpacity="0.42" strokeWidth="1.1" strokeLinejoin="round" />
-            {/* 小行星轨道 */}
-            <circle cx="636" cy="106" r="26" stroke="#C9A45C" strokeOpacity="0.5" strokeWidth="0.9" />
-            <circle cx="636" cy="106" r="14" stroke="#C9A45C" strokeOpacity="0.35" strokeWidth="0.7" />
-            <circle cx="636" cy="106" r="4" fill="#C9A45C" fillOpacity="0.65" />
-            {/* 方位 */}
-            {[
-              { t: '北', x: 400, y: 34 },
-              { t: '南', x: 400, y: 274 },
-              { t: '東', x: 758, y: 156 },
-              { t: '西', x: 42, y: 156 },
-            ].map((m) => (
-              <g key={m.t}>
-                <circle cx={m.x} cy={m.y - 6} r="15" stroke="#C9A45C" strokeOpacity="0.5" strokeWidth="0.9" />
-                <text
-                  x={m.x}
-                  y={m.y}
-                  textAnchor="middle"
-                  fontSize="16"
-                  fill="#D9B87A"
-                  fillOpacity="0.9"
-                  style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
-                >
-                  {m.t}
-                </text>
-              </g>
-            ))}
-          </svg>
 
           {/* 樱花瓣 */}
           {[
@@ -821,14 +795,29 @@ export function HowICreateValue() {
             }}
           />
 
-          {/* 环形牌阵 */}
+          {/* 环形牌阵：法阵与卡牌同处一个 3D 空间，法阵即卡牌站立的地面 */}
           <div
-            className="absolute left-1/2 top-[42%]"
+            className="absolute left-1/2 top-[46%]"
             style={{
               transformStyle: 'preserve-3d',
-              transform: 'translate(-50%, -46%) rotateX(15deg)',
+              transform: 'translate(-50%, -50%) rotateX(29deg)',
             }}
           >
+            {/* 地面法阵：躺平在卡牌底边所在的平面上 */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[660px] w-[660px]"
+              style={{
+                transform: 'translate(-50%, -50%) translateY(158px) rotateX(90deg)',
+                transformStyle: 'preserve-3d',
+                transition: 'filter .6s, opacity .6s',
+                opacity: active !== null ? 1 : 0.92,
+                filter: active !== null ? 'drop-shadow(0 0 14px rgba(199,154,75,0.45))' : 'none',
+              }}
+            >
+              <GroundSeal />
+            </div>
+
             <div
               style={{
                 transformStyle: 'preserve-3d',
@@ -847,7 +836,7 @@ export function HowICreateValue() {
                     transformStyle: 'preserve-3d',
                     transform: !dealt
                       ? `translate(-50%, -50%) rotate(${(i - 3) * 2.5}deg) scale(0.92)`
-                      : `translate(-50%, -50%) rotateY(${(i * 360) / 7}deg) translateZ(252px)`,
+                      : `translate(-50%, -50%) rotateY(${(i * 360) / 7}deg) translateZ(300px)`,
                     transition: 'transform .95s cubic-bezier(.2,.75,.2,1)',
                     transitionDelay: dealt ? `${i * 0.1}s` : '0s',
                     pointerEvents: dealt && active === null ? 'auto' : 'none',
