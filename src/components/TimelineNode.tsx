@@ -114,15 +114,15 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
                   logoWide ? 'max-h-6 max-w-[64px] sm:max-h-7 sm:max-w-[72px]' : 'max-h-8 max-w-8 sm:max-h-9 sm:max-w-9'
                 } ${
                   open
-                    ? 'grayscale-0 opacity-100'
-                    : 'grayscale opacity-65 group-hover/card:grayscale-[.35] group-hover/card:opacity-90'
+                    ? 'saturate-100 opacity-100'
+                    : 'saturate-[.55] opacity-90 group-hover/card:saturate-100 group-hover/card:opacity-100'
                 }`}
               />
             ) : (
               <span
                 aria-hidden
                 className={`flex h-full w-full items-center justify-center font-serif text-[15px] font-semibold text-white transition-all duration-500 ${
-                  open ? 'grayscale-0 opacity-100' : 'grayscale opacity-75 group-hover/card:grayscale-[.35] group-hover/card:opacity-95'
+                  open ? 'saturate-100 opacity-100' : 'saturate-[.6] opacity-95 group-hover/card:saturate-100 group-hover/card:opacity-100'
                 }`}
                 style={{ backgroundColor: accent }}
               >
