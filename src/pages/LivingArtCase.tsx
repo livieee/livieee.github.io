@@ -4,6 +4,7 @@ import { Reveal } from '@/components/Reveal'
 import { Lightbox, type GalleryItem } from '@/components/Lightbox'
 import { InstallationDemo } from '@/components/InstallationDemo'
 import { ChapterDeck, type Chapter } from '@/components/ChapterDeck'
+import { StateScrub } from '@/components/StateScrub'
 
 /**
  * Therapy as a Living Art —— IEEE Rising Stars 2026 Project Showcase 一等奖。
@@ -202,7 +203,7 @@ export function LivingArtCase() {
       lede: 'A waveform, or the word “calm”. Neither is something you can recognise as yourself.',
       body: (
         <div className="grid items-center gap-5 md:grid-cols-[1fr_auto_1fr]">
-          <div className="rounded-[1.3rem] border border-white/10 bg-white/[0.05] p-6 backdrop-blur-sm">
+          <div className="glass-panel p-6">
             <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-white/40">What the system sees</p>
             <svg viewBox="0 0 300 96" className="h-[92px] w-full" fill="none" aria-hidden>
               {[0, 1, 2, 3, 4].map((r) => (
@@ -353,7 +354,7 @@ export function LivingArtCase() {
               type="button"
               onClick={() => setArch((a) => !a)}
               aria-expanded={arch}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[12.5px] font-medium text-white/90 backdrop-blur-sm transition-colors hover:border-[#CBB8F5]/60 hover:bg-white/20"
+              className="glass-pill"
             >
               {arch ? 'Hide the architecture' : 'View the technical architecture'}
               <span aria-hidden className={`transition-transform duration-300 ${arch ? 'rotate-180' : ''}`}>
@@ -490,13 +491,16 @@ export function LivingArtCase() {
 
   return (
     <main className="relative min-h-screen overflow-hidden" style={{ background: '#0D1020' }}>
+      {/* 滚动擦洗：六个真实状态随滚动进度交替 */}
+      <StateScrub />
+
       {/* 星尘 */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-[1]">
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(1100px 700px at 18% 8%, rgba(120,88,190,0.30), transparent 62%), radial-gradient(900px 600px at 82% 26%, rgba(58,110,168,0.26), transparent 60%), radial-gradient(1000px 700px at 50% 92%, rgba(190,96,150,0.20), transparent 62%)',
+              'radial-gradient(1100px 700px at 18% 8%, rgba(120,88,190,0.22), transparent 62%), radial-gradient(900px 600px at 82% 26%, rgba(58,110,168,0.18), transparent 60%), radial-gradient(1000px 700px at 50% 92%, rgba(190,96,150,0.14), transparent 62%)',
             animation: 'nebula-breathe 22s ease-in-out infinite',
           }}
         />
@@ -543,12 +547,12 @@ export function LivingArtCase() {
       <article className="relative z-10 mx-auto max-w-5xl px-6 pb-28 pt-28 md:px-10 md:pt-32">
         {/* ── Hero ─────────────────────────────────────────────── */}
         <Reveal>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <div className="flex flex-wrap items-center gap-3">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 ring-1 ring-white/20">
               <img src="/logos/ieee.png" alt="IEEE" className="h-[17px] w-[17px] object-contain" />
             </span>
-            <span className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#E8C77A]">
-              <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
+            <span className="accent-badge text-[#E8C77A]">
+              <svg viewBox="0 0 20 20" className="h-3 w-3" fill="currentColor" aria-hidden>
                 <path d="M10 1.6l2.2 4.8 5.2.6-3.9 3.5 1.1 5.1L10 13l-4.6 2.6 1.1-5.1L2.6 7l5.2-.6z" />
               </svg>
               IEEE Project Showcase · 1st place · 2026
@@ -556,31 +560,39 @@ export function LivingArtCase() {
           </div>
         </Reveal>
 
-        <h1 className="mt-6 max-w-4xl font-serif text-[clamp(2.3rem,6.4vw,4.6rem)] font-light leading-[1.02] tracking-[-0.015em] text-[#F6F1EA]">
-          Making inner states
-          <br />
-          <span className="italic text-[#CBB8F5]">visible</span>{' '}
-          <span className="text-white/40">through living art</span>
-        </h1>
+        <Reveal delay={0.12}>
+          <h1 className="mt-6 max-w-4xl font-serif text-[clamp(2.3rem,6.4vw,4.6rem)] font-light leading-[1.02] tracking-[-0.015em] text-[#F6F1EA]">
+            Making inner states
+            <br />
+            <span className="italic text-[#CBB8F5]">visible</span>{' '}
+            <span className="text-white/40">through living art</span>
+          </h1>
+        </Reveal>
 
-        <Reveal delay={0.15}>
+        <Reveal delay={0.24}>
           <p className="mt-6 max-w-xl text-[14.5px] leading-relaxed text-[#C9C1DA]">
             A digital mirror for the mind. An EEG-driven generative experience that turned real-time
             emotional signals into evolving visual art — and an explain mode that showed people what
             shaped the result.
           </p>
+        </Reveal>
+
+        <Reveal delay={0.36}>
           <div className="mt-5 flex flex-wrap gap-2">
             {['Product UI', 'Experience framing', 'Research communication', 'Cross-functional collaboration'].map(
               (t) => (
                 <span
                   key={t}
-                  className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11.5px] font-medium text-[#E6E0F0] backdrop-blur-sm"
+                  className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11.5px] font-medium text-[#E6E0F0] backdrop-blur-md"
                 >
                   {t}
                 </span>
               ),
             )}
           </div>
+        </Reveal>
+
+        <Reveal delay={0.48}>
           <div className="mt-4 flex flex-wrap gap-2">
             {[
               { href: IEEE, label: 'IEEE Showcase' },
@@ -592,7 +604,7 @@ export function LivingArtCase() {
                 href={l.href}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 rounded-full bg-white/90 px-3.5 py-1.5 text-[12px] font-medium text-plum transition-transform duration-300 hover:-translate-y-0.5"
+                className="glass-pill-solid px-3.5 py-1.5 text-[12px]"
               >
                 {l.label} <span aria-hidden>↗</span>
               </a>
@@ -626,13 +638,13 @@ export function LivingArtCase() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to="/#impact"
-                className="rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-[13px] font-medium text-white/90 backdrop-blur-sm transition-colors hover:border-[#CBB8F5]/60 hover:bg-white/20"
+                className="glass-pill px-5 py-2.5 text-[13px]"
               >
                 ← Back to all work
               </Link>
               <Link
                 to="/work/theta"
-                className="rounded-full bg-white/90 px-5 py-2.5 text-[13px] font-medium text-plum transition-transform duration-300 hover:-translate-y-0.5"
+                className="glass-pill-solid px-5 py-2.5 text-[13px]"
               >
                 Explore Theta Health →
               </Link>

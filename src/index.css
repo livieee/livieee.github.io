@@ -47,6 +47,24 @@
   .text-balance {
     text-wrap: balance;
   }
+  /* ── Dreamcore 暗场材质代币 ────────────────────────────────
+     只用这几档，避免再出现不在 Tailwind 刻度上的 bg-white/8 这类失效值。 */
+  .glass-panel {
+    @apply rounded-[1.3rem] border border-white/10 bg-white/[0.05] backdrop-blur-md;
+  }
+  .glass-panel-strong {
+    @apply rounded-[1.3rem] border border-white/20 bg-white/10 backdrop-blur-md;
+  }
+  .glass-pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[12.5px] font-medium text-white/90 backdrop-blur-md transition-colors duration-300 hover:border-[#CBB8F5]/60 hover:bg-white/20;
+  }
+  .glass-pill-solid {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-white/90 px-4 py-2 text-[12.5px] font-medium text-plum transition-transform duration-300 hover:-translate-y-0.5;
+  }
+  /* 左侧竖线徽章：比圆角 pill 更有编辑感 */
+  .accent-badge {
+    @apply inline-flex items-center gap-2 border-l-2 border-[#CBB8F5] bg-white/10 px-3 py-1.5 font-sans text-[10.5px] font-medium uppercase tracking-[0.18em] text-white/85 backdrop-blur-md;
+  }
   .label-text {
     @apply font-sans text-[11px] font-medium uppercase tracking-label text-plum-muted;
   }
