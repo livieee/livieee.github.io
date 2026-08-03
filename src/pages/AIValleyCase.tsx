@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import { BorderGlow } from '@/components/BorderGlow'
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { Glyph, type GlyphName } from '@/components/Glyph'
@@ -505,6 +506,15 @@ const PROGRAMS: Program[] = [
 
 
 
+function MaybeGlow({ on, children }: { on: boolean; children: React.ReactNode }) {
+  if (!on) return <>{children}</>
+  return (
+    <BorderGlow className="h-full" backgroundColor="#FDF7F3" borderRadius={22}>
+      {children}
+    </BorderGlow>
+  )
+}
+
 function ProgramCard({ p, i }: { p: Program; i: number }) {
   const [openIdx, setOpenIdx] = useState<number | null>(null)
   const [showRos, setShowRos] = useState(false)
@@ -512,12 +522,13 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
   return (
     <li
       style={{ animation: `annot-in .4s ${i * 0.05}s ease-out both` }}
-      className={`group/p flex flex-col overflow-hidden rounded-[1.4rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)] ${
+      className={
         lead
-          ? 'border-rose/40 bg-rose/[0.05] hover:border-rose/60'
-          : 'border-plum/10 bg-white/60 hover:border-plum/25 hover:bg-white'
-      }`}
+          ? 'group/p transition-transform duration-300 hover:-translate-y-1'
+          : 'group/p flex flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white/60 transition-all duration-300 hover:-translate-y-1 hover:border-plum/25 hover:bg-white hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)]'
+      }
     >
+      <MaybeGlow on={lead}>
       <a
         href={p.href}
         target="_blank"
@@ -665,6 +676,7 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           </div>
         )}
       </div>
+      </MaybeGlow>
     </li>
   )
 }
@@ -672,7 +684,8 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
 /* ── 旗舰右卡：Devpost 挑战主页 ─────────────────────────────── */
 function DevpostCard() {
   return (
-    <li className="group/p flex flex-col overflow-hidden rounded-[1.4rem] border border-rose/40 bg-rose/[0.05] transition-all duration-300 hover:-translate-y-1 hover:border-rose/60 hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)]">
+    <li className="group/p transition-transform duration-300 hover:-translate-y-1">
+      <MaybeGlow on>
       <a
         href="https://build-with-glm-5-1-challenge.devpost.com/"
         target="_blank"
@@ -716,6 +729,7 @@ function DevpostCard() {
           republished by Z.ai.
         </p>
       </div>
+      </MaybeGlow>
     </li>
   )
 }
