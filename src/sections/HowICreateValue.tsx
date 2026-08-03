@@ -479,7 +479,7 @@ function CardFace({ card, content = false }: { card: Card; content?: boolean }) 
 }
 
 /* ── 桌上的工具：只列有据可查的 ──────────────────────────────── */
-/** 法阵上的摆法：外环 12 枚符印、内环 7 枚，坐标是百分比（圆心 50,50） */
+/** 法阵上的摆法：外环 12 枚符印、内环 9 枚，坐标是百分比（圆心 50,50） */
 const PLATE = [
   // 外环 r=44%，从正上方起每 30°
   { n: 'Claude', l: '/logos/tools/claude.jpg', x: 50, y: 6 },
@@ -490,18 +490,20 @@ const PLATE = [
   { n: 'Python', l: '/logos/tools/python.png', x: 72, y: 88.1 },
   { n: 'GitHub Actions', l: '/logos/tools/github.jpg', x: 50, y: 94 },
   { n: 'Luma', l: '/logos/tools/luma.jpg', x: 28, y: 88.1 },
-  { n: 'Devpost', l: '/logos/tools/devpost.jpg', x: 11.9, y: 72 },
+  { n: 'Vercel', l: '/logos/tools/vercel.png', x: 11.9, y: 72 },
   { n: 'Discord', l: '/logos/tools/discord.jpg', x: 6, y: 50 },
   { n: 'LinkedIn', l: '/logos/tools/linkedin.png', x: 11.9, y: 28 },
   { n: 'X', l: '/logos/tools/x.png', x: 28, y: 11.9 },
-  // 内环 r=22%，从正上方起每 51.4°
+  // 内环 r=22%，从正上方起每 40°
   { n: 'LangGraph', l: '/logos/tools/langgraph.png', x: 50, y: 28 },
-  { n: 'Playwright', l: '/logos/tools/playwright.svg', x: 67.2, y: 36.3 },
-  { n: 'Tableau', l: '/logos/tools/tableau.jpg', x: 71.4, y: 54.9 },
-  { n: 'Streamlit', l: '/logos/tools/streamlit.png', x: 59.5, y: 69.8 },
-  { n: 'Databricks', l: '/logos/tools/databricks.png', x: 40.5, y: 69.8 },
-  { n: 'Airtable', l: '/logos/tools/airtable.png', x: 28.6, y: 54.9 },
-  { n: 'Miro', l: '/logos/tools/miro.jpg', x: 32.8, y: 36.3 },
+  { n: 'Replit', l: '/logos/tools/replit.png', x: 64.1, y: 33.1 },
+  { n: 'Tableau', l: '/logos/tools/tableau.jpg', x: 71.7, y: 46.2 },
+  { n: 'Streamlit', l: '/logos/tools/streamlit.png', x: 69.1, y: 61 },
+  { n: 'Cloudflare', l: '/logos/tools/cloudflare.png', x: 57.5, y: 70.7 },
+  { n: 'Databricks', l: '/logos/tools/databricks.png', x: 42.5, y: 70.7 },
+  { n: 'Google Cloud', l: '/logos/tools/gcloud.png', x: 30.9, y: 61 },
+  { n: 'Airtable', l: '/logos/tools/airtable.png', x: 28.3, y: 46.2 },
+  { n: 'Miro', l: '/logos/tools/miro.jpg', x: 35.9, y: 33.1 },
 ]
 
 /** 工具法阵 —— 和牌阵地面的金色魔法阵同一套语言 */
@@ -994,34 +996,52 @@ export function HowICreateValue() {
             style={{ animation: 'annot-in .7s .35s ease-out both' }}
           >
             <div className="relative h-[158px] w-[112px]">
-              <span className="absolute left-10 top-3 h-[134px] w-[60px] -rotate-[16deg] overflow-hidden rounded-[7px] shadow-[0_10px_22px_-10px_rgba(206,78,130,0.5)]">
-                <CardBack />
-              </span>
-              <span className="absolute left-5 top-1.5 h-[134px] w-[60px] -rotate-[7deg] overflow-hidden rounded-[7px] shadow-[0_10px_22px_-10px_rgba(206,78,130,0.5)]">
-                <CardBack />
-              </span>
-              <span className="absolute left-0 top-0 h-[134px] w-[60px] rotate-[3deg] overflow-hidden rounded-[7px] shadow-[0_12px_26px_-10px_rgba(206,78,130,0.55)]">
-                <CardBack />
+              {[
+                { pos: 'left-10 top-3', rot: '-rotate-[16deg]', delay: 0, dur: 5.4 },
+                { pos: 'left-5 top-1.5', rot: '-rotate-[7deg]', delay: 1.1, dur: 6.2 },
+                { pos: 'left-0 top-0', rot: 'rotate-[3deg]', delay: 2.3, dur: 5.8 },
+              ].map((c, i) => (
+                <span key={i} className={`absolute ${c.pos} h-[134px] w-[60px]`}>
+                  <span
+                    className="block h-full w-full"
+                    style={{ animation: `float-soft ${c.dur}s ${c.delay}s ease-in-out infinite` }}
+                  >
+                    <span
+                      className={`block h-full w-full ${c.rot} overflow-hidden rounded-[7px] shadow-[0_12px_26px_-10px_rgba(206,78,130,0.55)]`}
+                    >
+                      <CardBack />
+                    </span>
+                  </span>
+                </span>
+              ))}
+              <span
+                aria-hidden
+                className="absolute -right-1 -top-2 text-[11px] text-[#E8B64C]"
+                style={{ animation: 'star-twinkle 2.8s .6s ease-in-out infinite' }}
+              >
+                ✦
               </span>
             </div>
           </div>
 
-          {/* 右翼：翻开的魔法书 */}
+          {/* 右翼：翻开的魔法书（浮动 + 页面法阵自转 + 星光） */}
           <svg
             aria-hidden
             viewBox="0 0 150 110"
             className="absolute right-[2%] top-1/2 hidden w-[128px] -translate-y-1/2 rotate-[6deg] md:block lg:right-[5%] lg:w-[144px]"
-            style={{ animation: 'annot-in .7s .5s ease-out both' }}
+            style={{ animation: 'float-soft 6.5s .8s ease-in-out infinite' }}
           >
             {/* 封底 */}
             <path d="M8 22C30 10 60 8 75 16 90 8 120 10 142 22l-4 66c-20-9-46-8-63 2-17-10-43-11-63-2Z" fill="#EF97B8" stroke="#D9689A" strokeWidth="1.4" />
             {/* 书页 */}
             <path d="M14 24C33 14 60 13 75 21l-2 62c-14-7-38-6-61 2Z" fill="#FFF9F3" stroke="#E3C08A" strokeWidth="1" />
             <path d="M136 24C117 14 90 13 75 21l2 62c14-7 38-6 61 2Z" fill="#FFF6EC" stroke="#E3C08A" strokeWidth="1" />
-            {/* 左页：法阵小图 */}
-            <circle cx="44" cy="48" r="15" fill="none" stroke="#C9A05C" strokeOpacity="0.7" strokeWidth="1" />
-            <circle cx="44" cy="48" r="10.5" fill="none" stroke="#C9A05C" strokeOpacity="0.5" strokeWidth="0.8" strokeDasharray="2 3" />
-            <path d={starPath(44, 48, 6.5, 2.7)} fill="#F7C93C" stroke="#C9951F" strokeWidth="0.7" strokeLinejoin="round" />
+            {/* 左页：法阵小图（自转） */}
+            <g style={{ animation: 'spin-slow 26s linear infinite', transformOrigin: '44px 48px', transformBox: 'view-box' } as React.CSSProperties}>
+              <circle cx="44" cy="48" r="15" fill="none" stroke="#C9A05C" strokeOpacity="0.7" strokeWidth="1" />
+              <circle cx="44" cy="48" r="10.5" fill="none" stroke="#C9A05C" strokeOpacity="0.5" strokeWidth="0.8" strokeDasharray="2 3" />
+              <path d={starPath(44, 48, 6.5, 2.7)} fill="#F7C93C" stroke="#C9951F" strokeWidth="0.7" strokeLinejoin="round" />
+            </g>
             {/* 右页：字行 */}
             {[34, 42, 50, 58, 66].map((y, i) => (
               <line key={y} x1="86" y1={y + 2} x2={i % 2 === 0 ? 126 : 118} y2={y} stroke="#B9A98F" strokeOpacity="0.75" strokeWidth="1.6" strokeLinecap="round" />
@@ -1031,6 +1051,20 @@ export function HowICreateValue() {
             {/* 页边金饰 */}
             <path d="M20 30c3-2 6-3 9-3M121 27c3 0 6 1 9 3" stroke="#E8B64C" strokeWidth="1" strokeLinecap="round" />
           </svg>
+          <span
+            aria-hidden
+            className="absolute right-[6%] top-[38%] hidden text-[12px] text-[#E8B64C] md:block lg:right-[9%]"
+            style={{ animation: 'star-twinkle 3s .4s ease-in-out infinite' }}
+          >
+            ✦
+          </span>
+          <span
+            aria-hidden
+            className="absolute right-[3.5%] top-[44%] hidden text-[8px] text-[#E8B64C] md:block lg:right-[6.5%]"
+            style={{ animation: 'star-twinkle 2.4s 1.5s ease-in-out infinite' }}
+          >
+            ✦
+          </span>
 
           {/* 两翼氛围星 */}
           {[
