@@ -110,14 +110,20 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
                 src={logo}
                 alt={`${org} logo`}
                 loading="lazy"
-                className={`h-auto w-auto object-contain transition-all duration-300 ${
+                className={`h-auto w-auto object-contain transition-all duration-500 ${
                   logoWide ? 'max-h-6 max-w-[64px] sm:max-h-7 sm:max-w-[72px]' : 'max-h-8 max-w-8 sm:max-h-9 sm:max-w-9'
+                } ${
+                  open
+                    ? 'grayscale-0 opacity-100'
+                    : 'grayscale opacity-65 group-hover/card:grayscale-[.35] group-hover/card:opacity-90'
                 }`}
               />
             ) : (
               <span
                 aria-hidden
-                className="flex h-full w-full items-center justify-center font-serif text-[15px] font-semibold text-white opacity-90 transition-opacity duration-300 group-hover/card:opacity-100"
+                className={`flex h-full w-full items-center justify-center font-serif text-[15px] font-semibold text-white transition-all duration-500 ${
+                  open ? 'grayscale-0 opacity-100' : 'grayscale opacity-75 group-hover/card:grayscale-[.35] group-hover/card:opacity-95'
+                }`}
                 style={{ backgroundColor: accent }}
               >
                 {org.charAt(0)}

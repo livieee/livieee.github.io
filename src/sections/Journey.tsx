@@ -28,7 +28,7 @@ const EDUCATION: TimelineEntry[] = [
     role: 'Master of Data Analytics',
     period: '2019–2020',
     location: 'London, Canada',
-    logo: '/logos/western.png',
+    logo: '/logos/western-crest.png',
     accent: '#D193A8',
     reflection: 'The data lens I still read every product decision through.',
   },
