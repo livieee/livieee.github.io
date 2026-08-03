@@ -579,6 +579,7 @@ export function HowICreateValue() {
   const [flash, setFlash] = useState(false)
   const [wand, setWand] = useState<{ x: number; y: number } | null>(null)
   const [wandTool, setWandTool] = useState<{ x: number; y: number } | null>(null)
+  const [sealPaused, setSealPaused] = useState(false)
   const putBack = () => {
     setActive(null)
     setFlash(true)
@@ -1104,25 +1105,63 @@ export function HowICreateValue() {
                     'radial-gradient(circle, rgba(232,182,76,0.14) 0%, rgba(248,191,211,0.10) 45%, rgba(248,191,211,0) 70%)',
                 }}
               />
-              <div className="relative aspect-square" style={{ animation: 'toolseal-breathe 7s ease-in-out infinite' }}>
-                <ToolSeal className="absolute inset-0 h-full w-full" />
-                {PLATE.map((t, i) => (
-                  <span
-                    key={t.n}
+              <div
+                className="relative aspect-square"
+                style={{ animation: 'toolseal-breathe 7s ease-in-out infinite' }}
+                onPointerEnter={(e) => e.pointerType !== 'touch' && setSealPaused(true)}
+                onPointerLeave={() => setSealPaused(false)}
+              >
+                {/* 法阵底纹连同日月极慢自转 */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    animation: 'spin-slow 260s linear infinite',
+                    animationPlayState: sealPaused ? 'paused' : 'running',
+                  }}
+                >
+                  <ToolSeal className="h-full w-full" />
+                </div>
+
+                {/* 双环轨道：外环顺转、内环逆转，符印反向自转保持正立 */}
+                {[
+                  { items: PLATE.slice(0, 12), dur: 150, dir: 'normal', back: 'reverse' },
+                  { items: PLATE.slice(12), dur: 110, dir: 'reverse', back: 'normal' },
+                ].map((ring) => (
+                  <div
+                    key={ring.dur}
+                    className="absolute inset-0"
                     style={{
-                      left: `${t.x}%`,
-                      top: `${t.y}%`,
-                      animation: `annot-in .55s ${0.08 * i}s ease-out both`,
+                      animation: `spin-slow ${ring.dur}s linear infinite ${ring.dir}`,
+                      animationPlayState: sealPaused ? 'paused' : 'running',
                     }}
-                    className="group/tool absolute z-10 -translate-x-1/2 -translate-y-1/2"
                   >
-                    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_8px_18px_-8px_rgba(206,78,130,0.55)] ring-1 ring-[#C9A05C]/50 transition-transform duration-300 group-hover/tool:-translate-y-1 group-hover/tool:scale-110">
-                      <img src={t.l} alt={t.n} loading="lazy" className="h-full w-full object-contain" />
-                    </span>
-                    <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap font-hand text-[12px] text-plum-muted opacity-0 transition-opacity duration-300 group-hover/tool:opacity-100">
-                      {t.n}
-                    </span>
-                  </span>
+                    {ring.items.map((t, i) => (
+                      <span
+                        key={t.n}
+                        style={{
+                          left: `${t.x}%`,
+                          top: `${t.y}%`,
+                          animation: `annot-in .55s ${0.08 * i}s ease-out both`,
+                        }}
+                        className="group/tool absolute z-10 -translate-x-1/2 -translate-y-1/2"
+                      >
+                        <span
+                          className="block"
+                          style={{
+                            animation: `spin-slow ${ring.dur}s linear infinite ${ring.back}`,
+                            animationPlayState: sealPaused ? 'paused' : 'running',
+                          }}
+                        >
+                          <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_8px_18px_-8px_rgba(206,78,130,0.55)] ring-1 ring-[#C9A05C]/50 transition-transform duration-300 group-hover/tool:-translate-y-1 group-hover/tool:scale-110">
+                            <img src={t.l} alt={t.n} loading="lazy" className="h-full w-full object-contain" />
+                          </span>
+                          <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap font-hand text-[12px] text-plum-muted opacity-0 transition-opacity duration-300 group-hover/tool:opacity-100">
+                            {t.n}
+                          </span>
+                        </span>
+                      </span>
+                    ))}
+                  </div>
                 ))}
               </div>
               <p className="mt-5 text-center font-hand text-[15px] text-plum-muted">

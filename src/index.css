@@ -279,3 +279,8 @@
 .cursor-ring.is-wand {
   opacity: 0;
 }
+
+/* 星盘慢转 */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
