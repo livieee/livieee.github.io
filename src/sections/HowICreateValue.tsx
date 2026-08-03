@@ -529,7 +529,7 @@ export function HowICreateValue() {
   return (
     <section id="capabilities" className="mx-auto max-w-6xl px-6 py-28 md:px-10 md:py-36">
       <Reveal>
-        <p className="label-text mb-6">How I Create Value</p>
+        <p className="label-text mb-6">Work Philosophy</p>
       </Reveal>
       <h2 className="max-w-3xl font-serif text-[clamp(1.9rem,4.5vw,3.2rem)] font-light leading-[1.15] text-plum">
         <WordReveal text="Analytical in approach." />{' '}
@@ -541,8 +541,8 @@ export function HowICreateValue() {
       <Reveal className="mt-8">
         <p className="max-w-2xl text-[15px] leading-relaxed text-plum-muted">
           Every “complex system” I’ve worked on turned out to be people trying to get something
-          done. I start by understanding how they actually work, then build the structure — specs,
-          programs, partnerships — that makes the work feel lighter rather than heavier.
+          done. So I start with how they actually work — then build the structure that makes the
+          work feel lighter: specs, programs, partnerships.
         </p>
       </Reveal>
 
