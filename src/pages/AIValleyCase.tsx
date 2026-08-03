@@ -249,6 +249,8 @@ type Program = {
   role: string | null
   partners: string
   caps: string[]
+  /** 贡献级别徽章：写实，不夸大 */
+  badge: string
   /** 主导深度：1 全权 · 2 主理 · 3 协同 */
   tier: 1 | 2 | 3
   href: string
@@ -273,6 +275,7 @@ const PROGRAMS: Program[] = [
     where: 'Global · one-week async build',
     size: '221 registered builders',
     n: 221,
+    badge: 'Program Lead · E2E',
     role: 'Owned it end to end — brought Z.ai in, wrote the builder guide and the judging bar, ran the Discord and the outbound.',
     partners: 'Z.ai · AI Valley · Devpost',
     caps: ['Program ownership', 'Developer relations', 'GTM', 'Strategic partnerships'],
@@ -287,6 +290,7 @@ const PROGRAMS: Program[] = [
     where: 'Palo Alto',
     size: '413 attendees · 20+ speakers',
     n: 413,
+    badge: 'Co-host',
     role: 'Co-host. Found the partners, invited the panel, and researched every guest beforehand so the questions were specific.',
     partners: 'EPIC Connector · Peak Mojo · Manycore Tech · Z.ai',
     caps: ['Strategic partnerships', 'Community', 'Program ownership'],
@@ -299,6 +303,7 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco · hybrid',
     size: '422 attended',
     n: 422,
+    badge: 'Program Manager · Volunteer',
     role: 'Program manager — ran the program, and issued the volunteer certificates afterwards.',
     partners: 'AI Valley · Bond AI · Replit · Vercel · Daytona · MiniMax · BEM',
     caps: ['Program ownership', 'Community'],
@@ -311,6 +316,7 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco',
     size: '594 registered · 40+ VC firms',
     n: 594,
+    badge: 'Co-host',
     role: 'Co-host of the founder showcase — main-stage pitches in front of 40+ funds.',
     partners: 'EPIC Connector × Allscale · FounderGro',
     caps: ['GTM', 'Strategic partnerships'],
@@ -323,6 +329,7 @@ const PROGRAMS: Program[] = [
     where: 'Palo Alto',
     size: '100 builders hosted',
     n: 100,
+    badge: 'Program Lead',
     role: 'Lead organiser. A pop-up with no agenda — 100 cups of tea as the reason for builders in Palo Alto to be in one room.',
     partners: 'AI Valley · Molly Tea',
     caps: ['Community', 'GTM'],
@@ -335,6 +342,7 @@ const PROGRAMS: Program[] = [
     where: 'Stanford Faculty Club',
     size: '448 attendees · Yuval Noah Harari keynote',
     n: 448,
+    badge: 'Independent Support',
     role: 'Came back to help organise after the AI Valley program ended — my own side project, on a bill opened by Yuval Noah Harari.',
     partners: 'AIRA · GPT DAO · Cheetah Community · LOOMUS · EpicConnector',
     caps: ['Community'],
@@ -347,6 +355,7 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco',
     size: '839 attendees · 9 speakers',
     n: 839,
+    badge: 'Day-of Support',
     role: 'Day-of coordination — keeping a nine-speaker agenda and an 839-person room running on time.',
     partners: 'The AI Collective · AI Valley · MiniMax',
     caps: ['Community'],
@@ -359,6 +368,7 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco',
     size: '100 seats, approval only',
     n: 100,
+    badge: 'Program Coordination',
     role: 'Program coordination for an approval-only mixer — first-generation builders, and an immigration lawyer on hand.',
     partners: 'AI Valley · HAC.ai · Boundless Immigration',
     caps: ['Community', 'Strategic partnerships'],
@@ -371,6 +381,7 @@ const PROGRAMS: Program[] = [
     where: 'Sky9 Capital, San Francisco',
     size: '358 registered · 50 engineers, 8 hours',
     n: 358,
+    badge: 'Marketing & Partner Ops',
     role: 'Ran marketing and sponsor coordination — including the perk creative that turned a sponsor into a sign-up incentive — then kept judging aligned across Dify, GMI Cloud and HydraDB on the day.',
     partners: 'GMI Cloud · Photon · HydraDB · Dify',
     caps: ['GTM', 'Strategic partnerships', 'Community'],
@@ -429,7 +440,18 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
         <p className="mt-1.5 text-[12px] leading-snug text-plum-faint">
           {p.where} · {p.partners}
         </p>
-        {p.role && <p className="mt-3 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>}
+        <span
+          className={`mt-3 inline-flex w-fit items-center rounded-full px-2.5 py-[3px] text-[10.5px] font-medium tracking-wide ${
+            p.tier === 1
+              ? 'bg-rose/15 text-rose'
+              : p.tier === 2
+                ? 'bg-orchid/15 text-orchid'
+                : 'bg-plum/[0.07] text-plum-muted'
+          }`}
+        >
+          {p.badge}
+        </span>
+        {p.role && <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>}
         {p.post && (
           <a
             href={p.post}
@@ -916,7 +938,7 @@ export function AIValleyCase() {
             ))}
           </div>
           <p className="mt-4 text-[12px] uppercase tracking-label text-plum-faint">
-            AI Valley · Bay Area &amp; global · 2025–2026
+            AI Valley &amp; independent programs · Bay Area &amp; global · 2025–2026
           </p>
         </Reveal>
 
@@ -1028,6 +1050,11 @@ export function AIValleyCase() {
             </Reveal>
           ))}
         </div>
+        <Reveal className="mt-6">
+          <p className="text-center font-hand text-[17px] text-plum-muted">
+            align thoughtfully · welcome warmly · follow through ✦
+          </p>
+        </Reveal>
 
         {/* ── 存档 ─────────────────────────────────────────────── */}
         <Reveal className="mt-20">
@@ -1047,6 +1074,42 @@ export function AIValleyCase() {
               stats="215 reactions · 59 comments"
               href="https://www.linkedin.com/posts/courtneythko_womenintech-buildwhatyoulove-aivalley-activity-7429241914459303938-4MG5"
             />
+          </div>
+        </Reveal>
+
+        {/* ── 收尾 ─────────────────────────────────────────────── */}
+        <Reveal className="mt-24">
+          <div className="rounded-[1.8rem] border border-plum/10 bg-white/60 px-7 py-10 text-center md:px-12 md:py-14">
+            <h2 className="mx-auto max-w-2xl font-serif text-[clamp(1.5rem,3.4vw,2.2rem)] font-light leading-snug text-plum">
+              The work I enjoy most happens between a promising idea{' '}
+              <span className="italic text-orchid">and the people who can help it grow.</span>
+            </h2>
+            <div className="mx-auto mt-9 grid max-w-3xl gap-6 text-left sm:grid-cols-3">
+              {[
+                { k: 'For AI companies', v: 'A clearer path to the right builders' },
+                { k: 'For partners', v: 'A thoughtful reason to collaborate' },
+                { k: 'For communities', v: 'Spaces where participation feels meaningful' },
+              ].map((c) => (
+                <div key={c.k}>
+                  <p className="text-[11px] uppercase tracking-label text-plum-faint">{c.k}</p>
+                  <p className="mt-1.5 text-[14px] leading-snug text-plum">{c.v}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                to="/#contact"
+                className="rounded-full bg-plum px-6 py-3 text-[13.5px] font-medium text-cream transition-transform duration-300 hover:-translate-y-0.5"
+              >
+                Start a conversation →
+              </Link>
+              <Link
+                to="/#impact"
+                className="rounded-full border border-plum/15 bg-white px-6 py-3 text-[13.5px] font-medium text-plum transition-colors hover:border-rose/50"
+              >
+                Back to selected work
+              </Link>
+            </div>
           </div>
         </Reveal>
 
