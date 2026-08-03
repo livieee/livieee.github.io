@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { GlowEdge } from '@/components/GlowEdge'
+import { IEEEAwards } from '@/components/IEEEAwards'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { TiltCard } from '@/components/TiltCard'
@@ -520,6 +521,8 @@ export function Impact() {
               </dl>
             </div>
           </article>
+
+          <IEEEAwards />
         </Reveal>
       </div>
     </section>
