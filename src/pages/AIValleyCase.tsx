@@ -266,8 +266,8 @@ type Program = {
   href: string
   /** luma 封面 */
   cover: string
-  /** 关联的 LinkedIn 帖：点击卡片内展开 */
-  post?: {
+  /** 关联的 LinkedIn 帖（可多条）：点击卡片内展开 */
+  posts?: Array<{
     label: string
     author?: string
     avatar?: string | null
@@ -275,7 +275,7 @@ type Program = {
     text: string
     stats: string
     href: string
-  }
+  }>
   lead?: boolean
 }
 
@@ -301,12 +301,14 @@ const PROGRAMS: Program[] = [
     tier: 1,
     href: 'https://luma.com/32jfoybh',
     cover: '/events/luma/glm.jpg',
-    post: {
-      label: 'I wrote the launch post',
-      text: 'Most people talk about AI. This is where you actually build with it.\n\nGLM 5.1 is here, and we’re kicking off a 1-week global builder sprint to see what people can really do with it. No pitches. No fluff. Just builders shipping real things.',
-      stats: '7 reactions · 1 comment',
-      href: 'https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256',
-    },
+    posts: [
+      {
+        label: 'I wrote the launch post',
+        text: 'Most people talk about AI. This is where you actually build with it.\n\nGLM 5.1 is here, and we’re kicking off a 1-week global builder sprint to see what people can really do with it. No pitches. No fluff. Just builders shipping real things.',
+        stats: '7 reactions · 1 comment',
+        href: 'https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256',
+      },
+    ],
     lead: true,
   },
   {
@@ -318,15 +320,32 @@ const PROGRAMS: Program[] = [
     weight: 'medium',
     ros: true,
     role: 'Co-host & program host — sourced partners, invited the speakers, wrote the moderator briefs and panel questions, hosted the night.',
-    post: {
-      label: 'A panelist I invited, afterwards',
-      author: 'Prasen Shelar',
-      avatar: null,
-      sub: 'Axari · Panel 3 speaker',
-      text: 'Spent Monday evening on a panel debating where AI is actually going, not the hype version.\n\nThe question I kept coming back to: most AI demos work perfectly in controlled environments. The real world is messy, noisy, and deeply contextual. That gap is where the interesting problems live.',
-      stats: '#agenticai · posted after the night',
-      href: 'https://www.linkedin.com/posts/prasen-s_agenticai-cybersecurity-axari-activity-7440470031613980672-4PQr',
-    },
+    posts: [
+      {
+        label: 'The announcement — my copy',
+        text: 'GTC Week is always an exciting time for the AI community!\n\nAI Valley, in collaboration with MiniMax, is partnering with EPIC Connector to host a fireside talk in Palo Alto next Monday — an evening on what’s shaping the next wave of AI:\n\n• Spatial Computing\n• Memory systems\n• Agentic AI\n• The open infrastructure layer powering it all',
+        stats: 'AI Valley page · the week before',
+        href: 'https://www.linkedin.com/posts/ai-gtc2026-agenticai-share-7438704386882768896-SqG6/',
+      },
+      {
+        label: 'My last call, day of',
+        author: 'Olivia (Zerun) Xiao',
+        avatar: null,
+        sub: 'Co-host · program host',
+        text: 'Last call to join an exciting GTC Week fireside talk tonight!\n\nSpecial thanks to Prasen Shelar (Axari) and Xuan Zhao, PhD (Flourish Science) for joining the panel as guests invited by AI Valley.\n\nPrasen will bring perspectives on AI infra and how agents move from demos to real enterprise deployment, while Xuan will share a human-centered lens on AI, mental health, and the evolving relationship between humans and AI!',
+        stats: 'reposted on my profile · day of the event',
+        href: 'https://www.linkedin.com/posts/olivia-zerun-xiao_ai-gtc2026-agenticai-activity-7439418261013921792-otX6',
+      },
+      {
+        label: 'A panelist I invited, afterwards',
+        author: 'Prasen Shelar',
+        avatar: null,
+        sub: 'Axari · Panel 3 speaker',
+        text: 'Spent Monday evening on a panel debating where AI is actually going, not the hype version.\n\nThe question I kept coming back to: most AI demos work perfectly in controlled environments. The real world is messy, noisy, and deeply contextual. That gap is where the interesting problems live.',
+        stats: '#agenticai · posted after the night',
+        href: 'https://www.linkedin.com/posts/prasen-s_agenticai-cybersecurity-axari-activity-7440470031613980672-4PQr',
+      },
+    ],
     partners: 'EPIC Connector · Peak Mojo · Manycore Tech · Z.ai',
     caps: ['Strategic partnerships', 'Community', 'Program ownership'],
     tier: 2,
@@ -365,12 +384,14 @@ const PROGRAMS: Program[] = [
     tier: 3,
     href: 'https://luma.com/snixr7yb',
     cover: '/events/luma/agent-recall.jpg',
-    post: {
-      label: 'I wrote the recruiting post',
-      text: 'A build day for ~50 engineers working on agent systems. Come in with an idea, leave with a working agent.\n\nNVIDIA GPUs, 170+ models, Dify for orchestration, HydraDB for memory. Judges from Microsoft, Amazon and YC. Mac Mini for the grand prize.\n\nFirst 20 AI Valley members through the door get a branded mug. Small room: fills fast.',
-      stats: '19 reactions · 4 comments',
-      href: 'https://www.linkedin.com/feed/update/urn:li:activity:7443396471057485824',
-    },
+    posts: [
+      {
+        label: 'I wrote the recruiting post',
+        text: 'A build day for ~50 engineers working on agent systems. Come in with an idea, leave with a working agent.\n\nNVIDIA GPUs, 170+ models, Dify for orchestration, HydraDB for memory. Judges from Microsoft, Amazon and YC. Mac Mini for the grand prize.\n\nFirst 20 AI Valley members through the door get a branded mug. Small room: fills fast.',
+        stats: '19 reactions · 4 comments',
+        href: 'https://www.linkedin.com/feed/update/urn:li:activity:7443396471057485824',
+      },
+    ],
   },
   {
     name: 'Build What You Love — Women in Tech Hackathon',
@@ -390,15 +411,17 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/ic3l89gi',
     cover: '/events/luma/women.jpg',
-    post: {
-      label: 'The organiser’s write-up',
-      author: 'Courtney Ko',
-      avatar: null,
-      sub: 'AI Valley · organiser of Build What You Love',
-      text: '150+ women in one room in San Francisco, building on Valentine’s Day. Spaces where women in STEM felt supported, confident, and ambitious — women who showed up not to impress anyone, but to build what they love.\n\nVolunteers: Olivia Xiao, Kathy Men, Amy Wang, Uche Oh, Andrew Flores.',
-      stats: '215 reactions · 59 comments',
-      href: 'https://www.linkedin.com/posts/courtneythko_womenintech-buildwhatyoulove-aivalley-activity-7429241914459303938-4MG5',
-    },
+    posts: [
+      {
+        label: 'The organiser’s write-up',
+        author: 'Courtney Ko',
+        avatar: null,
+        sub: 'AI Valley · organiser of Build What You Love',
+        text: '150+ women in one room in San Francisco, building on Valentine’s Day. Spaces where women in STEM felt supported, confident, and ambitious — women who showed up not to impress anyone, but to build what they love.\n\nVolunteers: Olivia Xiao, Kathy Men, Amy Wang, Uche Oh, Andrew Flores.',
+        stats: '215 reactions · 59 comments',
+        href: 'https://www.linkedin.com/posts/courtneythko_womenintech-buildwhatyoulove-aivalley-activity-7429241914459303938-4MG5',
+      },
+    ],
   },
   {
     name: 'Global Builders Salon — private mixer',
@@ -464,7 +487,7 @@ const PROGRAMS: Program[] = [
 
 
 function ProgramCard({ p, i }: { p: Program; i: number }) {
-  const [open, setOpen] = useState(false)
+  const [openIdx, setOpenIdx] = useState<number | null>(null)
   const [showRos, setShowRos] = useState(false)
   const lead = p.weight === 'flagship'
   return (
@@ -544,22 +567,23 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           </figure>
         )}
 
-        {(p.post || p.ros) && (
+        {(p.posts || p.ros) && (
           <div className="mt-auto flex flex-wrap gap-x-5 gap-y-2 pt-3.5">
-            {p.post && (
+            {p.posts?.map((po, idx) => (
               <button
+                key={po.label}
                 type="button"
-                onClick={() => setOpen((o) => !o)}
-                aria-expanded={open}
+                onClick={() => setOpenIdx((o) => (o === idx ? null : idx))}
+                aria-expanded={openIdx === idx}
                 className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
               >
                 <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
                   <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
                 </svg>
-                {p.post.label}
-                <span aria-hidden className={`inline-block transition-transform duration-300 ${open ? 'rotate-180' : ''}`}>▾</span>
+                {po.label}
+                <span aria-hidden className={`inline-block transition-transform duration-300 ${openIdx === idx ? 'rotate-180' : ''}`}>▾</span>
               </button>
-            )}
+            ))}
             {p.ros && (
               <button
                 type="button"
@@ -573,15 +597,15 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
             )}
           </div>
         )}
-        {open && p.post && (
+        {openIdx !== null && p.posts?.[openIdx] && (
           <div className="mt-3">
             <LinkedInPost
-              text={p.post.text}
-              stats={p.post.stats}
-              href={p.post.href}
-              author={p.post.author}
-              avatar={p.post.avatar}
-              sub={p.post.sub}
+              text={p.posts[openIdx].text}
+              stats={p.posts[openIdx].stats}
+              href={p.posts[openIdx].href}
+              author={p.posts[openIdx].author}
+              avatar={p.posts[openIdx].avatar}
+              sub={p.posts[openIdx].sub}
             />
           </div>
         )}
