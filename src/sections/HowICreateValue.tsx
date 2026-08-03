@@ -16,6 +16,8 @@ type Card = {
   name: string
   /** 星顶单字 */
   zi: string
+  /** 官方扫图（有则直接用图） */
+  img?: string
   suit: 'spark' | 'target' | 'hands' | 'clock' | 'flow' | 'globe' | 'heart'
   title: string
   quote: string
@@ -41,6 +43,7 @@ const HAND: Card[] = [
   },
   {
     name: 'THE MIRROR',
+    img: '/cards/mirror.webp',
     zi: '鏡',
     suit: 'hands',
     title: 'Strategic Partnerships',
@@ -49,6 +52,7 @@ const HAND: Card[] = [
   },
   {
     name: 'THE FLOWER',
+    img: '/cards/flower.webp',
     zi: '花',
     suit: 'clock',
     title: 'Ecosystem & Program Execution',
@@ -57,6 +61,7 @@ const HAND: Card[] = [
   },
   {
     name: 'THE SHIELD',
+    img: '/cards/shield.webp',
     zi: '盾',
     suit: 'flow',
     title: 'Agentic Coding & Automation',
@@ -65,6 +70,7 @@ const HAND: Card[] = [
   },
   {
     name: 'THE DREAM',
+    img: '/cards/dream.webp',
     zi: '夢',
     suit: 'globe',
     title: 'Cross-Cultural Fluency',
@@ -73,6 +79,7 @@ const HAND: Card[] = [
   },
   {
     name: 'HOPE',
+    img: '/cards/hope.webp',
     zi: '望',
     suit: 'heart',
     title: 'Warmth & Follow-Through',
@@ -159,7 +166,7 @@ function starPath(cx: number, cy: number, R: number, r: number) {
   return d + 'Z'
 }
 
-/** 牌背：大金星罗盘纹章（参考 Sakura 牌背几何结构，原创绘制） */
+/** 牌背：大金星罗盘纹章（0.45 竖长比例，与官方扫图一致） */
 function CardBack() {
   const star = (cx: number, cy: number, R: number, r: number) => {
     let d = ''
@@ -171,77 +178,58 @@ function CardBack() {
     return d + 'Z'
   }
   return (
-    <svg viewBox="0 0 160 240" className="h-full w-full" aria-hidden>
+    <svg viewBox="0 0 160 355" className="h-full w-full" aria-hidden>
       <defs>
         <linearGradient id="cb-pink" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#F4A8C4" />
           <stop offset="1" stopColor="#EF97B8" />
         </linearGradient>
       </defs>
-      <rect x="3" y="3" width="154" height="234" rx="12" fill="url(#cb-pink)" />
-      {/* 内框（浅粉field + 奶白描边） */}
-      <rect x="10" y="10" width="140" height="220" rx="13" fill="#F6BAD0" stroke="#FFF1F5" strokeWidth="3" />
+      <rect x="3" y="3" width="154" height="349" rx="12" fill="url(#cb-pink)" />
+      <rect x="10" y="10" width="140" height="335" rx="13" fill="#F6BAD0" stroke="#FFF1F5" strokeWidth="3" />
 
-      {/* 四角金星 */}
       {[
-        [19, 19],
-        [141, 19],
-        [19, 221],
-        [141, 221],
+        [20, 21],
+        [140, 21],
+        [20, 334],
+        [140, 334],
       ].map(([x, y]) => (
-        <path key={`s${x}-${y}`} d={star(x, y, 8, 3.4)} fill="#F5C838" stroke="#C9951F" strokeWidth="0.8" strokeLinejoin="round" />
+        <path key={`s${x}-${y}`} d={star(x, y, 8.5, 3.6)} fill="#F5C838" stroke="#C9951F" strokeWidth="0.8" strokeLinejoin="round" />
       ))}
 
-      {/* 罗盘环 */}
-      <circle cx="80" cy="120" r="62" fill="#F9D3E1" stroke="#E0447F" strokeWidth="8" />
-      <circle cx="80" cy="120" r="53.5" fill="none" stroke="#C13B6E" strokeWidth="1" strokeOpacity="0.7" />
-      <circle cx="80" cy="120" r="66.5" fill="none" stroke="#C13B6E" strokeWidth="0.8" strokeOpacity="0.55" />
-      {/* 环上符纹 */}
+      <circle cx="80" cy="177" r="62" fill="#F9D3E1" stroke="#E0447F" strokeWidth="8" />
+      <circle cx="80" cy="177" r="53.5" fill="none" stroke="#C13B6E" strokeWidth="1" strokeOpacity="0.7" />
+      <circle cx="80" cy="177" r="66.5" fill="none" stroke="#C13B6E" strokeWidth="0.8" strokeOpacity="0.55" />
       {Array.from({ length: 12 }).map((_, i) => {
         const a = (i / 12) * Math.PI * 2
-        const x = 80 + Math.cos(a) * 62
-        const y = 120 + Math.sin(a) * 62
         return i % 3 === 0 ? null : (
-          <circle key={'g' + i} cx={x} cy={y} r="1.6" fill="#FFF1F5" fillOpacity="0.9" />
+          <circle key={'g' + i} cx={80 + Math.cos(a) * 62} cy={177 + Math.sin(a) * 62} r="1.6" fill="#FFF1F5" fillOpacity="0.9" />
         )
       })}
 
-      {/* 八芒罗盘（两个套叠方形的投影） */}
-      <path d="M80 68 L128 120 L80 172 L32 120 Z" fill="none" stroke="#E58AAE" strokeWidth="1.2" />
-      <path d="M46 86 L114 86 L114 154 L46 154 Z" fill="none" stroke="#E58AAE" strokeWidth="1.2" />
+      <path d="M80 125 L128 177 L80 229 L32 177 Z" fill="none" stroke="#E58AAE" strokeWidth="1.2" />
+      <path d="M46 143 L114 143 L114 211 L46 211 Z" fill="none" stroke="#E58AAE" strokeWidth="1.2" />
 
-      {/* 大金星（带切面线） */}
-      <path d={star(80, 120, 36, 14.5)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.6" strokeLinejoin="round" />
+      <path d={star(80, 177, 36, 14.5)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.6" strokeLinejoin="round" />
       {Array.from({ length: 5 }).map((_, i) => {
         const a = (i * 2 * Math.PI) / 5 - Math.PI / 2
         return (
-          <line
-            key={'f' + i}
-            x1="80"
-            y1="120"
-            x2={80 + Math.cos(a) * 36}
-            y2={120 + Math.sin(a) * 36}
-            stroke="#D89B22"
-            strokeWidth="0.9"
-            strokeOpacity="0.8"
-          />
+          <line key={'f' + i} x1="80" y1="177" x2={80 + Math.cos(a) * 36} y2={177 + Math.sin(a) * 36} stroke="#D89B22" strokeWidth="0.9" strokeOpacity="0.8" />
         )
       })}
 
-      {/* 左：环中新月 */}
-      <circle cx="21" cy="120" r="11" fill="#F9D3E1" stroke="#E0447F" strokeWidth="3.5" />
-      <path d="M17 113a8.5 8.5 0 1 0 9 2 7 7 0 0 1-9-2Z" fill="#F5C838" stroke="#C9951F" strokeWidth="0.7" />
-      {/* 右：太阳 */}
-      <circle cx="139" cy="120" r="7" fill="#F5C838" stroke="#C9951F" strokeWidth="0.8" />
+      <circle cx="21" cy="177" r="11" fill="#F9D3E1" stroke="#E0447F" strokeWidth="3.5" />
+      <path d="M17 170a8.5 8.5 0 1 0 9 2 7 7 0 0 1-9-2Z" fill="#F5C838" stroke="#C9951F" strokeWidth="0.7" />
+      <circle cx="139" cy="177" r="7" fill="#F5C838" stroke="#C9951F" strokeWidth="0.8" />
       {Array.from({ length: 12 }).map((_, i) => {
         const a = (i / 12) * Math.PI * 2
         return (
           <line
             key={'r' + i}
             x1={139 + Math.cos(a) * 8.5}
-            y1={120 + Math.sin(a) * 8.5}
+            y1={177 + Math.sin(a) * 8.5}
             x2={139 + Math.cos(a) * (i % 2 === 0 ? 14 : 11)}
-            y2={120 + Math.sin(a) * (i % 2 === 0 ? 14 : 11)}
+            y2={177 + Math.sin(a) * (i % 2 === 0 ? 14 : 11)}
             stroke="#E8A62B"
             strokeWidth="1.4"
             strokeLinecap="round"
@@ -249,10 +237,9 @@ function CardBack() {
         )
       })}
 
-      {/* 上下红盾节点 */}
       {[
-        [80, 56],
-        [80, 184],
+        [80, 113],
+        [80, 241],
       ].map(([x, y]) => (
         <g key={`sh${x}-${y}`}>
           <path
@@ -269,131 +256,176 @@ function CardBack() {
   )
 }
 
-/** 牌面：星顶汉字 + 侧边日月 + 奶白面板 + 缎带名牌。
- *  art=true 时中央放大花色纹章（环上旋转时的正面），否则叠内容。 */
-function CardFace({ card, art = false }: { card: Card; art?: boolean }) {
-  return (
-    <>
-      <svg viewBox="0 0 244 386" className="absolute inset-0 h-full w-full" aria-hidden>
-        <defs>
-          <linearGradient id="cf-pink" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#F5AFC9" />
-            <stop offset="1" stopColor="#EE9BBB" />
-          </linearGradient>
-        </defs>
-        <rect x="0" y="0" width="244" height="386" rx="16" fill="url(#cf-pink)" />
-        <rect x="13" y="15" width="218" height="344" rx="11" fill="#FFF6EE" stroke="#EFB8CD" strokeWidth="1" />
-        <rect x="23" y="28" width="198" height="276" rx="14" fill="none" stroke="#EE86AD" strokeWidth="5" />
-        <rect x="27" y="32" width="190" height="268" rx="12" fill="#FFF8F1" stroke="#A83464" strokeWidth="2" />
-
-        {/* 左日 右月 */}
-        <circle cx="23" cy="166" r="8" fill="#F5C838" stroke="#C9951F" strokeWidth="0.9" />
-        {Array.from({ length: 10 }).map((_, i) => {
-          const a2 = (i / 10) * Math.PI * 2
-          return (
-            <line
-              key={'sr' + i}
-              x1={23 + Math.cos(a2) * 9.5}
-              y1={166 + Math.sin(a2) * 9.5}
-              x2={23 + Math.cos(a2) * 15}
-              y2={166 + Math.sin(a2) * 15}
-              stroke="#E8A62B"
-              strokeWidth="1.5"
-              strokeLinecap="round"
+/** 牌面中央的象征物画（原创绘制，粉白 + 金，置于深粉画框内） */
+function CardArt({ name }: { name: string }) {
+  switch (name) {
+    case 'THE CREATE': // 打开的书
+      return (
+        <g stroke="#B03A66" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round">
+          <path d="M-54 8C-46 -10 -20 -18 -2 -13L-2 46C-20 41 -46 46 -54 32Z" fill="#FBEAF0" />
+          <path d="M54 8C46 -10 20 -18 2 -13L2 46C20 41 46 46 54 32Z" fill="#F7D3E0" />
+          <path d="M-2 -13L-2 46M2 -13L2 46" strokeWidth="1.2" />
+          <path d="M-42 4c10 -7 24 -9 34 -6M-42 14c10 -7 24 -9 34 -6M-42 24c10 -7 24 -9 34 -6" fill="none" strokeWidth="1" strokeOpacity="0.6" />
+          <path d="M42 4c-10 -7 -24 -9 -34 -6M42 14c-10 -7 -24 -9 -34 -6M42 24c-10 -7 -24 -9 -34 -6" fill="none" strokeWidth="1" strokeOpacity="0.6" />
+          <path d="M0 -34l3.2 6.6 6.6 3.2-6.6 3.2-3.2 6.6-3.2-6.6-6.6-3.2 6.6-3.2Z" fill="#F5C838" stroke="#C9951F" strokeWidth="1" />
+        </g>
+      )
+    case 'THE LIGHT': // 放光的日轮
+      return (
+        <g>
+          {Array.from({ length: 12 }).map((_, i) => {
+            const a = (i / 12) * Math.PI * 2
+            const long = i % 2 === 0
+            return (
+              <path
+                key={i}
+                d={`M${Math.cos(a - 0.16) * 26} ${Math.sin(a - 0.16) * 26} L${Math.cos(a) * (long ? 52 : 40)} ${Math.sin(a) * (long ? 52 : 40)} L${Math.cos(a + 0.16) * 26} ${Math.sin(a + 0.16) * 26} Z`}
+                fill={long ? '#F5C838' : '#F7D3E0'}
+                stroke="#C9951F"
+                strokeWidth="0.8"
+                strokeLinejoin="round"
+              />
+            )
+          })}
+          <circle cx="0" cy="0" r="24" fill="#F5C838" stroke="#C9951F" strokeWidth="1.6" />
+          <circle cx="0" cy="0" r="17" fill="none" stroke="#C9951F" strokeWidth="0.8" strokeOpacity="0.6" />
+        </g>
+      )
+    case 'THE MIRROR': // 立镜
+      return (
+        <g stroke="#B03A66" strokeLinejoin="round" strokeLinecap="round">
+          <ellipse cx="0" cy="2" rx="34" ry="46" fill="#F2A9C4" strokeWidth="1.8" />
+          <ellipse cx="0" cy="2" rx="25" ry="37" fill="#FBEAF0" strokeWidth="1.2" />
+          <path d="M-12 -18L4 24M-2 -24L14 18" stroke="#FFFFFF" strokeWidth="4" strokeOpacity="0.75" />
+          <path d="M-10 -46l10 -8 10 8-10 6Z" fill="#F5C838" stroke="#C9951F" strokeWidth="1" />
+          <path d="M-14 52c8 -6 20 -6 28 0" fill="none" strokeWidth="1.6" />
+        </g>
+      )
+    case 'THE FLOWER': // 盛开的樱花
+      return (
+        <g stroke="#B03A66" strokeWidth="1.2" strokeLinejoin="round">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <path
+              key={i}
+              d="M0 -8C-14 -22 -12 -40 0 -46 12 -40 14 -22 0 -8Z"
+              fill={i % 2 === 0 ? '#F7D3E0' : '#FBEAF0'}
+              transform={`rotate(${i * 72})`}
             />
-          )
-        })}
-        <path d="M215 154a13.5 13.5 0 1 0 12 5 11 11 0 0 1-12-5Z" fill="#F5C838" stroke="#C9951F" strokeWidth="1" />
+          ))}
+          <circle cx="0" cy="0" r="9" fill="#F5C838" stroke="#C9951F" />
+          {Array.from({ length: 5 }).map((_, i) => (
+            <circle key={'d' + i} cx={Math.cos((i / 5) * Math.PI * 2) * 13} cy={Math.sin((i / 5) * Math.PI * 2) * 13} r="1.6" fill="#C9951F" stroke="none" />
+          ))}
+          <path d="M-46 34c4 -6 12 -6 14 0-6 4 -12 2 -14 0Z" fill="#F7D3E0" strokeWidth="0.9" />
+          <path d="M40 -40c3 -5 10 -5 12 0-5 3 -10 2 -12 0Z" fill="#FBEAF0" strokeWidth="0.9" />
+        </g>
+      )
+    case 'THE SHIELD': // 带翼的盾
+      return (
+        <g stroke="#B03A66" strokeLinejoin="round" strokeLinecap="round">
+          <path d="M2 -50C26 -42 32 -14 28 10 25 30 15 44 2 52-16 40 -28 22 -28 -6-28 -30 -16 -44 2 -50Z" fill="#FBEAF0" strokeWidth="1.8" />
+          <path d="M-2 -46c-22 -12 -44 -6 -50 8 10 0 18 2 24 8-8 2 -14 6 -18 12 12 2 24 -2 32 -10Z" fill="#F7D3E0" strokeWidth="1.2" />
+          <path d="M-6 -32c-16 -6 -30 -2 -36 6 8 0 14 2 20 6Z" fill="#FBEAF0" strokeWidth="0.9" />
+          <circle cx="2" cy="-8" r="11" fill="#E4485C" strokeWidth="1.6" />
+          <circle cx="-2" cy="-12" r="3" fill="#FFFFFF" stroke="none" opacity="0.85" />
+          <path d="M2 14v22M-8 4h20" strokeWidth="1" strokeOpacity="0.5" />
+        </g>
+      )
+    case 'THE DREAM': // 月与星
+      return (
+        <g stroke="#B03A66" strokeLinejoin="round">
+          <path d="M14 -44A40 40 0 1 0 34 22 32 32 0 0 1 14 -44Z" fill="#F5C838" stroke="#C9951F" strokeWidth="1.6" />
+          <path d="M-30 -30l2.6 5.4 5.4 2.6-5.4 2.6-2.6 5.4-2.6-5.4-5.4-2.6 5.4-2.6Z" fill="#F7D3E0" strokeWidth="1" />
+          <path d="M-16 6l2 4.2 4.2 2-4.2 2-2 4.2-2-4.2-4.2-2 4.2-2Z" fill="#FBEAF0" strokeWidth="0.9" />
+          <path d="M-40 36c0 -6 6 -10 12 -8 2 -6 12 -6 14 0 6 -2 12 2 12 8Z" fill="#FBEAF0" strokeWidth="1.2" />
+        </g>
+      )
+    default: // HOPE — 带翼的红心 + 小皇冠
+      return (
+        <g stroke="#B03A66" strokeLinejoin="round" strokeLinecap="round">
+          <path d="M-22 -18c-14 -10 -34 -4 -38 8 8 -1 14 1 20 6-6 2 -11 5 -14 10 10 1 20 -3 26 -10Z" fill="#FBEAF0" strokeWidth="1.2" />
+          <path d="M22 -18c14 -10 34 -4 38 8-8 -1 -14 1 -20 6 6 2 11 5 14 10-10 1 -20 -3 -26 -10Z" fill="#FBEAF0" strokeWidth="1.2" />
+          <path d="M0 38C-28 16 -32 -6 -17 -16-7 -22 0 -15 0 -5 0 -15 7 -22 17 -16 32 -6 28 16 0 38Z" fill="#E4485C" strokeWidth="1.8" />
+          <path d="M-8 -2c-3 -5 -1 -10 3 -12" stroke="#FFFFFF" strokeWidth="2.4" strokeOpacity="0.8" fill="none" />
+          <path d="M-11 -34l4 8 7 -8 7 8 4 -8 2 12h-26Z" fill="#F5C838" stroke="#C9951F" strokeWidth="1.1" />
+        </g>
+      )
+  }
+}
 
-        {/* 中央纹章（art 模式） */}
-        {art && (
-          <>
-            <circle cx="122" cy="164" r="58" fill="#FBEFF4" stroke="#EFB8CD" strokeWidth="1.5" />
-            <circle cx="122" cy="164" r="48" fill="none" stroke="#EFB8CD" strokeOpacity="0.6" strokeWidth="0.8" />
-            <g
-              transform="translate(122 164) scale(4.4) translate(-11 -11)"
-              stroke="#C05C84"
-              strokeWidth="0.55"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <SuitGlyph name={card.suit} />
-            </g>
-          </>
-        )}
+/** 牌面（自绘版，供缺扫图的牌用）：星顶汉字 + 深粉画框 + 象征物画 + 缎带名牌 */
+function CardFace({ card }: { card: Card }) {
+  return (
+    <svg viewBox="0 0 244 540" className="absolute inset-0 h-full w-full" aria-hidden>
+      <defs>
+        <linearGradient id="cf-pink" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#F5AFC9" />
+          <stop offset="1" stopColor="#EE9BBB" />
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="244" height="540" rx="16" fill="url(#cf-pink)" />
+      <rect x="13" y="15" width="218" height="510" rx="11" fill="#FFF6EE" stroke="#EFB8CD" strokeWidth="1" />
+      <rect x="23" y="28" width="198" height="438" rx="14" fill="none" stroke="#EE86AD" strokeWidth="5" />
+      <rect x="27" y="32" width="190" height="430" rx="12" fill="#CE4E82" stroke="#A83464" strokeWidth="2" />
 
-        {/* 底部小金星 + 缎带名牌 */}
-        <path d={starPath(122, 300, 13, 5.4)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1" strokeLinejoin="round" />
-        <path d="M46 322 L26 333 L46 344 Z" fill="#E87BA4" stroke="#A83464" strokeWidth="1.4" strokeLinejoin="round" />
-        <path d="M198 322 L218 333 L198 344 Z" fill="#E87BA4" stroke="#A83464" strokeWidth="1.4" strokeLinejoin="round" />
-        <rect x="44" y="316" width="156" height="32" rx="4" fill="#F09CBC" stroke="#A83464" strokeWidth="1.6" />
-        <text
-          x="122"
-          y="338"
-          textAnchor="middle"
-          fontSize="16"
-          letterSpacing="2.5"
-          fill="#43202E"
-          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontWeight: 700 }}
-        >
-          {card.name}
-        </text>
-        <text
-          x="122"
-          y="371"
-          textAnchor="middle"
-          fontSize="11"
-          letterSpacing="5"
-          fill="#B03A66"
-          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontWeight: 600 }}
-        >
-          OLIVIA
-        </text>
+      {/* 左日 右月 */}
+      <circle cx="23" cy="250" r="8" fill="#F5C838" stroke="#C9951F" strokeWidth="0.9" />
+      {Array.from({ length: 10 }).map((_, i) => {
+        const a2 = (i / 10) * Math.PI * 2
+        return (
+          <line
+            key={'sr' + i}
+            x1={23 + Math.cos(a2) * 9.5}
+            y1={250 + Math.sin(a2) * 9.5}
+            x2={23 + Math.cos(a2) * 15}
+            y2={250 + Math.sin(a2) * 15}
+            stroke="#E8A62B"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        )
+      })}
+      <path d="M215 238a13.5 13.5 0 1 0 12 5 11 11 0 0 1-12-5Z" fill="#F5C838" stroke="#C9951F" strokeWidth="1" />
 
-        {/* 星顶汉字 */}
-        <path d={starPath(122, 34, 30, 12.4)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.6" strokeLinejoin="round" />
-        <text
-          x="122"
-          y="42"
-          textAnchor="middle"
-          fontSize="21"
-          fill="#3F2430"
-          style={{ fontFamily: 'Georgia, serif', fontWeight: 700 }}
-        >
-          {card.zi}
-        </text>
-      </svg>
+      {/* 中央象征物 */}
+      <g transform="translate(122 240)">
+        <CardArt name={card.name} />
+      </g>
 
-      {!art && (
-        <span className="absolute bottom-[22%] left-[15%] right-[15%] top-[17%] flex flex-col items-center text-center">
-          <span className="flex items-center justify-center text-[#8A4258]">
-            <Suit name={card.suit} className="h-5 w-5" />
-          </span>
-          <span className="mt-2 block font-serif text-[16px] font-medium leading-snug text-plum">
-            {card.title}
-          </span>
-          <span aria-hidden className="mt-2 flex w-3/4 items-center gap-2">
-            <span className="h-px flex-1 bg-[#C9A05C]/60" />
-            <span className="text-[8px] text-[#C0913C]">◆</span>
-            <span className="h-px flex-1 bg-[#C9A05C]/60" />
-          </span>
-          <span className="mt-2 block font-hand text-[13.5px] leading-snug text-plum-muted">
-            “{card.quote}”
-          </span>
-          <span className="mt-auto block space-y-1 pt-2">
-            {card.skills.map((sk) => (
-              <span key={sk} className="flex items-baseline justify-center gap-1.5 text-[11.5px] text-plum-muted">
-                <span aria-hidden className="text-[9px] text-[#C0913C]">
-                  ✦
-                </span>
-                {sk}
-              </span>
-            ))}
-          </span>
-        </span>
-      )}
-    </>
+      {/* 底部金星 + 缎带名牌 */}
+      <path d={starPath(122, 462, 13, 5.4)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1" strokeLinejoin="round" />
+      <path d="M46 476 L26 487 L46 498 Z" fill="#E87BA4" stroke="#A83464" strokeWidth="1.4" strokeLinejoin="round" />
+      <path d="M198 476 L218 487 L198 498 Z" fill="#E87BA4" stroke="#A83464" strokeWidth="1.4" strokeLinejoin="round" />
+      <rect x="44" y="470" width="156" height="32" rx="4" fill="#F09CBC" stroke="#A83464" strokeWidth="1.6" />
+      <text
+        x="122"
+        y="492"
+        textAnchor="middle"
+        fontSize="16"
+        letterSpacing="2.5"
+        fill="#43202E"
+        style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontWeight: 700 }}
+      >
+        {card.name}
+      </text>
+      <text
+        x="122"
+        y="521"
+        textAnchor="middle"
+        fontSize="11"
+        letterSpacing="5"
+        fill="#B03A66"
+        style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontWeight: 600 }}
+      >
+        OLIVIA
+      </text>
+
+      {/* 星顶汉字 */}
+      <path d={starPath(122, 34, 30, 12.4)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.6" strokeLinejoin="round" />
+      <text x="122" y="42" textAnchor="middle" fontSize="21" fill="#3F2430" style={{ fontFamily: 'Georgia, serif', fontWeight: 700 }}>
+        {card.zi}
+      </text>
+    </svg>
   )
 }
 
@@ -685,12 +717,12 @@ export function HowICreateValue() {
                   type="button"
                   onClick={() => setActive(i)}
                   aria-label={`Draw ${c.name} — ${c.title}`}
-                  className="absolute left-1/2 top-1/2 h-[295px] w-[188px] outline-none"
+                  className="absolute left-1/2 top-1/2 h-[310px] w-[140px] outline-none"
                   style={{
                     transformStyle: 'preserve-3d',
                     transform: !dealt
                       ? `translate(-50%, -50%) rotate(${(i - 3) * 2.5}deg) scale(0.92)`
-                      : `translate(-50%, -50%) rotateY(${(i * 360) / 7}deg) translateZ(292px)`,
+                      : `translate(-50%, -50%) rotateY(${(i * 360) / 7}deg) translateZ(252px)`,
                     transition: 'transform .95s cubic-bezier(.2,.75,.2,1), opacity .6s',
                     transitionDelay: dealt ? `${i * 0.1}s` : '0s',
                     opacity: active !== null ? 0.25 : 1,
@@ -711,7 +743,11 @@ export function HowICreateValue() {
                       className="absolute inset-0 overflow-hidden rounded-[1rem] shadow-[0_16px_36px_-16px_rgba(58,36,64,0.42)]"
                       style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg) translateZ(0.4px)' }}
                     >
-                      <CardFace card={c} art />
+                      {c.img ? (
+                        <img src={c.img} alt="" aria-hidden loading="lazy" className="h-full w-full object-cover" />
+                      ) : (
+                        <CardFace card={c} />
+                      )}
                     </span>
                   </span>
                 </button>
@@ -783,7 +819,7 @@ export function HowICreateValue() {
                 type="button"
                 onClick={putBack}
                 aria-label={`${HAND[active].title} — tap to put back`}
-                className="absolute left-1/2 top-[43%] z-30 h-[386px] w-[244px] -translate-x-1/2 -translate-y-1/2 outline-none"
+                className="absolute left-1/2 top-[43%] z-30 h-[430px] w-[195px] -translate-x-1/2 -translate-y-1/2 outline-none"
                 style={{ perspective: '1300px' }}
               >
                 <span
@@ -805,10 +841,41 @@ export function HowICreateValue() {
                     className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_26px_54px_-22px_rgba(58,36,64,0.45)]"
                     style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                   >
-                    <CardFace card={HAND[active]} />
+                    {HAND[active].img ? (
+                      <img src={HAND[active].img} alt={HAND[active].name} className="h-full w-full object-cover" />
+                    ) : (
+                      <CardFace card={HAND[active]} />
+                    )}
                   </span>
                 </span>
               </button>
+
+              {/* 牌旁说明卡 */}
+              <span
+                className="pointer-events-none absolute bottom-[2%] left-1/2 z-40 w-[88%] -translate-x-1/2 rounded-2xl border border-[#EFB8CD] bg-white/95 p-4 text-left shadow-[0_18px_40px_-18px_rgba(58,36,64,0.4)] backdrop-blur-sm md:bottom-auto md:left-[calc(50%+128px)] md:top-[43%] md:w-[235px] md:-translate-y-1/2 md:translate-x-0"
+                style={{ animation: 'annot-in .5s .55s ease-out both' }}
+              >
+                <span className="flex items-center gap-2 text-plum">
+                  <Suit name={HAND[active].suit} className="h-4 w-4 shrink-0 text-[#B03A66]" />
+                  <span className="font-serif text-[15px] font-medium leading-snug">{HAND[active].title}</span>
+                </span>
+                <span aria-hidden className="mt-2 flex items-center gap-2">
+                  <span className="h-px flex-1 bg-[#C9A05C]/50" />
+                  <span className="text-[8px] text-[#C0913C]">◆</span>
+                  <span className="h-px flex-1 bg-[#C9A05C]/50" />
+                </span>
+                <span className="mt-2 block font-hand text-[13.5px] leading-snug text-plum-muted">
+                  “{HAND[active].quote}”
+                </span>
+                <span className="mt-2.5 block space-y-1">
+                  {HAND[active].skills.map((sk) => (
+                    <span key={sk} className="flex items-baseline gap-1.5 text-[11.5px] text-plum-muted">
+                      <span aria-hidden className="text-[9px] text-[#C0913C]">✦</span>
+                      {sk}
+                    </span>
+                  ))}
+                </span>
+              </span>
             </>
           )}
         </div>
