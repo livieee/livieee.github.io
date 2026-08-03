@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { CompareSlider } from '@/components/CompareSlider'
 import { CountUp } from '@/components/CountUp'
 import { Reveal } from '@/components/Reveal'
+import { SignalBoard } from '@/components/SignalBoard'
 import { TiltCard } from '@/components/TiltCard'
 
 /** ── 页面数据 ─────────────────────────────────────────────────────────── */
@@ -1361,6 +1362,8 @@ export default function ThetaCase() {
           </div>
         </div>
       </section>
+
+      <SignalBoard />
 
       {/* ── 报道 ── */}
       <section className="mx-auto max-w-6xl px-6 pb-16 md:px-10 md:pb-20">
