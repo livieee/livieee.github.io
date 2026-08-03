@@ -253,6 +253,16 @@ type Program = {
   badge: string
   /** 主导深度：1 全权 · 2 主理 · 3 协同 */
   tier: 1 | 2 | 3
+  /** 视觉权重：flagship 在 01 章展开，不进矩阵 */
+  weight: 'flagship' | 'medium' | 'small' | 'wall'
+  /** 卡内附 run of show */
+  ros?: boolean
+  /** 卡内附现场物料照 */
+  snap?: { src: string; alt: string; cap: string }
+  /** 活动墙一句话 */
+  oneliner?: string
+  /** AI Valley 之外的独立项目 */
+  independent?: boolean
   href: string
   /** luma 封面 */
   cover: string
@@ -284,6 +294,7 @@ const PROGRAMS: Program[] = [
     size: '221 registered builders',
     n: 221,
     badge: 'Program Lead · E2E',
+    weight: 'flagship',
     role: 'Owned it end to end — brought Z.ai in, wrote the builder guide and the judging bar, ran the Discord and the outbound.',
     partners: 'Z.ai · AI Valley · Devpost',
     caps: ['Program ownership', 'Developer relations', 'GTM', 'Strategic partnerships'],
@@ -303,8 +314,10 @@ const PROGRAMS: Program[] = [
     where: 'Palo Alto',
     size: '413 attendees · 20+ speakers',
     n: 413,
-    badge: 'Co-host',
-    role: 'Co-host. Found the partners, invited the panel, and researched every guest beforehand so the questions were specific.',
+    badge: 'Co-host · Program Host',
+    weight: 'medium',
+    ros: true,
+    role: 'Co-host & program host — sourced the partners, shaped the panel topics, invited and researched every speaker, then hosted the night.',
     partners: 'EPIC Connector · Peak Mojo · Manycore Tech · Z.ai',
     caps: ['Strategic partnerships', 'Community', 'Program ownership'],
     tier: 2,
@@ -317,7 +330,13 @@ const PROGRAMS: Program[] = [
     size: '422 attended',
     n: 422,
     badge: 'Program Manager · Volunteer',
-    role: 'Program manager — ran the program, and issued the volunteer certificates afterwards.',
+    weight: 'medium',
+    snap: {
+      src: '/events/photostrip-tight.jpg',
+      alt: 'Printed photo-booth strips from Build What You Love',
+      cap: 'photo-booth strips people took home ✦',
+    },
+    role: 'Program manager on the volunteer team — large-program execution and the community experience, from check-in to the certificates afterwards.',
     partners: 'AI Valley · Bond AI · Replit · Vercel · Daytona · MiniMax · BEM',
     caps: ['Program ownership', 'Community'],
     tier: 2,
@@ -338,8 +357,9 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco',
     size: '594 registered · 40+ VC firms',
     n: 594,
-    badge: 'Co-host',
-    role: 'Co-host of the founder showcase — main-stage pitches in front of 40+ funds.',
+    badge: 'Co-host · Program Host',
+    weight: 'medium',
+    role: 'Co-host & program host — guest and speaker outreach, stage flow and demo hand-offs in front of 40+ funds.',
     partners: 'EPIC Connector × Allscale · FounderGro',
     caps: ['GTM', 'Strategic partnerships'],
     tier: 3,
@@ -351,8 +371,9 @@ const PROGRAMS: Program[] = [
     where: 'Palo Alto',
     size: '100 builders hosted',
     n: 100,
-    badge: 'Program Lead',
-    role: 'Lead organiser. A pop-up with no agenda — 100 cups of tea as the reason for builders in Palo Alto to be in one room.',
+    badge: 'Program Lead · Community Activation',
+    weight: 'small',
+    role: 'A pop-up with no agenda — 100 cups of tea as the reason for Palo Alto’s builders to be in one room.',
     partners: 'AI Valley · Molly Tea',
     caps: ['Community', 'GTM'],
     tier: 2,
@@ -365,7 +386,10 @@ const PROGRAMS: Program[] = [
     size: '448 attendees · Yuval Noah Harari keynote',
     n: 448,
     badge: 'Independent Support',
-    role: 'Came back to help organise after the AI Valley program ended — my own side project, on a bill opened by Yuval Noah Harari.',
+    weight: 'wall',
+    independent: true,
+    oneliner: 'My own project after the AI Valley program — a bill opened by Yuval Noah Harari.',
+    role: null,
     partners: 'AIRA · GPT DAO · Cheetah Community · LOOMUS · EpicConnector',
     caps: ['Community'],
     tier: 3,
@@ -375,10 +399,11 @@ const PROGRAMS: Program[] = [
   {
     name: 'MiniMax AI Founder Day @ GTC',
     where: 'San Francisco',
-    size: '839 attendees · 9 speakers',
-    n: 839,
-    badge: 'Day-of Support',
-    role: 'Day-of coordination — keeping a nine-speaker agenda and an 839-person room running on time.',
+    size: 'GTC week · with The AI Collective',
+    n: null,
+    badge: 'Partner Coordinator',
+    weight: 'small',
+    role: 'Supporting organiser on the community side — partner coordination, and a nine-speaker day kept on rails.',
     partners: 'The AI Collective · AI Valley · MiniMax',
     caps: ['Community'],
     tier: 3,
@@ -391,7 +416,9 @@ const PROGRAMS: Program[] = [
     size: '100 seats, approval only',
     n: 100,
     badge: 'Program Coordination',
-    role: 'Program coordination for an approval-only mixer — first-generation builders, and an immigration lawyer on hand.',
+    weight: 'wall',
+    oneliner: 'Approval-only mixer — first-generation builders, an immigration lawyer on hand.',
+    role: null,
     partners: 'AI Valley · HAC.ai · Boundless Immigration',
     caps: ['Community', 'Strategic partnerships'],
     tier: 3,
@@ -403,8 +430,14 @@ const PROGRAMS: Program[] = [
     where: 'Sky9 Capital, San Francisco',
     size: '358 registered · 50 engineers, 8 hours',
     n: 358,
-    badge: 'Marketing & Partner Ops',
-    role: 'Ran marketing and sponsor coordination — including the perk creative that turned a sponsor into a sign-up incentive — then kept judging aligned across Dify, GMI Cloud and HydraDB on the day.',
+    badge: 'Partner & Ops Lead · Marketing',
+    weight: 'medium',
+    snap: {
+      src: '/events/gmi-perk.jpg',
+      alt: 'Sponsor perk creative — GMI-branded tumbler, first 20 sign-ups get a free mug',
+      cap: 'the sponsor perk I turned into a sign-up incentive ✦',
+    },
+    role: 'Partner & operations lead — ran the marketing, and kept judging aligned across Dify, GMI Cloud and HydraDB on the day.',
     partners: 'GMI Cloud · Photon · HydraDB · Dify',
     caps: ['GTM', 'Strategic partnerships', 'Community'],
     tier: 3,
@@ -421,22 +454,21 @@ const PROGRAMS: Program[] = [
 
 
 
-function ProgramCard({ p, i }: { p: Program; i: number }) {
+function ProgramCard({ p, i, small = false }: { p: Program; i: number; small?: boolean }) {
   const [open, setOpen] = useState(false)
+  const [showRos, setShowRos] = useState(false)
   return (
     <li
       style={{ animation: `annot-in .4s ${i * 0.05}s ease-out both` }}
-      className={`group/p flex flex-col overflow-hidden rounded-[1.4rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)] ${
-        p.lead
-          ? 'border-rose/40 bg-rose/[0.05] hover:border-rose/60 sm:col-span-2'
-          : 'border-plum/10 bg-white/60 hover:border-plum/25 hover:bg-white'
+      className={`group/p flex flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white/60 transition-all duration-300 hover:-translate-y-1 hover:border-plum/25 hover:bg-white hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)] ${
+        small ? 'sm:flex-row' : ''
       }`}
     >
       <a
         href={p.href}
         target="_blank"
         rel="noreferrer"
-        className="relative block overflow-hidden"
+        className={`relative block shrink-0 overflow-hidden ${small ? 'sm:w-[38%]' : ''}`}
         aria-label={`${p.name} — open the event page`}
       >
         <img
@@ -445,7 +477,7 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           aria-hidden
           loading="lazy"
           className={`w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03] ${
-            p.lead ? 'aspect-[3/1]' : 'aspect-[2/1]'
+            small ? 'aspect-[2/1] sm:h-full sm:aspect-auto' : 'aspect-[2/1]'
           }`}
         />
         <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
@@ -453,17 +485,21 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
         </span>
       </a>
 
-      <div className="flex flex-1 flex-col p-5 md:p-6">
+      <div className={`flex flex-1 flex-col ${small ? 'p-5' : 'p-5 md:p-6'}`}>
         <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-[17px] font-light leading-snug text-plum">{p.name}</h3>
-          <span className="shrink-0 text-right">
-            <span className="block font-serif text-xl font-light leading-none text-rose">
-              {p.n?.toLocaleString()}
+          <h3 className={`font-serif font-light leading-snug text-plum ${small ? 'text-[15.5px]' : 'text-[17px]'}`}>
+            {p.name}
+          </h3>
+          {!small && p.n && (
+            <span className="shrink-0 text-right">
+              <span className="block font-serif text-xl font-light leading-none text-rose">
+                {p.n.toLocaleString()}
+              </span>
+              <span className="mt-1 block text-[10.5px] leading-tight text-plum-faint">
+                {p.size.replace(/^[\d,]+\s*/, '')}
+              </span>
             </span>
-            <span className="mt-1 block text-[10.5px] leading-tight text-plum-faint">
-              {p.size.replace(/^[\d,]+\s*/, '')}
-            </span>
-          </span>
+          )}
         </div>
         <p className="mt-1.5 text-[12px] leading-snug text-plum-faint">
           {p.where} · {p.partners}
@@ -480,32 +516,64 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           {p.badge}
         </span>
         {p.role && <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>}
-        {p.post && (
-          <div className="mt-auto pt-3.5">
-            <button
-              type="button"
-              onClick={() => setOpen((o) => !o)}
-              aria-expanded={open}
-              className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
-            >
-              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
-                <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
-              </svg>
-              {p.post.label}
-              <span aria-hidden className={`inline-block transition-transform duration-300 ${open ? 'rotate-180' : ''}`}>▾</span>
-            </button>
-            {open && (
-              <div className="mt-3">
-                <LinkedInPost
-                  text={p.post.text}
-                  stats={p.post.stats}
-                  href={p.post.href}
-                  author={p.post.author}
-                  avatar={p.post.avatar}
-                  sub={p.post.sub}
-                />
-              </div>
+
+        {/* 现场物料：直接贴在卡里 */}
+        {p.snap && (
+          <figure className="mt-3.5">
+            <img
+              src={p.snap.src}
+              alt={p.snap.alt}
+              loading="lazy"
+              className="h-28 w-full rounded-[0.9rem] border border-plum/10 object-cover"
+            />
+            <figcaption className="mt-1.5 font-hand text-[13px] text-plum-muted">{p.snap.cap}</figcaption>
+          </figure>
+        )}
+
+        {(p.post || p.ros) && (
+          <div className="mt-auto flex flex-wrap gap-x-5 gap-y-2 pt-3.5">
+            {p.post && (
+              <button
+                type="button"
+                onClick={() => setOpen((o) => !o)}
+                aria-expanded={open}
+                className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[#0A66C2] transition-opacity hover:opacity-75"
+              >
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
+                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14M7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0" />
+                </svg>
+                {p.post.label}
+                <span aria-hidden className={`inline-block transition-transform duration-300 ${open ? 'rotate-180' : ''}`}>▾</span>
+              </button>
             )}
+            {p.ros && (
+              <button
+                type="button"
+                onClick={() => setShowRos((o) => !o)}
+                aria-expanded={showRos}
+                className="inline-flex items-center gap-1.5 text-[12px] font-medium text-rose transition-opacity hover:opacity-75"
+              >
+                run of show
+                <span aria-hidden className={`inline-block transition-transform duration-300 ${showRos ? 'rotate-180' : ''}`}>▾</span>
+              </button>
+            )}
+          </div>
+        )}
+        {open && p.post && (
+          <div className="mt-3">
+            <LinkedInPost
+              text={p.post.text}
+              stats={p.post.stats}
+              href={p.post.href}
+              author={p.post.author}
+              avatar={p.post.avatar}
+              sub={p.post.sub}
+            />
+          </div>
+        )}
+        {showRos && p.ros && (
+          <div className="mt-3">
+            <RunOfShow />
           </div>
         )}
       </div>
@@ -514,48 +582,59 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
 }
 
 function ProgramMatrix() {
-  const [cap, setCap] = useState<string | null>(null)
-  const shown = cap ? PROGRAMS.filter((p) => p.caps.includes(cap)) : PROGRAMS
-
+  const by = (w: Program['weight']) => PROGRAMS.filter((p) => p.weight === w)
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-2">
-        <button
-          type="button"
-          onClick={() => setCap(null)}
-          className={`rounded-full border px-3.5 py-1.5 text-[12px] font-medium transition-colors duration-300 ${
-            cap === null
-              ? 'border-transparent bg-plum text-cream'
-              : 'border-plum/15 bg-white/70 text-plum-muted hover:text-plum'
-          }`}
-        >
-          All nine
-        </button>
-        {CAPS.map((c) => (
-          <button
-            key={c}
-            type="button"
-            onClick={() => setCap(cap === c ? null : c)}
-            className={`rounded-full border px-3.5 py-1.5 text-[12px] font-medium transition-colors duration-300 ${
-              cap === c
-                ? 'border-transparent bg-plum text-cream'
-                : 'border-plum/15 bg-white/70 text-plum-muted hover:text-plum'
-            }`}
-          >
-            {c}
-          </button>
-        ))}
-      </div>
-
-      <ul className="mt-6 grid gap-5 sm:grid-cols-2">
-        {shown.map((p, i) => (
+      {/* 四张中卡 */}
+      <ul className="grid gap-5 sm:grid-cols-2">
+        {by('medium').map((p, i) => (
           <ProgramCard key={p.name} p={p} i={i} />
         ))}
       </ul>
 
-      {shown.length === 0 && (
-        <p className="mt-6 font-hand text-[15px] text-plum-muted">nothing tagged with that yet ✦</p>
-      )}
+      {/* 两张小特色卡 */}
+      <ul className="mt-5 grid gap-5 sm:grid-cols-2">
+        {by('small').map((p, i) => (
+          <ProgramCard key={p.name} p={p} i={i} small />
+        ))}
+      </ul>
+
+      {/* 其余项目：一行活动墙 */}
+      <div className="mt-10">
+        <p className="font-hand text-[15px] text-plum-muted">…and the rest of the slate ✦</p>
+        <ul className="mt-3 grid gap-3 md:grid-cols-2">
+          {by('wall').map((p, i) => (
+            <li key={p.name} style={{ animation: `annot-in .4s ${i * 0.06}s ease-out both` }}>
+              <a
+                href={p.href}
+                target="_blank"
+                rel="noreferrer"
+                className={`group/w flex items-center gap-4 rounded-2xl border bg-white/60 p-3 pr-4 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white ${
+                  p.independent ? 'border-[#8FAE8B]/40 hover:border-[#8FAE8B]/70' : 'border-plum/10 hover:border-plum/25'
+                }`}
+              >
+                <img src={p.cover} alt="" aria-hidden loading="lazy" className="h-16 w-24 shrink-0 rounded-xl object-cover" />
+                <span className="min-w-0 flex-1">
+                  <span className="flex flex-wrap items-center gap-2">
+                    <span className="text-[13.5px] font-medium leading-snug text-plum">{p.name}</span>
+                    <span
+                      className={`rounded-full px-2 py-[2px] text-[10px] font-medium ${
+                        p.independent ? 'bg-[#8FAE8B]/15 text-[#5F7D5B]' : 'bg-plum/[0.07] text-plum-muted'
+                      }`}
+                    >
+                      {p.independent ? 'Independent · beyond AI Valley' : p.badge}
+                    </span>
+                  </span>
+                  <span className="mt-1 block text-[12px] leading-snug text-plum-faint">{p.oneliner}</span>
+                </span>
+                <span aria-hidden className="shrink-0 text-[12px] font-medium text-plum-muted transition-transform duration-300 group-hover/w:translate-x-0.5">
+                  ↗
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }
@@ -700,21 +779,19 @@ function RunOfShow() {
           <li
             key={p.k}
             style={{ animation: `annot-in .45s ${i * 0.07}s ease-out both` }}
-            className="flex flex-col gap-2 rounded-[1.1rem] border border-plum/10 bg-white/70 px-4 py-3 sm:flex-row sm:items-center sm:gap-5"
+            className="rounded-[1.1rem] border border-plum/10 bg-white/70 px-4 py-3"
           >
-            <span className="shrink-0 font-serif text-[15px] leading-none text-rose sm:w-14">
-              {p.t}
+            <span className="flex items-baseline gap-3">
+              <span className="shrink-0 font-serif text-[15px] leading-none text-rose">{p.t}</span>
+              <span className="text-[13.5px] font-medium leading-snug text-plum">{p.k}</span>
             </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-[13.5px] font-medium leading-snug text-plum">{p.k}</span>
-              <span className="mt-0.5 block text-[12px] leading-snug text-plum-faint">{p.v}</span>
-            </span>
-            <span className="flex shrink-0 items-center gap-2">
-              <span className="rounded-full bg-plum/[0.06] px-2.5 py-1 text-[11px] text-plum-muted">
+            <span className="mt-1 block text-[12px] leading-snug text-plum-faint">{p.v}</span>
+            <span className="mt-2 flex flex-wrap items-center gap-2">
+              <span className="rounded-full bg-plum/[0.06] px-2.5 py-1 text-[11px] leading-none text-plum-muted">
                 {p.n} speakers
               </span>
               {p.q > 0 && (
-                <span className="rounded-full bg-rose/10 px-2.5 py-1 text-[11px] text-rose">
+                <span className="rounded-full bg-rose/10 px-2.5 py-1 text-[11px] leading-none text-rose">
                   {p.q} questions prepped
                 </span>
               )}
@@ -830,17 +907,17 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
   {
     src: '/events/women-hackathon.jpg',
     alt: 'The full cohort of Build What You Love — Women in Tech Hackathon, on stage after demos',
-    cap: 'Build What You Love · Women in Tech Hackathon — San Francisco, 14 February 2026',
+    cap: 'Build What You Love — the whole room, after demos',
   },
   {
-    src: '/events/photostrip.jpg',
-    alt: 'Two printed photo-booth strips from Build What You Love, branded with the AI Valley, bem and MiniMax logos',
-    cap: 'Photo-booth strips — sponsor branding people actually took home',
+    src: '/events/gtc-panel-crop.jpg',
+    alt: 'Panel in progress at the 2026 GTC Fireside Talk',
+    cap: '2026 GTC Fireside Talk — Panel 3 running',
   },
   {
-    src: '/events/gmi-perk.jpg',
-    alt: 'Sponsor perk graphic — a GMI-branded tumbler held up in the GMI Cloud office, captioned “First 20 AI Valley sign-ups get a FREE GMI MUG!”',
-    cap: 'Sponsor perk creative I made for GMI Cloud — Total Agent Recall Hackathon',
+    src: '/events/av-hackathon.jpg',
+    alt: 'Builders mid-build at an AI Valley hackathon',
+    cap: 'AI Valley Hackathon — the room mid-build',
   },
 ]
 
@@ -997,6 +1074,14 @@ export function AIValleyCase() {
             >
               Event page <span aria-hidden>↗</span>
             </a>
+            <a
+              href="https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 rounded-full border border-[#0A66C2]/30 bg-white px-3.5 py-1.5 text-[12px] font-medium text-[#0A66C2] transition-colors hover:border-[#0A66C2]/60"
+            >
+              Launch post <span aria-hidden>↗</span>
+            </a>
           </div>
         </Reveal>
 
@@ -1004,27 +1089,16 @@ export function AIValleyCase() {
         <Chapter
           n="02"
           label="The full slate"
-          title="Nine programs, and what each one was for"
-          intro="Different rooms, different jobs — some I owned, some I ran, some I kept aligned from the side. Filter by what the work actually was; every number is the public count on that event’s own page."
+          title="Different rooms, different jobs"
+          intro="Four I ran or co-ran, two lighter ones with their own flavour, and the rest in a row — sized the way the work actually weighed. Every number is the public count on that event’s own page."
         />
         <Reveal className="mt-8" y={24}>
           <ProgramMatrix />
         </Reveal>
 
-        {/* ── 三 · 工作痕迹 ─────────────────────────────────────── */}
+        {/* ── 三 · 合作方 ──────────────────────────────────────── */}
         <Chapter
           n="03"
-          label="The paper trail"
-          title="What running one actually looks like"
-          intro="The recruiting posts live on their program cards above — this is the other half of the paper trail: the minute-by-minute speaker guide that keeps a twenty-speaker night on rails."
-        />
-        <Reveal className="mt-8" y={24}>
-          <RunOfShow />
-        </Reveal>
-
-        {/* ── 四 · 合作方 ──────────────────────────────────────── */}
-        <Chapter
-          n="04"
           label="Who it was with"
           title="Every program is somebody saying yes first"
           intro="Model labs, communities, funds, venues — sourced, pitched and kept warm. This is the part of program work that never shows up in a photo."
@@ -1033,9 +1107,9 @@ export function AIValleyCase() {
           <PartnerWall />
         </Reveal>
 
-        {/* ── 五 · 打法 ─────────────────────────────────────────── */}
+        {/* ── 四 · 打法 ─────────────────────────────────────────── */}
         <Chapter
-          n="05"
+          n="04"
           label="How I run one"
           title="The five things that happen every time"
         />
