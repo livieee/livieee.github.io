@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Reveal, WordReveal } from '@/components/Reveal'
+import { PortalGate } from '@/components/ScrollGate'
 
 /**
  * How I Create Value —— 两段：
@@ -168,6 +169,40 @@ function starPath(cx: number, cy: number, R: number, r: number) {
   return d + 'Z'
 }
 
+
+/** 星杖划过洒下的星尘 */
+function useSparkTrail() {
+  const [sparks, setSparks] = useState<Array<{ id: number; x: number; y: number; s: number }>>([])
+  const last = useRef(0)
+  const idr = useRef(0)
+  const spawn = (x: number, y: number) => {
+    const now = performance.now()
+    if (now - last.current < 55) return
+    last.current = now
+    const id = ++idr.current
+    const sp = { id, x: x + (Math.random() * 14 - 7), y: y + (Math.random() * 14 - 7), s: 7 + Math.random() * 8 }
+    setSparks((a) => [...a.slice(-13), sp])
+    window.setTimeout(() => setSparks((a) => a.filter(t => t.id !== id)), 900)
+  }
+  return { sparks, spawn }
+}
+
+function SparkLayer({ sparks }: { sparks: Array<{ id: number; x: number; y: number; s: number }> }) {
+  return (
+    <>
+      {sparks.map((sp) => (
+        <span
+          key={sp.id}
+          aria-hidden
+          className="pointer-events-none absolute z-30 text-[#F0C245]"
+          style={{ left: sp.x, top: sp.y, fontSize: sp.s, animation: 'spark-pop .9s ease-out both' }}
+        >
+          ✦
+        </span>
+      ))}
+    </>
+  )
+}
 
 /** 跟随指针的星杖光标（星头对准指针位置） */
 function WandCursor({ pos }: { pos: { x: number; y: number } | null }) {
@@ -581,6 +616,8 @@ export function HowICreateValue() {
   const [flash, setFlash] = useState(false)
   const [wand, setWand] = useState<{ x: number; y: number } | null>(null)
   const [wandTool, setWandTool] = useState<{ x: number; y: number } | null>(null)
+  const ringTrail = useSparkTrail()
+  const toolTrail = useSparkTrail()
   const [sealPaused, setSealPaused] = useState(false)
   const putBack = () => {
     setActive(null)
@@ -634,6 +671,7 @@ export function HowICreateValue() {
             if (e.pointerType === 'touch') return
             const r = e.currentTarget.getBoundingClientRect()
             setWand({ x: e.clientX - r.left, y: e.clientY - r.top })
+            ringTrail.spawn(e.clientX - r.left, e.clientY - r.top)
           }}
           onPointerLeave={() => setWand(null)}
           style={{ perspective: '2100px' }}
@@ -770,6 +808,7 @@ export function HowICreateValue() {
 
 
           <WandCursor pos={wand} />
+          <SparkLayer sparks={ringTrail.sparks} />
 
           <div className="ring-scale absolute inset-0">
           {/* 牌圈后的暖金光 */}
@@ -973,7 +1012,9 @@ export function HowICreateValue() {
         </div>
       </Reveal>
 
-      <Reveal className="mt-24">
+      <PortalGate />
+
+      <Reveal className="-mt-16">
         <p className="text-center font-hand text-[16px] text-plum-muted">
           … and these are what I reach for to do it ↓
         </p>
@@ -988,10 +1029,12 @@ export function HowICreateValue() {
             if (e.pointerType === 'touch') return
             const r = e.currentTarget.getBoundingClientRect()
             setWandTool({ x: e.clientX - r.left, y: e.clientY - r.top })
+            toolTrail.spawn(e.clientX - r.left, e.clientY - r.top)
           }}
           onPointerLeave={() => setWandTool(null)}
         >
           <WandCursor pos={wandTool} />
+          <SparkLayer sparks={toolTrail.sparks} />
           {/* 左翼：搁着的一叠牌 */}
           <div
             aria-hidden

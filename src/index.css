@@ -333,3 +333,10 @@ body {
 .animate-photo-reel {
   animation: photo-reel 42s linear infinite;
 }
+
+/* 星杖洒下的星尘 */
+@keyframes spark-pop {
+  0%   { opacity: 0; transform: scale(0.3) translateY(0); }
+  18%  { opacity: 1; transform: scale(1.05) translateY(2px); }
+  100% { opacity: 0; transform: scale(0.55) translateY(16px); }
+}
