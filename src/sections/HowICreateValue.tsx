@@ -1051,6 +1051,31 @@ export function HowICreateValue() {
             ))}
             {/* 书签带 */}
             <path d="M100 84l3 14 5-6 6 4-3-13Z" fill="#E0447F" fillOpacity="0.8" />
+            {/* 翻动的书页：绕书脊从右翻到左 */}
+            <g
+              style={
+                {
+                  animation: 'page-turn 7s ease-in-out infinite',
+                  transformOrigin: '76px 52px',
+                  transformBox: 'view-box',
+                } as React.CSSProperties
+              }
+            >
+              <path d="M136 24C117 14 90 13 75 21l2 62c14-7 38-6 61 2Z" fill="#FFF4E2" stroke="#E3C08A" strokeWidth="1" />
+              {[34, 42, 50, 58, 66].map((y, i) => (
+                <line
+                  key={'tp' + y}
+                  x1="86"
+                  y1={y + 2}
+                  x2={i % 2 === 0 ? 124 : 116}
+                  y2={y}
+                  stroke="#C9B394"
+                  strokeOpacity="0.55"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                />
+              ))}
+            </g>
             {/* 页边金饰 */}
             <path d="M20 30c3-2 6-3 9-3M121 27c3 0 6 1 9 3" stroke="#E8B64C" strokeWidth="1" strokeLinecap="round" />
           </svg>

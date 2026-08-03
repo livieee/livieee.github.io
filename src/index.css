@@ -304,3 +304,13 @@ html,
 body {
   overflow-x: clip;
 }
+
+/* 魔法书翻页：大部分时间静止，然后一页从右绕书脊翻到左 */
+@keyframes page-turn {
+  0%, 30%  { transform: scaleX(1); opacity: 1; }
+  52%      { transform: scaleX(-0.12) scaleY(1.05); opacity: 1; }
+  70%      { transform: scaleX(-1); opacity: 1; }
+  70.5%    { opacity: 0; }
+  99.5%    { transform: scaleX(1); opacity: 0; }
+  100%     { transform: scaleX(1); opacity: 1; }
+}
