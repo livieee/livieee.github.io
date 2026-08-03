@@ -186,7 +186,7 @@ function FeaturedProjects() {
         </p>
         <p className="font-hand text-[15px] text-plum-muted">the point of the whole thing ✦</p>
       </div>
-      <div className="mt-5 grid gap-4 md:grid-cols-3">
+      <div className="mt-5 grid gap-4 md:flex md:items-stretch">
         {FEATURED.map((f, i) => (
           <a
             key={f.name}
@@ -195,7 +195,7 @@ function FeaturedProjects() {
             rel="noreferrer"
             aria-label={`Z.ai's post about ${f.name} on X`}
             style={{ animation: `annot-in .45s ${i * 0.08}s ease-out both` }}
-            className="group/f flex flex-col rounded-2xl border border-[#cfd9de] bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[#8b98a5] hover:shadow-[0_16px_36px_-20px_rgba(15,20,25,0.35)]"
+            className="group/f flex flex-col rounded-2xl border border-[#cfd9de] bg-white p-4 transition-all duration-500 ease-[cubic-bezier(.3,.7,.3,1)] hover:border-[#8b98a5] hover:shadow-[0_16px_36px_-20px_rgba(15,20,25,0.35)] md:min-w-0 md:basis-0 md:flex-[1] md:hover:flex-[2.1]"
           >
             {/* 帖子头 */}
             <div className="flex items-center gap-2.5">
@@ -221,7 +221,7 @@ function FeaturedProjects() {
             </div>
 
             {/* 正文 */}
-            <p className="mt-3 whitespace-pre-line text-[14px] leading-[1.4] text-[#0f1419]">
+            <p className="mt-3 whitespace-pre-line text-[14px] leading-[1.4] text-[#0f1419] md:line-clamp-[7] md:group-hover/f:line-clamp-none">
               {f.text}
             </p>
 
