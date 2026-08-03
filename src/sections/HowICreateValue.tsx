@@ -629,7 +629,7 @@ export function HowICreateValue() {
         <div
           ref={fanRef}
           data-wand
-          className="relative mx-auto h-[590px] w-full max-w-5xl cursor-none select-none [&_button]:cursor-none"
+          className="relative mx-auto h-[430px] w-full max-w-5xl cursor-none select-none md:h-[590px] [&_button]:cursor-none"
           onPointerMove={(e) => {
             if (e.pointerType === 'touch') return
             const r = e.currentTarget.getBoundingClientRect()
@@ -771,6 +771,7 @@ export function HowICreateValue() {
 
           <WandCursor pos={wand} />
 
+          <div className="ring-scale absolute inset-0">
           {/* 牌圈后的暖金光 */}
           <span
             aria-hidden
@@ -869,6 +870,8 @@ export function HowICreateValue() {
               />
             </>
           )}
+
+          </div>
 
           {/* 抽出的牌 */}
           {active !== null && (

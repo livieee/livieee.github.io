@@ -157,7 +157,7 @@ export function Hero() {
             </motion.p>
 
             {/* CTA */}
-            <motion.div {...rise(0.88)} className="mt-7 flex flex-nowrap items-center gap-3">
+            <motion.div {...rise(0.88)} className="mt-7 flex flex-wrap items-center gap-3 sm:flex-nowrap">
               <a
                 href="#impact"
                 className="group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream shadow-[0_10px_24px_-10px_rgba(58,36,64,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"

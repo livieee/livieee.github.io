@@ -196,7 +196,7 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
         className={`cursor-default ${t.side === 'left' ? 'text-right' : 'text-left'}`}
       >
         <p
-          className="whitespace-nowrap font-hand text-[18px] font-semibold leading-tight transition-colors duration-300 sm:text-[19px] xl:text-[22px]"
+          className="whitespace-nowrap font-hand text-[14px] font-semibold leading-tight transition-colors duration-300 sm:text-[19px] xl:text-[22px]"
           style={{ color: t.color, opacity: isActive ? 1 : 0.92 }}
         >
           {t.word}
@@ -326,18 +326,18 @@ export function PortraitCard({ animateArrows = true }: { animateArrows?: boolean
               </svg>
             </div>
 
-            <div className="mt-4 grid grid-cols-[1fr_auto_1fr] items-stretch gap-1 sm:gap-2">
-              <div className="flex flex-col justify-around py-6 pr-0.5 sm:py-8 sm:pr-1">
+            <div className="mt-4 grid grid-cols-2 items-stretch gap-1 sm:grid-cols-[1fr_auto_1fr] sm:gap-2">
+              <div className="flex flex-row justify-evenly gap-2 py-2 sm:flex-col sm:justify-around sm:gap-0 sm:py-8 sm:pr-1">
                 {traits.filter((t) => t.side === 'left').map((t) => frontNote(t, traits.indexOf(t)))}
               </div>
-              <div className="relative w-[240px] overflow-hidden rounded-xl sm:w-[260px] lg:w-[300px] xl:w-[330px]">
+              <div className="relative order-first col-span-2 mx-auto w-[240px] overflow-hidden rounded-xl sm:order-none sm:col-span-1 sm:mx-0 sm:w-[260px] lg:w-[300px] xl:w-[330px]">
                 <img
                   src="/images/photo-gallery-hero.jpg"
                   alt="Olivia (Zerun) Xiao holding a red book at the museum"
                   className="aspect-[3/4] w-full -rotate-1 rounded-xl object-cover shadow-[0_18px_40px_-16px_rgba(90,63,86,0.45)] transition-transform duration-700 ease-out group-hover/card:scale-[1.04]"
                 />
               </div>
-              <div className="flex flex-col justify-around py-6 pl-0.5 sm:py-8 sm:pl-1">
+              <div className="flex flex-row justify-evenly gap-2 py-2 sm:flex-col sm:justify-around sm:gap-0 sm:py-8 sm:pl-1">
                 {traits.filter((t) => t.side === 'right').map((t) => frontNote(t, traits.indexOf(t)))}
               </div>
             </div>

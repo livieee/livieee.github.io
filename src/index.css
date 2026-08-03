@@ -290,3 +290,17 @@
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-7px); }
 }
+
+/* 手机端：整座牌阵按比例缩小 */
+@media (max-width: 767px) {
+  .ring-scale {
+    transform: scale(0.55);
+    transform-origin: 50% 30%;
+  }
+}
+
+/* 横向永不出现滚动条：旋转/3D 层的包围盒不再撑宽页面 */
+html,
+body {
+  overflow-x: clip;
+}
