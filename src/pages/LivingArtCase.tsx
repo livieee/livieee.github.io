@@ -178,7 +178,7 @@ const SHOTS: GalleryItem[] = [
   { src: '/ieee/outputs-grid.jpg', alt: 'A grid of real generated states from the installation', cap: 'Real outputs — every state produced a different image' },
   { src: '/ieee/booth-olivia.jpg', alt: 'Olivia at the CMU Silicon Valley booth beside the poster and the live installation', cap: 'At the CMU Silicon Valley booth' },
   { src: '/ieee/booth-crowd.jpg', alt: 'A crowd gathered around the installation at the showcase', cap: 'The booth, mid-showcase' },
-  { src: '/ieee/poster-cert.jpg', alt: 'The research poster and the first-place certificate', cap: 'The poster and the first-place certificate' },
+  { src: '/ieee/cert-only.jpg', alt: 'The IEEE Rising Stars first-place certificate for Therapy as a Living Art', cap: 'First place — Project Showcase' },
   { src: '/ieee/poster.jpg', alt: 'The CMU research poster', cap: 'The CMU research poster — I designed it' },
   { src: '/ieee/certs-three.jpg', alt: 'Three team members with first-place certificates', cap: 'Project Showcase — first place' },
   { src: '/ieee/poster-team.jpg', alt: 'The team at the CMU booth', cap: 'The team at the booth' },
@@ -186,6 +186,13 @@ const SHOTS: GalleryItem[] = [
   { src: '/ieee/architecture.jpg', alt: 'The system architecture diagram', cap: 'Local node → cloud generation → dual interface' },
   { src: '/ieee/showcase-stage.jpg', alt: 'Winners and organisers on stage', cap: 'On stage with the organisers' },
   { src: '/ieee/poster-team2.jpg', alt: 'The team beside the CMU Silicon Valley banner', cap: 'Beside the CMU Silicon Valley banner' },
+]
+
+/* 06 用的三张：一张奖状 + 两张现场。z 是它在 SHOTS 里的下标，供灯箱定位 */
+const RECOG = [
+  { ...SHOTS[1], z: 1 },
+  { ...SHOTS[2], z: 2 },
+  { ...SHOTS[3], z: 3 },
 ]
 
 const TEAM = ['Jessie Xiong', 'Olivia Xiao', 'David Ma', 'Jean Wang', 'Isabella Cheng', 'Richa Pragat']
@@ -408,38 +415,32 @@ export function LivingArtCase() {
     {
       n: '05',
       label: 'What I shaped',
-      title: 'Four working sheets, pinned to the wall.',
+      title: 'Four things that were mine to make.',
       lede: 'A seven-person team built the system. My part was the layer between it and everyone else.',
       body: (
         <div>
-          <div className="paper-grid rounded-[1.6rem] border border-white/10 bg-[#171C30] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_30px_70px_-34px_rgba(0,0,0,0.8)] md:p-7">
-            <div className="grid gap-5 sm:grid-cols-2">
-              {SHAPED.map((cc, k) => (
-                <figure
-                  key={cc.k}
-                  style={{ animation: `annot-in .5s ${0.08 * k}s ease-out both` }}
-                  className={`group/s relative ${cc.tilt} rounded-[0.9rem] border border-black/5 bg-[#E9E3D9] p-3 shadow-[0_18px_34px_-20px_rgba(0,0,0,0.85)] transition-transform duration-500 hover:rotate-0`}
-                >
-                  <span
+          <div className="grid gap-x-6 gap-y-8 sm:grid-cols-2">
+            {SHAPED.map((cc, k) => (
+              <figure
+                key={cc.k}
+                style={{ animation: `annot-in .5s ${0.08 * k}s ease-out both` }}
+                className="group/s"
+              >
+                <span className="halftone relative block overflow-hidden rounded-[1rem]">
+                  <img
+                    src={cc.img}
+                    alt=""
                     aria-hidden
-                    className="absolute -top-2 left-1/2 h-4 w-12 -translate-x-1/2 -rotate-2 rounded-[2px] bg-[#CBB8F5]/45 shadow-sm"
+                    loading="lazy"
+                    className="h-[172px] w-full object-cover transition-transform duration-700 group-hover/s:scale-[1.04]"
                   />
-                  <span className="halftone relative block overflow-hidden rounded-[0.6rem]">
-                    <img
-                      src={cc.img}
-                      alt=""
-                      aria-hidden
-                      loading="lazy"
-                      className="h-[104px] w-full object-cover"
-                    />
-                  </span>
-                  <figcaption className="px-1 pb-1 pt-3">
-                    <p className="font-serif text-[16px] font-light text-[#2E2438]">{cc.k}</p>
-                    <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#5C4F63]">{cc.v}</p>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+                </span>
+                <figcaption className="pt-4">
+                  <p className="font-serif text-[17px] font-light text-[#F6F1EA]">{cc.k}</p>
+                  <p className="mt-1.5 text-[12.5px] leading-relaxed text-white/50">{cc.v}</p>
+                </figcaption>
+              </figure>
+            ))}
           </div>
           <p className="mt-4 text-[12.5px] leading-relaxed text-white/40">
             Team: {TEAM.join(' · ')} — advised by Prof. Catherine Fang, who nominated the project to
@@ -455,40 +456,38 @@ export function LivingArtCase() {
       lede: 'IEEE Rising Stars 2026 · Project Showcase · 1st place.',
       body: (
         <div>
-          <div className="rounded-[1.6rem] border border-[#E8C77A]/25 bg-[#171C30] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_30px_70px_-34px_rgba(0,0,0,0.8)] md:p-7">
-            <div className="grid gap-4 sm:grid-cols-3">
-              {SHOTS.slice(1, 4).map((sh, k) => (
-                <button
-                  key={sh.src}
-                  type="button"
-                  onClick={() => setZoom(k + 1)}
-                  aria-label={`View larger: ${sh.alt}`}
-                  className={`group/r cursor-zoom-in rounded-[0.9rem] border border-black/5 bg-[#E9E3D9] p-2.5 shadow-[0_18px_34px_-20px_rgba(0,0,0,0.85)] transition-transform duration-500 hover:rotate-0 ${
-                    ['-rotate-[1.5deg]', 'rotate-[1deg]', '-rotate-[0.8deg]'][k]
-                  }`}
-                >
-                  <span className="halftone relative block overflow-hidden rounded-[0.5rem]">
-                    <img
-                      src={sh.src}
-                      alt={sh.alt}
-                      loading="lazy"
-                      className="aspect-[4/3] w-full object-cover"
-                    />
-                  </span>
-                  <span className="mt-2 block px-0.5 text-left font-hand text-[13px] leading-tight text-[#5C4F63]">
-                    {sh.cap}
-                  </span>
-                </button>
-              ))}
-            </div>
-            <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-white/10 pt-5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/90 ring-1 ring-white/20">
-                <img src="/logos/ieee.png" alt="IEEE" className="h-5 w-5 object-contain" />
-              </span>
-              <div>
-                <p className="text-[13px] font-medium text-[#F0EBF6]">IEEE Rising Stars 2026</p>
-                <p className="text-[12px] text-white/45">Project Showcase · 1st Place</p>
-              </div>
+          {/* 一张奖状 + 两张现场，不做拼图 */}
+          <div className="grid gap-x-6 gap-y-7 sm:grid-cols-3">
+            {RECOG.map((sh) => (
+              <button
+                key={sh.src}
+                type="button"
+                onClick={() => setZoom(sh.z)}
+                aria-label={`View larger: ${sh.alt}`}
+                className="group/r block cursor-zoom-in text-left"
+              >
+                <span className="halftone relative block overflow-hidden rounded-[1rem]">
+                  <img
+                    src={sh.src}
+                    alt={sh.alt}
+                    loading="lazy"
+                    className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover/r:scale-[1.04]"
+                  />
+                </span>
+                <span className="mt-2.5 block font-hand text-[14px] leading-tight text-white/55 transition-colors group-hover/r:text-white/85">
+                  {sh.cap}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-white/10 pt-5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/90 ring-1 ring-white/20">
+              <img src="/logos/ieee.png" alt="IEEE" className="h-5 w-5 object-contain" />
+            </span>
+            <div>
+              <p className="text-[13px] font-medium text-[#F0EBF6]">IEEE Rising Stars 2026</p>
+              <p className="text-[12px] text-white/45">Project Showcase · 1st Place</p>
             </div>
           </div>
 
@@ -650,6 +649,13 @@ export function LivingArtCase() {
               />
             </span>
             <span aria-hidden className="h-6 w-px bg-white/15" />
+            <span className="flex h-10 w-10 items-center justify-center rounded-md bg-white/90 ring-1 ring-white/20">
+              <img
+                src="/logos/iii.png"
+                alt="Integrated Innovation Institute"
+                className="h-[22px] w-[22px] object-contain"
+              />
+            </span>
             <p className="text-[11px] uppercase tracking-[0.18em] text-white/45">
               Integrated Innovation Institute
               <span className="text-white/25"> · </span>
@@ -665,7 +671,7 @@ export function LivingArtCase() {
 
         {/* ── 章节册：横向翻页 ─────────────────────────────────── */}
         <Reveal className="mt-20" y={26}>
-          <ChapterDeck chapters={CHAPTERS} tone="dark" />
+          <ChapterDeck chapters={CHAPTERS} tone="dark" autoAdvance />
         </Reveal>
 
         {/* ── 收尾 ─────────────────────────────────────────────── */}

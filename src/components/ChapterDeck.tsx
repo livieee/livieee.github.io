@@ -19,14 +19,30 @@ export type Chapter = {
   body: React.ReactNode
 }
 
-export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[]; tone?: 'light' | 'dark' }) {
+/** 自动翻页的停留时长（毫秒） */
+const DWELL = 11000
+
+export function ChapterDeck({
+  chapters,
+  tone = 'light',
+  autoAdvance = false,
+}: {
+  chapters: Chapter[]
+  tone?: 'light' | 'dark'
+  /** 无人操作时自动往下翻；一旦手动翻页或悬停就交还控制权 */
+  autoAdvance?: boolean
+}) {
   const [i, setI] = useState(0)
   const [dir, setDir] = useState<1 | -1>(1)
+  const [autoOn, setAutoOn] = useState(false)
   const touchX = useRef<number | null>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
+  const tookOver = useRef(false)
 
   const go = useCallback(
     (d: 1 | -1) => {
+      tookOver.current = true
+      setAutoOn(false)
       setDir(d)
       setI((prev) => Math.min(chapters.length - 1, Math.max(0, prev + d)))
       // 翻页后把视线带回本页开头，否则从长页翻过去会停在半空
@@ -40,10 +56,41 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
     [chapters.length],
   )
 
+  /** 人一动手，自动翻页就永久让位 —— 不跟读者抢方向盘 */
+  const takeOver = useCallback(() => {
+    tookOver.current = true
+    setAutoOn(false)
+  }, [])
+
   const jump = (n: number) => {
+    takeOver()
     setDir(n > i ? 1 : -1)
     setI(n)
   }
+
+  // 只有整册进入视野、且没人接管过时才自动走；离开视野就停
+  useEffect(() => {
+    if (!autoAdvance) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const el = wrapRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => setAutoOn(e.isIntersecting && !tookOver.current),
+      { threshold: 0.35 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [autoAdvance])
+
+  // 走到最后一章就停下，不回卷 —— 把人拽回 01 比不动更烦
+  useEffect(() => {
+    if (!autoOn || i >= chapters.length - 1) return
+    const t = setTimeout(() => {
+      setDir(1)
+      setI((p) => Math.min(chapters.length - 1, p + 1))
+    }, DWELL)
+    return () => clearTimeout(t)
+  }, [autoOn, i, chapters.length])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -64,7 +111,14 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
   const next = i < chapters.length - 1 ? chapters[i + 1] : null
 
   return (
-    <div ref={wrapRef} className="relative">
+    <div
+      ref={wrapRef}
+      className="relative"
+      onMouseEnter={() => setAutoOn(false)}
+      onMouseLeave={() => {
+        if (autoAdvance && !tookOver.current) setAutoOn(true)
+      }}
+    >
       {/* 页眉：只当地图用 */}
       <div className={`border-b pb-4 ${dark ? 'border-white/10' : 'border-plum/10'}`}>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
@@ -99,12 +153,20 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
         <div className="mt-3.5 flex items-center gap-3">
           <span
             aria-hidden
-            className={`h-[2px] flex-1 overflow-hidden rounded-full ${dark ? 'bg-white/10' : 'bg-plum/10'}`}
+            className={`relative h-[2px] flex-1 overflow-hidden rounded-full ${dark ? 'bg-white/10' : 'bg-plum/10'}`}
           >
             <span
               className={`block h-full rounded-full transition-all duration-500 ${dark ? 'bg-[#CBB8F5]' : 'bg-orchid'}`}
               style={{ width: `${((i + 1) / chapters.length) * 100}%` }}
             />
+            {/* 自动翻页时，这条更亮的线在读秒 */}
+            {autoOn && i < chapters.length - 1 && (
+              <span
+                key={i}
+                className={`absolute inset-y-0 left-0 rounded-full ${dark ? 'bg-white/70' : 'bg-plum/50'}`}
+                style={{ animation: `deck-dwell ${DWELL}ms linear forwards` }}
+              />
+            )}
           </span>
           <span className={`font-serif text-[12px] tabular-nums ${dark ? 'text-white/45' : 'text-plum-faint'}`}>
             {c.n} / {chapters[chapters.length - 1].n}
@@ -202,7 +264,11 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
                 <span />
               )}
               <span className={`font-hand text-[14px] ${dark ? 'text-white/35' : 'text-plum-faint'}`}>
-                {next ? 'or use ← → ✦' : 'end of the story ✦'}
+                {!next
+                  ? 'end of the story ✦'
+                  : autoOn
+                    ? 'turning on its own — hover to stay ✦'
+                    : 'or use ← → ✦'}
               </span>
             </div>
           </div>

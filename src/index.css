@@ -86,7 +86,7 @@
     border-radius: inherit;
     background-image: radial-gradient(circle, #000 1px, transparent 1px);
     background-size: 5px 5px;
-    opacity: 0.12;
+    opacity: 0.085;
     mix-blend-mode: multiply;
     pointer-events: none;
   }
@@ -459,4 +459,10 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   [style*="rail-scroll"] { animation: none !important; }
+}
+
+/* 章节册自动翻页的读秒条 */
+@keyframes deck-dwell {
+  from { width: 0%; }
+  to   { width: 100%; }
 }
