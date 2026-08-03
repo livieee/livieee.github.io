@@ -27,8 +27,8 @@ const AWARDS = [
     tag: 'Pitch Contest · AgeTech',
     place: '1st place',
     title: 'Theta Health AI',
-    sub: 'Pitched to a panel of judges, conference attendees and sponsors',
-    role: 'Pitched the AgeTech track entry for the product I worked on.',
+    sub: 'AgeTech track — presented to the judging panel, attendees and sponsors',
+    role: 'I pitched it — on stage, to the judging panel.',
     detail:
       'The brief: technology that improves the lives of older adults. Judged on innovation, market impact, business model and feasibility — the same product whose 0-to-1 AI Scribe work is in chapter 01.',
     team: 'Theta Health · AgeTech track',
