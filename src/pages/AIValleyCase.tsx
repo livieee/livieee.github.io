@@ -317,7 +317,7 @@ const PROGRAMS: Program[] = [
     badge: 'Co-host · Program Host',
     weight: 'medium',
     ros: true,
-    role: 'Co-host & program host — sourced the partners, invited every speaker, wrote the moderators’ speaker briefs, proposed panel questions after coordinating with the speakers, then hosted the night.',
+    role: 'Co-host & program host — sourced partners, invited the speakers, wrote the moderator briefs and panel questions, hosted the night.',
     post: {
       label: 'A panelist I invited, afterwards',
       author: 'Prasen Shelar',
@@ -343,7 +343,7 @@ const PROGRAMS: Program[] = [
     role: 'Co-host & program host — guest and speaker outreach, stage flow and demo hand-offs in front of 40+ funds.',
     partners: 'EPIC Connector × Allscale · FounderGro',
     caps: ['GTM', 'Strategic partnerships'],
-    tier: 3,
+    tier: 2,
     href: 'https://luma.com/GTCDEMODAY',
     cover: '/events/luma/gtc-demoday.jpg',
   },
@@ -377,14 +377,14 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco · hybrid',
     size: '422 attended',
     n: 422,
-    badge: 'Program Manager · Volunteer',
+    badge: 'Day-of Coordination · Volunteer',
     weight: 'medium',
     snap: {
       src: '/events/photostrip-tight.jpg',
       alt: 'Printed photo-booth strips from Build What You Love',
       cap: 'photo-booth strips people took home ✦',
     },
-    role: 'Program manager on the volunteer team — large-program execution and the community experience, from check-in to the certificates afterwards.',
+    role: 'Ran the day-of coordination across the whole day, and made the volunteer certificates afterwards.',
     partners: 'AI Valley · Bond AI · Replit · Vercel · Daytona · MiniMax · BEM',
     caps: ['Program ownership', 'Community'],
     tier: 2,
@@ -434,9 +434,9 @@ const PROGRAMS: Program[] = [
     where: 'San Francisco',
     size: 'GTC week · with The AI Collective',
     n: null,
-    badge: 'Partner Coordinator',
+    badge: 'On-site Coordination',
     weight: 'small',
-    role: 'Supporting organiser on the community side — partner coordination, and a nine-speaker day kept on rails.',
+    role: 'On-site coordination on the day — nine speakers, one schedule.',
     partners: 'The AI Collective · AI Valley · MiniMax',
     caps: ['Community'],
     tier: 3,
@@ -451,7 +451,7 @@ const PROGRAMS: Program[] = [
     badge: 'Volunteer Support',
     weight: 'wall',
     independent: true,
-    oneliner: 'Volunteer support after the AI Valley program wrapped — a bill opened by Yuval Noah Harari.',
+    oneliner: 'Volunteer help with promotion and partner outreach, after the AI Valley program wrapped — a bill opened by Yuval Noah Harari.',
     role: null,
     partners: 'AIRA · GPT DAO · Cheetah Community · LOOMUS · EpicConnector',
     caps: ['Community'],
@@ -781,7 +781,7 @@ function RunOfShow() {
       </ol>
 
       <p className="mt-4 border-t border-plum/10 pt-3.5 text-[12px] text-plum-faint">
-        2026 GTC Fireside Talk · Palo Alto · 5:30–8:30 PM · 413 attendees
+        2026 GTC Fireside Talk · Palo Alto · 5:30–8:30 PM
       </p>
     </div>
   )
