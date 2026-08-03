@@ -19,6 +19,8 @@ export type TimelineEntry = {
   logoWide?: boolean
   /** 品牌色（印章/hover 光晕/点动画用） */
   accent: string
+  /** 官网（点 logo 新窗打开） */
+  site?: string
   /** 展开的 impact bullets（≤2 条；可带小 logo，如 Bosch / IEEE） */
   bullets?: Array<string | TimelineBullet>
   /** 一句反思/学习（手写体） */
@@ -47,7 +49,7 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
   const [open, setOpen] = useState(false)
   const [photoIdx, setPhotoIdx] = useState(0)
   const reduce = useReducedMotion()
-  const { org, role, period, location, logo, logoWide, accent, bullets, reflection, relatedWork, photo, photos } = entry
+  const { org, role, period, location, logo, logoWide, accent, site, bullets, reflection, relatedWork, photo, photos } = entry
   // 时间轴褪色：最近的满色，越往过去饱和度越低（下限 .35）
   const sat = Math.max(0.35, 1 - index * 0.16)
   const fade = Math.max(0.82, 1 - index * 0.035)
@@ -100,14 +102,39 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
 
         <div className="flex items-start gap-3.5">
           {/* logo（默认去色，hover 复色；横向字标用宽胶囊） */}
-          <span
-            className={`flex shrink-0 items-center justify-center overflow-hidden border border-plum/10 bg-white px-1.5 shadow-xs transition-transform duration-300 group-hover/card:-translate-y-0.5 group-hover/card:scale-[1.03] ${
+          {(() => {
+            const shellCls = `group/site relative flex shrink-0 items-center justify-center overflow-hidden border border-plum/10 bg-white px-1.5 shadow-xs transition-transform duration-300 group-hover/card:-translate-y-0.5 group-hover/card:scale-[1.03] ${
               logoWide
                 ? 'h-11 w-[76px] rounded-xl sm:h-12 sm:w-[84px]'
                 : 'h-11 w-11 rounded-xl sm:h-12 sm:w-12'
-            }`}
-            title={org}
-          >
+            }`
+            const Shell = site
+              ? ({ children }: { children: React.ReactNode }) => (
+                  <a
+                    href={site}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label={`${org} — official site`}
+                    title={`${org} ↗`}
+                    className={`${shellCls} hover:border-orchid/50`}
+                  >
+                    {children}
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute -right-0.5 -top-0.5 rounded-bl-md bg-white/90 px-[3px] text-[8px] leading-[10px] text-orchid opacity-0 transition-opacity duration-300 group-hover/site:opacity-100"
+                    >
+                      ↗
+                    </span>
+                  </a>
+                )
+              : ({ children }: { children: React.ReactNode }) => (
+                  <span className={shellCls} title={org}>
+                    {children}
+                  </span>
+                )
+            return (
+          <Shell>
             {logo ? (
               <img
                 src={logo}
@@ -135,7 +162,9 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
                 {org.charAt(0)}
               </span>
             )}
-          </span>
+          </Shell>
+            )
+          })()}
 
           <div className="min-w-0 flex-1">
             <h3 className="text-balance font-serif text-[17px] font-medium leading-snug text-plum sm:text-[19px]">

@@ -5,6 +5,7 @@ import { TimelineNode, type TimelineEntry } from '@/components/TimelineNode'
 const EDUCATION: TimelineEntry[] = [
   {
     id: 'cmu',
+    site: 'https://www.cmu.edu/',
     org: 'Carnegie Mellon University',
     role: 'M.S. Software Management (Product)',
     period: '2024–2025',
@@ -24,6 +25,7 @@ const EDUCATION: TimelineEntry[] = [
   },
   {
     id: 'western',
+    site: 'https://www.uwo.ca/',
     org: 'Western University',
     role: 'Master of Data Analytics',
     period: '2019–2020',
@@ -34,6 +36,7 @@ const EDUCATION: TimelineEntry[] = [
   },
   {
     id: 'ubc',
+    site: 'https://www.ubc.ca/',
     org: 'University of British Columbia',
     role: 'B.Sc. Computer Science',
     period: '2014–2019',
@@ -50,6 +53,7 @@ const EDUCATION: TimelineEntry[] = [
 const EXPERIENCE: TimelineEntry[] = [
   {
     id: 'yuto',
+    site: 'https://www.szyuto.com/',
     org: 'YUTO USA Corporation',
     role: 'Technical Product Market Analyst',
     period: '2026–Present',
@@ -66,6 +70,7 @@ const EXPERIENCE: TimelineEntry[] = [
   },
   {
     id: 'aivalley',
+    site: 'https://www.aivalley.io/',
     org: 'AI Valley',
     role: 'Program Manager Intern — AI Platform',
     period: '2026',
@@ -81,6 +86,7 @@ const EXPERIENCE: TimelineEntry[] = [
   },
   {
     id: 'theta',
+    site: 'https://thetahealth.ai/',
     org: 'Theta Health',
     role: 'Product Intern — AI Health Product',
     period: '2025',
@@ -96,6 +102,7 @@ const EXPERIENCE: TimelineEntry[] = [
   },
   {
     id: 'xpertbay',
+    site: 'https://www.xpertbay.com/',
     org: 'Xpertbay',
     role: 'Product Manager',
     period: '2023–2024',
@@ -108,6 +115,7 @@ const EXPERIENCE: TimelineEntry[] = [
   },
   {
     id: 'peopleai',
+    site: 'https://people.ai/',
     org: 'People.ai',
     role: 'Technical Product Analyst',
     period: '2021–2023',
@@ -123,6 +131,7 @@ const EXPERIENCE: TimelineEntry[] = [
   },
   {
     id: 'adastra',
+    site: 'https://www.adastracorp.com/',
     org: 'Adastra North America',
     role: 'Data Science Consultant',
     period: '2020',
