@@ -588,8 +588,8 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
 
 function ProgramMatrix() {
   return (
-    <ul className="grid gap-5 sm:grid-cols-2">
-      {PROGRAMS.map((p, i) => (
+    <ul className="grid items-start gap-5 sm:grid-cols-2">
+      {PROGRAMS.filter((p) => p.weight !== 'flagship').map((p, i) => (
         <ProgramCard key={p.name} p={p} i={i} />
       ))}
     </ul>
@@ -1007,7 +1007,12 @@ export function AIValleyCase() {
           intro="GLM 5.1 was about to launch, and Z.ai needed real use cases to point at. I designed and ran the whole programme backwards from that — the submission bar, the funnel, and the rule that turned every entry into launch material."
           className="mt-20"
         />
-        <Reveal className="mt-8" y={28}>
+        <Reveal className="mt-8" y={24}>
+          <ul className="grid">
+            <ProgramCard p={PROGRAMS.find((x) => x.weight === 'flagship')!} i={0} />
+          </ul>
+        </Reveal>
+        <Reveal className="mt-6" y={28}>
           <FlagshipStages />
         </Reveal>
         <Reveal className="mt-8" y={24}>
@@ -1023,22 +1028,6 @@ export function AIValleyCase() {
             >
               Devpost <span aria-hidden>↗</span>
             </a>
-            <a
-              href="https://luma.com/32jfoybh"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-rose/50"
-            >
-              Event page <span aria-hidden>↗</span>
-            </a>
-            <a
-              href="https://www.linkedin.com/feed/update/urn:li:activity:7445973511577440256"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 rounded-full border border-[#0A66C2]/30 bg-white px-3.5 py-1.5 text-[12px] font-medium text-[#0A66C2] transition-colors hover:border-[#0A66C2]/60"
-            >
-              Launch post <span aria-hidden>↗</span>
-            </a>
           </div>
         </Reveal>
 
@@ -1046,7 +1035,7 @@ export function AIValleyCase() {
         <Chapter
           n="02"
           label="The full slate"
-          title="Nine programs, and what each one was for"
+          title="Eight more rooms, and what each one was for"
           intro="Different rooms, different jobs — some I owned, some I ran, some I supported. Every number is the public count on that event’s own page."
         />
         <Reveal className="mt-8" y={24}>
