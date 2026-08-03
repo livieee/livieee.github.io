@@ -297,7 +297,7 @@ const PROGRAMS: Program[] = [
     weight: 'flagship',
     role: 'Owned it end to end — brought Z.ai in, wrote the builder guide and the judging bar, ran the Discord and the outbound.',
     partners: 'Z.ai · AI Valley · Devpost',
-    caps: ['Program ownership', 'Developer relations', 'GTM', 'Strategic partnerships'],
+    caps: ['GTM', 'Developer programs', 'Strategic partnerships'],
     tier: 1,
     href: 'https://luma.com/32jfoybh',
     cover: '/events/luma/glm.jpg',
@@ -347,7 +347,7 @@ const PROGRAMS: Program[] = [
       },
     ],
     partners: 'EPIC Connector · Peak Mojo · Manycore Tech · Z.ai',
-    caps: ['Strategic partnerships', 'Community', 'Program ownership'],
+    caps: ['Strategic partnerships', 'Program management', 'Community'],
     tier: 2,
     href: 'https://luma.com/GTCTALK',
     cover: '/events/luma/gtc-talk.jpg',
@@ -361,7 +361,7 @@ const PROGRAMS: Program[] = [
     weight: 'medium',
     role: 'Co-host & program host — guest and speaker outreach, stage flow and demo hand-offs in front of 40+ funds.',
     partners: 'EPIC Connector × Allscale · FounderGro',
-    caps: ['GTM', 'Strategic partnerships'],
+    caps: ['GTM', 'Program management', 'Community'],
     tier: 2,
     href: 'https://luma.com/GTCDEMODAY',
     cover: '/events/luma/gtc-demoday.jpg',
@@ -380,7 +380,7 @@ const PROGRAMS: Program[] = [
     },
     role: 'Partner & operations lead — ran the marketing, and kept judging aligned across Dify, GMI Cloud and HydraDB on the day.',
     partners: 'GMI Cloud · Photon · HydraDB · Dify',
-    caps: ['GTM', 'Strategic partnerships', 'Community'],
+    caps: ['GTM', 'Strategic partnerships', 'Program ops'],
     tier: 3,
     href: 'https://luma.com/snixr7yb',
     cover: '/events/luma/agent-recall.jpg',
@@ -407,7 +407,7 @@ const PROGRAMS: Program[] = [
     },
     role: 'Ran the day-of coordination across the whole day, and made the volunteer certificates afterwards.',
     partners: 'AI Valley · Bond AI · Replit · Vercel · Daytona · MiniMax · BEM',
-    caps: ['Program ownership', 'Community'],
+    caps: ['Program ops', 'Community'],
     tier: 2,
     href: 'https://luma.com/ic3l89gi',
     cover: '/events/luma/women.jpg',
@@ -415,7 +415,7 @@ const PROGRAMS: Program[] = [
       {
         label: 'The organiser’s write-up',
         author: 'Courtney Ko',
-        avatar: null,
+        avatar: '/avatars/courtney.jpg',
         sub: 'AI Valley · organiser of Build What You Love',
         text: '150+ women in one room in San Francisco, building on Valentine’s Day. Spaces where women in STEM felt supported, confident, and ambitious — women who showed up not to impress anyone, but to build what they love.\n\nVolunteers: Olivia Xiao, Kathy Men, Amy Wang, Uche Oh, Andrew Flores.',
         stats: '215 reactions · 59 comments',
@@ -461,7 +461,7 @@ const PROGRAMS: Program[] = [
     weight: 'small',
     role: 'On-site coordination on the day — nine speakers, one schedule.',
     partners: 'The AI Collective · AI Valley · MiniMax',
-    caps: ['Community'],
+    caps: ['Community', 'Program ops'],
     tier: 3,
     href: 'https://luma.com/aic-sf-3-21?tk=C8DbIO',
     cover: '/events/luma/minimax.jpg',
@@ -477,7 +477,7 @@ const PROGRAMS: Program[] = [
     oneliner: 'Volunteer help with promotion and partner outreach, after the AI Valley program wrapped — a bill opened by Yuval Noah Harari.',
     role: null,
     partners: 'AIRA · GPT DAO · Cheetah Community · LOOMUS · EpicConnector',
-    caps: ['Community'],
+    caps: ['Community', 'Strategic partnerships'],
     tier: 3,
     href: 'https://luma.com/wkolq6uc',
     cover: '/events/luma/agi-summit.jpg',
@@ -534,8 +534,15 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
             </span>
           )}
         </div>
-        <p className="mt-1.5 text-[12px] leading-snug text-plum-faint">
-          {p.where} · {p.partners}
+        <p className="mt-1.5 flex items-baseline gap-1.5 text-[12px] leading-snug text-plum-faint">
+          <svg viewBox="0 0 12 12" className="h-[11px] w-[11px] shrink-0 translate-y-[1px]" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden>
+            <path d="M6 10.5C3.8 8.2 2.4 6.4 2.4 4.8a3.6 3.6 0 1 1 7.2 0c0 1.6-1.4 3.4-3.6 5.7Z" />
+            <circle cx="6" cy="4.8" r="1.3" />
+          </svg>
+          {p.where}
+        </p>
+        <p className="mt-1 text-[12px] leading-snug text-plum-faint">
+          <span className="font-hand text-[13px] text-plum-muted">with</span> {p.partners}
         </p>
         <span
           className={`mt-3 inline-flex w-fit items-center rounded-full px-2.5 py-[3px] text-[10.5px] font-medium tracking-wide ${
@@ -553,6 +560,13 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
         {(p.role || p.oneliner) && (
           <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{p.role ?? p.oneliner}</p>
         )}
+        <span className="mt-2.5 flex flex-wrap gap-1.5">
+          {p.caps.map((c) => (
+            <span key={c} className="rounded-full border border-plum/10 bg-white/60 px-2 py-[2px] text-[10px] leading-none text-plum-faint">
+              {c}
+            </span>
+          ))}
+        </span>
 
         {/* 现场物料：直接贴在卡里 */}
         {p.snap && (
