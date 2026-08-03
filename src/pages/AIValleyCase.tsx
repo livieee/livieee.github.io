@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
@@ -971,6 +971,11 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
     cap: 'AI Valley Hackathon — the room mid-build',
   },
   {
+    src: '/events/gtc-demoday-group.jpg',
+    alt: 'Group selfie with the crowd at 2026 GTC AI Demo Day',
+    cap: 'GTC AI Demo Day — the room, after the showcase',
+  },
+  {
     src: '/events/agi-summit-room.jpg',
     alt: 'The audience at the Humanity & AGI Summit 2026, Stanford Faculty Club — Olivia on staff in the room',
     cap: 'Humanity & AGI Summit — Stanford Faculty Club, on staff',
@@ -994,16 +999,36 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
 
 function EventPhotos() {
   const railRef = useRef<HTMLDivElement>(null)
+  const pausedRef = useRef(false)
+  useEffect(() => {
+    const el = railRef.current
+    if (!el) return
+    let raf = 0
+    const step = () => {
+      if (!pausedRef.current) {
+        el.scrollLeft += 0.55
+        if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft -= el.scrollWidth / 2
+      }
+      raf = requestAnimationFrame(step)
+    }
+    raf = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf)
+  }, [])
   if (PHOTOS.length === 0) return null
+  const reel = [...PHOTOS, ...PHOTOS]
   const slide = (dir: 1 | -1) => railRef.current?.scrollBy({ left: dir * 380, behavior: 'smooth' })
   return (
     <div className="group/reel relative">
       <div
         ref={railRef}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        onPointerEnter={() => { pausedRef.current = true }}
+        onPointerLeave={() => { pausedRef.current = false }}
+        onTouchStart={() => { pausedRef.current = true }}
+        onTouchEnd={() => { window.setTimeout(() => { pausedRef.current = false }, 2400) }}
+        className="flex gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {PHOTOS.map((ph) => (
-          <figure key={ph.src} className="w-[300px] shrink-0 snap-start sm:w-[360px]">
+        {reel.map((ph, i) => (
+          <figure key={ph.src + i} className="w-[300px] shrink-0 sm:w-[360px]">
             <Zoomable
               src={ph.src}
               alt={ph.alt}
@@ -1023,10 +1048,14 @@ function EventPhotos() {
           aria-label={b.dir === 1 ? 'Next photos' : 'Previous photos'}
           onClick={() => slide(b.dir)}
           className={`absolute ${b.cls} top-[38%] flex h-10 w-10 items-center justify-center rounded-full border border-plum/10 bg-white/90 text-[15px] text-plum shadow-[0_8px_20px_-8px_rgba(58,36,64,0.45)] backdrop-blur transition-all duration-300 hover:bg-white md:opacity-0 md:group-hover/reel:opacity-100`}
+          onPointerEnter={() => { pausedRef.current = true }}
+          onPointerLeave={() => { pausedRef.current = false }}
         >
           {b.glyph}
         </button>
       ))}
+      <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-cream to-transparent" />
+      <span aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-cream to-transparent" />
     </div>
   )
 }
