@@ -228,3 +228,9 @@
   0%   { opacity: .9; transform: translateX(-50%) scale(.9); }
   100% { opacity: 0;  transform: translateX(-50%) scale(1.45); }
 }
+
+/* 星空闪烁 */
+@keyframes star-twinkle {
+  0%, 100% { opacity: .18; }
+  50%      { opacity: .75; }
+}

@@ -127,61 +127,90 @@ function Suit({ name, className = '' }: { name: Card['suit']; className?: string
   )
 }
 
-/** 牌背：塔罗式结构（双层金边 + 饰带 + 太阳纹 + 新月小星），原创绘制 */
+/** 牌背：粉金塔罗式结构（OLIVIA 饰带 + 翼星纹章 + 新月 + 太阳），原创绘制 */
 function CardBack() {
-  const rays = Array.from({ length: 12 }).map((_, i) => {
-    const a = (i * Math.PI) / 6
-    return {
-      x1: 80 + Math.cos(a) * 14,
-      y1: 112 + Math.sin(a) * 14,
-      x2: 80 + Math.cos(a) * (i % 2 === 0 ? 24 : 19.5),
-      y2: 112 + Math.sin(a) * (i % 2 === 0 ? 24 : 19.5),
-    }
+  const sunRays = Array.from({ length: 8 }).map((_, i) => {
+    const a = (i * Math.PI) / 4
+    const cx = 80
+    const cy = 206
+    return `M${cx + Math.cos(a - 0.22) * 12} ${cy + Math.sin(a - 0.22) * 12} L${cx + Math.cos(a) * 21} ${cy + Math.sin(a) * 21} L${cx + Math.cos(a + 0.22) * 12} ${cy + Math.sin(a + 0.22) * 12} Z`
   })
   return (
-    <svg viewBox="0 0 160 230" className="h-full w-full" aria-hidden>
+    <svg viewBox="0 0 160 240" className="h-full w-full" aria-hidden>
       <defs>
-        <linearGradient id="cb-rose" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#A9556B" />
-          <stop offset="1" stopColor="#7C3B50" />
+        <linearGradient id="cb-pink" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#F8CEDF" />
+          <stop offset="1" stopColor="#F2B2CC" />
         </linearGradient>
       </defs>
-      <rect x="4" y="4" width="152" height="222" rx="12" fill="url(#cb-rose)" />
-      <rect x="9" y="9" width="142" height="212" rx="9" fill="none" stroke="#E5C285" strokeWidth="2" />
-      <rect x="14" y="14" width="132" height="202" rx="7" fill="none" stroke="#E5C285" strokeOpacity="0.5" strokeWidth="0.9" />
+      <rect x="4" y="4" width="152" height="232" rx="12" fill="url(#cb-pink)" />
+      <rect x="9" y="9" width="142" height="222" rx="9" fill="none" stroke="#C9A05C" strokeWidth="2" />
+      <rect x="13.5" y="13.5" width="133" height="213" rx="7" fill="none" stroke="#C9A05C" strokeOpacity="0.5" strokeWidth="0.9" />
 
-      {/* 四角卷纹 */}
+      {/* 顶部饰带 */}
+      <path d="M36 24h88l6 9-6 9H36l-6-9Z" fill="#DBB06C" />
+      <path d="M36 24h88l6 9-6 9H36l-6-9Z" fill="none" stroke="#B98A44" strokeWidth="0.8" />
+      <text
+        x="80"
+        y="37.5"
+        textAnchor="middle"
+        fontSize="10.5"
+        letterSpacing="4.5"
+        fill="#8A4258"
+        style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontWeight: 600 }}
+      >
+        OLIVIA
+      </text>
+
+      {/* 翼星纹章 */}
+      <circle cx="80" cy="116" r="40" fill="none" stroke="#C9A05C" strokeOpacity="0.65" strokeWidth="1" />
+      <circle cx="80" cy="116" r="33" fill="none" stroke="#C9A05C" strokeOpacity="0.3" strokeWidth="0.7" />
+      {/* 左翼 */}
+      <path
+        d="M56 112c-15-13-33-11-41 3 10-1 17 1 24 6-7 1-13 3-18 9 9 2 18 1 27-3 3-2 6-6 8-15Z"
+        fill="#FFF7F0"
+        stroke="#C9A05C"
+        strokeWidth="0.9"
+        strokeLinejoin="round"
+      />
+      {/* 右翼 */}
+      <path
+        d="M104 112c15-13 33-11 41 3-10-1-17 1-24 6 7 1 13 3 18 9-9 2-18 1-27-3-3-2-6-6-8-15Z"
+        fill="#FFF7F0"
+        stroke="#C9A05C"
+        strokeWidth="0.9"
+        strokeLinejoin="round"
+      />
+      {/* 五角星 */}
+      <path
+        d="M80 100 L83.5 110.2 L94.3 110.4 L85.7 116.9 L88.8 127.1 L80 121 L71.2 127.1 L74.3 116.9 L65.7 110.4 L76.5 110.2 Z"
+        fill="#F5CF57"
+        stroke="#C0913C"
+        strokeWidth="1"
+        strokeLinejoin="round"
+      />
+      {/* 星下新月 */}
+      <path d="M72 138a10.5 10.5 0 0 0 16 3 9 9 0 0 1-16-3Z" fill="#DBB06C" />
+
+      {/* 底部太阳 */}
+      <circle cx="80" cy="206" r="10.5" fill="#E4B76E" stroke="#C0913C" strokeWidth="0.9" />
+      {sunRays.map((d, i) => (
+        <path key={i} d={d} fill="#DBB06C" fillOpacity="0.9" />
+      ))}
+
+      {/* 角落点缀 */}
       {[
-        'M22 34c1-8 6-13 14-14',
-        'M138 34c-1-8-6-13-14-14',
-        'M22 196c1 8 6 13 14 14',
-        'M138 196c-1 8-6 13-14 14',
-      ].map((d) => (
-        <path key={d} d={d} fill="none" stroke="#E5C285" strokeOpacity="0.85" strokeWidth="1.3" strokeLinecap="round" />
-      ))}
-
-      {/* 上下饰带 */}
-      <path d="M54 21h52l-4.5 6.5h-43z" fill="#E5C285" fillOpacity="0.9" />
-      <path d="M54 209h52l-4.5-6.5h-43z" fill="#E5C285" fillOpacity="0.9" />
-
-      {/* 中央太阳纹 */}
-      <circle cx="80" cy="112" r="35" fill="none" stroke="#EED3A0" strokeWidth="1.5" />
-      <circle cx="80" cy="112" r="28" fill="none" stroke="#EED3A0" strokeOpacity="0.45" strokeWidth="0.8" />
-      <circle cx="80" cy="112" r="11.5" fill="#EED3A0" fillOpacity="0.95" />
-      {rays.map((r, i) => (
-        <line key={i} x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} stroke="#EED3A0" strokeWidth="2.1" strokeLinecap="round" />
-      ))}
-
-      {/* 新月与小星 */}
-      <path d="M47 146a11 11 0 1 0 9.5-17.5 9 9 0 0 1-9.5 17.5Z" fill="#EED3A0" fillOpacity="0.9" />
-      <path d="M114 79l2.7 5.6 5.6 2.7-5.6 2.7-2.7 5.6-2.7-5.6-5.6-2.7 5.6-2.7Z" fill="#EED3A0" fillOpacity="0.92" />
-
-      {/* 边缘菱形点缀 */}
-      {[58, 80, 102].map((x) => (
-        <path key={'t' + x} d={`M${x} 36l3 3-3 3-3-3Z`} fill="#E5C285" fillOpacity="0.55" />
-      ))}
-      {[58, 80, 102].map((x) => (
-        <path key={'b' + x} d={`M${x} 188l3 3-3 3-3-3Z`} fill="#E5C285" fillOpacity="0.55" />
+        [22, 60],
+        [138, 60],
+        [22, 180],
+        [138, 180],
+      ].map(([x, y]) => (
+        <path
+          key={`${x}-${y}`}
+          d={`M${x} ${y - 4.5}l1.7 3.5 3.5 1.7-3.5 1.7-1.7 3.5-1.7-3.5-3.5-1.7 3.5-1.7Z`}
+          fill="#C9A05C"
+          fillOpacity="0.6"
+        />
       ))}
     </svg>
   )
@@ -304,96 +333,117 @@ export function HowICreateValue() {
       <Reveal className="mt-4" y={30}>
         <div
           ref={fanRef}
-          className="relative mx-auto h-[540px] w-full max-w-4xl select-none"
-          style={{ perspective: '1500px' }}
+          className="relative mx-auto h-[600px] w-full max-w-5xl select-none overflow-hidden rounded-[2rem] shadow-[0_30px_70px_-30px_rgba(30,25,60,0.55)]"
+          style={{
+            perspective: '1600px',
+            background:
+              'radial-gradient(120% 90% at 50% 18%, #26224A 0%, #191538 55%, #110E26 100%)',
+          }}
         >
-          {/* 法阵：星形 + 符点环 + 太阳与新月（静止；抽牌时点亮） */}
+          {/* 星空 */}
+          {[
+            { x: 6, y: 12, s: 10, d: 3.2 },
+            { x: 16, y: 38, s: 7, d: 4.6 },
+            { x: 10, y: 70, s: 12, d: 5.4 },
+            { x: 26, y: 18, s: 8, d: 3.9 },
+            { x: 38, y: 8, s: 11, d: 4.4 },
+            { x: 55, y: 14, s: 7, d: 5.8 },
+            { x: 67, y: 6, s: 10, d: 3.4 },
+            { x: 80, y: 16, s: 13, d: 4.9 },
+            { x: 92, y: 10, s: 8, d: 3.7 },
+            { x: 94, y: 42, s: 11, d: 5.2 },
+            { x: 88, y: 72, s: 7, d: 4.1 },
+            { x: 72, y: 40, s: 6, d: 6.2 },
+            { x: 30, y: 52, s: 6, d: 5.1 },
+            { x: 50, y: 30, s: 8, d: 4.2 },
+            { x: 4, y: 46, s: 8, d: 6 },
+            { x: 62, y: 66, s: 9, d: 3.6 },
+          ].map((st, i) => (
+            <span
+              key={'s' + i}
+              aria-hidden
+              className="pointer-events-none absolute text-[#EFD9A0]"
+              style={{
+                left: `${st.x}%`,
+                top: `${st.y}%`,
+                fontSize: st.s,
+                animation: `star-twinkle ${st.d}s ${i * 0.4}s ease-in-out infinite`,
+              }}
+            >
+              ✦
+            </span>
+          ))}
+
+          {/* 地面法阵 */}
           <svg
-            viewBox="0 0 400 160"
-            className="pointer-events-none absolute bottom-[5%] left-1/2 w-[80%] -translate-x-1/2"
+            viewBox="0 0 800 300"
+            className="pointer-events-none absolute bottom-[1%] left-1/2 w-[97%] -translate-x-1/2"
             fill="none"
             aria-hidden
             style={{
               transition: 'filter .6s, opacity .6s',
-              opacity: active !== null ? 1 : 0.88,
-              filter: active !== null ? 'drop-shadow(0 0 14px rgba(199,154,75,0.5))' : 'none',
+              opacity: active !== null ? 1 : 0.9,
+              filter: active !== null ? 'drop-shadow(0 0 18px rgba(233,199,120,0.55))' : 'none',
             }}
           >
-            <ellipse cx="200" cy="80" rx="182" ry="58" stroke="#C79A4B" strokeOpacity="0.5" strokeWidth="1.3" />
-            <ellipse cx="200" cy="80" rx="174" ry="54" stroke="#C79A4B" strokeOpacity="0.3" strokeWidth="0.9" />
-            {/* 符点环 */}
-            {Array.from({ length: 16 }).map((_, i) => {
-              const a2 = (i / 16) * Math.PI * 2
-              return (
-                <circle
-                  key={'d' + i}
-                  cx={200 + Math.cos(a2) * 163}
-                  cy={80 + Math.sin(a2) * 50}
-                  r="2.3"
-                  fill="#C79A4B"
-                  fillOpacity="0.45"
-                />
-              )
-            })}
-            {/* 内环 + 五角星 */}
-            <ellipse cx="200" cy="80" rx="120" ry="36" stroke="#C79A4B" strokeOpacity="0.4" strokeWidth="1" />
-            <path
-              d="M200 44 270.5 109.1 85.9 68.9 314.1 68.9 129.5 109.1Z"
-              stroke="#D193A8"
-              strokeOpacity="0.55"
-              strokeWidth="1.2"
-              strokeLinejoin="round"
-            />
-            {/* 中央太阳 */}
-            <ellipse cx="200" cy="80" rx="15" ry="11" stroke="#C79A4B" strokeOpacity="0.7" strokeWidth="1.2" />
-            {Array.from({ length: 12 }).map((_, i) => {
-              const a3 = (i / 12) * Math.PI * 2
-              return (
-                <line
-                  key={'r' + i}
-                  x1={200 + Math.cos(a3) * 18}
-                  y1={80 + Math.sin(a3) * 13}
-                  x2={200 + Math.cos(a3) * 26}
-                  y2={80 + Math.sin(a3) * 19}
-                  stroke="#C79A4B"
-                  strokeOpacity="0.55"
-                  strokeWidth="1"
-                  strokeLinecap="round"
-                />
-              )
-            })}
-            {/* 新月与小星 */}
-            <path d="M118 88a9 9 0 1 0 7.6-14 7.3 7.3 0 0 1-7.6 14Z" fill="#C79A4B" fillOpacity="0.5" />
-            <path d="M282 68l2 4.1 4.1 2-4.1 2-2 4.1-2-4.1-4.1-2 4.1-2Z" fill="#D193A8" fillOpacity="0.6" />
+            <ellipse cx="400" cy="150" rx="380" ry="120" stroke="#C9A45C" strokeOpacity="0.6" strokeWidth="1.6" />
+            <ellipse cx="400" cy="150" rx="366" ry="115" stroke="#C9A45C" strokeOpacity="0.35" strokeWidth="0.9" strokeDasharray="7 11" />
+            <ellipse cx="400" cy="150" rx="322" ry="101" stroke="#C9A45C" strokeOpacity="0.35" strokeWidth="1" />
+            <ellipse cx="400" cy="150" rx="236" ry="74" stroke="#C9A45C" strokeOpacity="0.4" strokeWidth="1" />
+            <ellipse cx="400" cy="150" rx="150" ry="47" stroke="#C9A45C" strokeOpacity="0.3" strokeWidth="0.9" strokeDasharray="4 8" />
+            <ellipse cx="400" cy="150" rx="60" ry="19" stroke="#C9A45C" strokeOpacity="0.4" strokeWidth="0.9" />
+            <circle cx="400" cy="150" r="4.5" fill="#C9A45C" fillOpacity="0.6" />
+            {/* 六芒星 */}
+            <path d="M400 56 659.8 197 140.2 197Z" stroke="#C9A45C" strokeOpacity="0.42" strokeWidth="1.1" strokeLinejoin="round" />
+            <path d="M400 244 659.8 103 140.2 103Z" stroke="#C9A45C" strokeOpacity="0.42" strokeWidth="1.1" strokeLinejoin="round" />
+            {/* 小行星轨道 */}
+            <circle cx="636" cy="106" r="26" stroke="#C9A45C" strokeOpacity="0.5" strokeWidth="0.9" />
+            <circle cx="636" cy="106" r="14" stroke="#C9A45C" strokeOpacity="0.35" strokeWidth="0.7" />
+            <circle cx="636" cy="106" r="4" fill="#C9A45C" fillOpacity="0.65" />
+            {/* 方位 */}
+            {[
+              { t: '北', x: 400, y: 34 },
+              { t: '南', x: 400, y: 274 },
+              { t: '東', x: 758, y: 156 },
+              { t: '西', x: 42, y: 156 },
+            ].map((m) => (
+              <g key={m.t}>
+                <circle cx={m.x} cy={m.y - 6} r="15" stroke="#C9A45C" strokeOpacity="0.5" strokeWidth="0.9" />
+                <text
+                  x={m.x}
+                  y={m.y}
+                  textAnchor="middle"
+                  fontSize="16"
+                  fill="#D9B87A"
+                  fillOpacity="0.9"
+                  style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
+                >
+                  {m.t}
+                </text>
+              </g>
+            ))}
           </svg>
 
-          {/* 法阵中心的呼吸光 */}
-          <span
-            aria-hidden
-            className="pointer-events-none absolute bottom-[4%] left-1/2 h-[140px] w-[300px] -translate-x-1/2 rounded-full"
-            style={{
-              background:
-                'radial-gradient(ellipse, rgba(199,154,75,0.2) 0%, rgba(185,138,203,0.1) 50%, rgba(255,255,255,0) 72%)',
-              animation: 'seal-breathe 6.5s ease-in-out infinite',
-            }}
-          />
-
-          {/* 樱花瓣飘落 */}
+          {/* 樱花瓣 */}
           {[
-            { left: 8, size: 15, dur: 11, delay: 0 },
-            { left: 22, size: 11, dur: 13.5, delay: 2.2 },
-            { left: 38, size: 17, dur: 10, delay: 4.8 },
-            { left: 55, size: 12, dur: 14.5, delay: 1.1 },
-            { left: 70, size: 16, dur: 11.8, delay: 3.6 },
-            { left: 84, size: 12, dur: 13, delay: 5.4 },
-            { left: 93, size: 14, dur: 10.6, delay: 2.9 },
-            { left: 47, size: 10, dur: 15.5, delay: 7.1 },
+            { left: 5, size: 16, dur: 10.5, delay: 0 },
+            { left: 13, size: 12, dur: 13, delay: 2.4 },
+            { left: 22, size: 19, dur: 9.5, delay: 5 },
+            { left: 31, size: 13, dur: 14.5, delay: 1.2 },
+            { left: 40, size: 17, dur: 11, delay: 3.8 },
+            { left: 49, size: 11, dur: 15.5, delay: 6.6 },
+            { left: 58, size: 18, dur: 10, delay: 2 },
+            { left: 67, size: 13, dur: 13.5, delay: 4.4 },
+            { left: 76, size: 20, dur: 9, delay: 0.8 },
+            { left: 85, size: 12, dur: 14, delay: 5.8 },
+            { left: 92, size: 16, dur: 11.5, delay: 3 },
+            { left: 97, size: 11, dur: 12.5, delay: 7.4 },
           ].map((pt, i) => (
             <svg
-              key={i}
+              key={'p' + i}
               viewBox="0 0 20 20"
               aria-hidden
-              className="pointer-events-none absolute -top-2"
+              className="pointer-events-none absolute -top-3 z-20"
               style={{
                 left: `${pt.left}%`,
                 width: pt.size,
@@ -403,24 +453,24 @@ export function HowICreateValue() {
             >
               <path
                 d="M10 1.5C13.6 4.8 14.6 9.6 10 14.5 5.4 9.6 6.4 4.8 10 1.5Z"
-                fill={i % 2 === 0 ? '#EDC3D3' : '#E4AFC6'}
-                fillOpacity="0.8"
+                fill={i % 3 === 0 ? '#F6B5CD' : i % 3 === 1 ? '#F19CBC' : '#FBCBDD'}
+                fillOpacity="0.92"
               />
             </svg>
           ))}
 
-          {/* 环形牌阵：缓慢公转，选中时暂停 */}
+          {/* 环形牌阵 */}
           <div
-            className="absolute left-1/2 top-[44%]"
+            className="absolute left-1/2 top-[42%]"
             style={{
               transformStyle: 'preserve-3d',
-              transform: 'translate(-50%, -50%) rotateX(9deg)',
+              transform: 'translate(-50%, -50%) rotateX(13deg)',
             }}
           >
             <div
               style={{
                 transformStyle: 'preserve-3d',
-                animation: 'ring-spin 44s linear infinite',
+                animation: 'ring-spin 50s linear infinite',
                 animationPlayState: active === null && dealt ? 'running' : 'paused',
               }}
             >
@@ -430,16 +480,16 @@ export function HowICreateValue() {
                   type="button"
                   onClick={() => setActive(i)}
                   aria-label={`Draw card ${c.rank} — ${c.title}`}
-                  className="absolute left-1/2 top-1/2 h-[286px] w-[182px] outline-none"
+                  className="absolute left-1/2 top-1/2 h-[295px] w-[188px] outline-none"
                   style={{
-                    transform: `translate(-50%, -50%) rotateY(${i * 60}deg) translateZ(${dealt ? 258 : 0}px)`,
+                    transform: `translate(-50%, -50%) rotateY(${i * 60}deg) translateZ(${dealt ? 286 : 0}px)`,
                     transition: 'transform .9s cubic-bezier(.2,.75,.2,1), opacity .6s',
                     transitionDelay: dealt ? `${i * 0.1}s` : '0s',
-                    opacity: !dealt ? 0 : active !== null ? 0.22 : 1,
+                    opacity: !dealt ? 0 : active !== null ? 0.25 : 1,
                     pointerEvents: active === null ? 'auto' : 'none',
                   }}
                 >
-                  <span className="block h-full w-full overflow-hidden rounded-[1rem] shadow-[0_16px_36px_-18px_rgba(58,36,64,0.5)] transition-transform duration-300 hover:scale-[1.045]">
+                  <span className="block h-full w-full overflow-hidden rounded-[1rem] shadow-[0_18px_40px_-16px_rgba(10,8,25,0.8)] transition-transform duration-300 hover:scale-[1.045]">
                     <CardBack />
                   </span>
                 </button>
@@ -447,20 +497,20 @@ export function HowICreateValue() {
             </div>
           </div>
 
-          {/* 抽出的牌：升到中央翻开 */}
+          {/* 抽出的牌 */}
           {active !== null && (
             <>
               <span
                 aria-hidden
-                className="pointer-events-none absolute bottom-[5%] left-1/2 h-[120px] w-[78%] -translate-x-1/2 rounded-[50%] border border-champagne-deep/50"
+                className="pointer-events-none absolute bottom-[3%] left-1/2 h-[150px] w-[90%] -translate-x-1/2 rounded-[50%] border border-[#E9C778]/60"
                 style={{ animation: 'seal-cast 1.1s ease-out both' }}
               />
               <span
                 aria-hidden
-                className="pointer-events-none absolute left-1/2 top-[44%] h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                className="pointer-events-none absolute left-1/2 top-[43%] h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full"
                 style={{
                   background:
-                    'radial-gradient(circle, rgba(199,154,75,0.22) 0%, rgba(185,138,203,0.12) 45%, rgba(255,255,255,0) 70%)',
+                    'radial-gradient(circle, rgba(233,199,120,0.3) 0%, rgba(246,181,205,0.16) 45%, rgba(255,255,255,0) 70%)',
                   animation: 'halo-in .8s ease-out both',
                 }}
               />
@@ -468,8 +518,8 @@ export function HowICreateValue() {
                 type="button"
                 onClick={() => setActive(null)}
                 aria-label={`${HAND[active].title} — tap to put back`}
-                className="absolute left-1/2 top-[44%] z-30 h-[340px] w-[214px] -translate-x-1/2 -translate-y-1/2 outline-none"
-                style={{ perspective: '1200px' }}
+                className="absolute left-1/2 top-[43%] z-30 h-[386px] w-[244px] -translate-x-1/2 -translate-y-1/2 outline-none"
+                style={{ perspective: '1300px' }}
               >
                 <span
                   className="relative block h-full w-full"
@@ -479,41 +529,60 @@ export function HowICreateValue() {
                   }}
                 >
                   <span
-                    className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_24px_52px_-20px_rgba(58,36,64,0.55)]"
+                    className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_30px_60px_-20px_rgba(10,8,25,0.85)]"
                     style={{ backfaceVisibility: 'hidden' }}
                   >
                     <CardBack />
                   </span>
 
+                  {/* 牌面：与牌背同一套粉金框 */}
                   <span
-                    className="absolute inset-0 flex flex-col rounded-[1.1rem] border border-champagne-deep/40 bg-cream-soft px-5 py-5 text-left shadow-[0_24px_52px_-20px_rgba(58,36,64,0.5)]"
-                    style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                    className="absolute inset-0 overflow-hidden rounded-[1.1rem] shadow-[0_30px_60px_-20px_rgba(10,8,25,0.85)]"
+                    style={{
+                      backfaceVisibility: 'hidden',
+                      transform: 'rotateY(180deg)',
+                      background: 'linear-gradient(135deg, #F8CEDF 0%, #F2B2CC 100%)',
+                    }}
                   >
-                    <span className="flex items-center justify-between">
-                      <span className="flex flex-col items-center gap-0.5 text-plum">
-                        <span className="font-serif text-[20px] leading-none">{HAND[active].rank}</span>
-                        <Suit name={HAND[active].suit} className="h-3.5 w-3.5" />
-                      </span>
-                      <span aria-hidden className="h-px w-10 bg-plum/15" />
-                    </span>
+                    <span className="absolute inset-[6px] rounded-[0.85rem] border-2 border-[#C9A05C]" />
+                    <span className="absolute inset-[11px] rounded-[0.7rem] border border-[#C9A05C]/50 bg-[#FFF9F2]" />
 
-                    <span className="mt-5 block font-serif text-[17px] font-light leading-snug text-plum">
-                      {HAND[active].title}
-                    </span>
-
-                    <span className="mt-3 block font-hand text-[15px] leading-snug text-plum-muted">
-                      “{HAND[active].quote}”
-                    </span>
-
-                    <span className="mt-auto block space-y-1 pt-4">
-                      {HAND[active].skills.map((sk) => (
-                        <span key={sk} className="flex items-baseline gap-1.5 text-[12px] text-plum-muted">
-                          <span aria-hidden className="text-lavender-deep">
-                            ·
-                          </span>
-                          {sk}
+                    <span className="relative flex h-full w-full flex-col px-6 pb-6 pt-5 text-left">
+                      <span className="flex items-center justify-between">
+                        <span className="flex flex-col items-center gap-0.5 text-[#8A4258]">
+                          <span className="font-serif text-[21px] leading-none">{HAND[active].rank}</span>
+                          <Suit name={HAND[active].suit} className="h-4 w-4" />
                         </span>
-                      ))}
+                        <span aria-hidden className="font-hand text-[13px] text-[#C0913C]">
+                          olivia ✦
+                        </span>
+                      </span>
+
+                      <span className="mt-4 block font-serif text-[19px] font-light leading-snug text-plum">
+                        {HAND[active].title}
+                      </span>
+
+                      {/* 金色分隔线 */}
+                      <span aria-hidden className="mt-3 flex items-center gap-2">
+                        <span className="h-px flex-1 bg-[#C9A05C]/45" />
+                        <span className="text-[9px] text-[#C0913C]">◆</span>
+                        <span className="h-px flex-1 bg-[#C9A05C]/45" />
+                      </span>
+
+                      <span className="mt-3 block font-hand text-[15.5px] leading-snug text-plum-muted">
+                        “{HAND[active].quote}”
+                      </span>
+
+                      <span className="mt-auto block space-y-1.5 pt-4">
+                        {HAND[active].skills.map((sk) => (
+                          <span key={sk} className="flex items-baseline gap-2 text-[12.5px] text-plum-muted">
+                            <span aria-hidden className="text-[10px] text-[#C0913C]">
+                              ✦
+                            </span>
+                            {sk}
+                          </span>
+                        ))}
+                      </span>
                     </span>
                   </span>
                 </span>
