@@ -532,9 +532,9 @@ export function HowICreateValue() {
         <p className="label-text mb-6">Work Philosophy</p>
       </Reveal>
       <h2 className="max-w-3xl font-serif text-[clamp(1.9rem,4.5vw,3.2rem)] font-light leading-[1.15] text-plum">
-        <WordReveal text="The strengths behind the work —" />{' '}
+        <WordReveal text="The value I create," />{' '}
         <span className="italic text-orchid">
-          <WordReveal text="dealt into seven cards." delay={0.3} />
+          <WordReveal text="across every project." delay={0.3} />
         </span>
       </h2>
 
