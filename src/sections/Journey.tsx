@@ -133,7 +133,6 @@ const EXPERIENCE: TimelineEntry[] = [
       caption: 'Living PAI Values · 2022',
       href: 'https://www.linkedin.com/posts/technical-success-award-winners-2022-ugcPost-6919686919559749633-zdsB/',
     },
-    relatedWork: { label: 'Related Work', href: '#case-peopleai' },
   },
   {
     id: 'adastra',

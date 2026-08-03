@@ -464,64 +464,8 @@ export function Impact() {
 
         </div>
 
-        {/* ── Case 5 · Enterprise SaaS & Analytics — minimal editorial ────────── */}
+        {/* ── Recognition · IEEE Rising Stars 2026 ───────────────────────── */}
         <Reveal className="mt-10" y={36}>
-          <article id="case-peopleai" className="relative grid scroll-mt-24 gap-8 border-t border-plum/10 py-12 md:grid-cols-12 md:py-16">
-            <span
-              aria-hidden
-              className="absolute -top-3 right-4 rotate-[2deg] rounded-md border border-dashed border-orchid/60 bg-white/95 px-2.5 py-0.5 font-hand text-[14px] text-plum shadow"
-            >
-              the enterprise chapter
-            </span>
-            <div className="md:col-span-4">
-              <div className="mb-8 overflow-hidden rounded-[1.4rem]" data-cursor="VIEW">
-                <img
-                  src="/images/case-analytics.jpg"
-                  alt="Abstract editorial illustration — an analytics ribbon rising over soft bar charts"
-                  className="aspect-[3/2] w-full object-cover saturate-[0.8] transition-all duration-700 hover:scale-[1.03] hover:saturate-100"
-                  loading="lazy"
-                />
-              </div>
-              <p className="mb-4 flex items-baseline gap-3">
-                  <span aria-hidden className="font-serif text-[clamp(2rem,3.4vw,2.9rem)] font-light leading-none text-rose/45">
-                    05
-                  </span>
-                  <span className="label-text">Enterprise SaaS &amp; Analytics · People.ai</span>
-                </p>
-              <h3 className="font-serif text-2xl font-light leading-snug text-plum">
-                Turning product data into retention and renewal decisions
-              </h3>
-            </div>
-            <div className="md:col-span-5">
-              <p className="text-[15px] leading-relaxed text-plum-muted">
-                At a YC-incubated sales-analytics company, I diagnosed data-quality defects hurting
-                reliability and partnered with Engineering on targeted fixes. I also analyzed usage
-                patterns to influence roadmap priorities and built a Tableau dashboard covering 50+
-                enterprise clients — validating ROI that supported renewals.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-2">
-                <Tag>Product analytics</Tag>
-                <Tag>Data quality</Tag>
-                <Tag>Customer success</Tag>
-              </div>
-            </div>
-            <div className="md:col-span-3">
-              <dl className="space-y-6">
-                {[
-                  { value: '−6%', label: 'customer churn, with a company award for customer-first ownership' },
-                  { value: '+13%', label: 'feature adoption across enterprise accounts' },
-                  { value: '50+', label: 'enterprise clients covered by ROI dashboard' },
-                ].map((m) => (
-                  <div key={m.label} className="border-l-2 border-lavender-deep pl-4">
-                    <dt className="sr-only">{m.label}</dt>
-                    <dd className="font-serif text-2xl font-light text-orchid md:text-[1.7rem]">{m.value}</dd>
-                    <dd className="mt-1 text-[12px] leading-snug text-plum-muted">{m.label}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </article>
-
           <IEEEAwards />
         </Reveal>
       </div>

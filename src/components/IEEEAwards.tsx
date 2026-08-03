@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { Lightbox, type GalleryItem } from '@/components/Lightbox'
 
 /**
- * IEEE Rising Stars 2026 —— 两个一等奖，一条人本主线。
+ * Recognition · IEEE Rising Stars 2026 —— 两个一等奖，一条人本主线。
  *
- * 刻意不做成第五张同等大小的经历卡，也不做成「简历里加了两个奖」：
- * 左右两个视觉世界（Theta 温暖偏产品 / TaaLA 梦幻偏技术艺术），
- * 中间一条手绘波形把它们连起来。hover 一侧，另一侧退让。
+ * 版式沿用原 05 那块的编辑式语言：细线分隔 + 12 栏横排，不做成大卡片，
+ * 也不做成「简历里加了两个奖」。左栏是主线，右栏两个项目并置，
+ * 中间一条手绘波形（左半平稳=产品，右半起伏=脑波）把它们连起来。
  *
  * 事实来源：IEEE Rising Stars 官方页面 + Theta Health 赛后复盘。
  */
@@ -72,29 +72,49 @@ const SHOTS: GalleryItem[] = [
     alt: 'All Rising Stars 2026 award winners lined up on stage',
     cap: 'All the 2026 winners, lined up',
   },
+]
+
+const WINS = [
   {
-    src: '/ieee/poster-team2.jpg',
-    alt: 'The team beside the Carnegie Mellon Silicon Valley banner',
-    cap: 'Beside the CMU Silicon Valley banner',
+    key: 'theta' as const,
+    tag: 'AgeTech Pitch',
+    title: 'Theta Health AI',
+    meta: 'Top 3 finalist → live pitch → first place',
+    img: '/ieee/theta-podium.jpg',
+    pos: '50% 26%',
+    line: 'I pitched it on stage — then took 7–8 questions from a room that included IEEE’s president and the conference vice chair.',
+    tags: ['Product storytelling', 'Live pitch', 'Market signals'],
+    note: 'listen to the room ✦',
+    accent: '#D193A8',
+    zoom: 1,
+    href: 'https://ieee-risingstars.org/2026/rising-stars-pitch-contest/',
+  },
+  {
+    key: 'taala' as const,
+    tag: 'Project Showcase',
+    title: 'Therapy as a Living Art',
+    meta: 'Carnegie Mellon · Integrated Innovation Institute',
+    img: '/ieee/taala-art.jpg',
+    pos: '30% 28%',
+    line: 'EEG turned into moving art in real time, with an explain mode showing which signals shaped it. I designed the poster and the product UI.',
+    tags: ['Product UI', 'Experience design', 'Research communication'],
+    note: 'making the invisible visible ✦',
+    accent: '#B98ACB',
+    zoom: 6,
+    href: 'https://ieee-risingstars.org/2026/project-showcase/',
   },
 ]
 
-/** 连接两侧的手绘波形 —— 左侧平稳（产品），右侧起伏（脑波） */
+/** 连接两个项目的手绘线：左半平稳（产品），右半起伏（脑波） */
 function ThreadWave({ className = '' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 400 60" className={className} fill="none" aria-hidden preserveAspectRatio="none">
+    <svg viewBox="0 0 320 24" className={className} fill="none" aria-hidden preserveAspectRatio="none">
+      <path d="M0 12 H96 l8-6 7 12 8-10 7 9 6-5 h10" stroke="#D193A8" strokeOpacity="0.5" strokeWidth="1.4" strokeLinecap="round" />
       <path
-        d="M0 30 H120 l10-8 8 16 10-14 9 12 8-6 h14"
-        stroke="#D193A8"
-        strokeOpacity="0.55"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-      <path
-        d="M179 30 c14-22 26 22 40 0 c14-22 26 22 40 0 c14-22 26 22 40 0 c14-18 24 14 38 0 H400"
+        d="M152 12 c11-16 21 16 32 0 c11-16 21 16 32 0 c11-16 21 16 32 0 c11-13 19 11 30 0 H320"
         stroke="#B98ACB"
-        strokeOpacity="0.5"
-        strokeWidth="1.6"
+        strokeOpacity="0.45"
+        strokeWidth="1.4"
         strokeLinecap="round"
       />
     </svg>
@@ -106,262 +126,141 @@ export function IEEEAwards() {
   const [side, setSide] = useState<'theta' | 'taala' | null>(null)
 
   return (
-    <aside
+    <section
       id="ieee-awards"
       aria-label="IEEE Rising Stars 2026 awards"
-      className="relative mt-20 overflow-hidden rounded-[2rem] border border-plum/10"
+      className="relative grid scroll-mt-24 gap-8 border-t border-plum/10 py-12 md:grid-cols-12 md:py-16"
     >
-      {/* 左右两个世界的底色，中间自然融合 */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'linear-gradient(100deg, #FBF1E8 0%, #FAE7EA 26%, #FBF6F1 50%, #F1ECFA 74%, #E9EEF7 100%)',
-        }}
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-lavender/45 blur-3xl"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -left-20 bottom-0 h-56 w-56 rounded-full bg-blush/50 blur-3xl"
-      />
-
-      <div className="relative px-7 py-10 md:px-12 md:py-12">
-        {/* 顶部 */}
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="flex items-start gap-4">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-plum/10">
-              <img src="/logos/ieee.png" alt="IEEE" className="h-6 w-6 object-contain" />
-            </span>
-            <div>
-              <p className="label-text">Recognition · IEEE Rising Stars 2026</p>
-              <h3 className="mt-1.5 max-w-2xl font-serif text-[clamp(1.35rem,2.6vw,1.9rem)] font-light leading-tight text-plum">
-                Two projects. Two first-place wins.{' '}
-                <span className="italic text-orchid">One human-centered thread.</span>
-              </h3>
-            </div>
-          </div>
-          <p className="font-hand text-[16px] text-plum-muted">Las Vegas · January 2026 ✦</p>
+      {/* 左栏：主线 */}
+      <div className="md:col-span-4">
+        <div className="flex items-center gap-3">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-plum/10">
+            <img src="/logos/ieee.png" alt="IEEE" className="h-[18px] w-[18px] object-contain" />
+          </span>
+          <p className="label-text">Recognition · Rising Stars 2026</p>
         </div>
 
-        <p className="mt-4 max-w-3xl text-[14px] leading-relaxed text-plum-muted md:ml-[60px]">
+        <h3 className="mt-4 font-serif text-2xl font-light leading-snug text-plum">
+          Two projects. Two first-place wins.{' '}
+          <span className="italic text-orchid">One human-centered thread.</span>
+        </h3>
+
+        <p className="mt-4 text-[14px] leading-relaxed text-plum-muted">
           From making health information easier to act on, to making inner states visible — two
-          different ways of helping emerging technology feel more human.
+          ways of helping emerging technology feel more human.
         </p>
 
-        {/* 双面展台 */}
-        <div className="mt-8 grid gap-6 md:grid-cols-[1fr_auto_1fr] md:items-stretch md:gap-4">
-          {/* 左：Theta —— 温暖、现场、产品 */}
+        <ThreadWave className="mt-6 hidden h-5 w-full md:block" />
+
+        <p className="mt-4 font-hand text-[15px] text-plum-muted">Las Vegas · January 2026 ✦</p>
+      </div>
+
+      {/* 右栏：两个奖并置 */}
+      <div className="grid gap-5 sm:grid-cols-2 md:col-span-8">
+        {WINS.map((w) => (
           <button
+            key={w.key}
             type="button"
-            onClick={() => setZoom(1)}
-            onPointerEnter={(e) => e.pointerType !== 'touch' && setSide('theta')}
+            onClick={() => setZoom(w.zoom)}
+            onPointerEnter={(e) => e.pointerType !== 'touch' && setSide(w.key)}
             onPointerLeave={() => setSide(null)}
-            className="group/th relative flex flex-col overflow-hidden rounded-[1.4rem] border border-rose/25 bg-white/70 p-5 text-left transition-all duration-500 md:p-6"
-            style={{
-              transform: side === 'theta' ? 'scale(1.02)' : 'scale(1)',
-              opacity: side === 'taala' ? 0.62 : 1,
-            }}
+            className="group/w flex flex-col text-left transition-opacity duration-500"
+            style={{ opacity: side && side !== w.key ? 0.55 : 1 }}
           >
-            <span className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-rose/15 px-2.5 py-[3px] text-[10.5px] font-medium tracking-wide text-rose">
-                AgeTech Pitch
-              </span>
-              <span className="flex items-center gap-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C0913C]">
-                <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
+            <span className="relative block overflow-hidden rounded-[1.1rem] border border-plum/10">
+              <img
+                src={w.img}
+                alt={w.title}
+                loading="lazy"
+                className="h-[150px] w-full object-cover transition-transform duration-700 group-hover/w:scale-[1.04]"
+                style={{ objectPosition: w.pos }}
+              />
+              <span className="absolute left-2.5 top-2.5 flex items-center gap-1 rounded-full bg-white/92 px-2 py-[3px] text-[10px] font-medium uppercase tracking-[0.12em] text-[#C0913C] shadow-sm backdrop-blur">
+                <svg viewBox="0 0 20 20" className="h-3 w-3" fill="currentColor" aria-hidden>
                   <path d="M10 1.6l2.2 4.8 5.2.6-3.9 3.5 1.1 5.1L10 13l-4.6 2.6 1.1-5.1L2.6 7l5.2-.6z" />
                 </svg>
                 1st place
               </span>
             </span>
 
-            <span className="mt-3 block font-serif text-[19px] font-light leading-snug text-plum">
-              Theta Health AI
-            </span>
-            <span className="mt-1 block text-[12.5px] leading-snug text-plum-faint">
-              Top 3 finalist → live pitch → first place
-            </span>
-
-            {/* 舞台照 + 证书压角 */}
-            <span className="relative mt-4 block">
-              <img
-                src="/ieee/theta-podium.jpg"
-                alt="Olivia presenting Theta Health AI at IEEE Rising Stars"
-                loading="lazy"
-                className="h-[188px] w-full rounded-[1rem] border border-plum/10 object-cover object-[50%_28%] transition-transform duration-500 group-hover/th:-translate-y-[5px]"
-              />
-              <img
-                src="/ieee/theta-cert.jpg"
-                alt=""
-                aria-hidden
-                loading="lazy"
-                className="absolute -bottom-3 right-3 h-[74px] w-[104px] rotate-[5deg] rounded-[0.6rem] border-2 border-white object-cover shadow-[0_12px_26px_-12px_rgba(58,36,64,0.6)] transition-transform duration-500 group-hover/th:rotate-[2deg]"
-              />
+            <span className="mt-3 flex items-baseline gap-2">
+              <span
+                className="rounded-full px-2 py-[2px] text-[10px] font-medium leading-none"
+                style={{ backgroundColor: `${w.accent}22`, color: w.accent }}
+              >
+                {w.tag}
+              </span>
             </span>
 
-            <span className="mt-6 block text-[13px] leading-relaxed text-plum-muted">
-              I pitched it on stage — then took 7–8 questions from a room that included IEEE’s
-              president and the conference vice chair.
+            <span className="mt-2 block font-serif text-[17px] font-light leading-snug text-plum">
+              {w.title}
             </span>
+            <span className="mt-0.5 block text-[11.5px] leading-snug text-plum-faint">{w.meta}</span>
+
+            <span className="mt-2.5 block text-[12.5px] leading-relaxed text-plum-muted">{w.line}</span>
 
             <span className="mt-3 flex flex-wrap gap-1.5">
-              {['Product storytelling', 'Live pitch', 'Market signals'].map((t) => (
+              {w.tags.map((t) => (
                 <span
                   key={t}
-                  className="rounded-full border border-plum/10 bg-white/70 px-2 py-[2px] text-[10px] leading-none text-plum-faint"
+                  className="rounded-full border border-plum/10 bg-white/60 px-2 py-[2px] text-[10px] leading-none text-plum-faint"
                 >
                   {t}
                 </span>
               ))}
             </span>
 
-            <span className="mt-auto flex items-center justify-between gap-2 pt-4">
-              <span className="text-[12px] font-medium text-rose">See the pitch story →</span>
-              <span
-                className="font-hand text-[14px] text-plum-muted transition-opacity duration-300"
-                style={{ opacity: side === 'theta' ? 1 : 0 }}
+            <span className="mt-auto flex items-center justify-between gap-2 pt-3.5">
+              <a
+                href={w.href}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="text-[11.5px] font-medium transition-opacity hover:opacity-70"
+                style={{ color: w.accent }}
               >
-                listen to the room ✦
+                Official page ↗
+              </a>
+              <span
+                className="font-hand text-[13px] text-plum-muted transition-opacity duration-300"
+                style={{ opacity: side === w.key ? 1 : 0 }}
+              >
+                {w.note}
               </span>
             </span>
           </button>
+        ))}
 
-          {/* 中：连接两侧的波形 + 印章 */}
-          <div className="flex items-center justify-center md:w-[64px] md:flex-col">
-            <ThreadWave className="h-8 w-full md:h-full md:w-8 md:-rotate-90" />
-          </div>
-
-          {/* 右：TaaLA —— 梦幻、实验、技术艺术 */}
-          <button
-            type="button"
-            onClick={() => setZoom(6)}
-            onPointerEnter={(e) => e.pointerType !== 'touch' && setSide('taala')}
-            onPointerLeave={() => setSide(null)}
-            className="group/ta relative flex flex-col overflow-hidden rounded-[1.4rem] border border-orchid/25 bg-white/60 p-5 text-left transition-all duration-500 md:p-6"
-            style={{
-              transform: side === 'taala' ? 'scale(1.02)' : 'scale(1)',
-              opacity: side === 'theta' ? 0.62 : 1,
-            }}
-          >
-            <span className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-orchid/15 px-2.5 py-[3px] text-[10.5px] font-medium tracking-wide text-orchid">
-                Project Showcase
-              </span>
-              <span className="flex items-center gap-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C0913C]">
-                <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
-                  <path d="M10 1.6l2.2 4.8 5.2.6-3.9 3.5 1.1 5.1L10 13l-4.6 2.6 1.1-5.1L2.6 7l5.2-.6z" />
-                </svg>
-                1st place
-              </span>
-            </span>
-
-            <span className="mt-3 block font-serif text-[19px] font-light leading-snug text-plum">
-              Therapy as a Living Art
-            </span>
-            <span className="mt-1 block text-[12.5px] leading-snug text-plum-faint">
-              Carnegie Mellon · Integrated Innovation Institute
-            </span>
-
-            {/* 海报一角 + 展台照，scrapbook 感 */}
-            <span className="relative mt-4 block">
-              <img
-                src="/ieee/taala-art.jpg"
-                alt="Four states of the EEG-driven generative art — calm blue, high-arousal purple, excited warm yellow, and the explain mode"
-                loading="lazy"
-                className="h-[188px] w-full rounded-[1rem] border border-plum/10 object-cover object-[30%_30%] transition-transform duration-500 group-hover/ta:-translate-y-[5px]"
-              />
-              <img
-                src="/ieee/poster.jpg"
-                alt=""
-                aria-hidden
-                loading="lazy"
-                className="absolute -bottom-3 left-3 h-[74px] w-[104px] -rotate-[5deg] rounded-[0.6rem] border-2 border-white object-cover shadow-[0_12px_26px_-12px_rgba(58,36,64,0.6)] transition-transform duration-500 group-hover/ta:-rotate-[2deg]"
-              />
-            </span>
-
-            <span className="mt-6 block text-[13px] leading-relaxed text-plum-muted">
-              EEG turned into moving art in real time — and an explain mode that shows people which
-              signals shaped what they’re seeing. I designed the poster and the product UI.
-            </span>
-
-            <span className="mt-3 flex flex-wrap gap-1.5">
-              {['Product UI', 'Experience design', 'Research communication'].map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-plum/10 bg-white/70 px-2 py-[2px] text-[10px] leading-none text-plum-faint"
-                >
-                  {t}
-                </span>
-              ))}
-            </span>
-
-            <span className="mt-auto flex items-center justify-between gap-2 pt-4">
-              <span className="text-[12px] font-medium text-orchid">See the showcase →</span>
-              <span
-                className="font-hand text-[14px] text-plum-muted transition-opacity duration-300"
-                style={{ opacity: side === 'taala' ? 1 : 0 }}
-              >
-                making the invisible visible ✦
-              </span>
-            </span>
-          </button>
-        </div>
-
-        {/* 现场照：横向一排，点开放大可左右浏览 */}
-        <div className="relative mt-7">
-          <div className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* 现场照：一条窄带 */}
+        <div className="relative sm:col-span-2">
+          <div className="flex gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {SHOTS.map((s, i) => (
               <button
                 key={s.src}
                 type="button"
                 onClick={() => setZoom(i)}
                 aria-label={`View larger: ${s.alt}`}
-                className="group/is w-[170px] shrink-0 cursor-zoom-in overflow-hidden rounded-[0.9rem] border border-plum/10 bg-white"
+                className="group/is h-[74px] w-[104px] shrink-0 cursor-zoom-in overflow-hidden rounded-[0.7rem] border border-plum/10 bg-white"
               >
                 <img
                   src={s.src}
                   alt={s.alt}
                   loading="lazy"
-                  className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover/is:scale-[1.06]"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover/is:scale-[1.08]"
                 />
               </button>
             ))}
           </div>
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[#EDF0F8] to-transparent"
+            className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-cream to-transparent"
           />
-        </div>
-
-        <div className="relative mt-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="font-hand text-[15px] text-plum-muted">the poster, the UI, and the pitch ✦</p>
-          <span className="flex flex-wrap gap-2">
-            <a
-              href="https://ieee-risingstars.org/2026/rising-stars-pitch-contest/"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3 py-1.5 text-[11.5px] font-medium text-plum transition-colors hover:border-rose/50"
-            >
-              Pitch Contest <span aria-hidden>↗</span>
-            </a>
-            <a
-              href="https://ieee-risingstars.org/2026/project-showcase/"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3 py-1.5 text-[11.5px] font-medium text-plum transition-colors hover:border-orchid/50"
-            >
-              Project Showcase <span aria-hidden>↗</span>
-            </a>
-          </span>
         </div>
       </div>
 
       {zoom !== null && (
         <Lightbox items={SHOTS} index={zoom} onClose={() => setZoom(null)} onIndex={setZoom} />
       )}
-    </aside>
+    </section>
   )
 }
