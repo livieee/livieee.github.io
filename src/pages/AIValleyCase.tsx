@@ -890,9 +890,9 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
     cap: 'Build What You Love — the whole room, after demos',
   },
   {
-    src: '/events/gtc-panel-crop.jpg',
-    alt: 'Panel in progress at the 2026 GTC Fireside Talk',
-    cap: '2026 GTC Fireside Talk — Panel 3 running',
+    src: '/events/gtc-fireside-group.jpg',
+    alt: 'The full room of the 2026 GTC Fireside Talk posing together after the panels, 16 March 2026',
+    cap: '2026 GTC Fireside Talk — the room, after the last panel',
   },
   {
     src: '/events/av-hackathon.jpg',
