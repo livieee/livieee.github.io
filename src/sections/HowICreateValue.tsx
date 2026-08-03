@@ -711,6 +711,41 @@ export function HowICreateValue() {
             </svg>
           ))}
 
+          {/* 斜倚在法阵边的星杖 */}
+          <svg
+            aria-hidden
+            viewBox="0 0 64 180"
+            className="pointer-events-none absolute bottom-[4%] right-[1%] hidden w-[56px] rotate-[18deg] md:block lg:w-[64px]"
+            style={{ animation: 'annot-in .7s .5s ease-out both' }}
+          >
+            <defs>
+              <linearGradient id="wand-rod" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#F4A8C4" />
+                <stop offset="1" stopColor="#E88BB0" />
+              </linearGradient>
+            </defs>
+            {/* 杖身 */}
+            <rect x="28.5" y="52" width="7" height="118" rx="3.5" fill="url(#wand-rod)" stroke="#D9689A" strokeWidth="0.9" />
+            <rect x="27" y="60" width="10" height="7" rx="2" fill="#E8B64C" stroke="#C0913C" strokeWidth="0.8" />
+            <rect x="27" y="158" width="10" height="7" rx="2" fill="#E8B64C" stroke="#C0913C" strokeWidth="0.8" />
+            {/* 头环 + 星 */}
+            <circle cx="32" cy="30" r="21" fill="#FFF7E8" fillOpacity="0.75" stroke="#E8B64C" strokeWidth="3.2" />
+            <circle cx="32" cy="30" r="25" fill="none" stroke="#E8B64C" strokeOpacity="0.45" strokeWidth="1" />
+            {[0, 60, 120, 180, 240, 300].map((deg) => (
+              <circle
+                key={deg}
+                cx={32 + 25 * Math.cos((deg * Math.PI) / 180)}
+                cy={30 + 25 * Math.sin((deg * Math.PI) / 180)}
+                r="1.4"
+                fill="#E8B64C"
+              />
+            ))}
+            <path d={starPath(32, 30, 12.5, 5.2)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.1" strokeLinejoin="round" />
+            {/* 侧翼小羽 */}
+            <path d="M10 34c4-7 8-9 14-9-5 4-7 8-8 14-3-1-5-2.5-6-5Z" fill="#FFF1F5" stroke="#E8B64C" strokeWidth="0.9" />
+            <path d="M54 34c-4-7-8-9-14-9 5 4 7 8 8 14 3-1 5-2.5 6-5Z" fill="#FFF1F5" stroke="#E8B64C" strokeWidth="0.9" />
+          </svg>
+
           {/* 牌圈后的暖金光 */}
           <span
             aria-hidden
@@ -938,39 +973,30 @@ export function HowICreateValue() {
             </div>
           </div>
 
-          {/* 右翼：星杖 */}
+          {/* 右翼：翻开的魔法书 */}
           <svg
             aria-hidden
-            viewBox="0 0 64 180"
-            className="absolute right-[3%] top-[46%] hidden w-[58px] -translate-y-1/2 rotate-[14deg] md:block lg:right-[6%] lg:w-[66px]"
+            viewBox="0 0 150 110"
+            className="absolute right-[2%] top-1/2 hidden w-[128px] -translate-y-1/2 rotate-[6deg] md:block lg:right-[5%] lg:w-[144px]"
             style={{ animation: 'annot-in .7s .5s ease-out both' }}
           >
-            <defs>
-              <linearGradient id="wand-rod" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#F4A8C4" />
-                <stop offset="1" stopColor="#E88BB0" />
-              </linearGradient>
-            </defs>
-            {/* 杖身 */}
-            <rect x="28.5" y="52" width="7" height="118" rx="3.5" fill="url(#wand-rod)" stroke="#D9689A" strokeWidth="0.9" />
-            <rect x="27" y="60" width="10" height="7" rx="2" fill="#E8B64C" stroke="#C0913C" strokeWidth="0.8" />
-            <rect x="27" y="158" width="10" height="7" rx="2" fill="#E8B64C" stroke="#C0913C" strokeWidth="0.8" />
-            {/* 头环 + 星 */}
-            <circle cx="32" cy="30" r="21" fill="#FFF7E8" fillOpacity="0.75" stroke="#E8B64C" strokeWidth="3.2" />
-            <circle cx="32" cy="30" r="25" fill="none" stroke="#E8B64C" strokeOpacity="0.45" strokeWidth="1" />
-            {[0, 60, 120, 180, 240, 300].map((deg) => (
-              <circle
-                key={deg}
-                cx={32 + 25 * Math.cos((deg * Math.PI) / 180)}
-                cy={30 + 25 * Math.sin((deg * Math.PI) / 180)}
-                r="1.4"
-                fill="#E8B64C"
-              />
+            {/* 封底 */}
+            <path d="M8 22C30 10 60 8 75 16 90 8 120 10 142 22l-4 66c-20-9-46-8-63 2-17-10-43-11-63-2Z" fill="#EF97B8" stroke="#D9689A" strokeWidth="1.4" />
+            {/* 书页 */}
+            <path d="M14 24C33 14 60 13 75 21l-2 62c-14-7-38-6-61 2Z" fill="#FFF9F3" stroke="#E3C08A" strokeWidth="1" />
+            <path d="M136 24C117 14 90 13 75 21l2 62c14-7 38-6 61 2Z" fill="#FFF6EC" stroke="#E3C08A" strokeWidth="1" />
+            {/* 左页：法阵小图 */}
+            <circle cx="44" cy="48" r="15" fill="none" stroke="#C9A05C" strokeOpacity="0.7" strokeWidth="1" />
+            <circle cx="44" cy="48" r="10.5" fill="none" stroke="#C9A05C" strokeOpacity="0.5" strokeWidth="0.8" strokeDasharray="2 3" />
+            <path d={starPath(44, 48, 6.5, 2.7)} fill="#F7C93C" stroke="#C9951F" strokeWidth="0.7" strokeLinejoin="round" />
+            {/* 右页：字行 */}
+            {[34, 42, 50, 58, 66].map((y, i) => (
+              <line key={y} x1="86" y1={y + 2} x2={i % 2 === 0 ? 126 : 118} y2={y} stroke="#B9A98F" strokeOpacity="0.75" strokeWidth="1.6" strokeLinecap="round" />
             ))}
-            <path d={starPath(32, 30, 12.5, 5.2)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.1" strokeLinejoin="round" />
-            {/* 侧翼小羽 */}
-            <path d="M10 34c4-7 8-9 14-9-5 4-7 8-8 14-3-1-5-2.5-6-5Z" fill="#FFF1F5" stroke="#E8B64C" strokeWidth="0.9" />
-            <path d="M54 34c-4-7-8-9-14-9 5 4 7 8 8 14 3-1 5-2.5 6-5Z" fill="#FFF1F5" stroke="#E8B64C" strokeWidth="0.9" />
+            {/* 书签带 */}
+            <path d="M100 84l3 14 5-6 6 4-3-13Z" fill="#E0447F" fillOpacity="0.8" />
+            {/* 页边金饰 */}
+            <path d="M20 30c3-2 6-3 9-3M121 27c3 0 6 1 9 3" stroke="#E8B64C" strokeWidth="1" strokeLinecap="round" />
           </svg>
 
           {/* 两翼氛围星 */}
