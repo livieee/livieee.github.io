@@ -5,6 +5,7 @@ import { Lightbox, type GalleryItem } from '@/components/Lightbox'
 import { InstallationDemo } from '@/components/InstallationDemo'
 import { ChapterDeck, type Chapter } from '@/components/ChapterDeck'
 import { StateScrub } from '@/components/StateScrub'
+import { PhotoRail } from '@/components/PhotoRail'
 
 /**
  * Therapy as a Living Art —— IEEE Rising Stars 2026 Project Showcase 一等奖。
@@ -402,17 +403,17 @@ export function LivingArtCase() {
       lede: 'A seven-person team built the system. My part was the layer between it and everyone else.',
       body: (
         <div>
-          <div className="paper-grid rounded-[1.6rem] border border-white/10 bg-[#FBF7F2] p-5 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.65)] md:p-7">
+          <div className="paper-grid rounded-[1.6rem] border border-white/10 bg-[#171C30] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_30px_70px_-34px_rgba(0,0,0,0.8)] md:p-7">
             <div className="grid gap-5 sm:grid-cols-2">
               {SHAPED.map((cc, k) => (
                 <figure
                   key={cc.k}
                   style={{ animation: `annot-in .5s ${0.08 * k}s ease-out both` }}
-                  className={`group/s relative ${cc.tilt} rounded-[0.9rem] border border-plum/10 bg-white p-3 shadow-[0_14px_30px_-18px_rgba(90,63,86,0.5)] transition-transform duration-500 hover:rotate-0`}
+                  className={`group/s relative ${cc.tilt} rounded-[0.9rem] border border-black/5 bg-[#E9E3D9] p-3 shadow-[0_18px_34px_-20px_rgba(0,0,0,0.85)] transition-transform duration-500 hover:rotate-0`}
                 >
                   <span
                     aria-hidden
-                    className="absolute -top-2 left-1/2 h-4 w-12 -translate-x-1/2 -rotate-2 rounded-[2px] bg-champagne/70 shadow-sm"
+                    className="absolute -top-2 left-1/2 h-4 w-12 -translate-x-1/2 -rotate-2 rounded-[2px] bg-[#CBB8F5]/45 shadow-sm"
                   />
                   <img
                     src={cc.img}
@@ -422,8 +423,8 @@ export function LivingArtCase() {
                     className="h-[104px] w-full rounded-[0.6rem] object-cover"
                   />
                   <figcaption className="px-1 pb-1 pt-3">
-                    <p className="font-serif text-[16px] font-light text-plum">{cc.k}</p>
-                    <p className="mt-1.5 text-[12.5px] leading-relaxed text-plum-muted">{cc.v}</p>
+                    <p className="font-serif text-[16px] font-light text-[#2E2438]">{cc.k}</p>
+                    <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#5C4F63]">{cc.v}</p>
                   </figcaption>
                 </figure>
               ))}
@@ -442,48 +443,47 @@ export function LivingArtCase() {
       title: 'When the work met the room ✦',
       lede: 'IEEE Rising Stars 2026 · Project Showcase · 1st place.',
       body: (
-        <div className="rounded-[1.6rem] border border-champagne/40 bg-gradient-to-br from-[#F6EFE4] via-[#FBF6F1] to-[#F7E9EC] p-5 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.7)] md:p-7">
-          <div className="grid gap-4 sm:grid-cols-3">
-            {SHOTS.slice(1, 4).map((sh, k) => (
-              <button
-                key={sh.src}
-                type="button"
-                onClick={() => setZoom(k + 1)}
-                aria-label={`View larger: ${sh.alt}`}
-                className={`group/r cursor-zoom-in rounded-[0.9rem] border border-plum/10 bg-white p-2.5 shadow-[0_14px_30px_-18px_rgba(90,63,86,0.5)] transition-transform duration-500 hover:rotate-0 ${
-                  ['-rotate-[1.5deg]', 'rotate-[1deg]', '-rotate-[0.8deg]'][k]
-                }`}
-              >
-                <img
-                  src={sh.src}
-                  alt={sh.alt}
-                  loading="lazy"
-                  className="aspect-[4/3] w-full rounded-[0.5rem] object-cover"
-                />
-                <span className="mt-2 block px-0.5 text-left font-hand text-[13px] leading-tight text-plum-muted">
-                  {sh.cap}
-                </span>
-              </button>
-            ))}
-          </div>
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-plum/10 pt-5">
-            <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-plum/10">
+        <div>
+          <div className="rounded-[1.6rem] border border-[#E8C77A]/25 bg-[#171C30] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_30px_70px_-34px_rgba(0,0,0,0.8)] md:p-7">
+            <div className="grid gap-4 sm:grid-cols-3">
+              {SHOTS.slice(1, 4).map((sh, k) => (
+                <button
+                  key={sh.src}
+                  type="button"
+                  onClick={() => setZoom(k + 1)}
+                  aria-label={`View larger: ${sh.alt}`}
+                  className={`group/r cursor-zoom-in rounded-[0.9rem] border border-black/5 bg-[#E9E3D9] p-2.5 shadow-[0_18px_34px_-20px_rgba(0,0,0,0.85)] transition-transform duration-500 hover:rotate-0 ${
+                    ['-rotate-[1.5deg]', 'rotate-[1deg]', '-rotate-[0.8deg]'][k]
+                  }`}
+                >
+                  <img
+                    src={sh.src}
+                    alt={sh.alt}
+                    loading="lazy"
+                    className="aspect-[4/3] w-full rounded-[0.5rem] object-cover"
+                  />
+                  <span className="mt-2 block px-0.5 text-left font-hand text-[13px] leading-tight text-[#5C4F63]">
+                    {sh.cap}
+                  </span>
+                </button>
+              ))}
+            </div>
+            <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-white/10 pt-5">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/90 ring-1 ring-white/20">
                 <img src="/logos/ieee.png" alt="IEEE" className="h-5 w-5 object-contain" />
               </span>
               <div>
-                <p className="text-[13px] font-medium text-plum">IEEE Rising Stars 2026</p>
-                <p className="text-[12px] text-plum-faint">Project Showcase · 1st Place</p>
+                <p className="text-[13px] font-medium text-[#F0EBF6]">IEEE Rising Stars 2026</p>
+                <p className="text-[12px] text-white/45">Project Showcase · 1st Place</p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setZoom(0)}
-              className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-[#C0913C]/50"
-            >
-              See all photos <span aria-hidden>↗</span>
-            </button>
           </div>
+
+          {/* 照片带自己在走，不需要一个「看全部」按钮把人推到别处 */}
+          <p className="mb-3 mt-8 text-[11px] uppercase tracking-[0.18em] text-white/40">
+            From the two days — tap any frame to open it
+          </p>
+          <PhotoRail items={SHOTS} onZoom={setZoom} startAt={4} />
         </div>
       ),
     },
@@ -595,24 +595,42 @@ export function LivingArtCase() {
         <Reveal delay={0.48}>
           <div className="mt-4 flex flex-wrap gap-2">
             {[
-              { href: IEEE, label: 'IEEE Showcase' },
-              { href: REPO, label: 'GitHub' },
-              { href: POST, label: 'Project write-up' },
+              { href: IEEE, label: 'IEEE Showcase', logo: '/logos/ieee.png', alt: 'IEEE' },
+              { href: REPO, label: 'GitHub', logo: '/logos/tools/github.jpg', alt: 'GitHub' },
+              { href: POST, label: 'Project write-up', logo: '/logos/tools/linkedin.png', alt: 'LinkedIn' },
             ].map((l) => (
               <a
                 key={l.label}
                 href={l.href}
                 target="_blank"
                 rel="noreferrer"
-                className="glass-pill-solid px-3.5 py-1.5 text-[12px]"
+                className="group/l inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 py-1.5 pl-1.5 pr-3.5 text-[12.5px] font-medium text-white/85 backdrop-blur-md transition-all duration-300 hover:border-[#CBB8F5]/60 hover:bg-white/20 hover:text-white"
               >
-                {l.label} <span aria-hidden>↗</span>
+                <span className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-white/25">
+                  <img src={l.logo} alt={l.alt} className="h-4 w-4 object-contain" />
+                </span>
+                {l.label}
+                <span aria-hidden className="text-white/45 transition-transform duration-300 group-hover/l:-translate-y-0.5 group-hover/l:translate-x-0.5">
+                  ↗
+                </span>
               </a>
             ))}
           </div>
-          <p className="mt-5 text-[11px] uppercase tracking-[0.18em] text-white/40">
-            Carnegie Mellon University · Integrated Innovation Institute · Silicon Valley
-          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
+            <span className="flex h-10 items-center justify-center rounded-md bg-white/90 px-2.5 ring-1 ring-white/20">
+              <img
+                src="/logos/cmu-mark.png"
+                alt="Carnegie Mellon University"
+                className="h-[26px] w-auto object-contain"
+              />
+            </span>
+            <span aria-hidden className="h-6 w-px bg-white/15" />
+            <p className="text-[11px] uppercase tracking-[0.18em] text-white/45">
+              Integrated Innovation Institute
+              <span className="text-white/25"> · </span>
+              Silicon Valley
+            </p>
+          </div>
         </Reveal>
 
         {/* 装置界面的可运行复刻 */}

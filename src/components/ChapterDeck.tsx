@@ -2,8 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 /**
  * 章节册 —— 横向翻页而不是一路下滚。
- * 支持：左右按钮、页码点、← → 键、触屏横扫。
- * 每翻一页内容按方向滑入，页眉给出章节序号与标题。
+ *
+ * 翻页入口放在每页正文的末尾，不放在页眉右上角：读完一页，眼睛已经在
+ * 页面底部，那里才是人真正会去点的位置。整条「下一章」是一个满宽的
+ * 大目标，还预告了下一章讲什么 —— 有内容可预期，人才愿意点。
+ * 顶部的章节条退回成「地图」：告诉你在哪、总共几章，可以随时跳。
+ * ← → 键与触屏横扫照旧。
  */
 
 export type Chapter = {
@@ -25,6 +29,13 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
     (d: 1 | -1) => {
       setDir(d)
       setI((prev) => Math.min(chapters.length - 1, Math.max(0, prev + d)))
+      // 翻页后把视线带回本页开头，否则从长页翻过去会停在半空
+      requestAnimationFrame(() => {
+        const el = wrapRef.current
+        if (!el) return
+        const top = el.getBoundingClientRect().top + window.scrollY - 96
+        if (window.scrollY > top) window.scrollTo({ top, behavior: 'smooth' })
+      })
     },
     [chapters.length],
   )
@@ -49,11 +60,13 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
 
   const c = chapters[i]
   const dark = tone === 'dark'
+  const prev = i > 0 ? chapters[i - 1] : null
+  const next = i < chapters.length - 1 ? chapters[i + 1] : null
 
   return (
     <div ref={wrapRef} className="relative">
-      {/* 页眉：章节导航 */}
-      <div className={`flex flex-wrap items-end justify-between gap-4 border-b pb-4 ${dark ? 'border-white/10' : 'border-plum/10'}`}>
+      {/* 页眉：只当地图用 */}
+      <div className={`border-b pb-4 ${dark ? 'border-white/10' : 'border-plum/10'}`}>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
           {chapters.map((ch, n) => (
             <button
@@ -61,7 +74,7 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
               type="button"
               onClick={() => jump(n)}
               aria-current={n === i ? 'step' : undefined}
-              className="group/tab flex items-baseline gap-1.5 transition-opacity duration-300"
+              className="group/tab flex items-baseline gap-1.5 transition-opacity duration-300 hover:opacity-100"
               style={{ opacity: n === i ? 1 : 0.4 }}
             >
               <span
@@ -70,7 +83,9 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
               >
                 {ch.n}
               </span>
-              <span className={`text-[11px] uppercase tracking-[0.16em] ${dark ? 'text-white/70' : 'text-plum-muted'}`}>{ch.label}</span>
+              <span className={`text-[11px] uppercase tracking-[0.16em] ${dark ? 'text-white/70' : 'text-plum-muted'}`}>
+                {ch.label}
+              </span>
               <span
                 aria-hidden
                 className={`ml-0.5 block h-px transition-all duration-500 ${dark ? 'bg-[#CBB8F5]' : 'bg-orchid'}`}
@@ -80,20 +95,20 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className={`mr-1 font-hand text-[14px] ${dark ? 'text-white/60' : 'text-plum-muted'}`}>turn the page ✦</span>
-          {([-1, 1] as const).map((d) => (
-            <button
-              key={d}
-              type="button"
-              onClick={() => go(d)}
-              disabled={d === -1 ? i === 0 : i === chapters.length - 1}
-              aria-label={d === 1 ? 'Next chapter' : 'Previous chapter'}
-              className={`flex h-9 w-9 items-center justify-center rounded-full border text-[14px] transition-all duration-300 hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-25 ${dark ? 'border-white/20 bg-white/10 text-white/90 hover:border-[#CBB8F5]/60 hover:bg-white/20' : 'border-plum/15 bg-white text-plum hover:border-orchid/50'}`}
-            >
-              {d === 1 ? '→' : '←'}
-            </button>
-          ))}
+        {/* 进度：读到哪儿了 */}
+        <div className="mt-3.5 flex items-center gap-3">
+          <span
+            aria-hidden
+            className={`h-[2px] flex-1 overflow-hidden rounded-full ${dark ? 'bg-white/10' : 'bg-plum/10'}`}
+          >
+            <span
+              className={`block h-full rounded-full transition-all duration-500 ${dark ? 'bg-[#CBB8F5]' : 'bg-orchid'}`}
+              style={{ width: `${((i + 1) / chapters.length) * 100}%` }}
+            />
+          </span>
+          <span className={`font-serif text-[12px] tabular-nums ${dark ? 'text-white/45' : 'text-plum-faint'}`}>
+            {c.n} / {chapters[chapters.length - 1].n}
+          </span>
         </div>
       </div>
 
@@ -116,7 +131,11 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
             animation: `${dir === 1 ? 'page-in-next' : 'page-in-prev'} .5s cubic-bezier(.25,.75,.25,1) both`,
           }}
         >
-          <h2 className={`max-w-2xl font-serif text-2xl font-light leading-snug md:text-[2rem] ${dark ? 'text-[#F6F1EA]' : 'text-plum'}`}>
+          <h2
+            className={`max-w-2xl font-serif text-2xl font-light leading-snug md:text-[2rem] ${
+              dark ? 'text-[#F6F1EA]' : 'text-plum'
+            }`}
+          >
             {c.title}
           </h2>
           {c.lede && (
@@ -125,6 +144,68 @@ export function ChapterDeck({ chapters, tone = 'light' }: { chapters: Chapter[];
             </p>
           )}
           <div className="mt-7">{c.body}</div>
+
+          {/* 翻页入口：读完正文，手就在这儿 */}
+          <div className="mt-12 flex flex-col gap-3">
+            {next && (
+              <button
+                type="button"
+                onClick={() => go(1)}
+                className={`group/next flex w-full items-center gap-4 rounded-[1.3rem] border px-5 py-5 text-left transition-all duration-300 md:px-7 md:py-6 ${
+                  dark
+                    ? 'border-white/10 bg-white/[0.05] backdrop-blur-md hover:border-[#CBB8F5]/50 hover:bg-white/10'
+                    : 'border-plum/10 bg-white/60 hover:border-orchid/40 hover:bg-white'
+                }`}
+              >
+                <span className="min-w-0 flex-1">
+                  <span
+                    className={`block text-[10.5px] uppercase tracking-[0.18em] ${
+                      dark ? 'text-white/40' : 'text-plum-faint'
+                    }`}
+                  >
+                    Next · {next.n} {next.label}
+                  </span>
+                  <span
+                    className={`mt-1.5 block font-serif text-[17px] font-light leading-snug md:text-[20px] ${
+                      dark ? 'text-[#F6F1EA]' : 'text-plum'
+                    }`}
+                  >
+                    {next.title}
+                  </span>
+                </span>
+                <span
+                  aria-hidden
+                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[16px] transition-transform duration-300 group-hover/next:translate-x-1 ${
+                    dark ? 'bg-[#CBB8F5]/20 text-[#CBB8F5]' : 'bg-orchid/15 text-orchid'
+                  }`}
+                >
+                  →
+                </span>
+              </button>
+            )}
+
+            <div className="flex items-center justify-between gap-4">
+              {prev ? (
+                <button
+                  type="button"
+                  onClick={() => go(-1)}
+                  className={`group/prev inline-flex items-center gap-2 text-[12.5px] transition-colors duration-300 ${
+                    dark ? 'text-white/45 hover:text-white/85' : 'text-plum-faint hover:text-plum'
+                  }`}
+                >
+                  <span aria-hidden className="transition-transform duration-300 group-hover/prev:-translate-x-0.5">
+                    ←
+                  </span>
+                  Back to {prev.n} {prev.label}
+                </button>
+              ) : (
+                <span />
+              )}
+              <span className={`font-hand text-[14px] ${dark ? 'text-white/35' : 'text-plum-faint'}`}>
+                {next ? 'or use ← → ✦' : 'end of the story ✦'}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

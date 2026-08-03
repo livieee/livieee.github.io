@@ -410,3 +410,12 @@ body {
   0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: .55; }
   50%      { transform: translate3d(2%, -3%, 0) scale(1.12); opacity: .85; }
 }
+
+/* 照片带：两份内容首尾相接，走完一半即回到起点 */
+@keyframes rail-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [style*="rail-scroll"] { animation: none !important; }
+}
