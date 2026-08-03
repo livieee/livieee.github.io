@@ -358,3 +358,17 @@ body {
 @keyframes thread-right {
   to { stroke-dashoffset: 28; }
 }
+
+/* Living Canvas：极慢漂移的脑波与光点 */
+@keyframes canvas-wave {
+  to { transform: translateX(-50%); }
+}
+@keyframes mote-float {
+  0%, 100% { transform: translate(0, 0); opacity: .35; }
+  50%      { transform: translate(6px, -18px); opacity: .85; }
+}
+/* 管线步骤点亮 */
+@keyframes step-lit {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
