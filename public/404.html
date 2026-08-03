@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Olivia Xiao</title>
+    <style>
+      html { background: #FDFAF5; }
+      body { margin: 0; }
+    </style>
+    <script>
+      // GitHub Pages 对未知路径返回本页；把原路径塞进查询串交还给 SPA。
+      // 直接从 GitHub Pages 打开 /work/ai-valley 这类深链时必需。
+      (function () {
+        var l = window.location
+        var path = l.pathname.replace(/^\//, '')
+        l.replace(
+          l.origin +
+            '/?spa=/' +
+            path.replace(/&/g, '~and~') +
+            (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+            l.hash,
+        )
+      })()
+    </script>
+  </head>
+  <body></body>
+</html>

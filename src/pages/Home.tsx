@@ -29,7 +29,7 @@ export default function Home() {
     <div className="relative">
       <Cursor />
       <Navigation />
-      <main>
+      <main id="main">
         <Hero />
         <Marquee />
         <Impact />

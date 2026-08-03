@@ -116,7 +116,7 @@ export function Hero() {
         </svg>
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-40px)] max-w-[1400px] flex-col justify-center px-6 py-20 md:px-10 md:py-24">
+      <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-40px)] max-w-[1400px] flex-col justify-center px-6 py-20 md:px-10 md:py-24">
         <div className="grid items-center gap-12 md:grid-cols-[49fr_43fr] md:gap-[8%]">
           {/* 左栏 49% */}
           <div>

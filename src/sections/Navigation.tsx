@@ -9,12 +9,30 @@ const LINKS = [
 
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false)
+  const [active, setActive] = useState('#top')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // 当前所在章节：命中视口上三分之一的最后一节
+  useEffect(() => {
+    const ids = LINKS.map((l) => l.href.slice(1))
+    const io = new IntersectionObserver(
+      (entries) => {
+        const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0]
+        if (hit) setActive('#' + hit.target.id)
+      },
+      { rootMargin: '-12% 0px -70% 0px', threshold: 0 },
+    )
+    ids.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) io.observe(el)
+    })
+    return () => io.disconnect()
   }, [])
 
   return (
@@ -37,10 +55,17 @@ export function Navigation() {
             <a
               key={l.href}
               href={l.href}
-              className="group relative text-[13px] font-medium text-plum-muted transition-colors hover:text-plum"
+              aria-current={active === l.href ? 'true' : undefined}
+              className={`group relative text-[13px] font-medium transition-colors ${
+                active === l.href ? 'text-plum' : 'text-plum-muted hover:text-plum'
+              }`}
             >
               {l.label}
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-orchid transition-all duration-300 group-hover:w-full" />
+              <span
+                className={`absolute -bottom-1 left-0 h-px bg-orchid transition-all duration-300 group-hover:w-full ${
+                  active === l.href ? 'w-full' : 'w-0'
+                }`}
+              />
             </a>
           ))}
           <a
