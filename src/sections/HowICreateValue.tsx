@@ -482,28 +482,28 @@ function CardFace({ card, content = false }: { card: Card; content?: boolean }) 
 /** 法阵上的摆法：外环 12 枚符印、内环 9 枚，坐标是百分比（圆心 50,50） */
 const PLATE = [
   // 外环 r=44%，从正上方起每 30°
-  { n: 'Claude', l: '/logos/tools/claude.jpg', x: 50, y: 6 },
-  { n: 'Cursor', l: '/logos/tools/cursor.png', x: 72, y: 11.9 },
-  { n: 'OpenAI', l: '/logos/tools/openai.png', x: 88.1, y: 28 },
-  { n: 'Figma', l: '/logos/tools/figma.jpg', x: 94, y: 50 },
-  { n: 'Notion', l: '/logos/tools/notion.jpg', x: 88.1, y: 72 },
-  { n: 'Python', l: '/logos/tools/python.png', x: 72, y: 88.1 },
-  { n: 'GitHub Actions', l: '/logos/tools/github.jpg', x: 50, y: 94 },
-  { n: 'Luma', l: '/logos/tools/luma.jpg', x: 28, y: 88.1 },
-  { n: 'Vercel', l: '/logos/tools/vercel.png', x: 11.9, y: 72 },
-  { n: 'Discord', l: '/logos/tools/discord.jpg', x: 6, y: 50 },
-  { n: 'LinkedIn', l: '/logos/tools/linkedin.png', x: 11.9, y: 28 },
-  { n: 'X', l: '/logos/tools/x.png', x: 28, y: 11.9 },
+  { n: 'Claude', c: 'AI', l: '/logos/tools/claude.jpg', x: 50, y: 6 },
+  { n: 'Cursor', c: 'AI coding', l: '/logos/tools/cursor.png', x: 72, y: 11.9 },
+  { n: 'OpenAI', c: 'AI', l: '/logos/tools/openai.png', x: 88.1, y: 28 },
+  { n: 'Figma', c: 'design', l: '/logos/tools/figma.jpg', x: 94, y: 50 },
+  { n: 'Notion', c: 'docs & specs', l: '/logos/tools/notion.jpg', x: 88.1, y: 72 },
+  { n: 'Python', c: 'code', l: '/logos/tools/python.png', x: 72, y: 88.1 },
+  { n: 'GitHub Actions', c: 'automation', l: '/logos/tools/github.jpg', x: 50, y: 94 },
+  { n: 'Luma', c: 'events', l: '/logos/tools/luma.jpg', x: 28, y: 88.1 },
+  { n: 'Vercel', c: 'deploy', l: '/logos/tools/vercel.png', x: 11.9, y: 72 },
+  { n: 'Discord', c: 'community', l: '/logos/tools/discord.jpg', x: 6, y: 50 },
+  { n: 'LinkedIn', c: 'outreach', l: '/logos/tools/linkedin.png', x: 11.9, y: 28 },
+  { n: 'X', c: 'outreach', l: '/logos/tools/x.png', x: 28, y: 11.9 },
   // 内环 r=22%，从正上方起每 40°
-  { n: 'LangGraph', l: '/logos/tools/langgraph.png', x: 50, y: 28 },
-  { n: 'Replit', l: '/logos/tools/replit.png', x: 64.1, y: 33.1 },
-  { n: 'Tableau', l: '/logos/tools/tableau.jpg', x: 71.7, y: 46.2 },
-  { n: 'Streamlit', l: '/logos/tools/streamlit.png', x: 69.1, y: 61 },
-  { n: 'Cloudflare', l: '/logos/tools/cloudflare.png', x: 57.5, y: 70.7 },
-  { n: 'Databricks', l: '/logos/tools/databricks.png', x: 42.5, y: 70.7 },
-  { n: 'Google Cloud', l: '/logos/tools/gcloud.png', x: 30.9, y: 61 },
-  { n: 'Airtable', l: '/logos/tools/airtable.png', x: 28.3, y: 46.2 },
-  { n: 'Miro', l: '/logos/tools/miro.jpg', x: 35.9, y: 33.1 },
+  { n: 'LangGraph', c: 'agents', l: '/logos/tools/langgraph.png', x: 50, y: 28 },
+  { n: 'Replit', c: 'prototyping', l: '/logos/tools/replit.png', x: 64.1, y: 33.1 },
+  { n: 'Tableau', c: 'data viz', l: '/logos/tools/tableau.jpg', x: 71.7, y: 46.2 },
+  { n: 'Streamlit', c: 'data apps', l: '/logos/tools/streamlit.png', x: 69.1, y: 61 },
+  { n: 'Cloudflare', c: 'infra', l: '/logos/tools/cloudflare.png', x: 57.5, y: 70.7 },
+  { n: 'Databricks', c: 'data', l: '/logos/tools/databricks.png', x: 42.5, y: 70.7 },
+  { n: 'Google Cloud', c: 'cloud', l: '/logos/tools/gcloud.png', x: 30.9, y: 61 },
+  { n: 'Airtable', c: 'ops', l: '/logos/tools/airtable.png', x: 28.3, y: 46.2 },
+  { n: 'Miro', c: 'workshops', l: '/logos/tools/miro.jpg', x: 35.9, y: 33.1 },
 ]
 
 /** 工具法阵 —— 和牌阵地面的金色魔法阵同一套语言 */
@@ -998,22 +998,22 @@ export function HowICreateValue() {
             className="absolute left-[1%] top-1/2 hidden -translate-y-1/2 xl:block 2xl:left-[3%]"
             style={{ animation: 'annot-in .7s .35s ease-out both' }}
           >
-            <div className="relative h-[158px] w-[112px]">
+            <div
+              className="relative h-[150px] w-[92px]"
+              style={{ animation: 'float-soft 6s .8s ease-in-out infinite' }}
+            >
               {[
-                { pos: 'left-10 top-3', rot: '-rotate-[16deg]', delay: 0, dur: 5.4 },
-                { pos: 'left-5 top-1.5', rot: '-rotate-[7deg]', delay: 1.1, dur: 6.2 },
-                { pos: 'left-0 top-0', rot: 'rotate-[3deg]', delay: 2.3, dur: 5.8 },
+                { pos: 'left-4 top-2', rot: 'rotate-[7deg]' },
+                { pos: 'left-2 top-1', rot: 'rotate-[2deg]' },
+                { pos: 'left-0 top-0', rot: '-rotate-[4deg]' },
               ].map((c, i) => (
                 <span key={i} className={`absolute ${c.pos} h-[134px] w-[60px]`}>
                   <span
-                    className="block h-full w-full"
-                    style={{ animation: `float-soft ${c.dur}s ${c.delay}s ease-in-out infinite` }}
+                    className={`block h-full w-full ${c.rot} overflow-hidden rounded-[7px] ${
+                      i === 2 ? 'shadow-[0_14px_28px_-10px_rgba(206,78,130,0.55)]' : 'shadow-[0_6px_14px_-8px_rgba(206,78,130,0.4)]'
+                    }`}
                   >
-                    <span
-                      className={`block h-full w-full ${c.rot} overflow-hidden rounded-[7px] shadow-[0_12px_26px_-10px_rgba(206,78,130,0.55)]`}
-                    >
-                      <CardBack />
-                    </span>
+                    <CardBack />
                   </span>
                 </span>
               ))}
@@ -1191,7 +1191,7 @@ export function HowICreateValue() {
                 ].map((ring) => (
                   <div
                     key={ring.dur}
-                    className="absolute inset-0"
+                    className="pointer-events-none absolute inset-0"
                     style={{
                       animation: `spin-slow ${ring.dur}s linear infinite ${ring.dir}`,
                       animationPlayState: sealPaused ? 'paused' : 'running',
@@ -1205,7 +1205,7 @@ export function HowICreateValue() {
                           top: `${t.y}%`,
                           animation: `annot-in .55s ${0.08 * i}s ease-out both`,
                         }}
-                        className="group/tool absolute z-10 -translate-x-1/2 -translate-y-1/2"
+                        className="group/tool pointer-events-auto absolute z-10 -translate-x-1/2 -translate-y-1/2"
                       >
                         <span
                           className="block"
@@ -1218,7 +1218,7 @@ export function HowICreateValue() {
                             <img src={t.l} alt={t.n} loading="lazy" className="h-full w-full object-contain" />
                           </span>
                           <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap font-hand text-[12px] text-plum-muted opacity-0 transition-opacity duration-300 group-hover/tool:opacity-100">
-                            {t.n}
+                            {t.n} · <span className="text-[#C0913C]">{t.c}</span>
                           </span>
                         </span>
                       </span>
