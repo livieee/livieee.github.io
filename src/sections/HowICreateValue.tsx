@@ -434,13 +434,6 @@ function CardFace({ card, content = false }: { card: Card; content?: boolean }) 
 }
 
 /* ── 桌上的工具：只列有据可查的 ──────────────────────────────── */
-const LINES = [
-  { k: 'Design & prototyping', v: 'Figma, Miro' },
-  { k: 'AI & agentic coding', v: 'Claude, OpenAI, Playwright, GitHub Actions' },
-  { k: 'Specs, data & reporting', v: 'Notion, Tableau' },
-  { k: 'Programs & community', v: 'Luma, Devpost, Discord' },
-]
-
 /** 法阵上的摆法：外环 7 枚符印、内环 4 枚，坐标是百分比（圆心 50,50） */
 const PLATE = [
   { n: 'Figma', l: '/logos/tools/figma.jpg', x: 50, y: 6 },
@@ -952,32 +945,9 @@ export function HowICreateValue() {
             </svg>
           ))}
 
-          <div className="grid items-center gap-12 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]">
-            {/* 左：清单 */}
-            <div>
-              <h3 className="font-serif text-[clamp(1.4rem,2.6vw,1.9rem)] font-light leading-tight text-plum">
-                What I bring <span className="italic text-orchid">to the table</span>
-              </h3>
-              <p className="mt-2 font-hand text-[15px] text-plum-muted">
-                what I actually open on a weekday ✦
-              </p>
-              <ul className="mt-6 space-y-4">
-                {LINES.map((r) => (
-                  <li key={r.k} className="flex gap-2.5">
-                    <span aria-hidden className="mt-[3px] text-[10px] text-[#C0913C]">
-                      ✦
-                    </span>
-                    <span>
-                      <span className="block font-hand text-[15px] text-plum-muted">{r.k}</span>
-                      <span className="mt-0.5 block text-[14px] leading-snug text-plum">{r.v}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* 右：金色法阵 + 符印 */}
-            <div className="relative mx-auto w-full max-w-[420px]">
+          <div>
+            {/* 金色法阵 + 符印，居中 */}
+            <div className="relative mx-auto w-full max-w-[460px]">
               {/* 暖光 */}
               <span
                 aria-hidden
