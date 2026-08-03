@@ -800,7 +800,7 @@ export function HowICreateValue() {
             className="absolute left-1/2 top-[46%]"
             style={{
               transformStyle: 'preserve-3d',
-              transform: 'translate(-50%, -50%) rotateX(11deg)',
+              transform: 'translate(-50%, -46%) rotateX(13deg)',
             }}
           >
             {/* 地面法阵：躺平在卡牌底边所在的平面上 */}
