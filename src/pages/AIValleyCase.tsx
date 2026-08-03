@@ -1070,42 +1070,6 @@ export function AIValleyCase() {
           <EventPhotos />
         </Reveal>
 
-        {/* ── 收尾 ─────────────────────────────────────────────── */}
-        <Reveal className="mt-24">
-          <div className="rounded-[1.8rem] border border-plum/10 bg-white/60 px-7 py-10 text-center md:px-12 md:py-14">
-            <h2 className="mx-auto max-w-2xl font-serif text-[clamp(1.5rem,3.4vw,2.2rem)] font-light leading-snug text-plum">
-              The work I enjoy most happens between a promising idea{' '}
-              <span className="italic text-orchid">and the people who can help it grow.</span>
-            </h2>
-            <div className="mx-auto mt-9 grid max-w-3xl gap-6 text-left sm:grid-cols-3">
-              {[
-                { k: 'For AI companies', v: 'A clearer path to the right builders' },
-                { k: 'For partners', v: 'A thoughtful reason to collaborate' },
-                { k: 'For communities', v: 'Spaces where participation feels meaningful' },
-              ].map((c) => (
-                <div key={c.k}>
-                  <p className="text-[11px] uppercase tracking-label text-plum-faint">{c.k}</p>
-                  <p className="mt-1.5 text-[14px] leading-snug text-plum">{c.v}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <Link
-                to="/#contact"
-                className="rounded-full bg-plum px-6 py-3 text-[13.5px] font-medium text-cream transition-transform duration-300 hover:-translate-y-0.5"
-              >
-                Start a conversation →
-              </Link>
-              <Link
-                to="/#impact"
-                className="rounded-full border border-plum/15 bg-white px-6 py-3 text-[13.5px] font-medium text-plum transition-colors hover:border-rose/50"
-              >
-                Back to selected work
-              </Link>
-            </div>
-          </div>
-        </Reveal>
-
       </article>
     </main>
   )
