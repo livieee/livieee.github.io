@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router'
 import { Lightbox, type GalleryItem } from '@/components/Lightbox'
 
 /**
@@ -87,6 +88,8 @@ const WINS = [
     note: 'listen to the room ✦',
     accent: '#D193A8',
     zoom: 1,
+    to: '/work/theta',
+    cta: 'See the pitch story',
     href: 'https://ieee-risingstars.org/2026/rising-stars-pitch-contest/',
   },
   {
@@ -95,12 +98,14 @@ const WINS = [
     title: 'Therapy as a Living Art',
     meta: 'Carnegie Mellon · Integrated Innovation Institute',
     img: '/ieee/taala-art.jpg',
-    pos: '30% 28%',
+    pos: '50% 50%',
     line: 'EEG turned into moving art in real time, with an explain mode showing which signals shaped it. I designed the poster and the product UI.',
     tags: ['Product UI', 'Experience design', 'Research communication'],
     note: 'making the invisible visible ✦',
     accent: '#B98ACB',
     zoom: 6,
+    to: '/work/therapy-as-living-art',
+    cta: 'See the showcase',
     href: 'https://ieee-risingstars.org/2026/project-showcase/',
   },
 ]
@@ -210,17 +215,25 @@ export function IEEEAwards() {
               ))}
             </span>
 
-            <span className="mt-auto flex items-center justify-between gap-2 pt-3.5">
+            <span className="mt-auto flex items-center gap-3 pt-3.5">
+              <Link
+                to={w.to}
+                onClick={(e) => e.stopPropagation()}
+                className="text-[11.5px] font-medium transition-opacity hover:opacity-70"
+                style={{ color: w.accent }}
+              >
+                {w.cta} →
+              </Link>
               <a
                 href={w.href}
                 target="_blank"
                 rel="noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="text-[11.5px] font-medium transition-opacity hover:opacity-70"
-                style={{ color: w.accent }}
+                className="text-[11.5px] text-plum-faint transition-opacity hover:opacity-70"
               >
-                Official page ↗
+                IEEE ↗
               </a>
+              <span className="flex-1" />
               <span
                 className="font-hand text-[13px] text-plum-muted transition-opacity duration-300"
                 style={{ opacity: side === w.key ? 1 : 0 }}

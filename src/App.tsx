@@ -5,6 +5,7 @@ import ThetaCase from './pages/ThetaCase'
 import { AskDataCase } from './pages/AskDataCase'
 import { BoschSchemaCase } from './pages/BoschSchemaCase'
 import { AIValleyCase } from '@/pages/AIValleyCase'
+import { LivingArtCase } from '@/pages/LivingArtCase'
 import NotFound from './pages/NotFound'
 
 /** 路由切换时回到顶部（hash 锚点除外） */
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/work/genai-analytics" element={<AskDataCase />} />
         <Route path="/work/bosch-schema" element={<BoschSchemaCase />} />
         <Route path="/work/ai-valley" element={<AIValleyCase />} />
+        <Route path="/work/therapy-as-living-art" element={<LivingArtCase />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
