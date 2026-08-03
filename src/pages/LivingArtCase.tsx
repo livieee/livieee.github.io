@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { Reveal } from '@/components/Reveal'
 import { Lightbox, type GalleryItem } from '@/components/Lightbox'
+import { InstallationDemo } from '@/components/InstallationDemo'
 
 /**
  * Therapy as a Living Art —— IEEE Rising Stars 2026 Project Showcase 一等奖。
@@ -44,170 +45,6 @@ function Chapter({
       </h2>
       {intro && <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">{intro}</p>}
     </Reveal>
-  )
-}
-
-/* ── Hero：Living Canvas ──────────────────────────────────────── */
-const MOTES = [
-  { x: 12, y: 24, s: 3, d: 0 },
-  { x: 26, y: 66, s: 2, d: 1.4 },
-  { x: 38, y: 18, s: 4, d: 2.6 },
-  { x: 61, y: 72, s: 2.5, d: 0.8 },
-  { x: 74, y: 30, s: 3, d: 3.2 },
-  { x: 86, y: 58, s: 2, d: 1.9 },
-  { x: 19, y: 46, s: 2, d: 4.1 },
-  { x: 52, y: 40, s: 2.5, d: 2.2 },
-  { x: 68, y: 14, s: 2, d: 5 },
-  { x: 91, y: 20, s: 3, d: 3.7 },
-]
-
-function LivingCanvas() {
-  const ref = useRef<HTMLDivElement>(null)
-  const [p, setP] = useState({ x: 0.5, y: 0.5 })
-
-  return (
-    <div
-      ref={ref}
-      onPointerMove={(e) => {
-        if (e.pointerType === 'touch') return
-        const r = e.currentTarget.getBoundingClientRect()
-        setP({ x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height })
-      }}
-      className="relative overflow-hidden rounded-[1.8rem]"
-      style={{ background: 'linear-gradient(150deg, #241832 0%, #1B2340 46%, #131A2E 100%)' }}
-    >
-      {/* 指针跟随的柔光 */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute h-[560px] w-[560px] rounded-full transition-transform duration-500 ease-out"
-        style={{
-          left: `calc(${p.x * 100}% - 280px)`,
-          top: `calc(${p.y * 100}% - 280px)`,
-          background:
-            'radial-gradient(circle, rgba(159,140,232,0.30) 0%, rgba(122,156,198,0.16) 42%, rgba(0,0,0,0) 70%)',
-        }}
-      />
-
-      {/* 缓慢移动的脑波 */}
-      {[
-        { y: 26, c: '#7FD3E8', o: 0.5, dur: 22 },
-        { y: 44, c: '#9F8CE8', o: 0.45, dur: 30 },
-        { y: 62, c: '#F2A0C4', o: 0.4, dur: 26 },
-        { y: 78, c: '#6FA8D6', o: 0.35, dur: 36 },
-      ].map((w, r) => (
-        <svg
-          key={w.y}
-          viewBox="0 0 400 100"
-          aria-hidden
-          preserveAspectRatio="none"
-          className="pointer-events-none absolute inset-0 h-full w-[200%]"
-          style={{ animation: `canvas-wave ${w.dur}s linear infinite` }}
-        >
-          <path
-            d={`M0 ${w.y} ${Array.from({ length: 101 })
-              .map(
-                (_, i) =>
-                  `L${i * 4} ${
-                    w.y +
-                    Math.sin(i * (0.16 + r * 0.07)) * (3 + r * 1.6 + p.y * 3) +
-                    Math.sin(i * 0.045 + r) * 3
-                  }`,
-              )
-              .join(' ')}`}
-            stroke={w.c}
-            strokeOpacity={w.o}
-            strokeWidth="0.7"
-            fill="none"
-          />
-        </svg>
-      ))}
-
-      {/* 光点 */}
-      {MOTES.map((m, i) => (
-        <span
-          key={i}
-          aria-hidden
-          className="pointer-events-none absolute rounded-full bg-[#CBB8F5]"
-          style={{
-            left: `${m.x}%`,
-            top: `${m.y}%`,
-            width: m.s,
-            height: m.s,
-            filter: 'blur(0.4px)',
-            boxShadow: '0 0 8px 2px rgba(203,184,245,0.5)',
-            animation: `mote-float ${7 + (i % 4)}s ${m.d}s ease-in-out infinite`,
-          }}
-        />
-      ))}
-
-      <div className="relative grid items-center gap-8 px-7 py-12 md:grid-cols-[1.1fr_0.9fr] md:px-12 md:py-16">
-        <div>
-          <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em] text-[#E8C77A]">
-            <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
-              <path d="M10 1.6l2.2 4.8 5.2.6-3.9 3.5 1.1 5.1L10 13l-4.6 2.6 1.1-5.1L2.6 7l5.2-.6z" />
-            </svg>
-            IEEE Project Showcase · 1st place · 2026
-          </p>
-
-          <h1 className="mt-5 font-serif text-[clamp(1.9rem,4.6vw,3.1rem)] font-light leading-[1.1] text-[#F6F1EA]">
-            Making inner states visible
-            <br />
-            <span className="italic text-[#CBB8F5]">through living art</span>
-          </h1>
-
-          <p className="mt-5 max-w-xl text-[14.5px] leading-relaxed text-[#D6CFE4]">
-            An EEG-driven generative experience that translated real-time emotional signals into
-            evolving visual art — while helping people understand what shaped the result.
-          </p>
-
-          <div className="mt-6 flex flex-wrap gap-2">
-            {['Product UI', 'Experience framing', 'Research communication', 'Cross-functional collaboration'].map(
-              (t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-white/20 bg-white/8 px-3 py-1.5 text-[11.5px] font-medium text-[#E6E0F0] backdrop-blur-sm"
-                >
-                  {t}
-                </span>
-              ),
-            )}
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-2">
-            {[
-              { href: IEEE, label: 'IEEE Showcase' },
-              { href: REPO, label: 'GitHub' },
-              { href: POST, label: 'Project write-up' },
-            ].map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 rounded-full bg-white/90 px-3.5 py-1.5 text-[12px] font-medium text-plum transition-transform duration-300 hover:-translate-y-0.5"
-              >
-                {l.label} <span aria-hidden>↗</span>
-              </a>
-            ))}
-          </div>
-
-          <p className="mt-7 text-[12px] uppercase tracking-label text-[#A69CBC]">
-            Carnegie Mellon University · Integrated Innovation Institute · Silicon Valley
-          </p>
-        </div>
-
-        <div className="relative">
-          <img
-            src="/ieee/mode-calm.jpg"
-            alt="The Art Mode silhouette — a calm, blue-toned aura generated from live EEG"
-            className="w-full rounded-[1.2rem] border border-white/15 object-cover shadow-[0_30px_70px_-30px_rgba(0,0,0,0.8)]"
-          />
-          <p className="absolute -top-7 right-2 rotate-[-3deg] font-hand text-[17px] text-[#E8C77A]">
-            feel it ↔ understand it
-          </p>
-        </div>
-      </div>
-    </div>
   )
 }
 
@@ -354,15 +191,85 @@ export function LivingArtCase() {
             <span aria-hidden className="transition-transform duration-300 group-hover/back:-translate-x-0.5">←</span>
             Back to work
           </Link>
-          <Link to="/" className="font-serif text-[17px] text-plum">
-            ⌐ Hi, I'm Olivia <span aria-hidden className="text-orchid">↘</span>
-          </Link>
+          <div className="flex items-center gap-5">
+            <Link to="/" className="font-serif text-[17px] text-plum">
+              ⌐ Hi, I'm Olivia <span aria-hidden className="text-orchid">↘</span>
+            </Link>
+            <Link
+              to="/#contact"
+              className="rounded-full bg-rose px-4 py-1.5 text-[12.5px] font-medium text-white transition-colors hover:bg-plum"
+            >
+              Say Hello
+            </Link>
+          </div>
         </nav>
       </header>
 
       <article className="mx-auto max-w-5xl px-6 pb-28 pt-28 md:px-10 md:pt-32">
-        {/* ── Hero · Living Canvas ─────────────────────────────── */}
-        <LivingCanvas />
+        {/* ── Hero ─────────────────────────────────────────────── */}
+        <Reveal>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-plum/10">
+              <img src="/logos/ieee.png" alt="IEEE" className="h-[17px] w-[17px] object-contain" />
+            </span>
+            <span className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-label text-[#C0913C]">
+              <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
+                <path d="M10 1.6l2.2 4.8 5.2.6-3.9 3.5 1.1 5.1L10 13l-4.6 2.6 1.1-5.1L2.6 7l5.2-.6z" />
+              </svg>
+              IEEE Project Showcase · 1st place · 2026
+            </span>
+          </div>
+        </Reveal>
+
+        <h1 className="mt-5 max-w-3xl font-serif text-[clamp(1.9rem,4.8vw,3.2rem)] font-light leading-[1.08] text-plum">
+          Making inner states visible{' '}
+          <span className="italic text-orchid">through living art</span>
+        </h1>
+
+        <Reveal delay={0.15}>
+          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
+            A digital mirror for the mind. An EEG-driven generative experience that turned real-time
+            emotional signals into evolving visual art — and an explain mode that showed people what
+            shaped the result.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {['Product UI', 'Experience framing', 'Research communication', 'Cross-functional collaboration'].map(
+              (t) => (
+                <span
+                  key={t}
+                  className="rounded-full border border-orchid/30 bg-lavender/25 px-3 py-1.5 text-[11.5px] font-medium text-plum"
+                >
+                  {t}
+                </span>
+              ),
+            )}
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {[
+              { href: IEEE, label: 'IEEE Showcase' },
+              { href: REPO, label: 'GitHub' },
+              { href: POST, label: 'Project write-up' },
+            ].map((l) => (
+              <a
+                key={l.label}
+                href={l.href}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-orchid/50"
+              >
+                {l.label} <span aria-hidden>↗</span>
+              </a>
+            ))}
+          </div>
+          <p className="mt-4 text-[12px] uppercase tracking-label text-plum-faint">
+            Carnegie Mellon University · Integrated Innovation Institute · Silicon Valley
+          </p>
+        </Reveal>
+
+        {/* 装置界面的可运行复刻 */}
+        <Reveal className="mt-9" y={28}>
+          <InstallationDemo />
+        </Reveal>
 
         {/* ── 01 · 问题 ────────────────────────────────────────── */}
         <Chapter
@@ -633,12 +540,6 @@ export function LivingArtCase() {
                 className="rounded-full border border-plum/15 bg-white px-5 py-2.5 text-[13px] font-medium text-plum transition-colors hover:border-rose/50"
               >
                 Explore Theta Health →
-              </Link>
-              <Link
-                to="/#contact"
-                className="rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
-              >
-                Say Hello
               </Link>
             </div>
           </div>
