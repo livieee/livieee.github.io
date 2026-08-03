@@ -393,9 +393,12 @@ const PROGRAMS: Program[] = [
     cover: '/events/luma/agent-recall.jpg',
     posts: [
       {
-        label: 'The official recap',
-        text: '',
-        stats: '',
+        label: 'The host’s recap',
+        author: 'GMI Cloud',
+        avatar: '/logos/partners/gmicloud.jpg',
+        sub: 'Host of Total Agent Recall',
+        text: '8 hours. 100 brilliant builders. 1 complete agent stack.\n\nWe are amazed by the projects coming out of yesterday’s Total Agent Recall Hackathon! The brightest technical founders and engineers gathered to ship working AI agents using GMI, and they delivered beyond our expectations.\n\nA massive thank you to our sponsor NVIDIA, as well as our co-hosts and partners for making this possible: Dify, HydraDB, Photon, our venue sponsor Sky9 Capital, and community partner AI Valley.',
+        stats: 'the morning after',
         href: 'https://www.linkedin.com/feed/update/urn:li:activity:7444284495148634112',
       },
       {
