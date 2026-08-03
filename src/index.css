@@ -354,19 +354,19 @@
    缩放原点对齐牌阵自身的锚点（容器 50% / 46%），保证是原地缩小而不是位移。 */
 @media (max-width: 1279px) {
   .ring-scale {
-    transform: scale(0.78);
+    transform: scale(0.86);
     transform-origin: 50% 46%;
   }
 }
 @media (max-width: 1023px) {
   .ring-scale {
-    transform: scale(0.62);
+    transform: scale(0.7);
     transform-origin: 50% 46%;
   }
 }
 @media (max-width: 767px) {
   .ring-scale {
-    transform: scale(0.42);
+    transform: scale(0.46);
     transform-origin: 50% 46%;
   }
 }
