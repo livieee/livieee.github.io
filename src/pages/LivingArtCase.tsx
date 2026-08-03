@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { Reveal } from '@/components/Reveal'
 import { Lightbox, type GalleryItem } from '@/components/Lightbox'
 import { InstallationDemo } from '@/components/InstallationDemo'
+import { ChapterDeck, type Chapter } from '@/components/ChapterDeck'
 
 /**
  * Therapy as a Living Art —— IEEE Rising Stars 2026 Project Showcase 一等奖。
@@ -186,6 +187,300 @@ export function LivingArtCase() {
   const [zoom, setZoom] = useState<number | null>(null)
   const m = MODES[mode]
 
+  const CHAPTERS: Chapter[] = [
+    {
+      n: '01',
+      label: 'The problem',
+      title: 'Brain signals are rich in information — and almost impossible to feel.',
+      lede: 'A waveform, or the word “calm”. Neither is something you can recognise as yourself.',
+      body: (
+        <div className="grid items-center gap-5 md:grid-cols-[1fr_auto_1fr]">
+          <div className="rounded-[1.3rem] border border-plum/10 bg-white/60 p-6">
+            <p className="label-text mb-3">What the system sees</p>
+            <svg viewBox="0 0 300 96" className="h-[92px] w-full" fill="none" aria-hidden>
+              {[0, 1, 2, 3, 4].map((r) => (
+                <path
+                  key={r}
+                  d={`M0 ${12 + r * 18} ${Array.from({ length: 60 })
+                    .map((_, k) => `L${k * 5} ${12 + r * 18 + Math.sin(k * (0.32 + r * 0.14)) * (3 + r)}`)
+                    .join(' ')}`}
+                  stroke="#8A6E84"
+                  strokeOpacity="0.42"
+                  strokeWidth="1.1"
+                  strokeDasharray="600"
+                  style={{ animation: `route-draw 2.4s ${r * 0.14}s ease-out both` }}
+                />
+              ))}
+            </svg>
+            <p className="mt-3 text-[12.5px] leading-snug text-plum-faint">δ · θ · α · β · γ</p>
+          </div>
+
+          <p className="text-center font-hand text-[15px] text-plum-muted">
+            raw signal → meaningful experience
+          </p>
+
+          <button
+            type="button"
+            onClick={() => setZoom(0)}
+            className="cursor-zoom-in overflow-hidden rounded-[1.3rem] border border-orchid/20 bg-lavender/20 p-6 text-left"
+          >
+            <span className="label-text mb-3 block">What a person can feel</span>
+            <span className="block overflow-hidden rounded-[0.9rem]">
+              <img
+                src="/ieee/st-cyan.jpg"
+                alt="A generated aura from the installation"
+                loading="lazy"
+                className="h-[92px] w-full object-cover"
+              />
+            </span>
+            <span className="mt-3 block text-[12.5px] leading-snug text-plum-faint">
+              the same moment, recognisable without being told
+            </span>
+          </button>
+        </div>
+      ),
+    },
+    {
+      n: '02',
+      label: 'Two modes',
+      title: 'One mode helps people feel. The other helps them understand.',
+      lede: 'Emotional resonance and interpretability shouldn’t compete for the same screen — so they share a layout instead.',
+      body: (
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            {(['art', 'explain'] as const).map((k) => (
+              <button
+                key={k}
+                type="button"
+                onClick={() => setMode(k)}
+                aria-pressed={mode === k}
+                className={`rounded-full px-4 py-2 text-[12.5px] font-medium transition-all duration-300 ${
+                  mode === k
+                    ? 'text-cream shadow-[0_10px_24px_-12px_rgba(58,36,64,0.6)]'
+                    : 'border border-plum/15 bg-white text-plum-muted hover:text-plum'
+                }`}
+                style={mode === k ? { backgroundColor: MODES[k].accent } : undefined}
+              >
+                {MODES[k].label}
+              </button>
+            ))}
+            <span className="ml-auto font-hand text-[15px] text-plum-muted">feel it ↔ understand it</span>
+          </div>
+
+          <div key={mode} style={{ animation: 'annot-in .45s ease-out both' }}>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              {m.shots.map((sh) => (
+                <figure key={sh.src}>
+                  <img
+                    src={sh.src}
+                    alt={sh.cap}
+                    loading="lazy"
+                    className="aspect-[16/10] w-full rounded-[1.1rem] border border-plum/10 object-cover"
+                  />
+                  <figcaption className="mt-2 font-hand text-[13px] text-plum-muted">{sh.cap}</figcaption>
+                </figure>
+              ))}
+            </div>
+            <p
+              className="mt-5 border-l-2 pl-3 text-[14px] font-medium text-plum"
+              style={{ borderColor: m.accent }}
+            >
+              {m.line}
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      n: '03',
+      label: 'The states',
+      title: 'No two people ever produced the same image.',
+      lede: 'Six real outputs from the showcase — the same system, six different inner states.',
+      body: (
+        <div>
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            {[
+              { src: '/ieee/st-warm.jpg', k: 'tense', c: '#E8A05A' },
+              { src: '/ieee/st-green.jpg', k: 'excited', c: '#9BC46A' },
+              { src: '/ieee/st-blue.jpg', k: 'alert', c: '#6FA8D6' },
+              { src: '/ieee/st-yellow.jpg', k: 'restless', c: '#D9C24A' },
+              { src: '/ieee/st-violet.jpg', k: 'tired', c: '#A99BD4' },
+              { src: '/ieee/st-cyan.jpg', k: 'calm', c: '#68B6C4' },
+            ].map((st, k) => (
+              <button
+                key={st.src}
+                type="button"
+                onClick={() => setZoom(0)}
+                aria-label={`View the generated states larger — ${st.k}`}
+                className="group/st relative block cursor-zoom-in overflow-hidden rounded-[0.9rem] border border-plum/10 bg-black"
+                style={{ animation: `annot-in .5s ${0.06 * k}s ease-out both` }}
+              >
+                <img
+                  src={st.src}
+                  alt={`A generated state — ${st.k}`}
+                  loading="lazy"
+                  className="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover/st:scale-[1.05]"
+                />
+                <span
+                  className="absolute bottom-2 left-2 rounded-full bg-black/55 px-2 py-[3px] text-[10px] font-medium tracking-wide backdrop-blur-sm"
+                  style={{ color: st.c }}
+                >
+                  {st.k}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      ),
+    },
+    {
+      n: '04',
+      label: 'How it works',
+      title: 'Five steps from a headband to a moving image.',
+      lede: 'Consumer hardware, open-source tooling, seven people, twenty days.',
+      body: (
+        <div>
+          <Pipeline />
+          <div className="mt-5">
+            <button
+              type="button"
+              onClick={() => setArch((a) => !a)}
+              aria-expanded={arch}
+              className="inline-flex items-center gap-1.5 rounded-full border border-plum/15 bg-white px-4 py-2 text-[12.5px] font-medium text-plum transition-colors hover:border-orchid/50"
+            >
+              {arch ? 'Hide the architecture' : 'View the technical architecture'}
+              <span aria-hidden className={`transition-transform duration-300 ${arch ? 'rotate-180' : ''}`}>
+                ▾
+              </span>
+            </button>
+            {arch && (
+              <div style={{ animation: 'annot-in .45s ease-out both' }} className="mt-4 grid gap-3 sm:grid-cols-2">
+                {[
+                  { src: '/ieee/architecture.jpg', z: 8, cap: 'local node → cloud → dual interface' },
+                  { src: '/ieee/comfyui.jpg', z: 7, cap: 'the ComfyUI workflow behind each frame' },
+                ].map((a) => (
+                  <figure key={a.src}>
+                    <button
+                      type="button"
+                      onClick={() => setZoom(a.z)}
+                      aria-label={`View larger: ${a.cap}`}
+                      className="block w-full cursor-zoom-in overflow-hidden rounded-[1.1rem] border border-plum/10 bg-white"
+                    >
+                      <img src={a.src} alt={a.cap} loading="lazy" className="aspect-[16/10] w-full object-cover" />
+                    </button>
+                    <figcaption className="mt-2 font-hand text-[13px] text-plum-muted">{a.cap}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            )}
+            <p className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-plum-faint">
+              <span className="font-hand text-[14px] text-plum-muted">running on ✦</span>
+              {['Muse 2', 'Python', 'LSL', 'MediaPipe', 'ComfyUI', 'Stable Diffusion', 'ControlNet', 'RunPod GPU'].map(
+                (t) => (
+                  <span key={t} className="rounded-full border border-plum/10 bg-white/70 px-2 py-[2px] leading-none">
+                    {t}
+                  </span>
+                ),
+              )}
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      n: '05',
+      label: 'What I shaped',
+      title: 'Four working sheets, pinned to the wall.',
+      lede: 'A seven-person team built the system. My part was the layer between it and everyone else.',
+      body: (
+        <div>
+          <div className="paper-grid rounded-[1.6rem] border border-plum/10 p-5 md:p-7">
+            <div className="grid gap-5 sm:grid-cols-2">
+              {SHAPED.map((cc, k) => (
+                <figure
+                  key={cc.k}
+                  style={{ animation: `annot-in .5s ${0.08 * k}s ease-out both` }}
+                  className={`group/s relative ${cc.tilt} rounded-[0.9rem] border border-plum/10 bg-white p-3 shadow-[0_14px_30px_-18px_rgba(90,63,86,0.5)] transition-transform duration-500 hover:rotate-0`}
+                >
+                  <span
+                    aria-hidden
+                    className="absolute -top-2 left-1/2 h-4 w-12 -translate-x-1/2 -rotate-2 rounded-[2px] bg-champagne/70 shadow-sm"
+                  />
+                  <img
+                    src={cc.img}
+                    alt=""
+                    aria-hidden
+                    loading="lazy"
+                    className="h-[104px] w-full rounded-[0.6rem] object-cover"
+                  />
+                  <figcaption className="px-1 pb-1 pt-3">
+                    <p className="font-serif text-[16px] font-light text-plum">{cc.k}</p>
+                    <p className="mt-1.5 text-[12.5px] leading-relaxed text-plum-muted">{cc.v}</p>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+          <p className="mt-4 text-[12.5px] leading-relaxed text-plum-faint">
+            Team: {TEAM.join(' · ')} — advised by Prof. Catherine Fang, who nominated the project to
+            represent CMU Silicon Valley.
+          </p>
+        </div>
+      ),
+    },
+    {
+      n: '06',
+      label: 'Recognition',
+      title: 'When the work met the room ✦',
+      lede: 'IEEE Rising Stars 2026 · Project Showcase · 1st place.',
+      body: (
+        <div className="rounded-[1.6rem] border border-champagne/50 bg-gradient-to-br from-champagne/20 via-cream-soft to-blush/20 p-5 md:p-7">
+          <div className="grid gap-4 sm:grid-cols-3">
+            {SHOTS.slice(1, 4).map((sh, k) => (
+              <button
+                key={sh.src}
+                type="button"
+                onClick={() => setZoom(k + 1)}
+                aria-label={`View larger: ${sh.alt}`}
+                className={`group/r cursor-zoom-in rounded-[0.9rem] border border-plum/10 bg-white p-2.5 shadow-[0_14px_30px_-18px_rgba(90,63,86,0.5)] transition-transform duration-500 hover:rotate-0 ${
+                  ['-rotate-[1.5deg]', 'rotate-[1deg]', '-rotate-[0.8deg]'][k]
+                }`}
+              >
+                <img
+                  src={sh.src}
+                  alt={sh.alt}
+                  loading="lazy"
+                  className="aspect-[4/3] w-full rounded-[0.5rem] object-cover"
+                />
+                <span className="mt-2 block px-0.5 text-left font-hand text-[13px] leading-tight text-plum-muted">
+                  {sh.cap}
+                </span>
+              </button>
+            ))}
+          </div>
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-plum/10 pt-5">
+            <div className="flex items-center gap-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-plum/10">
+                <img src="/logos/ieee.png" alt="IEEE" className="h-5 w-5 object-contain" />
+              </span>
+              <div>
+                <p className="text-[13px] font-medium text-plum">IEEE Rising Stars 2026</p>
+                <p className="text-[12px] text-plum-faint">Project Showcase · 1st Place</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setZoom(0)}
+              className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-[#C0913C]/50"
+            >
+              See all photos <span aria-hidden>↗</span>
+            </button>
+          </div>
+        </div>
+      ),
+    },
+  ]
+
   return (
     <main className="min-h-screen bg-cream">
       <header className="fixed inset-x-0 top-0 z-50 bg-cream/85 shadow-[0_1px_0_0_rgba(58,36,64,0.06)] backdrop-blur-md">
@@ -277,302 +572,9 @@ export function LivingArtCase() {
           <InstallationDemo />
         </Reveal>
 
-        {/* ── 01 · 问题 ────────────────────────────────────────── */}
-        <Chapter
-          n="01"
-          label="The invisible problem"
-          title="Brain signals are rich in information — but difficult to experience."
-          intro="Self-report scales are slow and easy to bias. Consumer EEG is fast and objective, but what it hands back is a waveform or the word “calm” — abstract enough that most people can’t connect it to anything they’re actually feeling."
-        />
-        <Reveal className="mt-8" y={24}>
-          <div className="grid items-center gap-5 md:grid-cols-[1fr_auto_1fr]">
-            <div className="rounded-[1.3rem] border border-plum/10 bg-white/60 p-6">
-              <p className="label-text mb-3">What the system sees</p>
-              <svg viewBox="0 0 300 90" className="h-[86px] w-full" fill="none" aria-hidden>
-                {[0, 1, 2, 3, 4].map((r) => (
-                  <path
-                    key={r}
-                    d={`M0 ${12 + r * 17} ${Array.from({ length: 30 })
-                      .map((_, i) => `L${i * 10} ${12 + r * 17 + Math.sin(i * (0.8 + r * 0.35)) * (3 + r)}`)
-                      .join(' ')}`}
-                    stroke="#8A6E84"
-                    strokeOpacity="0.4"
-                    strokeWidth="1.1"
-                  />
-                ))}
-              </svg>
-              <p className="mt-3 text-[12.5px] leading-snug text-plum-faint">
-                δ · θ · α · β · γ — five bands, updating every few milliseconds
-              </p>
-            </div>
-
-            <p className="text-center font-hand text-[15px] text-plum-muted">
-              raw signal → meaningful experience
-            </p>
-
-            <div className="rounded-[1.3rem] border border-orchid/20 bg-lavender/20 p-6">
-              <p className="label-text mb-3">What a person can feel and understand</p>
-              <div className="overflow-hidden rounded-[0.9rem]">
-                <img
-                  src="/ieee/st-cyan.jpg"
-                  alt="A generated aura from the installation"
-                  loading="lazy"
-                  className="h-[86px] w-full object-cover"
-                />
-              </div>
-              <p className="mt-3 text-[12.5px] leading-snug text-plum-faint">
-                the same moment, as something you recognise without being told
-              </p>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* ── 02 · 两种模式 ────────────────────────────────────── */}
-        <Chapter
-          n="02"
-          label="The core of the interface"
-          title="One mode helps people feel. The other helps them understand."
-          intro="The design bet: emotional resonance and interpretability shouldn’t compete for the same screen. So the system carries two modes that share a layout — you can switch without losing the moment."
-        />
-        <Reveal className="mt-8" y={24}>
-          <div className="rounded-[1.6rem] border border-plum/10 bg-white/60 p-5 md:p-7">
-            <div className="flex flex-wrap items-center gap-2">
-              {(['art', 'explain'] as const).map((k) => (
-                <button
-                  key={k}
-                  type="button"
-                  onClick={() => setMode(k)}
-                  aria-pressed={mode === k}
-                  className={`rounded-full px-4 py-2 text-[12.5px] font-medium transition-all duration-300 ${
-                    mode === k
-                      ? 'text-cream shadow-[0_10px_24px_-12px_rgba(58,36,64,0.6)]'
-                      : 'border border-plum/15 bg-white text-plum-muted hover:text-plum'
-                  }`}
-                  style={mode === k ? { backgroundColor: MODES[k].accent } : undefined}
-                >
-                  {MODES[k].label}
-                </button>
-              ))}
-              <span className="ml-auto font-hand text-[15px] text-plum-muted">feel it ↔ understand it</span>
-            </div>
-
-            <div key={mode} style={{ animation: 'annot-in .45s ease-out both' }}>
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                {m.shots.map((sh) => (
-                  <figure key={sh.src}>
-                    <img
-                      src={sh.src}
-                      alt={sh.cap}
-                      loading="lazy"
-                      className="aspect-[16/10] w-full rounded-[1.1rem] border border-plum/10 object-cover"
-                    />
-                    <figcaption className="mt-2 font-hand text-[13px] text-plum-muted">{sh.cap}</figcaption>
-                  </figure>
-                ))}
-              </div>
-              <p className="mt-5 border-l-2 pl-3 text-[14px] font-medium text-plum" style={{ borderColor: m.accent }}>
-                {m.line}
-              </p>
-              <p className="mt-2 max-w-2xl text-[13.5px] leading-relaxed text-plum-muted">{m.body}</p>
-            </div>
-          </div>
-        </Reveal>
-
-        <Reveal className="mt-8" y={24}>
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-            {[
-              { src: '/ieee/st-warm.jpg', k: 'tense', c: '#E8A05A' },
-              { src: '/ieee/st-green.jpg', k: 'excited', c: '#9BC46A' },
-              { src: '/ieee/st-blue.jpg', k: 'alert', c: '#6FA8D6' },
-              { src: '/ieee/st-yellow.jpg', k: 'restless', c: '#D9C24A' },
-              { src: '/ieee/st-violet.jpg', k: 'tired', c: '#A99BD4' },
-              { src: '/ieee/st-cyan.jpg', k: 'calm', c: '#68B6C4' },
-            ].map((st, i) => (
-              <button
-                key={st.src}
-                type="button"
-                onClick={() => setZoom(0)}
-                aria-label={`View the generated states larger — ${st.k}`}
-                className="group/st relative block cursor-zoom-in overflow-hidden rounded-[0.9rem] border border-plum/10 bg-black"
-                style={{ animation: `annot-in .5s ${0.06 * i}s ease-out both` }}
-              >
-                <img
-                  src={st.src}
-                  alt={`A generated state from the installation — ${st.k}`}
-                  loading="lazy"
-                  className="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover/st:scale-[1.05]"
-                />
-                <span
-                  className="absolute bottom-2 left-2 rounded-full bg-black/55 px-2 py-[3px] text-[10px] font-medium tracking-wide backdrop-blur-sm"
-                  style={{ color: st.c }}
-                >
-                  {st.k}
-                </span>
-              </button>
-            ))}
-          </div>
-          <p className="mt-3.5 font-hand text-[15px] text-plum-muted">
-            no two people ever produced the same image ✦
-          </p>
-        </Reveal>
-
-        {/* ── 03        {/* ── 03 · 怎么跑起来 ──────────────────────────────────── */}
-        <Chapter
-          n="03"
-          label="How it works"
-          title="Five steps from a headband to a moving image"
-          intro="Consumer hardware and open-source tooling, assembled by a seven-person team in twenty days — reproducible rather than a one-off installation."
-        />
-        <Reveal className="mt-8" y={24}>
-          <Pipeline />
-          <div className="mt-5">
-            <button
-              type="button"
-              onClick={() => setArch((a) => !a)}
-              aria-expanded={arch}
-              className="inline-flex items-center gap-1.5 rounded-full border border-plum/15 bg-white px-4 py-2 text-[12.5px] font-medium text-plum transition-colors hover:border-orchid/50"
-            >
-              {arch ? 'Hide the technical architecture' : 'View the technical architecture'}
-              <span aria-hidden className={`transition-transform duration-300 ${arch ? 'rotate-180' : ''}`}>▾</span>
-            </button>
-            {arch && (
-              <div style={{ animation: 'annot-in .45s ease-out both' }}>
-                <button
-                  type="button"
-                  onClick={() => setZoom(6)}
-                  aria-label="View the architecture diagram larger"
-                  className="mt-4 block w-full cursor-zoom-in overflow-hidden rounded-[1.2rem] border border-plum/10 bg-white"
-                >
-                  <img
-                    src="/ieee/architecture.jpg"
-                    alt="System architecture — local node (EEG acquisition, signal processing, emotion estimation, camera tracking) streaming to cloud generation, feeding a dual user interface"
-                    className="w-full object-contain"
-                  />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setZoom(7)}
-                  aria-label="View the ComfyUI workflow larger"
-                  className="mt-3 block w-full cursor-zoom-in overflow-hidden rounded-[1.2rem] border border-plum/10 bg-black"
-                >
-                  <img
-                    src="/ieee/comfyui.jpg"
-                    alt="The ComfyUI workflow and generated media assets used to render each frame"
-                    loading="lazy"
-                    className="w-full object-cover"
-                  />
-                </button>
-                <p className="mt-3 flex flex-wrap items-center gap-2 text-[12px] text-plum-faint">
-                  <span className="font-hand text-[14px] text-plum-muted">running on ✦</span>
-                  {['Muse 2', 'Python', 'LSL', 'MediaPipe', 'ComfyUI', 'Stable Diffusion', 'ControlNet', 'RunPod GPU'].map(
-                    (t) => (
-                      <span key={t} className="rounded-full border border-plum/10 bg-white/70 px-2 py-[2px] leading-none">
-                        {t}
-                      </span>
-                    ),
-                  )}
-                </p>
-              </div>
-            )}
-          </div>
-        </Reveal>
-
-        {/* ── 04 · 我做的部分 ──────────────────────────────────── */}
-        <Chapter
-          n="04"
-          label="What I shaped"
-          title="Four working sheets, pinned to the wall"
-          intro="A seven-person team built the system. My part was the layer between it and everyone else — what people stood in front of, and what the judges read."
-        />
-        <Reveal className="mt-8" y={24}>
-          <div className="rounded-[1.6rem] border border-plum/10 paper-grid p-5 md:p-7">
-            <div className="grid gap-5 sm:grid-cols-2">
-              {SHAPED.map((c, i) => (
-                <figure
-                  key={c.k}
-                  style={{ animation: `annot-in .5s ${0.08 * i}s ease-out both` }}
-                  className={`group/s relative ${c.tilt} rounded-[0.9rem] border border-plum/10 bg-white p-3 shadow-[0_14px_30px_-18px_rgba(90,63,86,0.5)] transition-transform duration-500 hover:rotate-0`}
-                >
-                  <span
-                    aria-hidden
-                    className="absolute -top-2 left-1/2 h-4 w-12 -translate-x-1/2 -rotate-2 rounded-[2px] bg-champagne/70 shadow-sm"
-                  />
-                  <img
-                    src={c.img}
-                    alt=""
-                    aria-hidden
-                    loading="lazy"
-                    className="h-[104px] w-full rounded-[0.6rem] object-cover"
-                  />
-                  <figcaption className="px-1 pb-1 pt-3">
-                    <p className="font-serif text-[16px] font-light text-plum">{c.k}</p>
-                    <p className="mt-1.5 text-[12.5px] leading-relaxed text-plum-muted">{c.v}</p>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-          </div>
-          <p className="mt-4 text-[12.5px] leading-relaxed text-plum-faint">
-            Team: {TEAM.join(' · ')} — advised by Prof. Catherine Fang, who nominated the project to
-            represent CMU Silicon Valley.
-          </p>
-        </Reveal>
-
-        {/* ── 05 · 领奖时刻 ────────────────────────────────────── */}
-        <Reveal className="mt-24">
-          <div className="mb-3 flex items-center gap-3">
-            <span aria-hidden className="h-px w-8 shrink-0 bg-plum/20" />
-            <p className="label-text">Recognition</p>
-          </div>
-          <h2 className="font-serif text-2xl font-light leading-snug text-plum md:text-3xl">
-            When the work met the room <span className="text-[#C0913C]">✦</span>
-          </h2>
-        </Reveal>
-        <Reveal className="mt-8" y={24}>
-          <div className="rounded-[1.6rem] border border-champagne/50 bg-gradient-to-br from-champagne/20 via-cream-soft to-blush/20 p-5 md:p-7">
-            <div className="grid gap-4 sm:grid-cols-3">
-              {SHOTS.slice(1, 4).map((s, i) => (
-                <button
-                  key={s.src}
-                  type="button"
-                  onClick={() => setZoom(i + 1)}
-                  aria-label={`View larger: ${s.alt}`}
-                  className={`group/r cursor-zoom-in rounded-[0.9rem] border border-plum/10 bg-white p-2.5 shadow-[0_14px_30px_-18px_rgba(90,63,86,0.5)] transition-transform duration-500 hover:rotate-0 ${
-                    ['-rotate-[1.5deg]', 'rotate-[1deg]', '-rotate-[0.8deg]'][i]
-                  }`}
-                >
-                  <img
-                    src={s.src}
-                    alt={s.alt}
-                    loading="lazy"
-                    className="aspect-[4/3] w-full rounded-[0.5rem] object-cover"
-                  />
-                  <span className="mt-2 block px-0.5 text-left font-hand text-[13px] leading-tight text-plum-muted">
-                    {s.cap}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-plum/10 pt-5">
-              <div className="flex items-center gap-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-plum/10">
-                  <img src="/logos/ieee.png" alt="IEEE" className="h-5 w-5 object-contain" />
-                </span>
-                <div>
-                  <p className="text-[13px] font-medium text-plum">IEEE Rising Stars 2026</p>
-                  <p className="text-[12px] text-plum-faint">Project Showcase · 1st Place</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setZoom(4)}
-                className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-[#C0913C]/50"
-              >
-                See all photos <span aria-hidden>↗</span>
-              </button>
-            </div>
-          </div>
+        {/* ── 章节册：横向翻页 ─────────────────────────────────── */}
+        <Reveal className="mt-20" y={26}>
+          <ChapterDeck chapters={CHAPTERS} />
         </Reveal>
 
         {/* ── 收尾 ─────────────────────────────────────────────── */}
