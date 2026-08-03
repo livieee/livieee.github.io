@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { BorderGlow } from '@/components/BorderGlow'
 import { Link } from 'react-router'
@@ -186,7 +186,7 @@ function FeaturedProjects() {
         </p>
         <p className="font-hand text-[15px] text-plum-muted">the point of the whole thing ✦</p>
       </div>
-      <div className="mt-5 grid gap-4 md:flex md:items-stretch">
+      <div className="mt-5 grid gap-4 md:grid-cols-3">
         {FEATURED.map((f, i) => (
           <a
             key={f.name}
@@ -195,7 +195,7 @@ function FeaturedProjects() {
             rel="noreferrer"
             aria-label={`Z.ai's post about ${f.name} on X`}
             style={{ animation: `annot-in .45s ${i * 0.08}s ease-out both` }}
-            className="group/f flex flex-col rounded-2xl border border-[#cfd9de] bg-white p-4 transition-all duration-500 ease-[cubic-bezier(.3,.7,.3,1)] hover:border-[#8b98a5] hover:shadow-[0_16px_36px_-20px_rgba(15,20,25,0.35)] md:min-w-0 md:basis-0 md:flex-[1] md:hover:flex-[2.1]"
+            className="group/f flex flex-col rounded-2xl border border-[#cfd9de] bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[#8b98a5] hover:shadow-[0_16px_36px_-20px_rgba(15,20,25,0.35)]"
           >
             {/* 帖子头 */}
             <div className="flex items-center gap-2.5">
@@ -221,7 +221,7 @@ function FeaturedProjects() {
             </div>
 
             {/* 正文 */}
-            <p className="mt-3 whitespace-pre-line text-[14px] leading-[1.4] text-[#0f1419] md:line-clamp-[7] md:group-hover/f:line-clamp-none">
+            <p className="mt-3 whitespace-pre-line text-[14px] leading-[1.4] text-[#0f1419]">
               {f.text}
             </p>
 
@@ -604,6 +604,7 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
                 <Zoomable
                   src={sn.src}
                   alt={sn.alt}
+                  cap={sn.cap}
                   className="h-28 w-full rounded-[0.9rem] border border-plum/10 object-cover"
                 />
                 <figcaption className="mt-1.5 font-hand text-[13px] leading-tight text-plum-muted">{sn.cap}</figcaption>
@@ -892,32 +893,124 @@ function RunOfShow() {
 }
 
 /* ── 点开放大：全页图片通用灯箱 ─────────────────────────────── */
-function Zoomable({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
+type GalleryItem = { src: string; alt: string; cap?: string }
+
+/** 放大查看：从缩略图 zoom 进全屏，再左右滑动浏览同组图片 */
+function Lightbox({
+  items,
+  index,
+  onClose,
+  onIndex,
+}: {
+  items: GalleryItem[]
+  index: number
+  onClose: () => void
+  onIndex: (i: number) => void
+}) {
+  const touchX = useRef<number | null>(null)
+  const go = useCallback(
+    (d: 1 | -1) => onIndex((index + d + items.length) % items.length),
+    [index, items.length, onIndex],
+  )
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowRight') go(1)
+      if (e.key === 'ArrowLeft') go(-1)
+    }
+    window.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+    }
+  }, [go, onClose])
+
+  const cur = items[index]
+  const many = items.length > 1
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-plum/90 p-4 backdrop-blur-sm md:p-10"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      onTouchStart={(e) => { touchX.current = e.touches[0].clientX }}
+      onTouchEnd={(e) => {
+        if (touchX.current === null) return
+        const dx = e.changedTouches[0].clientX - touchX.current
+        if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1)
+        touchX.current = null
+      }}
+    >
+      <figure
+        key={cur.src}
+        className="flex max-h-full flex-col items-center"
+        style={{ animation: 'lightbox-in .34s cubic-bezier(.2,.8,.25,1) both' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <img
+          src={cur.src}
+          alt={cur.alt}
+          className="max-h-[80vh] max-w-[92vw] rounded-2xl shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)]"
+        />
+        {cur.cap && (
+          <figcaption className="mt-4 max-w-[70ch] text-center text-[13px] text-white/75">{cur.cap}</figcaption>
+        )}
+      </figure>
+
+      {many && (
+        <>
+          {[
+            { d: -1 as const, cls: 'left-3 md:left-8', g: '←', label: 'Previous' },
+            { d: 1 as const, cls: 'right-3 md:right-8', g: '→', label: 'Next' },
+          ].map((b) => (
+            <button
+              key={b.label}
+              type="button"
+              aria-label={b.label}
+              onClick={(e) => { e.stopPropagation(); go(b.d) }}
+              className={`absolute ${b.cls} top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-xl text-white backdrop-blur transition-colors hover:bg-white/30`}
+            >
+              {b.g}
+            </button>
+          ))}
+          <span className="absolute bottom-6 left-1/2 -translate-x-1/2 font-hand text-[15px] text-white/70">
+            {index + 1} / {items.length} · swipe or ← →
+          </span>
+        </>
+      )}
+
+      <button
+        type="button"
+        aria-label="Close"
+        onClick={(e) => { e.stopPropagation(); onClose() }}
+        className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-xl text-white backdrop-blur transition-colors hover:bg-white/30"
+      >
+        ×
+      </button>
+    </div>,
+    document.body,
+  )
+}
+
+/** 单张图的放大入口（卡内物料照用） */
+function Zoomable({ src, alt, cap, className = '' }: { src: string; alt: string; cap?: string; className?: string }) {
   const [open, setOpen] = useState(false)
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className="block w-full cursor-zoom-in" aria-label={`View larger: ${alt}`}>
-        <img src={src} alt={alt} loading="lazy" className={className} />
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="group/zoom relative block w-full cursor-zoom-in overflow-hidden rounded-[inherit]"
+        aria-label={`View larger: ${alt}`}
+      >
+        <img src={src} alt={alt} loading="lazy" className={`${className} transition-transform duration-500 group-hover/zoom:scale-[1.04]`} />
       </button>
-      {open &&
-        createPortal(
-          <div
-            className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-plum/85 p-4 backdrop-blur-sm md:p-10"
-            onClick={() => setOpen(false)}
-            role="dialog"
-            aria-modal="true"
-          >
-            <img src={src} alt={alt} className="max-h-[90vh] max-w-[94vw] rounded-2xl shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)]" />
-            <button
-              type="button"
-              aria-label="Close"
-              className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-xl text-white backdrop-blur transition-colors hover:bg-white/30"
-            >
-              ×
-            </button>
-          </div>,
-          document.body,
-        )}
+      {open && (
+        <Lightbox items={[{ src, alt, cap }]} index={0} onClose={() => setOpen(false)} onIndex={() => {}} />
+      )}
     </>
   )
 }
@@ -1063,12 +1156,14 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
 function EventPhotos() {
   const railRef = useRef<HTMLDivElement>(null)
   const pausedRef = useRef(false)
+  const [open, setOpen] = useState<number | null>(null)
+
   useEffect(() => {
     const el = railRef.current
     if (!el) return
     let raf = 0
     const step = () => {
-      if (!pausedRef.current) {
+      if (!pausedRef.current && open === null) {
         el.scrollLeft += 0.55
         if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft -= el.scrollWidth / 2
       }
@@ -1076,10 +1171,12 @@ function EventPhotos() {
     }
     raf = requestAnimationFrame(step)
     return () => cancelAnimationFrame(raf)
-  }, [])
+  }, [open])
+
   if (PHOTOS.length === 0) return null
   const reel = [...PHOTOS, ...PHOTOS]
   const slide = (dir: 1 | -1) => railRef.current?.scrollBy({ left: dir * 380, behavior: 'smooth' })
+
   return (
     <div className="group/reel relative">
       <div
@@ -1092,11 +1189,19 @@ function EventPhotos() {
       >
         {reel.map((ph, i) => (
           <figure key={ph.src + i} className="w-[300px] shrink-0 sm:w-[360px]">
-            <Zoomable
-              src={ph.src}
-              alt={ph.alt}
-              className="aspect-[4/3] w-full rounded-[1.1rem] border border-plum/10 bg-white object-cover"
-            />
+            <button
+              type="button"
+              onClick={() => setOpen(i % PHOTOS.length)}
+              aria-label={`View larger: ${ph.alt}`}
+              className="group/zoom block w-full cursor-zoom-in overflow-hidden rounded-[1.1rem]"
+            >
+              <img
+                src={ph.src}
+                alt={ph.alt}
+                loading="lazy"
+                className="aspect-[4/3] w-full rounded-[1.1rem] border border-plum/10 bg-white object-cover transition-transform duration-500 group-hover/zoom:scale-[1.05]"
+              />
+            </button>
             <figcaption className="mt-2 px-1 text-[12px] text-plum-faint">{ph.cap}</figcaption>
           </figure>
         ))}
@@ -1110,15 +1215,18 @@ function EventPhotos() {
           type="button"
           aria-label={b.dir === 1 ? 'Next photos' : 'Previous photos'}
           onClick={() => slide(b.dir)}
-          className={`absolute ${b.cls} top-[38%] flex h-10 w-10 items-center justify-center rounded-full border border-plum/10 bg-white/90 text-[15px] text-plum shadow-[0_8px_20px_-8px_rgba(58,36,64,0.45)] backdrop-blur transition-all duration-300 hover:bg-white md:opacity-0 md:group-hover/reel:opacity-100`}
           onPointerEnter={() => { pausedRef.current = true }}
           onPointerLeave={() => { pausedRef.current = false }}
+          className={`absolute ${b.cls} top-[38%] flex h-10 w-10 items-center justify-center rounded-full border border-plum/10 bg-white/90 text-[15px] text-plum shadow-[0_8px_20px_-8px_rgba(58,36,64,0.45)] backdrop-blur transition-all duration-300 hover:bg-white md:opacity-0 md:group-hover/reel:opacity-100`}
         >
           {b.glyph}
         </button>
       ))}
       <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-cream to-transparent" />
       <span aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-cream to-transparent" />
+      {open !== null && (
+        <Lightbox items={PHOTOS} index={open} onClose={() => setOpen(null)} onIndex={setOpen} />
+      )}
     </div>
   )
 }

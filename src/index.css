@@ -340,3 +340,9 @@ body {
   18%  { opacity: 1; transform: scale(1.05) translateY(2px); }
   100% { opacity: 0; transform: scale(0.55) translateY(16px); }
 }
+
+/* 灯箱：从缩略图放大进场 */
+@keyframes lightbox-in {
+  0%   { opacity: 0; transform: scale(0.86); }
+  100% { opacity: 1; transform: scale(1); }
+}
