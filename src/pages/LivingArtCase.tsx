@@ -117,8 +117,8 @@ const MODES = {
     line: 'Creates emotional resonance.',
     body: 'The silhouette becomes an aura. Calm reads as a dim, flowing stream; high arousal ignites into a vibrant, flame-like form. Nothing to read — you just recognise yourself in it.',
     shots: [
-      { src: '/ieee/mode-calm.jpg', cap: 'calm · low arousal, blue-toned' },
-      { src: '/ieee/mode-excited.jpg', cap: 'excited · elevated β, warm yellow' },
+      { src: '/ieee/st-blue.jpg', cap: 'calm · low arousal, blue-toned' },
+      { src: '/ieee/st-warm.jpg', cap: 'excited · elevated β, warm amber' },
     ],
     accent: '#B98ACB',
   },
@@ -151,25 +151,29 @@ const SHAPED = [
   {
     k: 'Experience framing',
     v: 'Helped connect neuroscience, generative AI, emotional resonance and interpretability into a single coherent story.',
-    img: '/ieee/mode-excited.jpg',
+    img: '/ieee/st-violet.jpg',
     tilt: '-rotate-[0.6deg]',
   },
   {
     k: 'Showcase communication',
     v: 'Supported the exhibition narrative and the booth — what visitors read, saw and were walked through.',
-    img: '/ieee/poster-team.jpg',
+    img: '/ieee/booth-crowd.jpg',
     tilt: 'rotate-[1.6deg]',
   },
 ]
 
 const SHOTS: GalleryItem[] = [
-  { src: '/ieee/taala-art.jpg', alt: 'Four states of the generative art', cap: 'Calm, intense, excited — and the explain mode' },
+  { src: '/ieee/outputs-grid.jpg', alt: 'A grid of real generated states from the installation', cap: 'Real outputs — every state produced a different image' },
+  { src: '/ieee/booth-olivia.jpg', alt: 'Olivia at the CMU Silicon Valley booth beside the poster and the live installation', cap: 'At the CMU Silicon Valley booth' },
+  { src: '/ieee/booth-crowd.jpg', alt: 'A crowd gathered around the installation at the showcase', cap: 'The booth, mid-showcase' },
+  { src: '/ieee/poster-cert.jpg', alt: 'The research poster and the first-place certificate', cap: 'The poster and the first-place certificate' },
   { src: '/ieee/poster.jpg', alt: 'The CMU research poster', cap: 'The CMU research poster — I designed it' },
-  { src: '/ieee/poster-team.jpg', alt: 'The team at the CMU booth', cap: 'At the CMU booth, mid-showcase' },
   { src: '/ieee/certs-three.jpg', alt: 'Three team members with first-place certificates', cap: 'Project Showcase — first place' },
+  { src: '/ieee/poster-team.jpg', alt: 'The team at the CMU booth', cap: 'The team at the booth' },
+  { src: '/ieee/comfyui.jpg', alt: 'The ComfyUI workflow and generated assets', cap: 'The ComfyUI workflow behind each frame' },
+  { src: '/ieee/architecture.jpg', alt: 'The system architecture diagram', cap: 'Local node → cloud generation → dual interface' },
   { src: '/ieee/showcase-stage.jpg', alt: 'Winners and organisers on stage', cap: 'On stage with the organisers' },
   { src: '/ieee/poster-team2.jpg', alt: 'The team beside the CMU Silicon Valley banner', cap: 'Beside the CMU Silicon Valley banner' },
-  { src: '/ieee/architecture.jpg', alt: 'The system architecture diagram', cap: 'Local node → cloud generation → dual interface' },
 ]
 
 const TEAM = ['Jessie Xiong', 'Olivia Xiao', 'David Ma', 'Jean Wang', 'Isabella Cheng', 'Richa Pragat']
@@ -308,7 +312,7 @@ export function LivingArtCase() {
               <p className="label-text mb-3">What a person can feel and understand</p>
               <div className="overflow-hidden rounded-[0.9rem]">
                 <img
-                  src="/ieee/mode-excited.jpg"
+                  src="/ieee/st-cyan.jpg"
                   alt="A generated aura from the installation"
                   loading="lazy"
                   className="h-[86px] w-full object-cover"
@@ -372,6 +376,25 @@ export function LivingArtCase() {
           </div>
         </Reveal>
 
+        <Reveal className="mt-8" y={24}>
+          <button
+            type="button"
+            onClick={() => setZoom(0)}
+            aria-label="View the gallery of generated states larger"
+            className="group/g block w-full cursor-zoom-in overflow-hidden rounded-[1.4rem] border border-plum/10 bg-black"
+          >
+            <img
+              src="/ieee/outputs-grid.jpg"
+              alt="A grid of real outputs from the installation — amber, green, blue, yellow, violet and cyan auras, the emotional-state radar and the line-art silhouette"
+              loading="lazy"
+              className="w-full object-cover transition-transform duration-700 group-hover/g:scale-[1.02]"
+            />
+          </button>
+          <p className="mt-3 font-hand text-[15px] text-plum-muted">
+            no two people ever produced the same image ✦
+          </p>
+        </Reveal>
+
         {/* ── 03 · 怎么跑起来 ──────────────────────────────────── */}
         <Chapter
           n="03"
@@ -403,6 +426,19 @@ export function LivingArtCase() {
                     src="/ieee/architecture.jpg"
                     alt="System architecture — local node (EEG acquisition, signal processing, emotion estimation, camera tracking) streaming to cloud generation, feeding a dual user interface"
                     className="w-full object-contain"
+                  />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setZoom(7)}
+                  aria-label="View the ComfyUI workflow larger"
+                  className="mt-3 block w-full cursor-zoom-in overflow-hidden rounded-[1.2rem] border border-plum/10 bg-black"
+                >
+                  <img
+                    src="/ieee/comfyui.jpg"
+                    alt="The ComfyUI workflow and generated media assets used to render each frame"
+                    loading="lazy"
+                    className="w-full object-cover"
                   />
                 </button>
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-[12px] text-plum-faint">
