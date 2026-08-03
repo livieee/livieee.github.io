@@ -725,7 +725,7 @@ export function HowICreateValue() {
         <div
           ref={fanRef}
           data-wand
-          className="relative mx-auto h-[430px] w-full max-w-5xl cursor-none select-none md:h-[590px] [&_button]:cursor-none"
+          className="relative mx-auto h-[280px] w-full max-w-5xl cursor-none select-none md:h-[520px] lg:h-[620px] [&_button]:cursor-none"
           onPointerMove={(e) => {
             if (e.pointerType === 'touch') return
             const r = e.currentTarget.getBoundingClientRect()
@@ -808,9 +808,9 @@ export function HowICreateValue() {
             {/* 地面法阵：躺平在卡牌底边所在的平面上 */}
             <div
               aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[660px] w-[660px]"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[1180px] w-[1180px]"
               style={{
-                transform: 'translate(-50%, -50%) translateY(186px) rotateX(107deg)',
+                transform: 'translate(-50%, -50%) translateY(196px) rotateX(91.5deg)',
                 transformStyle: 'preserve-3d',
                 transition: 'filter .55s ease, opacity .55s ease',
                 opacity: 1,
@@ -836,7 +836,7 @@ export function HowICreateValue() {
                   type="button"
                   onClick={() => setActive(i)}
                   aria-label={`Draw ${c.name} — ${c.title}`}
-                  className="absolute left-1/2 top-1/2 h-[310px] w-[140px] outline-none"
+                  className="absolute left-1/2 top-1/2 h-[320px] w-[206px] outline-none"
                   style={{
                     transformStyle: 'preserve-3d',
                     transform: !dealt
