@@ -1028,7 +1028,7 @@ const PARTNER_GROUPS: Array<{ k: string; v: Array<{ n: string; l?: string }> }> 
       { n: 'Vercel', l: '/logos/partners/vercel.jpg' },
       { n: 'Neo4j', l: '/logos/partners/neo4j.jpg' },
       { n: 'Convex', l: '/logos/partners/convex.jpg' },
-      { n: 'Photon' },
+      { n: 'Photon', l: '/logos/partners/photon.png' },
     ],
   },
   {
@@ -1045,12 +1045,9 @@ const PARTNER_GROUPS: Array<{ k: string; v: Array<{ n: string; l?: string }> }> 
   {
     k: 'Capital, venue & services',
     v: [
-      { n: 'Peak Mojo', l: '/logos/partners/peakmojo.jpg' },
       { n: 'Molly Tea', l: '/logos/partners/mollytea.jpg' },
-      { n: 'Manycore Tech' },
-      { n: 'Allscale' },
       { n: 'HAC.ai' },
-      { n: 'Boundless Immigration' },
+      { n: 'Boundless Immigration', l: '/logos/partners/boundless.png' },
     ],
   },
 ]
@@ -1061,19 +1058,29 @@ const MONO_TINTS = ['#D193A8', '#B98ACB', '#7A9CC6', '#8FAE8B', '#C79A4B']
 function PartnerMark({ n, l, i }: { n: string; l?: string; i: number }) {
   if (l) {
     return (
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white ring-1 ring-plum/10">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-[3px] shadow-[0_2px_6px_-2px_rgba(58,36,64,0.3)] ring-1 ring-plum/8">
         <img src={l} alt="" aria-hidden loading="lazy" className="h-full w-full object-contain" />
       </span>
     )
   }
   const c = MONO_TINTS[i % MONO_TINTS.length]
+  const initials = n
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join('')
   return (
     <span
       aria-hidden
-      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md font-serif text-[13px] leading-none"
-      style={{ backgroundColor: `${c}22`, color: c }}
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-serif text-[11.5px] font-medium leading-none tracking-[0.02em] shadow-[0_2px_6px_-2px_rgba(58,36,64,0.22)]"
+      style={{
+        background: `linear-gradient(145deg, ${c}26, ${c}12)`,
+        color: c,
+        boxShadow: `inset 0 0 0 1px ${c}33`,
+      }}
     >
-      {n[0]}
+      {initials}
     </span>
   )
 }
