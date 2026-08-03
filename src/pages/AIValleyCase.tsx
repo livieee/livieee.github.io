@@ -454,21 +454,24 @@ const PROGRAMS: Program[] = [
 
 
 
-function ProgramCard({ p, i, small = false }: { p: Program; i: number; small?: boolean }) {
+function ProgramCard({ p, i }: { p: Program; i: number }) {
   const [open, setOpen] = useState(false)
   const [showRos, setShowRos] = useState(false)
+  const lead = p.weight === 'flagship'
   return (
     <li
       style={{ animation: `annot-in .4s ${i * 0.05}s ease-out both` }}
-      className={`group/p flex flex-col overflow-hidden rounded-[1.4rem] border border-plum/10 bg-white/60 transition-all duration-300 hover:-translate-y-1 hover:border-plum/25 hover:bg-white hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)] ${
-        small ? 'sm:flex-row' : ''
+      className={`group/p flex flex-col overflow-hidden rounded-[1.4rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)] ${
+        lead
+          ? 'border-rose/40 bg-rose/[0.05] hover:border-rose/60 sm:col-span-2'
+          : 'border-plum/10 bg-white/60 hover:border-plum/25 hover:bg-white'
       }`}
     >
       <a
         href={p.href}
         target="_blank"
         rel="noreferrer"
-        className={`relative block shrink-0 overflow-hidden ${small ? 'sm:w-[38%]' : ''}`}
+        className="relative block overflow-hidden"
         aria-label={`${p.name} — open the event page`}
       >
         <img
@@ -477,7 +480,7 @@ function ProgramCard({ p, i, small = false }: { p: Program; i: number; small?: b
           aria-hidden
           loading="lazy"
           className={`w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03] ${
-            small ? 'aspect-[2/1] sm:h-full sm:aspect-auto' : 'aspect-[2/1]'
+            lead ? 'aspect-[3/1]' : 'aspect-[2/1]'
           }`}
         />
         <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
@@ -485,12 +488,10 @@ function ProgramCard({ p, i, small = false }: { p: Program; i: number; small?: b
         </span>
       </a>
 
-      <div className={`flex flex-1 flex-col ${small ? 'p-5' : 'p-5 md:p-6'}`}>
+      <div className="flex flex-1 flex-col p-5 md:p-6">
         <div className="flex items-start justify-between gap-4">
-          <h3 className={`font-serif font-light leading-snug text-plum ${small ? 'text-[15.5px]' : 'text-[17px]'}`}>
-            {p.name}
-          </h3>
-          {!small && p.n && (
+          <h3 className="font-serif text-[17px] font-light leading-snug text-plum">{p.name}</h3>
+          {p.n && (
             <span className="shrink-0 text-right">
               <span className="block font-serif text-xl font-light leading-none text-rose">
                 {p.n.toLocaleString()}
@@ -506,16 +507,20 @@ function ProgramCard({ p, i, small = false }: { p: Program; i: number; small?: b
         </p>
         <span
           className={`mt-3 inline-flex w-fit items-center rounded-full px-2.5 py-[3px] text-[10.5px] font-medium tracking-wide ${
-            p.tier === 1
-              ? 'bg-rose/15 text-rose'
-              : p.tier === 2
-                ? 'bg-orchid/15 text-orchid'
-                : 'bg-plum/[0.07] text-plum-muted'
+            p.independent
+              ? 'bg-[#8FAE8B]/15 text-[#5F7D5B]'
+              : p.tier === 1
+                ? 'bg-rose/15 text-rose'
+                : p.tier === 2
+                  ? 'bg-orchid/15 text-orchid'
+                  : 'bg-plum/[0.07] text-plum-muted'
           }`}
         >
-          {p.badge}
+          {p.independent ? `${p.badge} · beyond AI Valley` : p.badge}
         </span>
-        {p.role && <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{p.role}</p>}
+        {(p.role || p.oneliner) && (
+          <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{p.role ?? p.oneliner}</p>
+        )}
 
         {/* 现场物料：直接贴在卡里 */}
         {p.snap && (
@@ -582,60 +587,12 @@ function ProgramCard({ p, i, small = false }: { p: Program; i: number; small?: b
 }
 
 function ProgramMatrix() {
-  const by = (w: Program['weight']) => PROGRAMS.filter((p) => p.weight === w)
   return (
-    <div>
-      {/* 四张中卡 */}
-      <ul className="grid gap-5 sm:grid-cols-2">
-        {by('medium').map((p, i) => (
-          <ProgramCard key={p.name} p={p} i={i} />
-        ))}
-      </ul>
-
-      {/* 两张小特色卡 */}
-      <ul className="mt-5 grid gap-5 sm:grid-cols-2">
-        {by('small').map((p, i) => (
-          <ProgramCard key={p.name} p={p} i={i} small />
-        ))}
-      </ul>
-
-      {/* 其余项目：一行活动墙 */}
-      <div className="mt-10">
-        <p className="font-hand text-[15px] text-plum-muted">…and the rest of the slate ✦</p>
-        <ul className="mt-3 grid gap-3 md:grid-cols-2">
-          {by('wall').map((p, i) => (
-            <li key={p.name} style={{ animation: `annot-in .4s ${i * 0.06}s ease-out both` }}>
-              <a
-                href={p.href}
-                target="_blank"
-                rel="noreferrer"
-                className={`group/w flex items-center gap-4 rounded-2xl border bg-white/60 p-3 pr-4 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white ${
-                  p.independent ? 'border-[#8FAE8B]/40 hover:border-[#8FAE8B]/70' : 'border-plum/10 hover:border-plum/25'
-                }`}
-              >
-                <img src={p.cover} alt="" aria-hidden loading="lazy" className="h-16 w-24 shrink-0 rounded-xl object-cover" />
-                <span className="min-w-0 flex-1">
-                  <span className="flex flex-wrap items-center gap-2">
-                    <span className="text-[13.5px] font-medium leading-snug text-plum">{p.name}</span>
-                    <span
-                      className={`rounded-full px-2 py-[2px] text-[10px] font-medium ${
-                        p.independent ? 'bg-[#8FAE8B]/15 text-[#5F7D5B]' : 'bg-plum/[0.07] text-plum-muted'
-                      }`}
-                    >
-                      {p.independent ? 'Independent · beyond AI Valley' : p.badge}
-                    </span>
-                  </span>
-                  <span className="mt-1 block text-[12px] leading-snug text-plum-faint">{p.oneliner}</span>
-                </span>
-                <span aria-hidden className="shrink-0 text-[12px] font-medium text-plum-muted transition-transform duration-300 group-hover/w:translate-x-0.5">
-                  ↗
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    <ul className="grid gap-5 sm:grid-cols-2">
+      {PROGRAMS.map((p, i) => (
+        <ProgramCard key={p.name} p={p} i={i} />
+      ))}
+    </ul>
   )
 }
 
@@ -1089,8 +1046,8 @@ export function AIValleyCase() {
         <Chapter
           n="02"
           label="The full slate"
-          title="Different rooms, different jobs"
-          intro="Four I ran or co-ran, two lighter ones with their own flavour, and the rest in a row — sized the way the work actually weighed. Every number is the public count on that event’s own page."
+          title="Nine programs, and what each one was for"
+          intro="Different rooms, different jobs — some I owned, some I ran, some I supported. Every number is the public count on that event’s own page."
         />
         <Reveal className="mt-8" y={24}>
           <ProgramMatrix />
