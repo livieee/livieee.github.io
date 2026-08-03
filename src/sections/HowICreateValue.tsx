@@ -995,7 +995,7 @@ export function HowICreateValue() {
           {/* 左翼：搁着的一叠牌 */}
           <div
             aria-hidden
-            className="absolute left-[3%] top-1/2 hidden -translate-y-1/2 md:block lg:left-[6%]"
+            className="absolute left-[1%] top-1/2 hidden -translate-y-1/2 xl:block 2xl:left-[3%]"
             style={{ animation: 'annot-in .7s .35s ease-out both' }}
           >
             <div className="relative h-[158px] w-[112px]">
@@ -1031,7 +1031,7 @@ export function HowICreateValue() {
           <svg
             aria-hidden
             viewBox="0 0 150 110"
-            className="absolute right-[2%] top-1/2 hidden w-[128px] -translate-y-1/2 rotate-[6deg] md:block lg:right-[5%] lg:w-[144px]"
+            className="absolute right-[0%] top-1/2 hidden w-[132px] -translate-y-1/2 rotate-[6deg] xl:block 2xl:right-[2%]"
             style={{ animation: 'float-soft 6.5s .8s ease-in-out infinite' }}
           >
             {/* 封底 */}
@@ -1056,14 +1056,14 @@ export function HowICreateValue() {
           </svg>
           <span
             aria-hidden
-            className="absolute right-[6%] top-[38%] hidden text-[12px] text-[#E8B64C] md:block lg:right-[9%]"
+            className="absolute right-[4%] top-[38%] hidden text-[12px] text-[#E8B64C] xl:block"
             style={{ animation: 'star-twinkle 3s .4s ease-in-out infinite' }}
           >
             ✦
           </span>
           <span
             aria-hidden
-            className="absolute right-[3.5%] top-[44%] hidden text-[8px] text-[#E8B64C] md:block lg:right-[6.5%]"
+            className="absolute right-[1.5%] top-[44%] hidden text-[8px] text-[#E8B64C] xl:block"
             style={{ animation: 'star-twinkle 2.4s 1.5s ease-in-out infinite' }}
           >
             ✦
