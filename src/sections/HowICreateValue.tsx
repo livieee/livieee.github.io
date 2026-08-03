@@ -204,12 +204,13 @@ function SparkLayer({ sparks }: { sparks: Array<{ id: number; x: number; y: numb
 }
 
 /** 地面法阵：正圆绘制，随父层 rotateX(90deg) 躺平成透视椭圆 */
-function GroundSeal() {
-  const G = '#C9A45C'
+function GroundSeal({ lit = false }: { lit?: boolean }) {
+  const G = lit ? '#F2C75A' : '#C9A45C'
+  const k = lit ? 1.9 : 1
   return (
     <svg viewBox="0 0 800 800" className="h-full w-full" fill="none" aria-hidden>
-      <circle cx="400" cy="400" r="380" stroke={G} strokeOpacity="0.75" strokeWidth="2.4" />
-      <circle cx="400" cy="400" r="356" stroke={G} strokeOpacity="0.5" strokeWidth="1.2" />
+      <circle cx="400" cy="400" r="380" stroke={G} strokeOpacity={0.75 * k} strokeWidth={2.4 * (lit ? 1.5 : 1)} />
+      <circle cx="400" cy="400" r="356" stroke={G} strokeOpacity={0.5 * k} strokeWidth={1.2 * (lit ? 1.6 : 1)} />
       {Array.from({ length: 28 }).map((_, i) => {
         const a = (i / 28) * Math.PI * 2
         return (
@@ -220,26 +221,26 @@ function GroundSeal() {
             x2={400 + Math.cos(a) * 380}
             y2={400 + Math.sin(a) * 380}
             stroke={G}
-            strokeOpacity="0.5"
-            strokeWidth="1.4"
+            strokeOpacity={0.5 * k}
+            strokeWidth={1.4 * (lit ? 1.6 : 1)}
           />
         )
       })}
-      <circle cx="400" cy="400" r="300" stroke={G} strokeOpacity="0.32" strokeWidth="1" strokeDasharray="6 12" />
-      <circle cx="400" cy="400" r="196" stroke={G} strokeOpacity="0.45" strokeWidth="1.2" />
-      <rect x="261" y="261" width="278" height="278" stroke={G} strokeOpacity="0.35" strokeWidth="1" />
+      <circle cx="400" cy="400" r="300" stroke={G} strokeOpacity={0.32 * k} strokeWidth={lit ? 1.8 : 1} strokeDasharray="6 12" />
+      <circle cx="400" cy="400" r="196" stroke={G} strokeOpacity={0.45 * k} strokeWidth={1.2 * (lit ? 1.6 : 1)} />
+      <rect x="261" y="261" width="278" height="278" stroke={G} strokeOpacity={0.35 * k} strokeWidth={lit ? 1.7 : 1} />
       <rect
         x="261"
         y="261"
         width="278"
         height="278"
         stroke={G}
-        strokeOpacity="0.35"
-        strokeWidth="1"
+        strokeOpacity={0.35 * k}
+        strokeWidth={lit ? 1.7 : 1}
         transform="rotate(45 400 400)"
       />
-      <circle cx="400" cy="400" r="110" stroke={G} strokeOpacity="0.3" strokeWidth="1" />
-      <path d={starPath(400, 400, 74, 30)} fill="#E8B64C" fillOpacity="0.14" stroke="#C0913C" strokeOpacity="0.5" strokeWidth="1.2" />
+      <circle cx="400" cy="400" r="110" stroke={G} strokeOpacity={0.3 * k} strokeWidth={lit ? 1.7 : 1} />
+      <path d={starPath(400, 400, 74, 30)} fill="#F0C24C" fillOpacity={lit ? 0.42 : 0.14} stroke={lit ? "#F2C75A" : "#C0913C"} strokeOpacity={lit ? 0.9 : 0.5} strokeWidth={lit ? 2.2 : 1.2} />
       {['北', '東', '南', '西'].map((t, i) => {
         const a = (i / 4) * Math.PI * 2 - Math.PI / 2
         return (
@@ -809,14 +810,17 @@ export function HowICreateValue() {
               aria-hidden
               className="pointer-events-none absolute left-1/2 top-1/2 h-[660px] w-[660px]"
               style={{
-                transform: 'translate(-50%, -50%) translateY(190px) rotateX(104deg)',
+                transform: 'translate(-50%, -50%) translateY(186px) rotateX(107deg)',
                 transformStyle: 'preserve-3d',
-                transition: 'filter .6s, opacity .6s',
-                opacity: active !== null ? 0.5 : 0.92,
-                filter: active !== null ? 'drop-shadow(0 0 14px rgba(199,154,75,0.45))' : 'none',
+                transition: 'filter .55s ease, opacity .55s ease',
+                opacity: 1,
+                filter:
+                  active !== null
+                    ? 'drop-shadow(0 0 10px rgba(242,199,90,0.95)) drop-shadow(0 0 34px rgba(242,199,90,0.7)) drop-shadow(0 0 80px rgba(232,182,76,0.45))'
+                    : 'none',
               }}
             >
-              <GroundSeal />
+              <GroundSeal lit={active !== null} />
             </div>
 
             <div
