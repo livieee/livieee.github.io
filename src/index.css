@@ -487,3 +487,11 @@ body {
   92%  { opacity: .5; }
   to   { transform: translateX(300px); opacity: 0; }
 }
+
+/* 会场提问：一条条浮起来，像现场在不断举手 */
+@keyframes q-rise {
+  0%      { opacity: 0; transform: translateY(14px) scale(.94); }
+  12%     { opacity: 1; transform: translateY(0) scale(1); }
+  46%     { opacity: 1; transform: translateY(-6px) scale(1); }
+  62%,100%{ opacity: 0; transform: translateY(-18px) scale(.96); }
+}

@@ -116,44 +116,52 @@ export function IEEEAwards() {
               Theta Health AI
             </h4>
 
-            {/* 舞台照最大 + 证书压角 + 问题气泡 */}
-            <div className="relative mt-3">
+            {/* 会场窗口：右边是不断流动的脑波，这边就是不断举起来的手 */}
+            <div className="relative mt-3 overflow-hidden rounded-[1rem] border border-plum/10 bg-[#0E1526]">
               <button
                 type="button"
                 onClick={() => setZoom(1)}
                 aria-label="View the pitch photo larger"
-                className="halftone relative block w-full cursor-zoom-in overflow-hidden rounded-[1rem] border border-plum/10"
+                className="halftone relative block w-full cursor-zoom-in"
               >
                 <img
                   src="/ieee/theta-podium.jpg"
                   alt="Olivia presenting Theta Health AI at IEEE Rising Stars"
                   loading="lazy"
-                  className="h-[172px] w-full -rotate-[0.6deg] scale-[1.04] object-cover object-[50%_24%] transition-transform duration-500 group-hover/th:scale-[1.09]"
+                  className="h-[172px] w-full object-cover object-[50%_24%] transition-transform duration-700 group-hover/th:scale-[1.04]"
                 />
               </button>
+
+              {/* 提问轮播：4 条错峰浮起，任意时刻只看到一两条，
+                  读起来像现场问题一个接一个上来，而不是四个标签同时贴着 */}
+              <ul aria-hidden className="pointer-events-none absolute inset-0 z-20">
+                {BUBBLES.map((q, i) => (
+                  <li
+                    key={q}
+                    className="absolute rounded-full bg-white/90 px-2.5 py-1 text-[10.5px] font-medium leading-none text-plum shadow-[0_6px_16px_-6px_rgba(0,0,0,0.6)]"
+                    style={{
+                      left: ['7%', '38%', '12%', '46%'][i],
+                      top: ['54%', '12%', '24%', '40%'][i],
+                      animation: `q-rise 9s ${i * 2.2}s ease-in-out infinite`,
+                      animationPlayState: side === 'taala' ? 'paused' : 'running',
+                    }}
+                  >
+                    {q}
+                  </li>
+                ))}
+              </ul>
+
+              <span className="pointer-events-none absolute right-2 top-2 z-20 rounded-full bg-white/90 px-2 py-[3px] text-[10px] font-medium text-[#C0913C] shadow-sm backdrop-blur">
+                1st Place ✦
+              </span>
+
               <img
-                src="/ieee/theta-cert.jpg"
+                src="/ieee/theta-cert-tight.jpg"
                 alt=""
                 aria-hidden
                 loading="lazy"
-                className="absolute -bottom-2 right-2 h-[58px] w-[82px] rotate-[5deg] rounded-[0.6rem] object-cover shadow-[0_12px_26px_-10px_rgba(58,36,64,0.75)] ring-1 ring-plum/15 transition-transform duration-500 group-hover/th:rotate-[2deg]"
+                className="absolute bottom-2.5 right-2.5 z-20 h-[62px] w-[88px] rotate-[4deg] rounded-[0.5rem] object-cover shadow-[0_12px_26px_-10px_rgba(0,0,0,0.9)] ring-1 ring-white/30 transition-transform duration-500 group-hover/th:rotate-[1deg]"
               />
-              {BUBBLES.map((q, i) => (
-                <span
-                  key={q}
-                  aria-hidden
-                  className="pointer-events-none absolute rounded-full bg-white/88 px-2 py-[3px] text-[10px] text-plum-muted shadow-sm backdrop-blur transition-all duration-500"
-                  style={{
-                    left: ['6%', '46%', '10%', '54%'][i],
-                    top: ['8%', '4%', '58%', '44%'][i],
-                    opacity: side === 'theta' ? 1 : 0,
-                    transform: side === 'theta' ? 'translateY(0)' : 'translateY(6px)',
-                    transitionDelay: `${i * 90}ms`,
-                  }}
-                >
-                  {q}
-                </span>
-              ))}
             </div>
 
             <p className="mt-4 flex items-center gap-1.5 font-hand text-[13px] text-plum-muted">

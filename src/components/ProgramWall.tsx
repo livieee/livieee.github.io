@@ -134,7 +134,7 @@ export function ProgramWall() {
             <p className="text-[11.5px] font-semibold leading-tight text-plum">
               Global Builder Challenge
             </p>
-            <span className="shrink-0 rounded-full bg-rose/12 px-1.5 py-[2px] text-[8px] font-medium leading-none text-rose">
+            <span className="shrink-0 rounded-full bg-rose/10 px-1.5 py-[2px] text-[8px] font-medium leading-none text-rose">
               Program Lead · E2E
             </span>
           </div>
