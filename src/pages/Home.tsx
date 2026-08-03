@@ -1,6 +1,5 @@
 import { Cursor } from '@/components/Cursor'
 import { Marquee } from '@/components/Marquee'
-import { CloudGate } from '@/components/ScrollGate'
 import { Navigation } from '@/sections/Navigation'
 import { Hero } from '@/sections/Hero'
 import { Impact } from '@/sections/Impact'
@@ -32,7 +31,6 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
-        <CloudGate />
         <Marquee />
         <Impact />
         <HowICreateValue />

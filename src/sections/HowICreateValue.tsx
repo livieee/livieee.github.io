@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { Reveal, WordReveal } from '@/components/Reveal'
-import { PortalGate } from '@/components/ScrollGate'
 
 /**
  * How I Create Value —— 两段：
@@ -1012,9 +1011,7 @@ export function HowICreateValue() {
         </div>
       </Reveal>
 
-      <PortalGate />
-
-      <Reveal className="-mt-16">
+      <Reveal className="mt-24">
         <p className="text-center font-hand text-[16px] text-plum-muted">
           … and these are what I reach for to do it ↓
         </p>
