@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { GlowEdge } from '@/components/GlowEdge'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { TiltCard } from '@/components/TiltCard'
@@ -97,6 +98,7 @@ export function Impact() {
               flagship case ✦
             </span>
           <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-cream-soft to-blush/40 p-8 transition-transform duration-500 md:p-14">
+            <GlowEdge />
             <div className="grid gap-10 md:grid-cols-[48fr_52fr]">
               <div className="flex flex-col justify-center">
                 <p className="label-text mb-4">01 · AI Product Development · Theta Health</p>
@@ -193,6 +195,7 @@ export function Impact() {
               built with Bosch ✦
             </span>
             <article id="case-askdata" className="group/card relative scroll-mt-24 rounded-[2rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-8 transition-transform duration-500 md:p-14">
+            <GlowEdge />
               <div className="grid items-center gap-12 md:grid-cols-12">
                 {/* 视觉：AskData UI（移动端先展示），整块可点击直达详情页 */}
                 <div className="order-1 md:col-span-8">
@@ -348,6 +351,7 @@ export function Impact() {
                 id="case-aivalley"
                 className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-10"
               >
+                <GlowEdge />
                 <div className="mb-8">
                   <ProgramWall />
                 </div>
@@ -401,6 +405,7 @@ export function Impact() {
                 id="case-yuto"
                 className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-10"
               >
+                <GlowEdge />
                 <div className="mb-7" data-cursor="VIEW">
                   <DailyReportCard />
                 </div>

@@ -133,3 +133,55 @@
   border-radius: inherit;
   z-index: 1;
 }
+
+/* ── GlowEdge：轮廓版 —— 父层锥形遮罩 × 子层透明环，可压任意背景 ── */
+.glow-edge {
+  --edge-proximity: 0;
+  --cursor-angle: 45deg;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 30;
+  opacity: calc((var(--edge-proximity) - 45) / 55);
+  transition: opacity 0.3s ease-out;
+  mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    black 22%,
+    transparent 36%,
+    transparent 64%,
+    black 78%
+  );
+  -webkit-mask-image: conic-gradient(
+    from var(--cursor-angle) at center,
+    black 22%,
+    transparent 36%,
+    transparent 64%,
+    black 78%
+  );
+}
+
+.glow-edge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(from 0deg, #d193a8, #b98acb, #e8b64c, #d193a8);
+  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  mask-clip: content-box, border-box;
+  mask-composite: exclude;
+  -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  -webkit-mask-clip: content-box, border-box;
+  -webkit-mask-composite: xor;
+}
+
+.glow-edge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 18px 0 rgb(232 182 76 / 14%),
+    inset 0 0 40px 0 rgb(209 147 168 / 12%);
+}
