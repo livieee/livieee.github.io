@@ -48,6 +48,9 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
   const [photoIdx, setPhotoIdx] = useState(0)
   const reduce = useReducedMotion()
   const { org, role, period, location, logo, logoWide, accent, bullets, reflection, relatedWork, photo, photos } = entry
+  // 时间轴褪色：最近的满色，越往过去饱和度越低（下限 .35）
+  const sat = Math.max(0.35, 1 - index * 0.16)
+  const fade = Math.max(0.82, 1 - index * 0.035)
   const photoList = photos ?? (photo ? [photo] : [])
 
   return (
@@ -115,16 +118,19 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
                 } ${
                   open
                     ? 'saturate-100 opacity-100'
-                    : 'saturate-[.55] opacity-90 group-hover/card:saturate-100 group-hover/card:opacity-100'
+                    : 'saturate-[var(--logo-sat)] opacity-[var(--logo-fade)] group-hover/card:saturate-100 group-hover/card:opacity-100'
                 }`}
+                style={{ '--logo-sat': sat, '--logo-fade': fade } as React.CSSProperties}
               />
             ) : (
               <span
                 aria-hidden
                 className={`flex h-full w-full items-center justify-center font-serif text-[15px] font-semibold text-white transition-all duration-500 ${
-                  open ? 'saturate-100 opacity-100' : 'saturate-[.6] opacity-95 group-hover/card:saturate-100 group-hover/card:opacity-100'
+                  open
+                    ? 'saturate-100 opacity-100'
+                    : 'saturate-[var(--logo-sat)] opacity-[var(--logo-fade)] group-hover/card:saturate-100 group-hover/card:opacity-100'
                 }`}
-                style={{ backgroundColor: accent }}
+                style={{ backgroundColor: accent, '--logo-sat': sat, '--logo-fade': fade } as React.CSSProperties}
               >
                 {org.charAt(0)}
               </span>
