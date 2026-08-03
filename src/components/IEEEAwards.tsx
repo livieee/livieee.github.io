@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { EEG_BANDS, eegPath } from '@/components/EEGTrace'
 import { Lightbox, type GalleryItem } from '@/components/Lightbox'
+import { PhotoRail } from '@/components/PhotoRail'
 
 /**
  * Recognition · IEEE Rising Stars 2026 —— 两个一等奖，一条人本主线。
@@ -120,13 +122,13 @@ export function IEEEAwards() {
                 type="button"
                 onClick={() => setZoom(1)}
                 aria-label="View the pitch photo larger"
-                className="block w-full cursor-zoom-in overflow-hidden rounded-[1rem] border border-plum/10"
+                className="halftone relative block w-full cursor-zoom-in overflow-hidden rounded-[1rem] border border-plum/10"
               >
                 <img
                   src="/ieee/theta-podium.jpg"
                   alt="Olivia presenting Theta Health AI at IEEE Rising Stars"
                   loading="lazy"
-                  className="h-[148px] w-full -rotate-[0.6deg] scale-[1.04] object-cover object-[50%_24%] transition-transform duration-500 group-hover/th:-translate-y-[5px]"
+                  className="h-[172px] w-full -rotate-[0.6deg] scale-[1.04] object-cover object-[50%_24%] transition-transform duration-500 group-hover/th:scale-[1.09]"
                 />
               </button>
               <img
@@ -134,7 +136,7 @@ export function IEEEAwards() {
                 alt=""
                 aria-hidden
                 loading="lazy"
-                className="absolute -bottom-2 right-2 h-[58px] w-[82px] rotate-[5deg] rounded-[0.5rem] border-2 border-white object-cover shadow-[0_10px_22px_-10px_rgba(58,36,64,0.6)] transition-transform duration-500 group-hover/th:rotate-[2deg]"
+                className="absolute -bottom-2 right-2 h-[58px] w-[82px] rotate-[5deg] rounded-[0.6rem] object-cover shadow-[0_12px_26px_-10px_rgba(58,36,64,0.75)] ring-1 ring-plum/15 transition-transform duration-500 group-hover/th:rotate-[2deg]"
               />
               {BUBBLES.map((q, i) => (
                 <span
@@ -215,24 +217,33 @@ export function IEEEAwards() {
 
             {/* 实验窗口 */}
             <div className="relative mt-3 overflow-hidden rounded-[1rem] border border-plum/10 bg-[#0E1526]">
+              {/* 与案例页同一套频带走线：δ 慢而大 → γ 快而小。
+                  画两份首尾相接，drift 走满一份就无缝回到起点。 */}
               <svg
-                viewBox="0 0 400 100"
+                viewBox="0 0 800 100"
                 aria-hidden
-                className="pointer-events-none absolute inset-0 z-10 h-full w-[200%] opacity-35 mix-blend-screen"
+                className="pointer-events-none absolute inset-0 z-10 h-full w-[200%] mix-blend-screen"
                 preserveAspectRatio="none"
-                style={{ animation: 'eeg-drift 16s linear infinite' }}
+                style={{
+                  animation: 'eeg-drift 22s linear infinite',
+                  opacity: side === 'taala' ? 0.5 : 0.3,
+                  transition: 'opacity .5s',
+                }}
               >
-                {[22, 50, 78].map((y, r) => (
-                  <path
-                    key={y}
-                    d={`M0 ${y} ${Array.from({ length: 40 })
-                      .map((_, i) => `L${i * 10} ${y + Math.sin(i * (0.7 + r * 0.4)) * (5 + r * 2)}`)
-                      .join(' ')}`}
-                    stroke={['#7FD3E8', '#C9A6F2', '#F2A0C4'][r]}
-                    strokeOpacity="0.55"
-                    strokeWidth="1"
-                    fill="none"
-                  />
+                {[0, 400].map((ox) => (
+                  <g key={ox} transform={`translate(${ox} 0)`}>
+                    {EEG_BANDS.map((b, r) => (
+                      <path
+                        key={b.name}
+                        d={eegPath(11 + r * 19.5, b.freq, b.amp * 0.62, r * 1.3, 400)}
+                        stroke={b.c}
+                        strokeOpacity="0.75"
+                        strokeWidth="1"
+                        strokeLinecap="round"
+                        fill="none"
+                      />
+                    ))}
+                  </g>
                 ))}
               </svg>
 
@@ -240,13 +251,13 @@ export function IEEEAwards() {
                 type="button"
                 onClick={() => setZoom(6)}
                 aria-label="View the generative art larger"
-                className="relative block w-full cursor-zoom-in"
+                className="halftone relative block w-full cursor-zoom-in"
               >
                 <img
                   src="/ieee/mode-calm.jpg"
                   alt="The Art Mode silhouette — a calm, blue-toned aura"
                   loading="lazy"
-                  className="h-[148px] w-full object-cover transition-transform duration-700 group-hover/ta:-translate-y-[5px]"
+                  className="h-[172px] w-full object-cover transition-transform duration-700 group-hover/ta:scale-[1.04]"
                 />
               </button>
 
@@ -254,20 +265,6 @@ export function IEEEAwards() {
                 1st Place ✦
               </span>
 
-              <img
-                src="/ieee/mode-explain.jpg"
-                alt=""
-                aria-hidden
-                loading="lazy"
-                className="absolute bottom-2 left-2 z-20 h-[48px] w-[72px] -rotate-[4deg] rounded-[0.4rem] border-2 border-white/85 object-cover shadow-[0_10px_22px_-10px_rgba(0,0,0,0.7)] transition-transform duration-500 group-hover/ta:-rotate-[1deg]"
-              />
-              <img
-                src="/ieee/poster.jpg"
-                alt=""
-                aria-hidden
-                loading="lazy"
-                className="absolute -bottom-3 -right-3 z-20 h-[52px] w-[72px] rotate-[8deg] rounded-[0.4rem] border-2 border-white/85 object-cover shadow-[0_10px_22px_-10px_rgba(0,0,0,0.7)]"
-              />
             </div>
 
             <p className="mt-4 flex items-center gap-1.5 font-hand text-[13px] text-plum-muted">
@@ -308,30 +305,9 @@ export function IEEEAwards() {
           </div>
         </div>
 
-        {/* 现场照：一条窄带 */}
-        <div className="relative mt-6">
-          <div className="flex gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {SHOTS.map((s, i) => (
-              <button
-                key={s.src}
-                type="button"
-                onClick={() => setZoom(i)}
-                aria-label={`View larger: ${s.alt}`}
-                className="group/is h-[62px] w-[88px] shrink-0 cursor-zoom-in overflow-hidden rounded-[0.6rem] border border-plum/10 bg-white"
-              >
-                <img
-                  src={s.src}
-                  alt={s.alt}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover/is:scale-[1.08]"
-                />
-              </button>
-            ))}
-          </div>
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[#EDF0F8] to-transparent"
-          />
+        {/* 现场照：跟案例页一样自己走，没人会去拖一条横条 */}
+        <div className="mt-6">
+          <PhotoRail items={SHOTS} onZoom={setZoom} duration={78} size="sm" tone="light" bleed={false} />
         </div>
       </div>
 

@@ -9,7 +9,7 @@
  * 频段口径与装置里的 Explain 模式一致（BAND_META）。
  */
 
-const BANDS = [
+export const EEG_BANDS = [
   { k: 'δ', name: 'DELTA', hz: '0.5–4 Hz', freq: 2.4, amp: 12.5, c: '#7A9CC6' },
   { k: 'θ', name: 'THETA', hz: '4–8 Hz', freq: 4.4, amp: 10, c: '#7FD3E8' },
   { k: 'α', name: 'ALPHA', hz: '8–13 Hz', freq: 7.8, amp: 8, c: '#8FAE8B' },
@@ -19,14 +19,14 @@ const BANDS = [
 
 const W = 300
 const STEP = 1.5
-const N = Math.round(W / STEP)
 
 /** 三个相位错开的正弦叠加 + 慢包络 —— 让走线不规整 */
-function trace(mid: number, freq: number, amp: number, seed: number) {
+export function eegPath(mid: number, freq: number, amp: number, seed: number, width = W) {
+  const n = Math.round(width / STEP)
   let d = ''
-  for (let k = 0; k <= N; k++) {
+  for (let k = 0; k <= n; k++) {
     const x = k * STEP
-    const t = (x / W) * Math.PI * 2
+    const t = (x / width) * Math.PI * 2
     const env = 0.62 + 0.38 * Math.sin(t * 0.85 + seed * 1.7)
     const y =
       mid -
@@ -42,13 +42,13 @@ function trace(mid: number, freq: number, amp: number, seed: number) {
 
 export function EEGTrace() {
   const rowH = 34
-  const H = BANDS.length * rowH
+  const H = EEG_BANDS.length * rowH
 
   return (
     <div className="flex gap-4">
       {/* 频带标签：让这张图说得出自己画的是什么 */}
       <ul className="flex h-[170px] shrink-0 flex-col">
-        {BANDS.map((b) => (
+        {EEG_BANDS.map((b) => (
           <li key={b.name} className="flex flex-1 flex-col justify-center leading-none">
             <span className="flex items-baseline gap-1.5">
               <span className="font-serif text-[15px]" style={{ color: b.c }}>
@@ -79,9 +79,9 @@ export function EEGTrace() {
         </defs>
 
         <g mask="url(#eeg-mask)">
-          {BANDS.map((b, r) => {
+          {EEG_BANDS.map((b, r) => {
             const mid = r * rowH + rowH / 2
-            const d = trace(mid, b.freq, b.amp, r * 1.3)
+            const d = eegPath(mid, b.freq, b.amp, r * 1.3)
             return (
               <g key={b.name}>
                 {/* 基线：只是一条极淡的参考，不构成网格 */}
