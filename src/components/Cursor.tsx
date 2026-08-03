@@ -24,6 +24,9 @@ export function Cursor() {
       const target = e.target as HTMLElement
       const label = target.closest('[data-cursor]')?.getAttribute('data-cursor') ?? ''
       const interactive = target.closest('a, button, [data-hover]')
+      const inWand = !!target.closest('[data-wand]')
+      dot.classList.toggle('is-wand', inWand)
+      ring.classList.toggle('is-wand', inWand)
       ring.classList.toggle('has-label', !!label)
       ring.classList.toggle('is-hover', !label && !!interactive)
       const labelEl = ring.querySelector('.cursor-label')

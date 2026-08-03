@@ -273,3 +273,9 @@
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.025); }
 }
+
+/* 魔杖区域里收起默认光标点和光圈 */
+.cursor-dot.is-wand,
+.cursor-ring.is-wand {
+  opacity: 0;
+}

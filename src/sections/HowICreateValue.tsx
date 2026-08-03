@@ -168,6 +168,51 @@ function starPath(cx: number, cy: number, R: number, r: number) {
   return d + 'Z'
 }
 
+
+/** 跟随指针的星杖光标（星头对准指针位置） */
+function WandCursor({ pos }: { pos: { x: number; y: number } | null }) {
+  if (!pos) return null
+  return (
+    <span aria-hidden className="pointer-events-none absolute z-40" style={{ left: pos.x, top: pos.y }}>
+      <svg
+        viewBox="0 0 64 180"
+        className="w-[42px]"
+        style={{ transform: 'translate(-13px, -12px) rotate(32deg)', transformOrigin: '13px 12px' }}
+      >
+        <defs>
+          <linearGradient id="wand-rod" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#F4A8C4" />
+            <stop offset="1" stopColor="#E88BB0" />
+          </linearGradient>
+        </defs>
+        <rect x="28.5" y="52" width="7" height="118" rx="3.5" fill="url(#wand-rod)" stroke="#D9689A" strokeWidth="0.9" />
+        <rect x="27" y="60" width="10" height="7" rx="2" fill="#E8B64C" stroke="#C0913C" strokeWidth="0.8" />
+        <rect x="27" y="158" width="10" height="7" rx="2" fill="#E8B64C" stroke="#C0913C" strokeWidth="0.8" />
+        <circle cx="32" cy="30" r="21" fill="#FFF7E8" fillOpacity="0.85" stroke="#E8B64C" strokeWidth="3.2" />
+        <circle cx="32" cy="30" r="25" fill="none" stroke="#E8B64C" strokeOpacity="0.45" strokeWidth="1" />
+        {[0, 60, 120, 180, 240, 300].map((deg) => (
+          <circle
+            key={deg}
+            cx={32 + 25 * Math.cos((deg * Math.PI) / 180)}
+            cy={30 + 25 * Math.sin((deg * Math.PI) / 180)}
+            r="1.4"
+            fill="#E8B64C"
+          />
+        ))}
+        <path d={starPath(32, 30, 12.5, 5.2)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.1" strokeLinejoin="round" />
+        <path d="M10 34c4-7 8-9 14-9-5 4-7 8-8 14-3-1-5-2.5-6-5Z" fill="#FFF1F5" stroke="#E8B64C" strokeWidth="0.9" />
+        <path d="M54 34c-4-7-8-9-14-9 5 4 7 8 8 14 3-1 5-2.5 6-5Z" fill="#FFF1F5" stroke="#E8B64C" strokeWidth="0.9" />
+      </svg>
+      <span
+        className="absolute -left-[3px] -top-[4px] text-[9px] text-[#E8B64C]"
+        style={{ animation: 'star-twinkle 1.6s ease-in-out infinite' }}
+      >
+        ✦
+      </span>
+    </span>
+  )
+}
+
 /** 牌背：大金星罗盘纹章（0.45 竖长比例，与官方扫图一致） */
 function CardBack() {
   const star = (cx: number, cy: number, R: number, r: number) => {
@@ -533,6 +578,7 @@ export function HowICreateValue() {
   const [dealt, setDealt] = useState(false)
   const [flash, setFlash] = useState(false)
   const [wand, setWand] = useState<{ x: number; y: number } | null>(null)
+  const [wandTool, setWandTool] = useState<{ x: number; y: number } | null>(null)
   const putBack = () => {
     setActive(null)
     setFlash(true)
@@ -579,6 +625,7 @@ export function HowICreateValue() {
       <Reveal className="mt-4" y={30}>
         <div
           ref={fanRef}
+          data-wand
           className="relative mx-auto h-[590px] w-full max-w-5xl cursor-none select-none [&_button]:cursor-none"
           onPointerMove={(e) => {
             if (e.pointerType === 'touch') return
@@ -719,50 +766,7 @@ export function HowICreateValue() {
           ))}
 
 
-          {/* 鼠标化身星杖 */}
-          {wand && (
-            <span
-              aria-hidden
-              className="pointer-events-none absolute z-40"
-              style={{ left: wand.x, top: wand.y }}
-            >
-              <svg
-                viewBox="0 0 64 180"
-                className="w-[42px]"
-                style={{ transform: 'translate(-13px, -12px) rotate(32deg)', transformOrigin: '13px 12px' }}
-              >
-                <defs>
-                  <linearGradient id="wand-rod" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stopColor="#F4A8C4" />
-                    <stop offset="1" stopColor="#E88BB0" />
-                  </linearGradient>
-                </defs>
-                <rect x="28.5" y="52" width="7" height="118" rx="3.5" fill="url(#wand-rod)" stroke="#D9689A" strokeWidth="0.9" />
-                <rect x="27" y="60" width="10" height="7" rx="2" fill="#E8B64C" stroke="#C0913C" strokeWidth="0.8" />
-                <rect x="27" y="158" width="10" height="7" rx="2" fill="#E8B64C" stroke="#C0913C" strokeWidth="0.8" />
-                <circle cx="32" cy="30" r="21" fill="#FFF7E8" fillOpacity="0.85" stroke="#E8B64C" strokeWidth="3.2" />
-                <circle cx="32" cy="30" r="25" fill="none" stroke="#E8B64C" strokeOpacity="0.45" strokeWidth="1" />
-                {[0, 60, 120, 180, 240, 300].map((deg) => (
-                  <circle
-                    key={deg}
-                    cx={32 + 25 * Math.cos((deg * Math.PI) / 180)}
-                    cy={30 + 25 * Math.sin((deg * Math.PI) / 180)}
-                    r="1.4"
-                    fill="#E8B64C"
-                  />
-                ))}
-                <path d={starPath(32, 30, 12.5, 5.2)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.1" strokeLinejoin="round" />
-                <path d="M10 34c4-7 8-9 14-9-5 4-7 8-8 14-3-1-5-2.5-6-5Z" fill="#FFF1F5" stroke="#E8B64C" strokeWidth="0.9" />
-                <path d="M54 34c-4-7-8-9-14-9 5 4 7 8 8 14 3-1 5-2.5 6-5Z" fill="#FFF1F5" stroke="#E8B64C" strokeWidth="0.9" />
-              </svg>
-              <span
-                className="absolute -left-[3px] -top-[4px] text-[9px] text-[#E8B64C]"
-                style={{ animation: 'star-twinkle 1.6s ease-in-out infinite' }}
-              >
-                ✦
-              </span>
-            </span>
-          )}
+          <WandCursor pos={wand} />
 
           {/* 牌圈后的暖金光 */}
           <span
@@ -971,7 +975,17 @@ export function HowICreateValue() {
 
       {/* ── ② 工具法阵：What I bring to the table ───────────────── */}
       <Reveal className="mt-8" y={28}>
-        <div className="relative">
+        <div
+          data-wand
+          className="relative cursor-none"
+          onPointerMove={(e) => {
+            if (e.pointerType === 'touch') return
+            const r = e.currentTarget.getBoundingClientRect()
+            setWandTool({ x: e.clientX - r.left, y: e.clientY - r.top })
+          }}
+          onPointerLeave={() => setWandTool(null)}
+        >
+          <WandCursor pos={wandTool} />
           {/* 左翼：搁着的一叠牌 */}
           <div
             aria-hidden
