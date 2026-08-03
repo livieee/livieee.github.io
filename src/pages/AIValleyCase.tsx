@@ -257,8 +257,8 @@ type Program = {
   weight: 'flagship' | 'medium' | 'small' | 'wall'
   /** 卡内附 run of show */
   ros?: boolean
-  /** 卡内附现场物料照 */
-  snap?: { src: string; alt: string; cap: string }
+  /** 卡内附现场照/物料照（1–2 张） */
+  snaps?: Array<{ src: string; alt: string; cap: string }>
   /** 活动墙一句话 */
   oneliner?: string
   /** AI Valley 之外的独立项目 */
@@ -371,14 +371,21 @@ const PROGRAMS: Program[] = [
     where: 'Sky9 Capital, San Francisco',
     size: '358 registered · 50 engineers, 8 hours',
     n: 358,
-    badge: 'Community Partner · Host',
+    badge: 'Community Partner',
     weight: 'medium',
-    snap: {
-      src: '/events/gmi-perk.jpg',
-      alt: 'Sponsor perk creative — GMI-branded tumbler, first 20 sign-ups get a free mug',
-      cap: 'the sponsor perk I turned into a sign-up incentive ✦',
-    },
-    role: 'Community partner & host — ran AI Valley’s side of the day end to end: the marketing beforehand, the community pitch on stage, and judging kept aligned across Dify, GMI Cloud and HydraDB.',
+    snaps: [
+      {
+        src: '/events/agent-recall-floor.jpg',
+        alt: 'Overhead view of the Total Agent Recall floor mid-demo — builders gathered around the presentation desks',
+        cap: 'the floor, mid-demos ✦',
+      },
+      {
+        src: '/events/gmi-perk.jpg',
+        alt: 'Sponsor perk creative — GMI-branded tumbler, first 20 sign-ups get a free mug',
+        cap: 'the sponsor perk I made ✦',
+      },
+    ],
+    role: 'Community partner — helped organise the day on site: the marketing beforehand, and judging kept aligned across Dify, GMI Cloud and HydraDB.',
     partners: 'GMI Cloud · Photon · HydraDB · Dify',
     caps: ['Community', 'Strategic partnerships', 'GTM'],
     tier: 3,
@@ -400,11 +407,13 @@ const PROGRAMS: Program[] = [
     n: 422,
     badge: 'Day-of Coordination · Volunteer',
     weight: 'medium',
-    snap: {
-      src: '/events/photostrip-tight.jpg',
-      alt: 'Printed photo-booth strips from Build What You Love',
-      cap: 'photo-booth strips people took home ✦',
-    },
+    snaps: [
+      {
+        src: '/events/photostrip-tight.jpg',
+        alt: 'Printed photo-booth strips from Build What You Love',
+        cap: 'photo-booth strips people took home ✦',
+      },
+    ],
     role: 'Ran the day-of coordination across the whole day, and made the volunteer certificates afterwards.',
     partners: 'AI Valley · Bond AI · Replit · Vercel · Daytona · MiniMax · BEM',
     caps: ['Program ops', 'Community'],
@@ -460,6 +469,13 @@ const PROGRAMS: Program[] = [
     badge: 'On-site Coordination',
     weight: 'small',
     role: 'On-site coordination on the day — nine speakers, one schedule.',
+    snaps: [
+      {
+        src: '/events/minimax-day.jpg',
+        alt: 'Founders and builders over lunch between sessions at MiniMax AI Founder Day',
+        cap: 'lunch between sessions ✦',
+      },
+    ],
     partners: 'The AI Collective · AI Valley · MiniMax',
     caps: ['Community', 'Program ops'],
     tier: 3,
@@ -568,17 +584,21 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           ))}
         </span>
 
-        {/* 现场物料：直接贴在卡里 */}
-        {p.snap && (
-          <figure className="mt-3.5">
-            <img
-              src={p.snap.src}
-              alt={p.snap.alt}
-              loading="lazy"
-              className="h-28 w-full rounded-[0.9rem] border border-plum/10 object-cover"
-            />
-            <figcaption className="mt-1.5 font-hand text-[13px] text-plum-muted">{p.snap.cap}</figcaption>
-          </figure>
+        {/* 现场照/物料：直接贴在卡里 */}
+        {p.snaps && (
+          <div className={`mt-3.5 grid gap-3 ${p.snaps.length > 1 ? 'grid-cols-2' : ''}`}>
+            {p.snaps.map((sn) => (
+              <figure key={sn.src}>
+                <img
+                  src={sn.src}
+                  alt={sn.alt}
+                  loading="lazy"
+                  className="h-28 w-full rounded-[0.9rem] border border-plum/10 object-cover"
+                />
+                <figcaption className="mt-1.5 font-hand text-[13px] leading-tight text-plum-muted">{sn.cap}</figcaption>
+              </figure>
+            ))}
+          </div>
         )}
 
         {(p.posts || p.ros) && (
