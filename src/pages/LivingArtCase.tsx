@@ -194,6 +194,15 @@ export function LivingArtCase() {
   const [mode, setMode] = useState<'art' | 'explain'>('art')
   const [arch, setArch] = useState(false)
   const [zoom, setZoom] = useState<number | null>(null)
+  const [lifted, setLifted] = useState(false)
+
+  // 滚动后给悬浮导航一层投影，让它从背景里浮起来
+  useEffect(() => {
+    const onScroll = () => setLifted(window.scrollY > 100)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   const m = MODES[mode]
 
   const CHAPTERS: Chapter[] = [
@@ -415,13 +424,15 @@ export function LivingArtCase() {
                     aria-hidden
                     className="absolute -top-2 left-1/2 h-4 w-12 -translate-x-1/2 -rotate-2 rounded-[2px] bg-[#CBB8F5]/45 shadow-sm"
                   />
-                  <img
-                    src={cc.img}
-                    alt=""
-                    aria-hidden
-                    loading="lazy"
-                    className="h-[104px] w-full rounded-[0.6rem] object-cover"
-                  />
+                  <span className="halftone relative block overflow-hidden rounded-[0.6rem]">
+                    <img
+                      src={cc.img}
+                      alt=""
+                      aria-hidden
+                      loading="lazy"
+                      className="h-[104px] w-full object-cover"
+                    />
+                  </span>
                   <figcaption className="px-1 pb-1 pt-3">
                     <p className="font-serif text-[16px] font-light text-[#2E2438]">{cc.k}</p>
                     <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#5C4F63]">{cc.v}</p>
@@ -456,12 +467,14 @@ export function LivingArtCase() {
                     ['-rotate-[1.5deg]', 'rotate-[1deg]', '-rotate-[0.8deg]'][k]
                   }`}
                 >
-                  <img
-                    src={sh.src}
-                    alt={sh.alt}
-                    loading="lazy"
-                    className="aspect-[4/3] w-full rounded-[0.5rem] object-cover"
-                  />
+                  <span className="halftone relative block overflow-hidden rounded-[0.5rem]">
+                    <img
+                      src={sh.src}
+                      alt={sh.alt}
+                      loading="lazy"
+                      className="aspect-[4/3] w-full object-cover"
+                    />
+                  </span>
                   <span className="mt-2 block px-0.5 text-left font-hand text-[13px] leading-tight text-[#5C4F63]">
                     {sh.cap}
                   </span>
@@ -520,27 +533,39 @@ export function LivingArtCase() {
         ))}
       </div>
 
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0D1020]/75 backdrop-blur-md">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Case">
+      {/* 悬浮胶囊导航：不贴边通栏，让顶部也能透出背景 */}
+      <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 md:pt-6">
+        <nav
+          aria-label="Case"
+          className={`glass-edge inline-flex items-center gap-1 rounded-full bg-[#0D1020]/55 p-1.5 backdrop-blur-xl transition-shadow duration-500 ${
+            lifted ? 'shadow-[0_16px_40px_-18px_rgba(0,0,0,0.9)]' : ''
+          }`}
+        >
           <Link
             to="/#impact"
-            className="group/back inline-flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.14em] text-white/60 transition-colors hover:text-white"
+            className="group/back inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white sm:px-3.5"
           >
             <span aria-hidden className="transition-transform duration-300 group-hover/back:-translate-x-0.5">←</span>
-            <span className="hidden sm:inline">Back to work</span>
-            <span className="sm:hidden">Work</span>
+            <span className="hidden sm:inline">Work</span>
           </Link>
-          <div className="flex items-center gap-3 md:gap-5">
-            <Link to="/" className="font-serif text-[15px] text-white/90 md:text-[17px]">
-              ⌐ Hi, I'm Olivia <span aria-hidden className="text-[#CBB8F5]">↘</span>
-            </Link>
-            <Link
-              to="/#contact"
-              className="whitespace-nowrap rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-[12px] font-medium text-white/90 backdrop-blur-sm transition-colors hover:border-[#CBB8F5]/60 hover:bg-white/20 md:px-4 md:text-[12.5px]"
-            >
-              Say Hello
-            </Link>
-          </div>
+
+          <span aria-hidden className="mx-0.5 h-5 w-px bg-white/10" />
+
+          <Link
+            to="/"
+            className="rounded-full px-2.5 py-1.5 font-serif text-[15px] text-white/90 transition-colors hover:bg-white/10 md:px-3 md:text-[16px]"
+          >
+            ⌐ Hi, I'm Olivia <span aria-hidden className="text-[#CBB8F5]">↘</span>
+          </Link>
+
+          <span aria-hidden className="mx-0.5 hidden h-5 w-px bg-white/10 sm:block" />
+
+          <Link
+            to="/#contact"
+            className="glass-edge whitespace-nowrap rounded-full bg-white/10 px-3.5 py-1.5 text-[12px] font-medium text-white/90 transition-colors duration-300 hover:bg-white/20 md:px-4 md:text-[12.5px]"
+          >
+            Say Hello <span aria-hidden className="text-white/45">↗</span>
+          </Link>
         </nav>
       </header>
 

@@ -47,7 +47,7 @@ export function PhotoRail({
                 aria-label={`View larger: ${it.alt}`}
                 className="group/ph block cursor-zoom-in text-left"
               >
-                <span className="block overflow-hidden rounded-[1rem] border border-white/10 bg-black/40">
+                <span className="halftone relative block overflow-hidden rounded-[1rem] border border-white/10 bg-black/40">
                   <img
                     src={it.src}
                     alt={k < order.length ? it.alt : ''}

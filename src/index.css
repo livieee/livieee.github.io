@@ -49,14 +49,55 @@
   }
   /* ── Dreamcore 暗场材质代币 ────────────────────────────────
      只用这几档，避免再出现不在 Tailwind 刻度上的 bg-white/8 这类失效值。 */
+  /* ── 玻璃边缘折射 ──────────────────────────────────────────
+     真实玻璃的边不是四周均匀的一条线：光从上下打进来，只有上下缘会聚亮，
+     两侧几乎看不见。用 mask-composite 把一层渐变裁成 1.4px 的边环来模拟，
+     比 border-white/20 那种死边多出一层厚度。 */
+  .glass-edge {
+    position: relative;
+  }
+  .glass-edge::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.4px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.15) 20%,
+      transparent 42%,
+      transparent 58%,
+      rgba(255, 255, 255, 0.15) 80%,
+      rgba(255, 255, 255, 0.45) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  /* 半调网点：给照片一点印刷质感，别让它们看起来像贴图 */
+  .halftone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 5px 5px;
+    opacity: 0.12;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
   .glass-panel {
-    @apply rounded-[1.3rem] border border-white/10 bg-white/[0.05] backdrop-blur-md;
+    @apply glass-edge rounded-[1.3rem] border border-white/10 bg-white/[0.05] backdrop-blur-md;
   }
   .glass-panel-strong {
-    @apply rounded-[1.3rem] border border-white/20 bg-white/10 backdrop-blur-md;
+    @apply glass-edge rounded-[1.3rem] border border-white/20 bg-white/10 backdrop-blur-md;
   }
   .glass-pill {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[12.5px] font-medium text-white/90 backdrop-blur-md transition-colors duration-300 hover:border-[#CBB8F5]/60 hover:bg-white/20;
+    @apply glass-edge inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[12.5px] font-medium text-white/90 backdrop-blur-md transition-colors duration-300 hover:border-[#CBB8F5]/60 hover:bg-white/20;
   }
   .glass-pill-solid {
     @apply inline-flex items-center gap-1.5 rounded-full bg-white/90 px-4 py-2 text-[12.5px] font-medium text-plum transition-transform duration-300 hover:-translate-y-0.5;
