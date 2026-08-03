@@ -518,26 +518,53 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           : 'border-plum/10 bg-white/60 hover:border-plum/25 hover:bg-white'
       }`}
     >
-      <a
-        href={p.href}
-        target="_blank"
-        rel="noreferrer"
-        className={`relative block shrink-0 overflow-hidden ${lead ? 'sm:w-[40%]' : ''}`}
-        aria-label={`${p.name} — open the event page`}
-      >
-        <img
-          src={p.cover}
-          alt=""
-          aria-hidden
-          loading="lazy"
-          className={`aspect-[2/1] w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03] ${
-            lead ? 'sm:aspect-auto sm:h-full' : ''
-          }`}
-        />
-        <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
-          Luma <span aria-hidden>↗</span>
-        </span>
-      </a>
+      {lead ? (
+        <div className="grid shrink-0 grid-cols-2 sm:w-[52%]">
+          {[
+            { href: p.href, img: p.cover, tag: 'Luma' },
+            { href: 'https://build-with-glm-5-1-challenge.devpost.com/', img: '/events/glm-devpost.jpg', tag: 'Devpost' },
+          ].map((m) => (
+            <a
+              key={m.tag}
+              href={m.href}
+              target="_blank"
+              rel="noreferrer"
+              className="group/m relative block overflow-hidden"
+              aria-label={`${p.name} — open on ${m.tag}`}
+            >
+              <img
+                src={m.img}
+                alt=""
+                aria-hidden
+                loading="lazy"
+                className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover/m:scale-[1.04] sm:aspect-auto sm:h-full"
+              />
+              <span className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-white/90 px-2 py-[3px] text-[10px] font-medium text-plum shadow-sm backdrop-blur">
+                {m.tag} <span aria-hidden>↗</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <a
+          href={p.href}
+          target="_blank"
+          rel="noreferrer"
+          className="relative block shrink-0 overflow-hidden"
+          aria-label={`${p.name} — open the event page`}
+        >
+          <img
+            src={p.cover}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            className="aspect-[2/1] w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03]"
+          />
+          <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
+            Luma <span aria-hidden>↗</span>
+          </span>
+        </a>
+      )}
 
       <div className="flex flex-1 flex-col p-5 md:p-6">
         <div className="flex items-start justify-between gap-4">
@@ -987,8 +1014,8 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
   },
   {
     src: '/events/agent-recall-judging.jpg',
-    alt: 'A judge reviewing a project at Total Agent Recall, builders in the background',
-    cap: 'Total Agent Recall — judging in progress',
+    alt: 'A builder heads-down on his laptop at Total Agent Recall, teams working in the background',
+    cap: 'Total Agent Recall — heads-down, mid-build',
   },
   {
     src: '/events/minimax-day.jpg',
@@ -1133,10 +1160,9 @@ export function AIValleyCase() {
         </Reveal>
         <Reveal delay={0.25}>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
-            A program has users, a funnel and a retention problem, same as any product — so I ran
-            them that way. Source the partner before the date. Design what winning means. Write the
-            bar down before anyone shows up. Close the loop afterwards, so the next one starts warm
-            instead of cold.
+            A program has users, a funnel and a retention problem — same as any product. So I ran
+            them that way: partner sourced before the date, the bar written down before anyone
+            shows up, the loop closed after.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {CAPS.map((s) => (
@@ -1185,18 +1211,6 @@ export function AIValleyCase() {
         </Reveal>
         <Reveal className="mt-8" y={24}>
           <FeaturedProjects />
-        </Reveal>
-        <Reveal className="mt-5">
-          <div className="flex flex-wrap gap-2">
-            <a
-              href="https://build-with-glm-5-1-challenge.devpost.com/"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-rose/50"
-            >
-              Devpost <span aria-hidden>↗</span>
-            </a>
-          </div>
         </Reveal>
 
         {/* ── 二 · 全部九场 ─────────────────────────────────────── */}
