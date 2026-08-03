@@ -270,6 +270,8 @@ type Program = {
   cover: string
   /** 封面裁切焦点（object-position），默认居中 */
   pos?: string
+  /** 方形海报：完整显示（模糊同图衬底），不裁切 */
+  fit?: boolean
   /** 关联的 LinkedIn 帖（可多条）：点击卡片内展开 */
   posts?: Array<{
     label: string
@@ -305,7 +307,7 @@ const PROGRAMS: Program[] = [
     tier: 1,
     href: 'https://luma.com/32jfoybh',
     cover: '/events/luma/glm.jpg',
-    pos: '50% 50%',
+    fit: true,
     posts: [
       {
         label: 'I wrote the launch post',
@@ -356,7 +358,7 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/GTCTALK',
     cover: '/events/luma/gtc-talk.jpg',
-    pos: '50% 48%',
+    fit: true,
   },
   {
     name: '2026 GTC AI Demo Day',
@@ -371,7 +373,7 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/GTCDEMODAY',
     cover: '/events/luma/gtc-demoday.jpg',
-    pos: '50% 50%',
+    fit: true,
   },
   {
     name: 'Total Agent Recall Hackathon',
@@ -398,7 +400,7 @@ const PROGRAMS: Program[] = [
     tier: 3,
     href: 'https://luma.com/snixr7yb',
     cover: '/events/luma/agent-recall.jpg',
-    pos: '50% 0%',
+    fit: true,
     posts: [
       {
         label: 'The host’s recap',
@@ -437,7 +439,7 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/ic3l89gi',
     cover: '/events/luma/women.jpg',
-    pos: '50% 0%',
+    fit: true,
     posts: [
       {
         label: 'The organiser’s write-up',
@@ -464,7 +466,7 @@ const PROGRAMS: Program[] = [
     tier: 3,
     href: 'https://luma.com/6re61lly',
     cover: '/events/luma/builders-salon.jpg',
-    pos: '50% 0%',
+    fit: true,
   },
   {
     name: 'AI Valley × Molly Tea Pop-Up',
@@ -479,7 +481,7 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/puy9vbok',
     cover: '/events/luma/molly-tea.jpg',
-    pos: '50% 62%',
+    fit: true,
   },
   {
     name: 'MiniMax AI Founder Day @ GTC',
@@ -494,7 +496,7 @@ const PROGRAMS: Program[] = [
     tier: 3,
     href: 'https://luma.com/aic-sf-3-21?tk=C8DbIO',
     cover: '/events/luma/minimax.jpg',
-    pos: '50% 0%',
+    fit: true,
   },
   {
     name: 'Humanity & AGI Summit 2026',
@@ -511,7 +513,7 @@ const PROGRAMS: Program[] = [
     tier: 3,
     href: 'https://luma.com/wkolq6uc',
     cover: '/events/luma/agi-summit.jpg',
-    pos: '50% 45%',
+    fit: true,
   },
 ]
 
@@ -547,14 +549,33 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
         className="relative block shrink-0 overflow-hidden"
         aria-label={`${p.name} — open the event page`}
       >
-        <img
-          src={p.cover}
-          alt=""
-          aria-hidden
-          loading="lazy"
-          className="aspect-[2/1] w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03]"
-          style={{ objectPosition: p.pos ?? '50% 50%' }}
-        />
+        {p.fit ? (
+          <span className="relative block aspect-[2/1] w-full overflow-hidden">
+            <img
+              src={p.cover}
+              alt=""
+              aria-hidden
+              loading="lazy"
+              className="absolute inset-0 h-full w-full scale-125 object-cover blur-xl saturate-[1.15]"
+            />
+            <img
+              src={p.cover}
+              alt=""
+              aria-hidden
+              loading="lazy"
+              className="relative mx-auto h-full w-auto object-contain shadow-[0_0_36px_-8px_rgba(0,0,0,0.45)] transition-transform duration-700 group-hover/p:scale-[1.03]"
+            />
+          </span>
+        ) : (
+          <img
+            src={p.cover}
+            alt=""
+            aria-hidden
+            loading="lazy"
+            className="aspect-[2/1] w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03]"
+            style={{ objectPosition: p.pos ?? '50% 50%' }}
+          />
+        )}
         <span className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
           Luma <span aria-hidden>↗</span>
         </span>
