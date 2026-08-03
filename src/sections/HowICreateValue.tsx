@@ -919,6 +919,60 @@ export function HowICreateValue() {
       {/* ── ② 工具法阵：What I bring to the table ───────────────── */}
       <Reveal className="mt-8" y={28}>
         <div className="relative">
+          {/* 左翼：搁着的一叠牌 */}
+          <div
+            aria-hidden
+            className="absolute left-[3%] top-1/2 hidden -translate-y-1/2 md:block lg:left-[6%]"
+            style={{ animation: 'annot-in .7s .35s ease-out both' }}
+          >
+            <div className="relative h-[158px] w-[112px]">
+              <span className="absolute left-10 top-3 h-[134px] w-[60px] -rotate-[16deg] overflow-hidden rounded-[7px] shadow-[0_10px_22px_-10px_rgba(206,78,130,0.5)]">
+                <CardBack />
+              </span>
+              <span className="absolute left-5 top-1.5 h-[134px] w-[60px] -rotate-[7deg] overflow-hidden rounded-[7px] shadow-[0_10px_22px_-10px_rgba(206,78,130,0.5)]">
+                <CardBack />
+              </span>
+              <span className="absolute left-0 top-0 h-[134px] w-[60px] rotate-[3deg] overflow-hidden rounded-[7px] shadow-[0_12px_26px_-10px_rgba(206,78,130,0.55)]">
+                <CardBack />
+              </span>
+            </div>
+          </div>
+
+          {/* 右翼：星杖 */}
+          <svg
+            aria-hidden
+            viewBox="0 0 64 180"
+            className="absolute right-[3%] top-[46%] hidden w-[58px] -translate-y-1/2 rotate-[14deg] md:block lg:right-[6%] lg:w-[66px]"
+            style={{ animation: 'annot-in .7s .5s ease-out both' }}
+          >
+            <defs>
+              <linearGradient id="wand-rod" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#F4A8C4" />
+                <stop offset="1" stopColor="#E88BB0" />
+              </linearGradient>
+            </defs>
+            {/* 杖身 */}
+            <rect x="28.5" y="52" width="7" height="118" rx="3.5" fill="url(#wand-rod)" stroke="#D9689A" strokeWidth="0.9" />
+            <rect x="27" y="60" width="10" height="7" rx="2" fill="#E8B64C" stroke="#C0913C" strokeWidth="0.8" />
+            <rect x="27" y="158" width="10" height="7" rx="2" fill="#E8B64C" stroke="#C0913C" strokeWidth="0.8" />
+            {/* 头环 + 星 */}
+            <circle cx="32" cy="30" r="21" fill="#FFF7E8" fillOpacity="0.75" stroke="#E8B64C" strokeWidth="3.2" />
+            <circle cx="32" cy="30" r="25" fill="none" stroke="#E8B64C" strokeOpacity="0.45" strokeWidth="1" />
+            {[0, 60, 120, 180, 240, 300].map((deg) => (
+              <circle
+                key={deg}
+                cx={32 + 25 * Math.cos((deg * Math.PI) / 180)}
+                cy={30 + 25 * Math.sin((deg * Math.PI) / 180)}
+                r="1.4"
+                fill="#E8B64C"
+              />
+            ))}
+            <path d={starPath(32, 30, 12.5, 5.2)} fill="#F7C93C" stroke="#C9951F" strokeWidth="1.1" strokeLinejoin="round" />
+            {/* 侧翼小羽 */}
+            <path d="M10 34c4-7 8-9 14-9-5 4-7 8-8 14-3-1-5-2.5-6-5Z" fill="#FFF1F5" stroke="#E8B64C" strokeWidth="0.9" />
+            <path d="M54 34c-4-7-8-9-14-9 5 4 7 8 8 14 3-1 5-2.5 6-5Z" fill="#FFF1F5" stroke="#E8B64C" strokeWidth="0.9" />
+          </svg>
+
           {/* 两翼氛围星 */}
           {[
             { left: '7%', top: '22%', size: 13, delay: 0 },
