@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
@@ -514,7 +514,7 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
       style={{ animation: `annot-in .4s ${i * 0.05}s ease-out both` }}
       className={`group/p flex flex-col overflow-hidden rounded-[1.4rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_-24px_rgba(58,36,64,0.4)] ${
         lead
-          ? 'border-rose/40 bg-rose/[0.05] hover:border-rose/60 sm:col-span-2'
+          ? 'border-rose/40 bg-rose/[0.05] hover:border-rose/60 sm:flex-row'
           : 'border-plum/10 bg-white/60 hover:border-plum/25 hover:bg-white'
       }`}
     >
@@ -522,7 +522,7 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
         href={p.href}
         target="_blank"
         rel="noreferrer"
-        className="relative block overflow-hidden"
+        className={`relative block shrink-0 overflow-hidden ${lead ? 'sm:w-[40%]' : ''}`}
         aria-label={`${p.name} — open the event page`}
       >
         <img
@@ -530,8 +530,8 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           alt=""
           aria-hidden
           loading="lazy"
-          className={`w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03] ${
-            lead ? 'aspect-[3/1]' : 'aspect-[2/1]'
+          className={`aspect-[2/1] w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03] ${
+            lead ? 'sm:aspect-auto sm:h-full' : ''
           }`}
         />
         <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
@@ -587,9 +587,9 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           ))}
         </span>
 
-        {/* 现场照/物料：直接贴在卡里 */}
+        {/* 现场照/物料：贴底，让不同高度的卡留白都聚在同一处 */}
         {p.snaps && (
-          <div className={`mt-3.5 grid gap-3 ${p.snaps.length > 1 ? 'grid-cols-2' : ''}`}>
+          <div className={`mt-auto grid gap-3 pt-3.5 ${p.snaps.length > 1 ? 'grid-cols-2' : ''}`}>
             {p.snaps.map((sn) => (
               <figure key={sn.src}>
                 <Zoomable
@@ -604,7 +604,7 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
         )}
 
         {(p.posts || p.ros) && (
-          <div className="mt-auto flex flex-wrap gap-x-5 gap-y-2 pt-3.5">
+          <div className={`flex flex-wrap gap-x-5 gap-y-2 pt-3.5 ${p.snaps ? '' : 'mt-auto'}`}>
             {p.posts?.map((po, idx) =>
               po.text === '' ? (
                 <a
@@ -673,7 +673,7 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
 
 function ProgramMatrix() {
   return (
-    <ul className="grid items-start gap-5 sm:grid-cols-2">
+    <ul className="grid gap-5 sm:grid-cols-2">
       {PROGRAMS.filter((p) => p.weight !== 'flagship').map((p, i) => (
         <ProgramCard key={p.name} p={p} i={i} />
       ))}
@@ -971,6 +971,16 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
     cap: 'AI Valley Hackathon — the room mid-build',
   },
   {
+    src: '/events/gtc-fireside.jpg',
+    alt: 'Panel 3 of the 2026 GTC Fireside Talk in progress — four speakers on stage',
+    cap: 'GTC Fireside Talk — Panel 3 running',
+  },
+  {
+    src: '/events/agent-recall-judging.jpg',
+    alt: 'A judge reviewing a project at Total Agent Recall, builders in the background',
+    cap: 'Total Agent Recall — judging in progress',
+  },
+  {
     src: '/events/minimax-day.jpg',
     alt: 'Builders and founders talking over lunch between sessions',
     cap: 'builders over lunch, between sessions',
@@ -978,13 +988,17 @@ const PHOTOS: Array<{ src: string; alt: string; cap: string }> = [
 ]
 
 function EventPhotos() {
+  const railRef = useRef<HTMLDivElement>(null)
   if (PHOTOS.length === 0) return null
-  const reel = [...PHOTOS, ...PHOTOS]
+  const slide = (dir: 1 | -1) => railRef.current?.scrollBy({ left: dir * 380, behavior: 'smooth' })
   return (
-    <div className="relative overflow-hidden rounded-[1.4rem]">
-      <div className="animate-photo-reel flex w-max gap-4 hover:[animation-play-state:paused]">
-        {reel.map((ph, i) => (
-          <figure key={ph.src + i} className="w-[300px] shrink-0 sm:w-[360px]">
+    <div className="group/reel relative">
+      <div
+        ref={railRef}
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {PHOTOS.map((ph) => (
+          <figure key={ph.src} className="w-[300px] shrink-0 snap-start sm:w-[360px]">
             <Zoomable
               src={ph.src}
               alt={ph.alt}
@@ -994,8 +1008,20 @@ function EventPhotos() {
           </figure>
         ))}
       </div>
-      <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-cream to-transparent" />
-      <span aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-cream to-transparent" />
+      {[
+        { dir: -1 as const, cls: 'left-2', glyph: '←' },
+        { dir: 1 as const, cls: 'right-2', glyph: '→' },
+      ].map((b) => (
+        <button
+          key={b.cls}
+          type="button"
+          aria-label={b.dir === 1 ? 'Next photos' : 'Previous photos'}
+          onClick={() => slide(b.dir)}
+          className={`absolute ${b.cls} top-[38%] flex h-10 w-10 items-center justify-center rounded-full border border-plum/10 bg-white/90 text-[15px] text-plum shadow-[0_8px_20px_-8px_rgba(58,36,64,0.45)] backdrop-blur transition-all duration-300 hover:bg-white md:opacity-0 md:group-hover/reel:opacity-100`}
+        >
+          {b.glyph}
+        </button>
+      ))}
     </div>
   )
 }
