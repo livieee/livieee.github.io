@@ -267,3 +267,9 @@
   78%  { transform: translateY(-8px) rotateY(176deg) scale(1.05); }
   100% { transform: translateY(0) rotateY(180deg) scale(1); }
 }
+
+/* 工具法阵的呼吸：只缩放，不位移 */
+@keyframes toolseal-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.025); }
+}

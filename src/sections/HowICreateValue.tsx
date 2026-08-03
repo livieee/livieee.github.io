@@ -919,6 +919,31 @@ export function HowICreateValue() {
       {/* ── ② 工具法阵：What I bring to the table ───────────────── */}
       <Reveal className="mt-8" y={28}>
         <div className="relative">
+          {/* 两翼氛围星 */}
+          {[
+            { left: '7%', top: '22%', size: 13, delay: 0 },
+            { left: '13%', top: '58%', size: 9, delay: 1.6 },
+            { left: '20%', top: '34%', size: 7, delay: 3.1 },
+            { left: '9%', top: '80%', size: 8, delay: 2.2 },
+            { left: '80%', top: '26%', size: 8, delay: 0.9 },
+            { left: '90%', top: '46%', size: 13, delay: 2.7 },
+            { left: '84%', top: '72%', size: 9, delay: 4.2 },
+            { left: '93%', top: '14%', size: 7, delay: 1.2 },
+          ].map((st, i) => (
+            <span
+              key={'as' + i}
+              aria-hidden
+              className="pointer-events-none absolute hidden text-[#E8B64C] md:block"
+              style={{
+                left: st.left,
+                top: st.top,
+                fontSize: st.size,
+                animation: `star-twinkle 3.6s ${st.delay}s ease-in-out infinite`,
+              }}
+            >
+              ✦
+            </span>
+          ))}
           {/* 飘落的樱花瓣 */}
           {[
             { left: 8, size: 14, dur: 12, delay: 0.6 },
@@ -957,7 +982,7 @@ export function HowICreateValue() {
 
           <div>
             {/* 金色法阵 + 符印，居中 */}
-            <div className="relative mx-auto w-full max-w-[460px]">
+            <div className="relative mx-auto w-full max-w-[530px]">
               {/* 暖光 */}
               <span
                 aria-hidden
@@ -967,7 +992,7 @@ export function HowICreateValue() {
                     'radial-gradient(circle, rgba(232,182,76,0.14) 0%, rgba(248,191,211,0.10) 45%, rgba(248,191,211,0) 70%)',
                 }}
               />
-              <div className="relative aspect-square" style={{ animation: 'seal-breathe 7s ease-in-out infinite' }}>
+              <div className="relative aspect-square" style={{ animation: 'toolseal-breathe 7s ease-in-out infinite' }}>
                 <ToolSeal className="absolute inset-0 h-full w-full" />
                 {PLATE.map((t, i) => (
                   <span
@@ -988,6 +1013,9 @@ export function HowICreateValue() {
                   </span>
                 ))}
               </div>
+              <p className="mt-5 text-center font-hand text-[15px] text-plum-muted">
+                hover a charm ✦
+              </p>
             </div>
           </div>
         </div>
