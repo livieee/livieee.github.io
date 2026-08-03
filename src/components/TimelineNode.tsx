@@ -33,7 +33,7 @@ export type TimelineEntry = {
   photos?: TimelinePhoto[]
 }
 
-export type TimelinePhoto = { src: string; alt: string; caption?: string }
+export type TimelinePhoto = { src: string; alt: string; caption?: string; href?: string }
 
 type TimelineNodeProps = {
   entry: TimelineEntry
@@ -291,7 +291,19 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
                           <img src={p.src} alt={p.alt} loading="lazy" className="h-[104px] w-full rounded-[6px] object-cover" />
                           {p.caption && (
                             <figcaption className="mt-2 truncate text-center font-hand text-[12px] leading-none text-plum-muted">
-                              {p.caption}
+                              {p.href ? (
+                                <a
+                                  href={p.href}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="text-[#0A66C2] transition-opacity hover:opacity-75"
+                                >
+                                  {p.caption} ↗
+                                </a>
+                              ) : (
+                                p.caption
+                              )}
                             </figcaption>
                           )}
                         </motion.figure>

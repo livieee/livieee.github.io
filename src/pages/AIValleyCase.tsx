@@ -268,6 +268,8 @@ type Program = {
   href: string
   /** luma 封面 */
   cover: string
+  /** 封面裁切焦点（object-position），默认居中 */
+  pos?: string
   /** 关联的 LinkedIn 帖（可多条）：点击卡片内展开 */
   posts?: Array<{
     label: string
@@ -303,6 +305,7 @@ const PROGRAMS: Program[] = [
     tier: 1,
     href: 'https://luma.com/32jfoybh',
     cover: '/events/luma/glm.jpg',
+    pos: '50% 50%',
     posts: [
       {
         label: 'I wrote the launch post',
@@ -353,6 +356,7 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/GTCTALK',
     cover: '/events/luma/gtc-talk.jpg',
+    pos: '50% 48%',
   },
   {
     name: '2026 GTC AI Demo Day',
@@ -367,6 +371,7 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/GTCDEMODAY',
     cover: '/events/luma/gtc-demoday.jpg',
+    pos: '50% 50%',
   },
   {
     name: 'Total Agent Recall Hackathon',
@@ -393,6 +398,7 @@ const PROGRAMS: Program[] = [
     tier: 3,
     href: 'https://luma.com/snixr7yb',
     cover: '/events/luma/agent-recall.jpg',
+    pos: '50% 0%',
     posts: [
       {
         label: 'The host’s recap',
@@ -431,6 +437,7 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/ic3l89gi',
     cover: '/events/luma/women.jpg',
+    pos: '50% 0%',
     posts: [
       {
         label: 'The organiser’s write-up',
@@ -457,6 +464,7 @@ const PROGRAMS: Program[] = [
     tier: 3,
     href: 'https://luma.com/6re61lly',
     cover: '/events/luma/builders-salon.jpg',
+    pos: '50% 0%',
   },
   {
     name: 'AI Valley × Molly Tea Pop-Up',
@@ -471,6 +479,7 @@ const PROGRAMS: Program[] = [
     tier: 2,
     href: 'https://luma.com/puy9vbok',
     cover: '/events/luma/molly-tea.jpg',
+    pos: '50% 62%',
   },
   {
     name: 'MiniMax AI Founder Day @ GTC',
@@ -485,6 +494,7 @@ const PROGRAMS: Program[] = [
     tier: 3,
     href: 'https://luma.com/aic-sf-3-21?tk=C8DbIO',
     cover: '/events/luma/minimax.jpg',
+    pos: '50% 0%',
   },
   {
     name: 'Humanity & AGI Summit 2026',
@@ -501,6 +511,7 @@ const PROGRAMS: Program[] = [
     tier: 3,
     href: 'https://luma.com/wkolq6uc',
     cover: '/events/luma/agi-summit.jpg',
+    pos: '50% 45%',
   },
 ]
 
@@ -542,18 +553,19 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           aria-hidden
           loading="lazy"
           className="aspect-[2/1] w-full object-cover transition-transform duration-700 group-hover/p:scale-[1.03]"
+          style={{ objectPosition: p.pos ?? '50% 50%' }}
         />
-        <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
+        <span className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
           Luma <span aria-hidden>↗</span>
         </span>
       </a>
 
-      <div className="flex flex-1 flex-col p-5 md:p-6">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-[17px] font-light leading-snug text-plum">{p.name}</h3>
+      <div className="flex flex-1 flex-col p-4 md:p-5">
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="font-serif text-[15.5px] font-light leading-snug text-plum">{p.name}</h3>
           {p.n && (
             <span className="shrink-0 text-right">
-              <span className="block font-serif text-xl font-light leading-none text-rose">
+              <span className="block font-serif text-lg font-light leading-none text-rose">
                 {p.n.toLocaleString()}
               </span>
               <span className="mt-1 block text-[10.5px] leading-tight text-plum-faint">
@@ -586,7 +598,7 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
           {p.independent ? `${p.badge} · beyond AI Valley` : p.badge}
         </span>
         {(p.role || p.oneliner) && (
-          <p className="mt-2 text-[13px] leading-relaxed text-plum-muted">{p.role ?? p.oneliner}</p>
+          <p className="mt-2 text-[12.5px] leading-relaxed text-plum-muted">{p.role ?? p.oneliner}</p>
         )}
         <span className="mt-2.5 flex flex-wrap gap-1.5">
           {p.caps.map((c) => (
@@ -605,7 +617,7 @@ function ProgramCard({ p, i }: { p: Program; i: number }) {
                   src={sn.src}
                   alt={sn.alt}
                   cap={sn.cap}
-                  className="h-28 w-full rounded-[0.9rem] border border-plum/10 object-cover"
+                  className="h-24 w-full rounded-[0.9rem] border border-plum/10 object-cover"
                 />
                 <figcaption className="mt-1.5 font-hand text-[13px] leading-tight text-plum-muted">{sn.cap}</figcaption>
               </figure>
@@ -701,13 +713,13 @@ function DevpostCard() {
           loading="lazy"
           className="aspect-[2/1] w-full object-cover object-[50%_42%] transition-transform duration-700 group-hover/p:scale-[1.03]"
         />
-        <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
+        <span className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-plum shadow-sm backdrop-blur">
           Devpost <span aria-hidden>↗</span>
         </span>
       </a>
-      <div className="flex flex-1 flex-col p-5 md:p-6">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-[17px] font-light leading-snug text-plum">
+      <div className="flex flex-1 flex-col p-4 md:p-5">
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="font-serif text-[15.5px] font-light leading-snug text-plum">
             Build with GLM 5.1 Challenge — the submission home
           </h3>
           <span className="shrink-0 text-right">

@@ -124,9 +124,15 @@ const EXPERIENCE: TimelineEntry[] = [
     accent: '#B98ACB',
     bullets: [
       'Built a Tableau ROI dashboard spanning 50+ enterprise clients.',
-      'Drove churn −6%, adoption +13% — company award for customer-first ownership.',
+      'Drove churn −6%, adoption +13% — won the Living PAI Values award for customer-first ownership.',
     ],
     reflection: 'Where I learned that enterprise trust is earned in the details.',
+    photo: {
+      src: '/awards/peopleai-award.jpg',
+      alt: 'People.ai Technical Success Award card — Olivia Xiao, Living PAI Values',
+      caption: 'Living PAI Values · 2022',
+      href: 'https://www.linkedin.com/posts/technical-success-award-winners-2022-ugcPost-6919686919559749633-zdsB/',
+    },
     relatedWork: { label: 'Related Work', href: '#case-peopleai' },
   },
   {
