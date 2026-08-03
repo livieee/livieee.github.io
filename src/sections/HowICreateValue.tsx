@@ -808,7 +808,7 @@ export function HowICreateValue() {
               aria-hidden
               className="pointer-events-none absolute left-1/2 top-1/2 h-[660px] w-[660px]"
               style={{
-                transform: 'translate(-50%, -50%) translateY(158px) rotateX(90deg)',
+                transform: 'translate(-50%, -50%) translateY(190px) rotateX(104deg)',
                 transformStyle: 'preserve-3d',
                 transition: 'filter .6s, opacity .6s',
                 opacity: active !== null ? 1 : 0.92,
@@ -1210,7 +1210,11 @@ export function HowICreateValue() {
               />
               <div
                 className="relative aspect-square"
-                style={{ animation: 'toolseal-breathe 7s ease-in-out infinite' }}
+                style={{
+                  animation: 'toolseal-breathe 7s ease-in-out infinite',
+                  transform: 'perspective(1400px) rotateX(16deg)',
+                  transformStyle: 'preserve-3d',
+                }}
                 onPointerEnter={(e) => e.pointerType !== 'touch' && setSealPaused(true)}
                 onPointerLeave={() => setSealPaused(false)}
               >
@@ -1255,12 +1259,14 @@ export function HowICreateValue() {
                             animationPlayState: sealPaused ? 'paused' : 'running',
                           }}
                         >
+                        <span className="block" style={{ transform: 'rotateX(-16deg)' }}>
                           <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_8px_18px_-8px_rgba(206,78,130,0.55)] ring-1 ring-[#C9A05C]/50 transition-transform duration-300 group-hover/tool:-translate-y-1 group-hover/tool:scale-110">
                             <img src={t.l} alt={t.n} loading="lazy" className="h-full w-full object-contain" />
                           </span>
                           <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap font-hand text-[12px] text-plum-muted opacity-0 transition-opacity duration-300 group-hover/tool:opacity-100">
                             {t.n} · <span className="text-[#C0913C]">{t.c}</span>
                           </span>
+                        </span>
                         </span>
                       </span>
                     ))}
