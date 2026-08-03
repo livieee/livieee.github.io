@@ -87,7 +87,7 @@ function Pipeline() {
         return (
           <li
             key={s.k}
-            className="rounded-[1.1rem] border bg-white/60 p-4 transition-all duration-500"
+            className="flex gap-3 rounded-[1.1rem] border bg-white/60 p-3.5 transition-all duration-500 lg:flex-col lg:gap-0"
             style={{
               borderColor: on ? `${s.c}66` : 'rgba(58,36,64,0.1)',
               boxShadow: on ? `0 12px 28px -18px ${s.c}` : 'none',
@@ -96,13 +96,15 @@ function Pipeline() {
             }}
           >
             <span
-              className="flex h-7 w-7 items-center justify-center rounded-lg font-serif text-[13px] leading-none transition-colors duration-500"
-              style={{ backgroundColor: on ? `${s.c}22` : 'rgba(58,36,64,0.05)', color: on ? s.c : '#8A6E84' }}
+              className="font-serif text-[22px] font-light leading-none transition-colors duration-500 lg:mb-2"
+              style={{ color: on ? s.c : 'rgba(138,110,132,0.4)' }}
             >
               0{i + 1}
             </span>
-            <p className="mt-2.5 text-[13px] font-medium leading-snug text-plum">{s.k}</p>
-            <p className="mt-1.5 text-[12px] leading-snug text-plum-faint">{s.v}</p>
+            <span className="min-w-0">
+              <p className="text-[12.5px] font-medium leading-snug text-plum">{s.k}</p>
+              <p className="mt-1 text-[11.5px] leading-snug text-plum-faint">{s.v}</p>
+            </span>
           </li>
         )
       })}
@@ -377,25 +379,44 @@ export function LivingArtCase() {
         </Reveal>
 
         <Reveal className="mt-8" y={24}>
-          <button
-            type="button"
-            onClick={() => setZoom(0)}
-            aria-label="View the gallery of generated states larger"
-            className="group/g block w-full cursor-zoom-in overflow-hidden rounded-[1.4rem] border border-plum/10 bg-black"
-          >
-            <img
-              src="/ieee/outputs-grid.jpg"
-              alt="A grid of real outputs from the installation — amber, green, blue, yellow, violet and cyan auras, the emotional-state radar and the line-art silhouette"
-              loading="lazy"
-              className="w-full object-cover transition-transform duration-700 group-hover/g:scale-[1.02]"
-            />
-          </button>
-          <p className="mt-3 font-hand text-[15px] text-plum-muted">
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            {[
+              { src: '/ieee/st-warm.jpg', k: 'tense', c: '#E8A05A' },
+              { src: '/ieee/st-green.jpg', k: 'excited', c: '#9BC46A' },
+              { src: '/ieee/st-blue.jpg', k: 'alert', c: '#6FA8D6' },
+              { src: '/ieee/st-yellow.jpg', k: 'restless', c: '#D9C24A' },
+              { src: '/ieee/st-violet.jpg', k: 'tired', c: '#A99BD4' },
+              { src: '/ieee/st-cyan.jpg', k: 'calm', c: '#68B6C4' },
+            ].map((st, i) => (
+              <button
+                key={st.src}
+                type="button"
+                onClick={() => setZoom(0)}
+                aria-label={`View the generated states larger — ${st.k}`}
+                className="group/st relative block cursor-zoom-in overflow-hidden rounded-[0.9rem] border border-plum/10 bg-black"
+                style={{ animation: `annot-in .5s ${0.06 * i}s ease-out both` }}
+              >
+                <img
+                  src={st.src}
+                  alt={`A generated state from the installation — ${st.k}`}
+                  loading="lazy"
+                  className="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover/st:scale-[1.05]"
+                />
+                <span
+                  className="absolute bottom-2 left-2 rounded-full bg-black/55 px-2 py-[3px] text-[10px] font-medium tracking-wide backdrop-blur-sm"
+                  style={{ color: st.c }}
+                >
+                  {st.k}
+                </span>
+              </button>
+            ))}
+          </div>
+          <p className="mt-3.5 font-hand text-[15px] text-plum-muted">
             no two people ever produced the same image ✦
           </p>
         </Reveal>
 
-        {/* ── 03 · 怎么跑起来 ──────────────────────────────────── */}
+        {/* ── 03        {/* ── 03 · 怎么跑起来 ──────────────────────────────────── */}
         <Chapter
           n="03"
           label="How it works"
