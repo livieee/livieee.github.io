@@ -705,13 +705,13 @@ export function HowICreateValue() {
                       className="absolute inset-0 overflow-hidden rounded-[1rem] shadow-[0_16px_36px_-16px_rgba(58,36,64,0.42)]"
                       style={{ backfaceVisibility: 'hidden', transform: 'rotateY(0deg) translateZ(0.4px)' }}
                     >
-                      <CardFace card={c} art />
+                      <CardBack />
                     </span>
                     <span
                       className="absolute inset-0 overflow-hidden rounded-[1rem] shadow-[0_16px_36px_-16px_rgba(58,36,64,0.42)]"
                       style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg) translateZ(0.4px)' }}
                     >
-                      <CardBack />
+                      <CardFace card={c} art />
                     </span>
                   </span>
                 </button>
