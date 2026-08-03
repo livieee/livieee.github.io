@@ -86,6 +86,12 @@ export function Contact() {
           <p>© 2026 Olivia Xiao — AI Product · GTM · Partnerships</p>
           <p className="font-serif italic">connect · build · grow</p>
         </div>
+        {/* 巨型幽灵署名：底边被页脚裁切 */}
+        <div aria-hidden className="pointer-events-none select-none">
+          <p className="translate-y-[26%] text-center font-serif text-[clamp(5.5rem,19vw,16rem)] font-light leading-none tracking-tight text-orchid/[0.08]">
+            Olivia
+          </p>
+        </div>
       </footer>
     </section>
   )

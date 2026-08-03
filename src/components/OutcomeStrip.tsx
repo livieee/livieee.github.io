@@ -12,7 +12,47 @@ export type Outcome = {
   label: string
 }
 
-export function OutcomeStrip({ items, note = 'The outcome' }: { items: Outcome[]; note?: string }) {
+const PASTEL_BLOBS = [
+  'from-blush/80 via-rose/35 to-transparent',
+  'from-lavender/80 via-orchid/30 to-transparent',
+  'from-champagne/80 via-[#E8B64C]/25 to-transparent',
+]
+
+export function OutcomeStrip({
+  items,
+  note = 'The outcome',
+  variant = 'blue',
+}: {
+  items: Outcome[]
+  note?: string
+  variant?: 'blue' | 'pastel'
+}) {
+  if (variant === 'pastel') {
+    return (
+      <div>
+        <p className="label-text mb-4">{note}</p>
+        <dl className={`grid gap-4 ${items.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
+          {items.map((v, n) => (
+            <div
+              key={v.label}
+              className="relative overflow-hidden rounded-2xl border border-plum/10 bg-white/65 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/85"
+              style={{ animation: `annot-in .5s ${0.12 + n * 0.1}s ease-out both` }}
+            >
+              <span
+                aria-hidden
+                className={`absolute -right-10 -top-12 h-36 w-36 rounded-full bg-gradient-to-br ${PASTEL_BLOBS[n % 3]} blur-2xl`}
+              />
+              <dd className="relative font-serif text-[2.6rem] font-light leading-none text-plum md:text-[3rem]">
+                {v.prefix}
+                <CountUp value={v.n} suffix={v.suffix} />
+              </dd>
+              <dt className="relative mt-3 text-[12.5px] leading-snug text-plum-muted">{v.label}</dt>
+            </div>
+          ))}
+        </dl>
+      </div>
+    )
+  }
   return (
     <div className="rounded-[1.6rem] border border-[#7FA3CC]/25 bg-[#EFF5FB]/45 px-6 py-6 md:px-8 md:py-7">
       <p className="label-text mb-5 text-[#4E6E96]">{note}</p>

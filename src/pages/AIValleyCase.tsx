@@ -1203,6 +1203,7 @@ export function AIValleyCase() {
 
         <Reveal className="mt-10" delay={0.32}>
           <OutcomeStrip
+            variant="pastel"
             items={[
               {
                 n: 3200,
