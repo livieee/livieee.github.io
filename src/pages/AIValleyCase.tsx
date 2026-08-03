@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
-import { createPortal } from 'react-dom'
+import { useState, useRef, useEffect } from 'react'
+import { Lightbox } from '@/components/Lightbox'
 import { BorderGlow } from '@/components/BorderGlow'
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
@@ -926,108 +926,6 @@ function RunOfShow() {
 }
 
 /* ── 点开放大：全页图片通用灯箱 ─────────────────────────────── */
-type GalleryItem = { src: string; alt: string; cap?: string }
-
-/** 放大查看：从缩略图 zoom 进全屏，再左右滑动浏览同组图片 */
-function Lightbox({
-  items,
-  index,
-  onClose,
-  onIndex,
-}: {
-  items: GalleryItem[]
-  index: number
-  onClose: () => void
-  onIndex: (i: number) => void
-}) {
-  const touchX = useRef<number | null>(null)
-  const go = useCallback(
-    (d: 1 | -1) => onIndex((index + d + items.length) % items.length),
-    [index, items.length, onIndex],
-  )
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-      if (e.key === 'ArrowRight') go(1)
-      if (e.key === 'ArrowLeft') go(-1)
-    }
-    window.addEventListener('keydown', onKey)
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prev
-    }
-  }, [go, onClose])
-
-  const cur = items[index]
-  const many = items.length > 1
-
-  return createPortal(
-    <div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-plum/90 p-4 backdrop-blur-sm md:p-10"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      onTouchStart={(e) => { touchX.current = e.touches[0].clientX }}
-      onTouchEnd={(e) => {
-        if (touchX.current === null) return
-        const dx = e.changedTouches[0].clientX - touchX.current
-        if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1)
-        touchX.current = null
-      }}
-    >
-      <figure
-        key={cur.src}
-        className="flex max-h-full flex-col items-center"
-        style={{ animation: 'lightbox-in .34s cubic-bezier(.2,.8,.25,1) both' }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <img
-          src={cur.src}
-          alt={cur.alt}
-          className="max-h-[80vh] max-w-[92vw] rounded-2xl shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)]"
-        />
-        {cur.cap && (
-          <figcaption className="mt-4 max-w-[70ch] text-center text-[13px] text-white/75">{cur.cap}</figcaption>
-        )}
-      </figure>
-
-      {many && (
-        <>
-          {[
-            { d: -1 as const, cls: 'left-3 md:left-8', g: '←', label: 'Previous' },
-            { d: 1 as const, cls: 'right-3 md:right-8', g: '→', label: 'Next' },
-          ].map((b) => (
-            <button
-              key={b.label}
-              type="button"
-              aria-label={b.label}
-              onClick={(e) => { e.stopPropagation(); go(b.d) }}
-              className={`absolute ${b.cls} top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-xl text-white backdrop-blur transition-colors hover:bg-white/30`}
-            >
-              {b.g}
-            </button>
-          ))}
-          <span className="absolute bottom-6 left-1/2 -translate-x-1/2 font-hand text-[15px] text-white/70">
-            {index + 1} / {items.length} · swipe or ← →
-          </span>
-        </>
-      )}
-
-      <button
-        type="button"
-        aria-label="Close"
-        onClick={(e) => { e.stopPropagation(); onClose() }}
-        className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-xl text-white backdrop-blur transition-colors hover:bg-white/30"
-      >
-        ×
-      </button>
-    </div>,
-    document.body,
-  )
-}
-
 /** 单张图的放大入口（卡内物料照用） */
 function Zoomable({ src, alt, cap, className = '' }: { src: string; alt: string; cap?: string; className?: string }) {
   const [open, setOpen] = useState(false)

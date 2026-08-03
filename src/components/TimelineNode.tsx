@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { Lightbox } from '@/components/Lightbox'
 
 export type TimelineBullet = { text: string; logo?: string }
 
@@ -47,6 +48,7 @@ type TimelineNodeProps = {
  */
 export function TimelineNode({ entry, index }: TimelineNodeProps) {
   const [open, setOpen] = useState(false)
+  const [zoom, setZoom] = useState<number | null>(null)
   const [photoIdx, setPhotoIdx] = useState(0)
   const reduce = useReducedMotion()
   const { org, role, period, location, logo, logoWide, accent, site, bullets, reflection, relatedWork, photo, photos } = entry
@@ -54,6 +56,13 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
   const sat = Math.max(0.35, 1 - index * 0.16)
   const fade = Math.max(0.82, 1 - index * 0.035)
   const photoList = photos ?? (photo ? [photo] : [])
+
+  const zoomItems = photoList.map((p) => ({
+    src: p.src,
+    alt: p.alt,
+    cap: p.caption,
+    link: p.href ? { href: p.href, label: 'See the announcement' } : undefined,
+  }))
 
   return (
     <motion.li
@@ -288,22 +297,30 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
                           className="absolute inset-x-0 top-0 rounded-[10px] border border-plum/10 bg-white p-1.5 pb-5 shadow-[0_14px_28px_-14px_rgba(90,63,86,0.45)]"
                           style={{ zIndex: photoList.length - pos }}
                         >
-                          <img src={p.src} alt={p.alt} loading="lazy" className="h-[104px] w-full rounded-[6px] object-cover" />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setZoom(pos)
+                            }}
+                            aria-label={`View larger: ${p.alt}`}
+                            className="group/pz relative block w-full cursor-zoom-in overflow-hidden rounded-[6px]"
+                          >
+                            <img
+                              src={p.src}
+                              alt={p.alt}
+                              loading="lazy"
+                              className="h-[104px] w-full rounded-[6px] object-cover transition-transform duration-500 group-hover/pz:scale-[1.06]"
+                            />
+                            <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-plum/0 opacity-0 transition-all duration-300 group-hover/pz:bg-plum/30 group-hover/pz:opacity-100">
+                              <span className="rounded-full bg-white/90 px-2.5 py-1 text-[10.5px] font-medium text-plum shadow-sm">
+                                {p.href ? 'view · source ↗' : 'view larger'}
+                              </span>
+                            </span>
+                          </button>
                           {p.caption && (
                             <figcaption className="mt-2 truncate text-center font-hand text-[12px] leading-none text-plum-muted">
-                              {p.href ? (
-                                <a
-                                  href={p.href}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="text-[#0A66C2] transition-opacity hover:opacity-75"
-                                >
-                                  {p.caption} ↗
-                                </a>
-                              ) : (
-                                p.caption
-                              )}
+                              {p.caption}
                             </figcaption>
                           )}
                         </motion.figure>
@@ -324,6 +341,9 @@ export function TimelineNode({ entry, index }: TimelineNodeProps) {
           )}
         </AnimatePresence>
       </div>
+      {zoom !== null && zoomItems[zoom] && (
+        <Lightbox items={zoomItems} index={zoom} onClose={() => setZoom(null)} onIndex={setZoom} />
+      )}
     </motion.li>
   )
 }
