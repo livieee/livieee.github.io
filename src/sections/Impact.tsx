@@ -101,7 +101,12 @@ export function Impact() {
             <GlowEdge />
             <div className="grid gap-10 md:grid-cols-[48fr_52fr]">
               <div className="flex flex-col justify-center">
-                <p className="label-text mb-4">01 · AI Product Development · Theta Health</p>
+                <p className="mb-4 flex items-baseline gap-3">
+                  <span aria-hidden className="font-serif text-[clamp(2rem,3.4vw,2.9rem)] font-light leading-none text-rose/45">
+                    01
+                  </span>
+                  <span className="label-text">AI Product Development · Theta Health</span>
+                </p>
                 <h3 className="font-serif text-2xl font-light leading-snug text-plum md:text-[2rem]">
                   Giving clinicians their time back with a 0-to-1 AI Scribe
                 </h3>
@@ -290,7 +295,12 @@ export function Impact() {
 
                 {/* 文案 */}
                 <div className="order-2 md:col-span-4">
-                  <p className="label-text mb-3">02 · Enterprise AI Product</p>
+                  <p className="mb-3 flex items-baseline gap-3">
+                  <span aria-hidden className="font-serif text-[clamp(2rem,3.4vw,2.9rem)] font-light leading-none text-rose/45">
+                    02
+                  </span>
+                  <span className="label-text">Enterprise AI Product</span>
+                </p>
                   {/* 合作双方 logo */}
                   <div className="mb-5 flex items-center gap-3">
                     <img src="/logos/bosch-wordmark.png" alt="Bosch" className="h-[22px] w-auto" />
@@ -355,7 +365,12 @@ export function Impact() {
                 <div className="mb-8">
                   <ProgramWall />
                 </div>
-                <p className="label-text mb-4">03 · GTM &amp; AI Ecosystem Partnerships</p>
+                <p className="mb-4 flex items-baseline gap-3">
+                  <span aria-hidden className="font-serif text-[clamp(2rem,3.4vw,2.9rem)] font-light leading-none text-rose/45">
+                    03
+                  </span>
+                  <span className="label-text">GTM &amp; AI Ecosystem Partnerships</span>
+                </p>
                 <h3 className="font-serif text-2xl font-light leading-snug text-plum">
                   Creating spaces where
                   <br />
@@ -409,7 +424,12 @@ export function Impact() {
                 <div className="mb-7" data-cursor="VIEW">
                   <DailyReportCard />
                 </div>
-                <p className="label-text mb-4">04 · Applied AI at Work · Yuto USA</p>
+                <p className="mb-4 flex items-baseline gap-3">
+                  <span aria-hidden className="font-serif text-[clamp(2rem,3.4vw,2.9rem)] font-light leading-none text-rose/45">
+                    04
+                  </span>
+                  <span className="label-text">Applied AI at Work · Yuto USA</span>
+                </p>
                 <h3 className="font-serif text-2xl font-light leading-snug text-plum">
                   Shipping AI the executive
                   <br />
@@ -461,7 +481,12 @@ export function Impact() {
                   loading="lazy"
                 />
               </div>
-              <p className="label-text mb-4">05 · Enterprise SaaS &amp; Analytics · People.ai</p>
+              <p className="mb-4 flex items-baseline gap-3">
+                  <span aria-hidden className="font-serif text-[clamp(2rem,3.4vw,2.9rem)] font-light leading-none text-rose/45">
+                    05
+                  </span>
+                  <span className="label-text">Enterprise SaaS &amp; Analytics · People.ai</span>
+                </p>
               <h3 className="font-serif text-2xl font-light leading-snug text-plum">
                 Turning product data into retention and renewal decisions
               </h3>
