@@ -998,22 +998,22 @@ export function HowICreateValue() {
             className="absolute left-[1%] top-1/2 hidden -translate-y-1/2 xl:block 2xl:left-[3%]"
             style={{ animation: 'annot-in .7s .35s ease-out both' }}
           >
-            <div
-              className="relative h-[150px] w-[92px]"
-              style={{ animation: 'float-soft 6s .8s ease-in-out infinite' }}
-            >
+            <div className="relative h-[158px] w-[112px]">
               {[
-                { pos: 'left-4 top-2', rot: 'rotate-[7deg]' },
-                { pos: 'left-2 top-1', rot: 'rotate-[2deg]' },
-                { pos: 'left-0 top-0', rot: '-rotate-[4deg]' },
+                { pos: 'left-10 top-3', rot: '-rotate-[16deg]', delay: 0, dur: 5.4 },
+                { pos: 'left-5 top-1.5', rot: '-rotate-[7deg]', delay: 1.1, dur: 6.2 },
+                { pos: 'left-0 top-0', rot: 'rotate-[3deg]', delay: 2.3, dur: 5.8 },
               ].map((c, i) => (
                 <span key={i} className={`absolute ${c.pos} h-[134px] w-[60px]`}>
                   <span
-                    className={`block h-full w-full ${c.rot} overflow-hidden rounded-[7px] ${
-                      i === 2 ? 'shadow-[0_14px_28px_-10px_rgba(206,78,130,0.55)]' : 'shadow-[0_6px_14px_-8px_rgba(206,78,130,0.4)]'
-                    }`}
+                    className="block h-full w-full"
+                    style={{ animation: `float-soft ${c.dur}s ${c.delay}s ease-in-out infinite` }}
                   >
-                    <CardBack />
+                    <span
+                      className={`block h-full w-full ${c.rot} overflow-hidden rounded-[7px] shadow-[0_12px_26px_-10px_rgba(206,78,130,0.55)]`}
+                    >
+                      <CardBack />
+                    </span>
                   </span>
                 </span>
               ))}
