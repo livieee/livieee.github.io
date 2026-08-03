@@ -382,3 +382,13 @@ body {
   from { opacity: 0; transform: translateX(-34px) scale(.985); }
   to   { opacity: 1; transform: translateX(0) scale(1); }
 }
+
+/* 暗场沉浸：星尘与星云 */
+@keyframes star-drift {
+  0%, 100% { opacity: .25; }
+  50%      { opacity: .9; }
+}
+@keyframes nebula-breathe {
+  0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: .55; }
+  50%      { transform: translate3d(2%, -3%, 0) scale(1.12); opacity: .85; }
+}

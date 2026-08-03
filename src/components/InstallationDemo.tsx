@@ -379,7 +379,7 @@ export function InstallationDemo() {
   }, [explain])
 
   return (
-    <figure className="overflow-hidden rounded-[1.6rem] border border-plum/12 bg-black shadow-[0_28px_64px_-30px_rgba(58,36,64,0.6)]">
+    <figure className="overflow-hidden rounded-[1.6rem] border border-white/10 bg-black shadow-[0_36px_90px_-34px_rgba(120,88,190,0.55)]">
       <div className="relative aspect-[16/10] w-full">
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
 
@@ -484,12 +484,12 @@ export function InstallationDemo() {
         </div>
       </div>
 
-      <figcaption className="flex flex-wrap items-center justify-between gap-2 border-t border-plum/10 bg-white/70 px-4 py-2.5">
-        <span className="font-hand text-[14px] text-plum-muted">
+      <figcaption className="flex flex-wrap items-center justify-between gap-2 border-t border-white/10 bg-white/[0.04] px-4 py-2.5 backdrop-blur-sm">
+        <span className="font-hand text-[14px] text-white/60">
           the actual installation interface — try Explain ✦
         </span>
-        <span className="text-[11px] text-plum-faint">
-          current state: <span className="font-medium text-plum">{quad.toLowerCase()}</span>
+        <span className="text-[11px] text-white/40">
+          current state: <span className="font-medium text-[#CBB8F5]">{quad.toLowerCase()}</span>
         </span>
       </figcaption>
     </figure>

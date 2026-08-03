@@ -16,6 +16,13 @@ import { ChapterDeck, type Chapter } from '@/components/ChapterDeck'
  * 她的贡献按帖子与她本人确认的口径写：视觉设计 / 研究海报 / 产品 UI。
  */
 
+const STARS = Array.from({ length: 70 }, (_, i) => ({
+  x: (i * 37.3) % 100,
+  y: (i * 61.7) % 100,
+  s: (i % 4) * 0.5 + 1,
+  d: (i % 9) * 0.6,
+}))
+
 const REPO = 'https://github.com/jessiex1998/IEEE_muse'
 const POST =
   'https://www.linkedin.com/posts/jessie-x_ieeerisingstar2026-ieee-ieeerisingstar2026-activity-7413748579472859138-BOzY'
@@ -88,9 +95,9 @@ function Pipeline() {
         return (
           <li
             key={s.k}
-            className="flex gap-3 rounded-[1.1rem] border bg-white/60 p-3.5 transition-all duration-500 lg:flex-col lg:gap-0"
+            className="flex gap-3 rounded-[1.1rem] border bg-white/[0.05] p-3.5 backdrop-blur-sm transition-all duration-500 lg:flex-col lg:gap-0"
             style={{
-              borderColor: on ? `${s.c}66` : 'rgba(58,36,64,0.1)',
+              borderColor: on ? `${s.c}80` : 'rgba(255,255,255,0.12)',
               boxShadow: on ? `0 12px 28px -18px ${s.c}` : 'none',
               opacity: on ? 1 : 0.5,
               transform: on ? 'translateY(0)' : 'translateY(8px)',
@@ -98,13 +105,13 @@ function Pipeline() {
           >
             <span
               className="font-serif text-[22px] font-light leading-none transition-colors duration-500 lg:mb-2"
-              style={{ color: on ? s.c : 'rgba(138,110,132,0.4)' }}
+              style={{ color: on ? s.c : 'rgba(255,255,255,0.3)' }}
             >
               0{i + 1}
             </span>
             <span className="min-w-0">
-              <p className="text-[12.5px] font-medium leading-snug text-plum">{s.k}</p>
-              <p className="mt-1 text-[11.5px] leading-snug text-plum-faint">{s.v}</p>
+              <p className="text-[12.5px] font-medium leading-snug text-[#F0EBF6]">{s.k}</p>
+              <p className="mt-1 text-[11.5px] leading-snug text-white/40">{s.v}</p>
             </span>
           </li>
         )
@@ -195,8 +202,8 @@ export function LivingArtCase() {
       lede: 'A waveform, or the word “calm”. Neither is something you can recognise as yourself.',
       body: (
         <div className="grid items-center gap-5 md:grid-cols-[1fr_auto_1fr]">
-          <div className="rounded-[1.3rem] border border-plum/10 bg-white/60 p-6">
-            <p className="label-text mb-3">What the system sees</p>
+          <div className="rounded-[1.3rem] border border-white/10 bg-white/[0.05] p-6 backdrop-blur-sm">
+            <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-white/40">What the system sees</p>
             <svg viewBox="0 0 300 96" className="h-[92px] w-full" fill="none" aria-hidden>
               {[0, 1, 2, 3, 4].map((r) => (
                 <path
@@ -204,27 +211,27 @@ export function LivingArtCase() {
                   d={`M0 ${12 + r * 18} ${Array.from({ length: 60 })
                     .map((_, k) => `L${k * 5} ${12 + r * 18 + Math.sin(k * (0.32 + r * 0.14)) * (3 + r)}`)
                     .join(' ')}`}
-                  stroke="#8A6E84"
-                  strokeOpacity="0.42"
+                  stroke="#8FA6D8"
+                  strokeOpacity="0.55"
                   strokeWidth="1.1"
                   strokeDasharray="600"
                   style={{ animation: `route-draw 2.4s ${r * 0.14}s ease-out both` }}
                 />
               ))}
             </svg>
-            <p className="mt-3 text-[12.5px] leading-snug text-plum-faint">δ · θ · α · β · γ</p>
+            <p className="mt-3 text-[12.5px] leading-snug text-white/40">δ · θ · α · β · γ</p>
           </div>
 
-          <p className="text-center font-hand text-[15px] text-plum-muted">
+          <p className="text-center font-hand text-[15px] text-[#CBB8F5]">
             raw signal → meaningful experience
           </p>
 
           <button
             type="button"
             onClick={() => setZoom(0)}
-            className="cursor-zoom-in overflow-hidden rounded-[1.3rem] border border-orchid/20 bg-lavender/20 p-6 text-left"
+            className="cursor-zoom-in overflow-hidden rounded-[1.3rem] border border-[#CBB8F5]/25 bg-[#CBB8F5]/[0.07] p-6 text-left backdrop-blur-sm"
           >
-            <span className="label-text mb-3 block">What a person can feel</span>
+            <span className="mb-3 block text-[10px] uppercase tracking-[0.18em] text-white/40">What a person can feel</span>
             <span className="block overflow-hidden rounded-[0.9rem]">
               <img
                 src="/ieee/st-cyan.jpg"
@@ -233,7 +240,7 @@ export function LivingArtCase() {
                 className="h-[92px] w-full object-cover"
               />
             </span>
-            <span className="mt-3 block text-[12.5px] leading-snug text-plum-faint">
+            <span className="mt-3 block text-[12.5px] leading-snug text-white/40">
               the same moment, recognisable without being told
             </span>
           </button>
@@ -257,14 +264,14 @@ export function LivingArtCase() {
                 className={`rounded-full px-4 py-2 text-[12.5px] font-medium transition-all duration-300 ${
                   mode === k
                     ? 'text-cream shadow-[0_10px_24px_-12px_rgba(58,36,64,0.6)]'
-                    : 'border border-plum/15 bg-white text-plum-muted hover:text-plum'
+                    : 'border border-white/20 bg-white/10 text-white/70 hover:text-white'
                 }`}
                 style={mode === k ? { backgroundColor: MODES[k].accent } : undefined}
               >
                 {MODES[k].label}
               </button>
             ))}
-            <span className="ml-auto font-hand text-[15px] text-plum-muted">feel it ↔ understand it</span>
+            <span className="ml-auto font-hand text-[15px] text-white/60">feel it ↔ understand it</span>
           </div>
 
           <div key={mode} style={{ animation: 'annot-in .45s ease-out both' }}>
@@ -275,14 +282,14 @@ export function LivingArtCase() {
                     src={sh.src}
                     alt={sh.cap}
                     loading="lazy"
-                    className="aspect-[16/10] w-full rounded-[1.1rem] border border-plum/10 object-cover"
+                    className="aspect-[16/10] w-full rounded-[1.1rem] border border-white/10 object-cover"
                   />
-                  <figcaption className="mt-2 font-hand text-[13px] text-plum-muted">{sh.cap}</figcaption>
+                  <figcaption className="mt-2 font-hand text-[13px] text-white/50">{sh.cap}</figcaption>
                 </figure>
               ))}
             </div>
             <p
-              className="mt-5 border-l-2 pl-3 text-[14px] font-medium text-plum"
+              className="mt-5 border-l-2 pl-3 text-[14px] font-medium text-[#F0EBF6]"
               style={{ borderColor: m.accent }}
             >
               {m.line}
@@ -312,7 +319,7 @@ export function LivingArtCase() {
                 type="button"
                 onClick={() => setZoom(0)}
                 aria-label={`View the generated states larger — ${st.k}`}
-                className="group/st relative block cursor-zoom-in overflow-hidden rounded-[0.9rem] border border-plum/10 bg-black"
+                className="group/st relative block cursor-zoom-in overflow-hidden rounded-[0.9rem] border border-white/10 bg-black"
                 style={{ animation: `annot-in .5s ${0.06 * k}s ease-out both` }}
               >
                 <img
@@ -346,7 +353,7 @@ export function LivingArtCase() {
               type="button"
               onClick={() => setArch((a) => !a)}
               aria-expanded={arch}
-              className="inline-flex items-center gap-1.5 rounded-full border border-plum/15 bg-white px-4 py-2 text-[12.5px] font-medium text-plum transition-colors hover:border-orchid/50"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[12.5px] font-medium text-white/90 backdrop-blur-sm transition-colors hover:border-[#CBB8F5]/60 hover:bg-white/20"
             >
               {arch ? 'Hide the architecture' : 'View the technical architecture'}
               <span aria-hidden className={`transition-transform duration-300 ${arch ? 'rotate-180' : ''}`}>
@@ -364,20 +371,20 @@ export function LivingArtCase() {
                       type="button"
                       onClick={() => setZoom(a.z)}
                       aria-label={`View larger: ${a.cap}`}
-                      className="block w-full cursor-zoom-in overflow-hidden rounded-[1.1rem] border border-plum/10 bg-white"
+                      className="block w-full cursor-zoom-in overflow-hidden rounded-[1.1rem] border border-white/10 bg-black/40"
                     >
                       <img src={a.src} alt={a.cap} loading="lazy" className="aspect-[16/10] w-full object-cover" />
                     </button>
-                    <figcaption className="mt-2 font-hand text-[13px] text-plum-muted">{a.cap}</figcaption>
+                    <figcaption className="mt-2 font-hand text-[13px] text-white/50">{a.cap}</figcaption>
                   </figure>
                 ))}
               </div>
             )}
-            <p className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-plum-faint">
-              <span className="font-hand text-[14px] text-plum-muted">running on ✦</span>
+            <p className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-white/40">
+              <span className="font-hand text-[14px] text-white/60">running on ✦</span>
               {['Muse 2', 'Python', 'LSL', 'MediaPipe', 'ComfyUI', 'Stable Diffusion', 'ControlNet', 'RunPod GPU'].map(
                 (t) => (
-                  <span key={t} className="rounded-full border border-plum/10 bg-white/70 px-2 py-[2px] leading-none">
+                  <span key={t} className="rounded-full border border-white/10 bg-white/10 px-2 py-[2px] leading-none">
                     {t}
                   </span>
                 ),
@@ -394,7 +401,7 @@ export function LivingArtCase() {
       lede: 'A seven-person team built the system. My part was the layer between it and everyone else.',
       body: (
         <div>
-          <div className="paper-grid rounded-[1.6rem] border border-plum/10 p-5 md:p-7">
+          <div className="paper-grid rounded-[1.6rem] border border-white/10 bg-[#FBF7F2] p-5 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.65)] md:p-7">
             <div className="grid gap-5 sm:grid-cols-2">
               {SHAPED.map((cc, k) => (
                 <figure
@@ -421,7 +428,7 @@ export function LivingArtCase() {
               ))}
             </div>
           </div>
-          <p className="mt-4 text-[12.5px] leading-relaxed text-plum-faint">
+          <p className="mt-4 text-[12.5px] leading-relaxed text-white/40">
             Team: {TEAM.join(' · ')} — advised by Prof. Catherine Fang, who nominated the project to
             represent CMU Silicon Valley.
           </p>
@@ -434,7 +441,7 @@ export function LivingArtCase() {
       title: 'When the work met the room ✦',
       lede: 'IEEE Rising Stars 2026 · Project Showcase · 1st place.',
       body: (
-        <div className="rounded-[1.6rem] border border-champagne/50 bg-gradient-to-br from-champagne/20 via-cream-soft to-blush/20 p-5 md:p-7">
+        <div className="rounded-[1.6rem] border border-champagne/40 bg-gradient-to-br from-[#F6EFE4] via-[#FBF6F1] to-[#F7E9EC] p-5 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.7)] md:p-7">
           <div className="grid gap-4 sm:grid-cols-3">
             {SHOTS.slice(1, 4).map((sh, k) => (
               <button
@@ -482,23 +489,50 @@ export function LivingArtCase() {
   ]
 
   return (
-    <main className="min-h-screen bg-cream">
-      <header className="fixed inset-x-0 top-0 z-50 bg-cream/85 shadow-[0_1px_0_0_rgba(58,36,64,0.06)] backdrop-blur-md">
+    <main className="relative min-h-screen overflow-hidden" style={{ background: '#0D1020' }}>
+      {/* 星尘 */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(1100px 700px at 18% 8%, rgba(120,88,190,0.30), transparent 62%), radial-gradient(900px 600px at 82% 26%, rgba(58,110,168,0.26), transparent 60%), radial-gradient(1000px 700px at 50% 92%, rgba(190,96,150,0.20), transparent 62%)',
+            animation: 'nebula-breathe 22s ease-in-out infinite',
+          }}
+        />
+        {STARS.map((st, i) => (
+          <span
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              left: `${st.x}%`,
+              top: `${st.y}%`,
+              width: st.s,
+              height: st.s,
+              opacity: 0.5,
+              animation: `star-drift ${4 + (i % 5)}s ${st.d}s ease-in-out infinite`,
+            }}
+          />
+        ))}
+      </div>
+
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0D1020]/75 backdrop-blur-md">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Case">
           <Link
             to="/#impact"
-            className="group/back inline-flex items-center gap-1.5 text-[13px] font-medium text-plum-muted transition-colors hover:text-plum"
+            className="group/back inline-flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.14em] text-white/60 transition-colors hover:text-white"
           >
             <span aria-hidden className="transition-transform duration-300 group-hover/back:-translate-x-0.5">←</span>
-            Back to work
+            <span className="hidden sm:inline">Back to work</span>
+            <span className="sm:hidden">Work</span>
           </Link>
-          <div className="flex items-center gap-5">
-            <Link to="/" className="font-serif text-[17px] text-plum">
-              ⌐ Hi, I'm Olivia <span aria-hidden className="text-orchid">↘</span>
+          <div className="flex items-center gap-3 md:gap-5">
+            <Link to="/" className="font-serif text-[15px] text-white/90 md:text-[17px]">
+              ⌐ Hi, I'm Olivia <span aria-hidden className="text-[#CBB8F5]">↘</span>
             </Link>
             <Link
               to="/#contact"
-              className="rounded-full bg-rose px-4 py-1.5 text-[12.5px] font-medium text-white transition-colors hover:bg-plum"
+              className="whitespace-nowrap rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-[12px] font-medium text-white/90 backdrop-blur-sm transition-colors hover:border-[#CBB8F5]/60 hover:bg-white/20 md:px-4 md:text-[12.5px]"
             >
               Say Hello
             </Link>
@@ -506,14 +540,14 @@ export function LivingArtCase() {
         </nav>
       </header>
 
-      <article className="mx-auto max-w-5xl px-6 pb-28 pt-28 md:px-10 md:pt-32">
+      <article className="relative z-10 mx-auto max-w-5xl px-6 pb-28 pt-28 md:px-10 md:pt-32">
         {/* ── Hero ─────────────────────────────────────────────── */}
         <Reveal>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-plum/10">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/90 ring-1 ring-white/20">
               <img src="/logos/ieee.png" alt="IEEE" className="h-[17px] w-[17px] object-contain" />
             </span>
-            <span className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-label text-[#C0913C]">
+            <span className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#E8C77A]">
               <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
                 <path d="M10 1.6l2.2 4.8 5.2.6-3.9 3.5 1.1 5.1L10 13l-4.6 2.6 1.1-5.1L2.6 7l5.2-.6z" />
               </svg>
@@ -522,13 +556,15 @@ export function LivingArtCase() {
           </div>
         </Reveal>
 
-        <h1 className="mt-5 max-w-3xl font-serif text-[clamp(1.9rem,4.8vw,3.2rem)] font-light leading-[1.08] text-plum">
-          Making inner states visible{' '}
-          <span className="italic text-orchid">through living art</span>
+        <h1 className="mt-6 max-w-4xl font-serif text-[clamp(2.3rem,6.4vw,4.6rem)] font-light leading-[1.02] tracking-[-0.015em] text-[#F6F1EA]">
+          Making inner states
+          <br />
+          <span className="italic text-[#CBB8F5]">visible</span>{' '}
+          <span className="text-white/40">through living art</span>
         </h1>
 
         <Reveal delay={0.15}>
-          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-plum-muted">
+          <p className="mt-6 max-w-xl text-[14.5px] leading-relaxed text-[#C9C1DA]">
             A digital mirror for the mind. An EEG-driven generative experience that turned real-time
             emotional signals into evolving visual art — and an explain mode that showed people what
             shaped the result.
@@ -538,7 +574,7 @@ export function LivingArtCase() {
               (t) => (
                 <span
                   key={t}
-                  className="rounded-full border border-orchid/30 bg-lavender/25 px-3 py-1.5 text-[11.5px] font-medium text-plum"
+                  className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11.5px] font-medium text-[#E6E0F0] backdrop-blur-sm"
                 >
                   {t}
                 </span>
@@ -556,13 +592,13 @@ export function LivingArtCase() {
                 href={l.href}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 rounded-full border border-plum/15 bg-white px-3.5 py-1.5 text-[12px] font-medium text-plum transition-colors hover:border-orchid/50"
+                className="inline-flex items-center gap-1 rounded-full bg-white/90 px-3.5 py-1.5 text-[12px] font-medium text-plum transition-transform duration-300 hover:-translate-y-0.5"
               >
                 {l.label} <span aria-hidden>↗</span>
               </a>
             ))}
           </div>
-          <p className="mt-4 text-[12px] uppercase tracking-label text-plum-faint">
+          <p className="mt-5 text-[11px] uppercase tracking-[0.18em] text-white/40">
             Carnegie Mellon University · Integrated Innovation Institute · Silicon Valley
           </p>
         </Reveal>
@@ -574,29 +610,29 @@ export function LivingArtCase() {
 
         {/* ── 章节册：横向翻页 ─────────────────────────────────── */}
         <Reveal className="mt-20" y={26}>
-          <ChapterDeck chapters={CHAPTERS} />
+          <ChapterDeck chapters={CHAPTERS} tone="dark" />
         </Reveal>
 
         {/* ── 收尾 ─────────────────────────────────────────────── */}
         <Reveal className="mt-20">
-          <div className="border-t border-plum/10 pt-10">
-            <h2 className="max-w-2xl font-serif text-[clamp(1.5rem,3.4vw,2.2rem)] font-light leading-snug text-plum">
-              Different technologies, <span className="italic text-orchid">the same instinct.</span>
+          <div className="border-t border-white/10 pt-10">
+            <h2 className="max-w-2xl font-serif text-[clamp(1.6rem,3.6vw,2.4rem)] font-light leading-snug text-[#F6F1EA]">
+              Different technologies, <span className="italic text-[#CBB8F5]">the same instinct.</span>
             </h2>
-            <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-plum-muted">
+            <p className="mt-4 max-w-xl text-[14.5px] leading-relaxed text-[#C9C1DA]">
               Listen for the human need. Make complexity understandable. Build something people can
               trust, participate in, and remember.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to="/#impact"
-                className="rounded-full border border-plum/15 bg-white px-5 py-2.5 text-[13px] font-medium text-plum transition-colors hover:border-orchid/50"
+                className="rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-[13px] font-medium text-white/90 backdrop-blur-sm transition-colors hover:border-[#CBB8F5]/60 hover:bg-white/20"
               >
                 ← Back to all work
               </Link>
               <Link
                 to="/work/theta"
-                className="rounded-full border border-plum/15 bg-white px-5 py-2.5 text-[13px] font-medium text-plum transition-colors hover:border-rose/50"
+                className="rounded-full bg-white/90 px-5 py-2.5 text-[13px] font-medium text-plum transition-transform duration-300 hover:-translate-y-0.5"
               >
                 Explore Theta Health →
               </Link>
