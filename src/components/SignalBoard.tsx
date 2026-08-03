@@ -131,7 +131,7 @@ export function SignalBoard() {
                   className={`rounded-full px-3 py-1.5 text-[12px] font-medium ${
                     i === TIMELINE.length - 1
                       ? 'border border-[#C0913C]/45 bg-champagne/35 text-[#8A6A22]'
-                      : 'border border-plum/12 bg-white/70 text-plum-muted'
+                      : 'border border-plum/10 bg-white/70 text-plum-muted'
                   }`}
                   style={
                     i === TIMELINE.length - 1
@@ -254,7 +254,7 @@ export function SignalBoard() {
 
                     {isOpen && (
                       <div className="px-4 pb-4" style={{ animation: 'annot-in .35s ease-out both' }}>
-                        <dl className="space-y-3 border-t border-plum/8 pt-3.5">
+                        <dl className="space-y-3 border-t border-plum/10 pt-3.5">
                           <div>
                             <dt className="text-[10px] uppercase tracking-[0.16em] text-plum-faint">
                               Question from the room

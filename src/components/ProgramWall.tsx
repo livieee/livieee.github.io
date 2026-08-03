@@ -130,7 +130,7 @@ export function ProgramWall() {
             </span>
           </div>
 
-          <div className="mt-2 flex items-start justify-between gap-2 border-t border-plum/8 pt-2">
+          <div className="mt-2 flex items-start justify-between gap-2 border-t border-plum/10 pt-2">
             <p className="text-[11.5px] font-semibold leading-tight text-plum">
               Global Builder Challenge
             </p>
@@ -156,7 +156,7 @@ export function ProgramWall() {
           </div>
 
           {/* 合作印章 */}
-          <div className="mt-2.5 flex items-center gap-1.5 border-t border-plum/8 pt-2">
+          <div className="mt-2.5 flex items-center gap-1.5 border-t border-plum/10 pt-2">
             {STAMPS.map((st) => (
               <span
                 key={st.alt}
@@ -213,7 +213,7 @@ export function ProgramWall() {
 
       {/* program design —— 当晚的流程表 */}
       <span
-        className="absolute left-[1.5%] top-[38%] w-[22%] -rotate-2 rounded-md bg-white/95 px-2 py-1.5 shadow-[0_10px_24px_-14px_rgba(58,36,64,0.5)] ring-1 ring-plum/8"
+        className="absolute left-[1.5%] top-[38%] w-[22%] -rotate-2 rounded-md bg-white/95 px-2 py-1.5 shadow-[0_10px_24px_-14px_rgba(58,36,64,0.5)] ring-1 ring-plum/10"
         style={{ animation: 'annot-in .6s .5s ease-out both' }}
       >
         <span className="block text-[8px] uppercase tracking-[0.14em] text-plum-faint">run of show</span>
@@ -221,7 +221,7 @@ export function ProgramWall() {
           {SHEET.map((r) => (
             <span key={r.t} className="flex items-center gap-1">
               <span className="font-serif text-[9px] leading-none text-rose">{r.t}</span>
-              <span className="h-[1px] flex-1 bg-plum/12" />
+              <span className="h-[1px] flex-1 bg-plum/10" />
               <span className="max-w-[56%] truncate text-[7px] leading-none text-plum-muted">{r.k}</span>
             </span>
           ))}

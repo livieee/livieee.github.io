@@ -833,7 +833,7 @@ function LinkedInPost({
 
       <p className="mt-3 whitespace-pre-line text-[13.5px] leading-[1.45] text-[#000000e6]">{text}</p>
 
-      <div className="mt-auto flex items-center justify-between gap-2 border-t border-black/8 pt-3 text-[12px] text-[#00000099]">
+      <div className="mt-auto flex items-center justify-between gap-2 border-t border-black/10 pt-3 text-[12px] text-[#00000099]">
         <span>{stats}</span>
         {note ? (
           <span className="font-medium text-[#0A66C2]">{note}</span>
@@ -913,7 +913,7 @@ function RunOfShow() {
         ))}
       </ol>
 
-      <div className="mt-4 space-y-2 border-t border-plum/8 pt-3">
+      <div className="mt-4 space-y-2 border-t border-plum/10 pt-3">
         <p className="font-hand text-[13px] text-plum-muted">two I proposed for Panel 3 ✦</p>
         {PANELS.find((p) => p.qs)?.qs?.map((q) => (
           <p key={q.slice(0, 24)} className="border-l-2 border-rose/30 pl-2.5 text-[12px] italic leading-relaxed text-plum-muted">
@@ -989,7 +989,7 @@ const MONO_TINTS = ['#D193A8', '#B98ACB', '#7A9CC6', '#8FAE8B', '#C79A4B']
 function PartnerMark({ n, l, i }: { n: string; l?: string; i: number }) {
   if (l) {
     return (
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-[3px] shadow-[0_2px_6px_-2px_rgba(58,36,64,0.3)] ring-1 ring-plum/8">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-[3px] shadow-[0_2px_6px_-2px_rgba(58,36,64,0.3)] ring-1 ring-plum/10">
         <img src={l} alt="" aria-hidden loading="lazy" className="h-full w-full object-contain" />
       </span>
     )
@@ -1033,7 +1033,7 @@ function PartnerWall() {
               {g.v.map((o, i) => (
                 <li
                   key={o.n}
-                  className="flex items-center gap-2 rounded-full border border-plum/12 bg-white/70 py-1 pl-1 pr-3 text-[11.5px] text-plum-muted"
+                  className="flex items-center gap-2 rounded-full border border-plum/10 bg-white/70 py-1 pl-1 pr-3 text-[11.5px] text-plum-muted"
                 >
                   <PartnerMark n={o.n} l={o.l} i={i} />
                   {o.n}

@@ -48,7 +48,7 @@
     text-wrap: balance;
   }
   /* ── Dreamcore 暗场材质代币 ────────────────────────────────
-     只用这几档，避免再出现不在 Tailwind 刻度上的 bg-white/8 这类失效值。 */
+     只用这几档，避免再出现不在 Tailwind 刻度上的 bg-white/10 这类失效值。 */
   /* ── 玻璃边缘折射 ──────────────────────────────────────────
      真实玻璃的边不是四周均匀的一条线：光从上下打进来，只有上下缘会聚亮，
      两侧几乎看不见。用 mask-composite 把一层渐变裁成 1.4px 的边环来模拟，
@@ -488,10 +488,8 @@ body {
   to   { transform: translateX(300px); opacity: 0; }
 }
 
-/* 会场提问：一条条浮起来，像现场在不断举手 */
-@keyframes q-rise {
-  0%      { opacity: 0; transform: translateY(14px) scale(.94); }
-  12%     { opacity: 1; transform: translateY(0) scale(1); }
-  46%     { opacity: 1; transform: translateY(-6px) scale(1); }
-  62%,100%{ opacity: 0; transform: translateY(-18px) scale(.96); }
+/* 会场提问 / 信号切换：轻轻弹进来 */
+@keyframes q-pop {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

@@ -495,12 +495,12 @@ function LaneExplorer() {
         <img src="/bosch/askdata-workflow.png" alt="The workflow diagram I mapped, across six swimlanes" className="w-full" />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 bg-cream/78 transition-all duration-500"
+          className="pointer-events-none absolute inset-x-0 top-0 bg-cream/80 transition-all duration-500"
           style={{ height: `${lane.top * 100}%` }}
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 bg-cream/78 transition-all duration-500"
+          className="pointer-events-none absolute inset-x-0 bottom-0 bg-cream/80 transition-all duration-500"
           style={{ height: `${(1 - lane.bottom) * 100}%` }}
         />
         <div

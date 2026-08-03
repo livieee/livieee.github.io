@@ -32,8 +32,8 @@ export function DailyReportCard() {
       >
         <div className="flex items-center gap-1 bg-plum/[0.06] px-2.5 py-1.5">
           <span className="h-[5px] w-[5px] rounded-full bg-plum/25" />
-          <span className="h-[5px] w-[5px] rounded-full bg-plum/18" />
-          <span className="h-[5px] w-[5px] rounded-full bg-plum/12" />
+          <span className="h-[5px] w-[5px] rounded-full bg-plum/20" />
+          <span className="h-[5px] w-[5px] rounded-full bg-plum/10" />
           <span className="ml-1.5 text-[7.5px] tracking-wide text-plum-faint">09:13 · automated</span>
         </div>
 
@@ -47,7 +47,7 @@ export function DailyReportCard() {
           <ul className="mt-2.5 space-y-[5px]">
             {ROWS.map((r, i) => (
               <li key={i} className="flex items-center gap-1.5">
-                <span className="h-[6px] w-[16%] rounded-[2px] bg-plum/12" />
+                <span className="h-[6px] w-[16%] rounded-[2px] bg-plum/10" />
                 <span
                   className="h-[6px] rounded-[2px] bg-plum/[0.09]"
                   style={{ width: `${r.w}%` }}
@@ -64,7 +64,7 @@ export function DailyReportCard() {
             ))}
           </ul>
 
-          <div className="mt-2.5 flex items-baseline gap-1.5 border-t border-plum/8 pt-2">
+          <div className="mt-2.5 flex items-baseline gap-1.5 border-t border-plum/10 pt-2">
             <span className="font-serif text-[24px] leading-none text-orchid">337</span>
             <span className="text-[8.5px] leading-tight text-plum-faint">
               trading days on record

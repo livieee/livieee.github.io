@@ -713,7 +713,7 @@ function SilentFailure() {
       {/* YAML 卡：字段原地替换 */}
       <div
         className={`rounded-[1.4rem] border p-6 transition-colors duration-500 ${
-          showTruth ? 'border-[#8FAE8B]/45 bg-[#8FAE8B]/[0.07]' : 'border-plum/12 bg-white/80'
+          showTruth ? 'border-[#8FAE8B]/45 bg-[#8FAE8B]/[0.07]' : 'border-plum/10 bg-white/80'
         }`}
       >
         <div className="flex items-center justify-between">
@@ -1099,7 +1099,7 @@ export function BoschSchemaCase() {
                 the four roles behind it.
               </p>
 
-              <div className="mt-auto flex items-center justify-between border-t border-plum/8 px-5 py-3.5">
+              <div className="mt-auto flex items-center justify-between border-t border-plum/10 px-5 py-3.5">
                 <span className="flex items-center gap-1.5 text-[11.5px] text-plum-faint">
                   <span aria-hidden className="flex -space-x-1">
                     {['#0A66C2', '#D193A8', '#8FAE8B'].map((c) => (

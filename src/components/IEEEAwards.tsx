@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { EEG_BANDS, eegPath } from '@/components/EEGTrace'
 import { Lightbox, type GalleryItem } from '@/components/Lightbox'
@@ -8,7 +8,8 @@ import { PhotoRail } from '@/components/PhotoRail'
  * Recognition · IEEE Rising Stars 2026 —— 两个一等奖，一条人本主线。
  *
  * 一张紧凑的卡，左右两个视觉世界刻意用不同语言：
- *   左 Theta  —— 微微倾斜的 Pitch Board：舞台照最大，证书压角，hover 浮出问题气泡
+ *   左 Theta  —— 会场窗口：现场提问浮在照片上，下面四个方向可点，
+ *                每条提问对应它变成的那个产品/GTM 判断（不动就自己轮播）
  *   右 TaaLA —— 发光的实验窗口：Art Mode 画面 + 背后流动的脑波 + 钉住的 Explain Mode
  * 不做 3D 翻转（Hero 已有），只用尺度、透明度与一条流向的连线。
  *
@@ -30,7 +31,37 @@ const SHOTS: GalleryItem[] = [
   { src: '/ieee/group-stage.jpg', alt: 'All 2026 winners on stage', cap: 'All the 2026 winners, lined up' },
 ]
 
-const BUBBLES = ['privacy?', 'AARP?', 'multilingual?', 'standards?']
+/**
+ * 现场那七八个提问集中在四个方向，每一条都变成了一个产品/GTM 判断。
+ * 文案压缩自 Theta Health 的公开赛后复盘（与 /work/theta 的 SignalBoard 同源），
+ * 只做删减不做推断。
+ */
+const SIGNALS = [
+  {
+    k: 'Trust',
+    q: 'How do you keep health data out of the LLM?',
+    a: 'Layered isolation, de-identified context. It stopped being an implementation detail and became a positioning line — Privacy-by-Architecture.',
+    tint: '#D193A8',
+  },
+  {
+    k: 'Reach',
+    q: 'Build your own senior community, or join the ones that exist?',
+    a: 'AARP as a priority channel — it carries reach and inherited trust. IEEE’s 2025 president added: also a commercial entry point.',
+    tint: '#B98ACB',
+  },
+  {
+    k: 'Standards',
+    q: 'IEEE standards? FDA approval?',
+    a: 'Theta organises and explains health data — it doesn’t diagnose. That scope keeps it outside device territory today, and we opened a conversation with the IEEE Standards Association.',
+    tint: '#7A9CC6',
+  },
+  {
+    k: 'Access',
+    q: 'Other languages? Older adults without a smartphone?',
+    a: 'Multilingual as a baseline, not a later feature — and lower-barrier access beyond one more app to learn.',
+    tint: '#8FAE8B',
+  },
+]
 
 /** 中间的连线：随 hover 流向一侧 */
 function Thread({ side }: { side: 'theta' | 'taala' | null }) {
@@ -58,6 +89,17 @@ function Thread({ side }: { side: 'theta' | 'taala' | null }) {
 export function IEEEAwards() {
   const [zoom, setZoom] = useState<number | null>(null)
   const [side, setSide] = useState<'theta' | 'taala' | null>(null)
+  const [sig, setSig] = useState(0)
+  const sigTaken = useRef(false)
+
+  // 没人碰的时候四条信号自己轮播；一旦点过就交还控制权，
+  // 悬停在这半张卡上也暂停 —— 不跟正在读的人抢。
+  useEffect(() => {
+    if (sigTaken.current || side === 'theta') return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const t = setTimeout(() => setSig((p) => (p + 1) % SIGNALS.length), 6500)
+    return () => clearTimeout(t)
+  }, [sig, side])
 
   return (
     <section
@@ -132,24 +174,15 @@ export function IEEEAwards() {
                 />
               </button>
 
-              {/* 提问轮播：4 条错峰浮起，任意时刻只看到一两条，
-                  读起来像现场问题一个接一个上来，而不是四个标签同时贴着 */}
-              <ul aria-hidden className="pointer-events-none absolute inset-0 z-20">
-                {BUBBLES.map((q, i) => (
-                  <li
-                    key={q}
-                    className="absolute rounded-full bg-white/90 px-2.5 py-1 text-[10.5px] font-medium leading-none text-plum shadow-[0_6px_16px_-6px_rgba(0,0,0,0.6)]"
-                    style={{
-                      left: ['7%', '38%', '12%', '46%'][i],
-                      top: ['54%', '12%', '24%', '40%'][i],
-                      animation: `q-rise 9s ${i * 2.2}s ease-in-out infinite`,
-                      animationPlayState: side === 'taala' ? 'paused' : 'running',
-                    }}
-                  >
-                    {q}
-                  </li>
-                ))}
-              </ul>
+              {/* 当前被选中的那个提问，浮在会场上方 —— 照片因此在"说话" */}
+              <p
+                key={sig}
+                className="pointer-events-none absolute left-3 top-3 z-20 max-w-[56%] rounded-[0.85rem] rounded-tl-[0.25rem] bg-white/95 px-3 py-2 text-[11px] font-medium leading-snug text-plum shadow-[0_10px_24px_-8px_rgba(0,0,0,0.7)] backdrop-blur-sm"
+                style={{ animation: 'q-pop .45s cubic-bezier(.2,.8,.25,1) both' }}
+              >
+                <span aria-hidden className="mr-1 text-plum-faint">“</span>
+                {SIGNALS[sig].q}
+              </p>
 
               <span className="pointer-events-none absolute right-2 top-2 z-20 rounded-full bg-white/90 px-2 py-[3px] text-[10px] font-medium text-[#C0913C] shadow-sm backdrop-blur">
                 1st Place ✦
@@ -160,28 +193,52 @@ export function IEEEAwards() {
                 alt=""
                 aria-hidden
                 loading="lazy"
-                className="absolute bottom-2.5 right-2.5 z-20 h-[62px] w-[88px] rotate-[4deg] rounded-[0.5rem] object-cover shadow-[0_12px_26px_-10px_rgba(0,0,0,0.9)] ring-1 ring-white/30 transition-transform duration-500 group-hover/th:rotate-[1deg]"
+                className="absolute right-2.5 top-9 z-20 h-[62px] w-[88px] rotate-[4deg] rounded-[0.5rem] object-cover shadow-[0_12px_26px_-10px_rgba(0,0,0,0.9)] ring-1 ring-white/30 transition-transform duration-500 group-hover/th:rotate-[1deg]"
               />
             </div>
 
+            {/* 四个方向：现场提问 → 产品判断。点一下换一条，不动就自己走 */}
             <p className="mt-4 flex items-center gap-1.5 font-hand text-[13px] text-plum-muted">
-              <span aria-hidden>↳</span> 7–8 questions from the room
+              <span aria-hidden>↳</span> 7–8 questions — four directions
             </p>
 
-            <p className="mt-2 text-[12.5px] leading-relaxed text-plum-muted">
-              From product vision to a live conversation about trust, access, standards and
-              partnerships.
-            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5" role="tablist" aria-label="What the room asked">
+              {SIGNALS.map((s, i) => {
+                const on = i === sig
+                return (
+                  <button
+                    key={s.k}
+                    type="button"
+                    role="tab"
+                    aria-selected={on}
+                    onClick={() => {
+                      sigTaken.current = true
+                      setSig(i)
+                    }}
+                    className="rounded-full border px-2.5 py-[3px] text-[10.5px] font-medium leading-none transition-all duration-300"
+                    style={{
+                      borderColor: on ? s.tint : 'rgba(58,36,64,0.12)',
+                      background: on ? `${s.tint}1F` : 'rgba(255,255,255,0.7)',
+                      color: on ? '#3A2440' : 'rgba(138,110,132,0.9)',
+                    }}
+                  >
+                    {s.k}
+                  </button>
+                )
+              })}
+            </div>
 
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {['Product storytelling', 'Live pitch', 'Market signals'].map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-plum/10 bg-white/70 px-2 py-[2px] text-[10px] leading-none text-plum-faint"
-                >
-                  {t}
-                </span>
-              ))}
+            <div className="mt-2.5 min-h-[64px]">
+              <p
+                key={`a-${sig}`}
+                className="border-l-2 pl-2.5 text-[12px] leading-relaxed text-plum-muted"
+                style={{
+                  borderColor: SIGNALS[sig].tint,
+                  animation: 'q-pop .45s cubic-bezier(.2,.8,.25,1) both',
+                }}
+              >
+                {SIGNALS[sig].a}
+              </p>
             </div>
 
             <div className="mt-auto flex items-center justify-between gap-2 pt-4">

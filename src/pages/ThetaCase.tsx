@@ -387,7 +387,7 @@ function PulseCheckCard() {
                 {mode === 'pct' ? `${b.pct}%` : `${b.n} votes`}
               </span>
             </div>
-            <div className="mt-1 h-[7px] w-full overflow-hidden rounded-full bg-plum/8">
+            <div className="mt-1 h-[7px] w-full overflow-hidden rounded-full bg-plum/10">
               <div className="h-full rounded-full transition-all duration-500" style={{ width: `${b.pct}%`, backgroundColor: `${b.c}99` }} />
             </div>
           </button>
@@ -888,7 +888,7 @@ export default function ThetaCase() {
                   </div>
                 ))}
               </div>
-              <div className="mt-5 rounded-xl bg-orchid/8 px-4 py-4">
+              <div className="mt-5 rounded-xl bg-orchid/10 px-4 py-4">
                 <p className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-orchid">Every conversation pointed to the same three must-haves</p>
                 <div className="mt-3 space-y-2.5">
                   <div className="flex items-start gap-2.5">
