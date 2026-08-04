@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Reveal } from '@/components/Reveal'
 import { Lightbox, type GalleryItem } from '@/components/Lightbox'
 
@@ -83,8 +83,36 @@ const SIGNALS = [
   },
 ]
 
+
+/**
+ * 盖章只该发生一次 —— 它是个瞬时事件，不是随滚动来回擦洗的进度。
+ * 所以这里单独用一次性的 observer，而不是 animation-timeline: view()
+ * （那个会在往回滚时把章"抬起来"）。
+ */
+function useStampOnce() {
+  const ref = useRef<HTMLSpanElement>(null)
+  const [on, setOn] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setOn(true)
+          io.disconnect()
+        }
+      },
+      { threshold: 0.6 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return { ref, on }
+}
+
 export function SignalBoard() {
   const [zoom, setZoom] = useState<number | null>(null)
+  const stamp = useStampOnce()
 
   return (
     <section id="pitch-story" className="relative scroll-mt-16 overflow-hidden">
@@ -126,8 +154,9 @@ export function SignalBoard() {
                 className="aspect-[4/3] w-full object-cover object-[50%_46%] transition-transform duration-[1.2s] group-hover/hero:scale-[1.04]"
               />
               <span
-                className="pointer-events-none absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11.5px] font-medium text-[#8A6A22] shadow-sm backdrop-blur"
-                style={{ animation: 'annot-in .6s .35s cubic-bezier(.2,.8,.25,1) both' }}
+                ref={stamp.ref}
+                data-on={stamp.on}
+                className="stamp pointer-events-none absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full border border-[#C0913C]/45 bg-white/90 px-3.5 py-1.5 text-[11.5px] font-semibold uppercase tracking-[0.06em] text-[#8A6A22] shadow-[0_8px_20px_-10px_rgba(192,145,60,0.9)] backdrop-blur"
               >
                 <span aria-hidden className="text-[#C0913C]">★</span>
                 Pitch Contest · Age Tech · 1st place

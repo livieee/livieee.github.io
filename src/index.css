@@ -523,3 +523,45 @@ body {
     }
   }
 }
+
+/* ── 盖章 ────────────────────────────────────────────────────
+   真章的手感有三段：高处砸下来（大→小、带一点模糊像运动残影）、
+   触底时略过头再弹回、最后停在一个不正的角度 —— 手盖的章不会是正的。
+   触底那一瞬间外面撑开一圈墨晕。 */
+@keyframes stamp-in {
+  0%   { opacity: 0; transform: scale(2.5) rotate(-16deg); filter: blur(3px); }
+  50%  { opacity: 1; transform: scale(0.92) rotate(-2deg); filter: blur(0); }
+  66%  { transform: scale(1.07) rotate(-5.5deg); }
+  82%  { transform: scale(0.98) rotate(-3.4deg); }
+  100% { transform: scale(1) rotate(-4deg); }
+}
+@keyframes stamp-ring {
+  0%   { opacity: 0; transform: scale(0.55); }
+  46%  { opacity: 0; }
+  52%  { opacity: 0.5; }
+  100% { opacity: 0; transform: scale(2.1); }
+}
+.stamp {
+  transform: rotate(-4deg);
+}
+.stamp[data-on='true'] {
+  animation: stamp-in 0.72s cubic-bezier(0.3, 1.5, 0.4, 1) both;
+}
+.stamp::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  border: 2px solid rgba(192, 145, 60, 0.8);
+  opacity: 0;
+  pointer-events: none;
+}
+.stamp[data-on='true']::after {
+  animation: stamp-ring 0.72s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stamp[data-on='true'],
+  .stamp[data-on='true']::after {
+    animation: none;
+  }
+}
