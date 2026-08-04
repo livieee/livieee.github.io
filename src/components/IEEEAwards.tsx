@@ -277,6 +277,32 @@ export function IEEEAwards() {
               </p>
             </div>
 
+            {/* 现场旁证：会议副主席的原话 —— 比自述有力 */}
+            <button
+              type="button"
+              onClick={() => setZoom(3)}
+              aria-label="View larger: with Conference Vice Chair Scott Tamashiro"
+              className="group/q mt-3 flex w-full cursor-zoom-in items-center gap-3 rounded-[0.9rem] border border-plum/10 bg-white/70 p-2 text-left transition-colors duration-300 hover:border-rose/40 hover:bg-white"
+            >
+              <span className="halftone relative block shrink-0 overflow-hidden rounded-[0.6rem]">
+                <img
+                  src="/ieee/theta-vicechair-tight.jpg"
+                  alt=""
+                  aria-hidden
+                  loading="lazy"
+                  className="h-[56px] w-[56px] object-cover transition-transform duration-500 group-hover/q:scale-[1.08]"
+                />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[11.5px] italic leading-snug text-plum">
+                  “How active this discussion was reflects how interested the room is.”
+                </span>
+                <span className="mt-1 block text-[10.5px] leading-none text-plum-faint">
+                  Scott Tamashiro · IEEE Rising Stars Conference Vice Chair
+                </span>
+              </span>
+            </button>
+
             <div className="mt-3 flex flex-wrap gap-1.5">
               {['Product storytelling', 'Live pitch', 'Market signals'].map((t) => (
                 <span

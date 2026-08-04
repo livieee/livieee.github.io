@@ -97,7 +97,7 @@ const SHOTS: GalleryItem[] = [
 ]
 
 export function SignalBoard() {
-  const [open, setOpen] = useState<string | null>('Trust')
+  const [open, setOpen] = useState('Trust')
   const [zoom, setZoom] = useState<number | null>(null)
 
   return (
@@ -152,13 +152,118 @@ export function SignalBoard() {
           </ol>
         </Reveal>
 
-        <div className="mt-10 grid gap-8 md:grid-cols-12">
-          {/* 左：现场 */}
+        {/* ── 信号板：四个方向常驻在左，选中的一条在右边展开成三拍 ──
+             不用手风琴：四条折起来时，「七八个问题收敛成四个方向」这句话
+             在画面上是看不见的；摊开在左边才立得住。 */}
+        <div className="mt-10 grid gap-6 md:grid-cols-12 md:gap-8">
+          <div className="md:col-span-4">
+            <p className="font-serif text-[19px] font-light text-plum">What did the room care about?</p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-plum-muted">
+              Seven or eight questions, and they clustered into four. Each one is a market signal if
+              you read past the question itself.
+            </p>
+
+            <ul className="mt-5 space-y-1.5" role="tablist" aria-label="Signals from the room">
+              {SIGNALS.map((sig, i) => {
+                const on = open === sig.k
+                return (
+                  <li key={sig.k} style={{ animation: `annot-in .5s ${0.07 * i}s ease-out both` }}>
+                    <button
+                      type="button"
+                      role="tab"
+                      aria-selected={on}
+                      onClick={() => setOpen(sig.k)}
+                      className="group/s flex w-full items-start gap-3 rounded-[0.9rem] border px-3.5 py-3 text-left transition-all duration-300"
+                      style={{
+                        borderColor: on ? `${sig.tint}66` : 'rgba(58,36,64,0.1)',
+                        background: on ? `${sig.tint}14` : 'rgba(255,255,255,0.6)',
+                      }}
+                    >
+                      {/* 左侧一道色条：选中时长满，未选只留一点 */}
+                      <span
+                        aria-hidden
+                        className="mt-[3px] block w-[3px] shrink-0 rounded-full transition-all duration-300"
+                        style={{ height: on ? 34 : 12, backgroundColor: sig.tint }}
+                      />
+                      <span className="min-w-0">
+                        <span
+                          className="block text-[12px] font-medium leading-none transition-colors duration-300"
+                          style={{ color: on ? sig.tint : '#8A6E84' }}
+                        >
+                          {sig.k}
+                        </span>
+                        <span className="mt-1.5 block text-[12.5px] leading-snug text-plum-muted">
+                          {sig.head}
+                        </span>
+                      </span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+
+          </div>
+
+          {/* 右：选中那条读成三拍 —— 问题 → 它暴露了什么 → 它变成了什么 */}
+          <div className="md:col-span-8">
+            {SIGNALS.filter((sig) => sig.k === open).map((sig) => (
+              <div
+                key={sig.k}
+                className="relative rounded-[1.4rem] border bg-white/75 p-5 md:p-7"
+                style={{ borderColor: `${sig.tint}40`, animation: 'annot-in .45s cubic-bezier(.2,.8,.25,1) both' }}
+              >
+                <ol className="relative space-y-6">
+                  {/* 贯穿三拍的竖线 */}
+                  <span
+                    aria-hidden
+                    className="absolute bottom-4 left-[9px] top-4 w-px"
+                    style={{ background: `linear-gradient(180deg, ${sig.tint}00, ${sig.tint}99, ${sig.tint}00)` }}
+                  />
+
+                  {[
+                    { n: '01', t: 'The question', body: sig.question, italic: true },
+                    { n: '02', t: 'What it revealed', body: sig.revealed },
+                    { n: '03', t: 'Where it took us', body: sig.direction, out: true },
+                  ].map((beat, i) => (
+                    <li key={beat.n} className="relative flex gap-4" style={{ animation: `annot-in .45s ${0.08 * i}s ease-out both` }}>
+                      <span
+                        aria-hidden
+                        className="relative z-10 mt-[3px] flex h-[19px] w-[19px] shrink-0 items-center justify-center rounded-full text-[9px] font-medium"
+                        style={{
+                          backgroundColor: beat.out ? sig.tint : '#FBF7F2',
+                          color: beat.out ? '#fff' : sig.tint,
+                          boxShadow: `0 0 0 1px ${sig.tint}66`,
+                        }}
+                      >
+                        {i + 1}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[10px] uppercase tracking-[0.16em] text-plum-faint">{beat.t}</p>
+                        <p
+                          className={`mt-1.5 text-[13.5px] leading-relaxed ${
+                            beat.italic ? 'italic text-plum' : beat.out ? 'text-plum' : 'text-plum-muted'
+                          }`}
+                        >
+                          {beat.body}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <p className="mt-5 font-hand text-[16px] text-plum-muted">the questions were the signal ✦</p>
+
+        {/* ── 现场：照片 + 我的角色 + 一句旁证 ───────────────────── */}
+        <div className="mt-12 grid gap-6 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-5">
             <button
               type="button"
               onClick={() => setZoom(0)}
-              className="group/p block w-full cursor-zoom-in overflow-hidden rounded-[1.4rem] border border-plum/10"
+              className="group/p halftone relative block w-full cursor-zoom-in overflow-hidden rounded-[1.4rem] border border-plum/10"
               aria-label="View the pitch photo larger"
             >
               <img
@@ -168,140 +273,60 @@ export function SignalBoard() {
                 className="aspect-[4/3] w-full object-cover object-[50%_24%] transition-transform duration-700 group-hover/p:scale-[1.04]"
               />
             </button>
-
-            <div className="mt-4 flex gap-3">
-              {SHOTS.slice(1, 4).map((s, i) => (
+            <div className="mt-3 flex gap-3">
+              {/* 副主席那张已经单独出现在下面的引语里，缩略图换成证书，别重复 */}
+              {[1, 2, 4].map((idx) => SHOTS[idx]).map((sh, i) => (
                 <button
-                  key={s.src}
+                  key={sh.src}
                   type="button"
-                  onClick={() => setZoom(i + 1)}
-                  aria-label={`View larger: ${s.alt}`}
-                  className="group/t h-[64px] flex-1 cursor-zoom-in overflow-hidden rounded-[0.8rem] border border-plum/10 bg-white"
+                  onClick={() => setZoom([1, 2, 4][i])}
+                  aria-label={`View larger: ${sh.alt}`}
+                  className="group/t halftone relative h-[64px] flex-1 cursor-zoom-in overflow-hidden rounded-[0.8rem] border border-plum/10 bg-white"
                 >
                   <img
-                    src={s.src}
-                    alt={s.alt}
+                    src={sh.src}
+                    alt={sh.alt}
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover/t:scale-[1.08]"
                   />
                 </button>
               ))}
             </div>
+          </div>
 
-            <div className="mt-5 -rotate-1 rounded-md border border-dashed border-rose/50 bg-white/85 px-4 py-3">
+          <div className="flex flex-col justify-center md:col-span-7">
+            <div className="-rotate-1 self-start rounded-md border border-dashed border-rose/50 bg-white/85 px-4 py-3">
               <p className="font-hand text-[15px] text-plum">my part ✦</p>
               <p className="mt-1 text-[12.5px] leading-snug text-plum-muted">
                 product story · on-stage pitch · live Q&amp;A
               </p>
             </div>
 
-            <blockquote className="mt-5 border-l-2 border-[#7A9CC6]/50 pl-4">
-              <p className="text-[13.5px] leading-relaxed text-plum-muted">
-                “Usually there aren’t many questions after a pitch. How active this discussion was
-                reflects how interested the room is in Theta Health’s direction.”
-              </p>
-              <footer className="mt-2 text-[11.5px] text-plum-faint">
-                Scott Tamashiro · Conference Vice Chair
-              </footer>
+            <blockquote className="mt-6 flex items-start gap-4">
+              <button
+                type="button"
+                onClick={() => setZoom(3)}
+                aria-label="View larger: with Conference Vice Chair Scott Tamashiro"
+                className="group/v halftone relative block shrink-0 cursor-zoom-in overflow-hidden rounded-[0.9rem] border border-plum/10"
+              >
+                <img
+                  src="/ieee/theta-vicechair-tight.jpg"
+                  alt=""
+                  aria-hidden
+                  loading="lazy"
+                  className="h-[104px] w-[104px] object-cover transition-transform duration-500 group-hover/v:scale-[1.07]"
+                />
+              </button>
+              <div className="min-w-0 border-l-2 border-[#7A9CC6]/50 pl-4">
+                <p className="text-[14px] leading-relaxed text-plum">
+                  “Usually there aren’t many questions after a pitch. How active this discussion was
+                  reflects how interested the room is in Theta Health’s direction.”
+                </p>
+                <footer className="mt-2 text-[11.5px] text-plum-faint">
+                  Scott Tamashiro · IEEE Rising Stars Conference Vice Chair
+                </footer>
+              </div>
             </blockquote>
-          </div>
-
-          {/* 右：信号板 */}
-          <div className="md:col-span-7">
-            <p className="font-serif text-[19px] font-light text-plum">
-              What did the room care about?
-            </p>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-plum-muted">
-              Seven or eight questions, and they clustered into four. Each one is a market signal if
-              you read past the question itself.
-            </p>
-
-            <ul className="mt-5 space-y-3">
-              {SIGNALS.map((s, i) => {
-                const isOpen = open === s.k
-                return (
-                  <li
-                    key={s.k}
-                    style={{ animation: `annot-in .5s ${0.08 * i}s ease-out both` }}
-                    className={`overflow-hidden rounded-[1.2rem] border bg-white/75 transition-colors duration-300 ${
-                      isOpen ? 'border-plum/20' : 'border-plum/10'
-                    }`}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setOpen(isOpen ? null : s.k)}
-                      aria-expanded={isOpen}
-                      className="flex w-full items-center gap-3 px-4 py-3.5 text-left"
-                    >
-                      <span
-                        className="rounded-full px-2.5 py-[3px] text-[11px] font-medium leading-none"
-                        style={{ backgroundColor: `${s.tint}22`, color: s.tint }}
-                      >
-                        {s.k}
-                      </span>
-                      <span className="min-w-0 flex-1 text-[13px] leading-snug text-plum-muted">
-                        {s.head}
-                      </span>
-                      <span
-                        aria-hidden
-                        className={`shrink-0 text-[12px] text-plum-faint transition-transform duration-300 ${
-                          isOpen ? 'rotate-180' : ''
-                        }`}
-                      >
-                        ▾
-                      </span>
-                    </button>
-
-                    {isOpen && (
-                      <div className="px-4 pb-4" style={{ animation: 'annot-in .35s ease-out both' }}>
-                        <dl className="space-y-3 border-t border-plum/10 pt-3.5">
-                          <div>
-                            <dt className="text-[10px] uppercase tracking-[0.16em] text-plum-faint">
-                              Question from the room
-                            </dt>
-                            <dd className="mt-1 text-[13px] italic leading-relaxed text-plum">
-                              {s.question}
-                            </dd>
-                          </div>
-                          <div>
-                            <dt className="text-[10px] uppercase tracking-[0.16em] text-plum-faint">
-                              What it revealed
-                            </dt>
-                            <dd className="mt-1 text-[13px] leading-relaxed text-plum-muted">
-                              {s.revealed}
-                            </dd>
-                          </div>
-                          <div>
-                            <dt className="text-[10px] uppercase tracking-[0.16em] text-plum-faint">
-                              Product / GTM direction
-                            </dt>
-                            <dd
-                              className="mt-1 border-l-2 pl-3 text-[13px] leading-relaxed text-plum-muted"
-                              style={{ borderColor: s.tint }}
-                            >
-                              {s.direction}
-                            </dd>
-                          </div>
-                        </dl>
-                      </div>
-                    )}
-                  </li>
-                )
-              })}
-            </ul>
-
-            {/* 底部一条手绘流程 */}
-            <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-2 text-[12px] text-plum-faint">
-              {['question', 'underlying need', 'product implication', 'GTM opportunity'].map((t, i) => (
-                <span key={t} className="flex items-center gap-2">
-                  <span className="rounded-full border border-plum/10 bg-white/70 px-2.5 py-1 leading-none">
-                    {t}
-                  </span>
-                  {i < 3 && <span aria-hidden>→</span>}
-                </span>
-              ))}
-            </div>
-            <p className="mt-4 font-hand text-[16px] text-plum-muted">the questions were the signal ✦</p>
           </div>
         </div>
       </div>
