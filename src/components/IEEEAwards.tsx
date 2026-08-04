@@ -10,7 +10,8 @@ import { PhotoRail } from '@/components/PhotoRail'
  * 一张紧凑的卡，左右两个视觉世界刻意用不同语言：
  *   左 Theta  —— 会场窗口：现场提问浮在照片上，下面四个方向可点，
  *                每条提问对应它变成的那个产品/GTM 判断（不动就自己轮播）
- *   右 TaaLA —— 发光的实验窗口：Art Mode 画面 + 背后流动的脑波 + 钉住的 Explain Mode
+ *   右 TaaLA —— 实验窗口：Art / Explain 两种模式可切，画面与说明同步换，
+ *                背后是与案例页同源的频带走线（Explain 模式下退让）
  * 不做 3D 翻转（Hero 已有），只用尺度、透明度与一条流向的连线。
  *
  * 事实来源：IEEE Rising Stars 官方页面 + Theta Health 赛后复盘。
@@ -63,6 +64,31 @@ const SIGNALS = [
   },
 ]
 
+/**
+ * 装置的两种模式 —— 一种给人感受，一种给人理解。
+ * 口径与 /work/therapy-as-living-art 的 MODES 一致。
+ */
+const MODES = [
+  {
+    k: 'Art mode',
+    img: '/ieee/mode-calm.jpg',
+    alt: 'Art Mode — the silhouette becomes a calm, blue-toned aura',
+    zoom: 6,
+    line: 'Creates emotional resonance.',
+    body: 'The silhouette becomes an aura — calm reads as a dim, flowing stream; high arousal ignites. Nothing to read, you just recognise yourself in it.',
+    tint: '#B98ACB',
+  },
+  {
+    k: 'Explain mode',
+    img: '/ieee/mode-explain.jpg',
+    alt: 'Explain Mode — the same moment as five EEG bands and a point in valence–arousal space',
+    zoom: 6,
+    line: 'Creates transparency and trust.',
+    body: 'The same moment as five EEG bands and a point in valence–arousal space — so a person can see which signals produced the image.',
+    tint: '#7A9CC6',
+  },
+]
+
 /** 中间的连线：随 hover 流向一侧 */
 function Thread({ side }: { side: 'theta' | 'taala' | null }) {
   const anim =
@@ -91,6 +117,8 @@ export function IEEEAwards() {
   const [side, setSide] = useState<'theta' | 'taala' | null>(null)
   const [sig, setSig] = useState(0)
   const sigTaken = useRef(false)
+  const [mode, setMode] = useState(0)
+  const modeTaken = useRef(false)
 
   // 没人碰的时候四条信号自己轮播；一旦点过就交还控制权，
   // 悬停在这半张卡上也暂停 —— 不跟正在读的人抢。
@@ -100,6 +128,14 @@ export function IEEEAwards() {
     const t = setTimeout(() => setSig((p) => (p + 1) % SIGNALS.length), 6500)
     return () => clearTimeout(t)
   }, [sig, side])
+
+  // 右卡同一套节奏：两种模式自己交替，点过就停
+  useEffect(() => {
+    if (modeTaken.current || side === 'taala') return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const t = setTimeout(() => setMode((p) => (p + 1) % MODES.length), 5200)
+    return () => clearTimeout(t)
+  }, [mode, side])
 
   return (
     <section
@@ -241,6 +277,18 @@ export function IEEEAwards() {
               </p>
             </div>
 
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {['Product storytelling', 'Live pitch', 'Market signals'].map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full border border-plum/10 bg-white/70 px-2 py-[2px] text-[10px] leading-none text-plum-faint"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+
+
             <div className="mt-auto flex items-center justify-between gap-2 pt-4">
               <Link
                 to="/work/theta"
@@ -291,7 +339,7 @@ export function IEEEAwards() {
                 preserveAspectRatio="none"
                 style={{
                   animation: 'eeg-drift 22s linear infinite',
-                  opacity: side === 'taala' ? 0.5 : 0.3,
+                  opacity: mode === 1 ? 0.16 : side === 'taala' ? 0.5 : 0.3,
                   transition: 'opacity .5s',
                 }}
               >
@@ -314,17 +362,28 @@ export function IEEEAwards() {
 
               <button
                 type="button"
-                onClick={() => setZoom(6)}
+                onClick={() => setZoom(MODES[mode].zoom)}
                 aria-label="View the generative art larger"
                 className="halftone relative block w-full cursor-zoom-in"
               >
                 <img
-                  src="/ieee/mode-calm.jpg"
-                  alt="The Art Mode silhouette — a calm, blue-toned aura"
+                  key={mode}
+                  src={MODES[mode].img}
+                  alt={MODES[mode].alt}
                   loading="lazy"
                   className="h-[172px] w-full object-cover transition-transform duration-700 group-hover/ta:scale-[1.04]"
+                  style={{ animation: 'q-pop .5s cubic-bezier(.2,.8,.25,1) both' }}
                 />
               </button>
+
+              {/* 当前模式的一句话，浮在画面上 —— 与左卡的提问气泡同一位置语言 */}
+              <p
+                key={`m-${mode}`}
+                className="pointer-events-none absolute bottom-3 left-3 z-20 max-w-[68%] rounded-[0.85rem] rounded-bl-[0.25rem] bg-white/95 px-3 py-2 text-[11px] font-medium leading-snug text-plum shadow-[0_10px_24px_-8px_rgba(0,0,0,0.7)] backdrop-blur-sm"
+                style={{ animation: 'q-pop .45s cubic-bezier(.2,.8,.25,1) both' }}
+              >
+                {MODES[mode].line}
+              </p>
 
               <span className="pointer-events-none absolute right-2 top-2 z-20 rounded-full bg-white/90 px-2 py-[3px] text-[10px] font-medium text-[#C0913C] shadow-sm backdrop-blur">
                 1st Place ✦
@@ -332,14 +391,49 @@ export function IEEEAwards() {
 
             </div>
 
+            {/* 两种模式：一种给人感受，一种给人理解。不动就自己交替 */}
             <p className="mt-4 flex items-center gap-1.5 font-hand text-[13px] text-plum-muted">
-              <span aria-hidden>↳</span> art mode ↔ explain mode
+              <span aria-hidden>↳</span> one to feel, one to understand
             </p>
 
-            <p className="mt-2 text-[12.5px] leading-relaxed text-plum-muted">
-              Turning real-time brain signals into an experience people could see, feel and
-              understand.
-            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5" role="tablist" aria-label="Interaction modes">
+              {MODES.map((m, i) => {
+                const on = i === mode
+                return (
+                  <button
+                    key={m.k}
+                    type="button"
+                    role="tab"
+                    aria-selected={on}
+                    onClick={() => {
+                      modeTaken.current = true
+                      setMode(i)
+                    }}
+                    className="rounded-full border px-2.5 py-[3px] text-[10.5px] font-medium leading-none transition-all duration-300"
+                    style={{
+                      borderColor: on ? m.tint : 'rgba(58,36,64,0.12)',
+                      background: on ? `${m.tint}1F` : 'rgba(255,255,255,0.7)',
+                      color: on ? '#3A2440' : 'rgba(138,110,132,0.9)',
+                    }}
+                  >
+                    {m.k}
+                  </button>
+                )
+              })}
+            </div>
+
+            <div className="mt-2.5 min-h-[64px]">
+              <p
+                key={`mb-${mode}`}
+                className="border-l-2 pl-2.5 text-[12px] leading-relaxed text-plum-muted"
+                style={{
+                  borderColor: MODES[mode].tint,
+                  animation: 'q-pop .45s cubic-bezier(.2,.8,.25,1) both',
+                }}
+              >
+                {MODES[mode].body}
+              </p>
+            </div>
 
             <div className="mt-3 flex flex-wrap gap-1.5">
               {['Product UI', 'Experience design', 'Research communication'].map((t) => (
