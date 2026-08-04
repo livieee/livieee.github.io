@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Reveal } from '@/components/Reveal'
 import { Lightbox, type GalleryItem } from '@/components/Lightbox'
 
@@ -9,7 +9,8 @@ import { Lightbox, type GalleryItem } from '@/components/Lightbox'
  * 每条都能翻成一个产品/GTM 判断。
  *
  * 这一版让照片当主角、文字只留骨头：上半是四张现场照串成的一条线
- * （随滚动逐张点亮，最后一拍落金），下半是四个方向的短卡，一问一答。
+ * （奖章合影当封面，四拍现场退成小图带），下半是四个方向的短卡，一问一答。
+ * 入场动画交给 CSS animation-timeline: view()，不再用 JS observer。
  * 内容全部来自 Theta Health 的公开赛后复盘，未做加工推断。
  */
 
@@ -82,34 +83,8 @@ const SIGNALS = [
   },
 ]
 
-/** 四张现场照随滚动逐张点亮 */
-function useLit(count: number) {
-  const ref = useRef<HTMLOListElement>(null)
-  const [lit, setLit] = useState(-1)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setLit(count - 1)
-      return
-    }
-    const items = [...el.querySelectorAll('li')]
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) setLit((p) => Math.max(p, items.indexOf(e.target as HTMLLIElement)))
-        }),
-      { rootMargin: '-10% 0px -20% 0px', threshold: 0.25 },
-    )
-    items.forEach((i) => io.observe(i))
-    return () => io.disconnect()
-  }, [count])
-  return { ref, lit }
-}
-
 export function SignalBoard() {
   const [zoom, setZoom] = useState<number | null>(null)
-  const { ref, lit } = useLit(BEATS.length)
 
   return (
     <section id="pitch-story" className="relative scroll-mt-16 overflow-hidden">
@@ -136,95 +111,85 @@ export function SignalBoard() {
           </h2>
         </Reveal>
 
-        {/* ── 四拍现场：照片当主角，字只留标签 ─────────────────── */}
-        <ol ref={ref} className="relative mt-10 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
-          {BEATS.map((b, i) => {
-            const on = i <= lit
-            return (
-              <li key={b.k} className={`relative ${b.lift}`}>
-                <button
-                  type="button"
-                  onClick={() => setZoom(b.z)}
-                  aria-label={`View larger: ${SHOTS[b.z].alt}`}
-                  className="group/b block w-full cursor-zoom-in text-left"
-                >
-                  <span
-                    className="halftone relative block overflow-hidden rounded-[1.1rem] border border-plum/10 transition-all duration-700"
-                    style={{
-                      opacity: on ? 1 : 0.4,
-                      transform: on ? 'translateY(0)' : 'translateY(16px)',
-                      boxShadow: on
-                        ? b.gold
-                          ? '0 22px 44px -24px rgba(192,145,60,0.85)'
-                          : '0 18px 38px -24px rgba(58,36,64,0.5)'
-                        : 'none',
-                    }}
-                  >
-                    <img
-                      src={SHOTS[b.z].src}
-                      alt={SHOTS[b.z].alt}
-                      loading="lazy"
-                      className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover/b:scale-[1.05]"
-                    />
-                  </span>
-                  <span className="mt-2.5 flex items-center gap-1.5">
-                    <span
-                      aria-hidden
-                      className="inline-block h-1.5 w-1.5 shrink-0 rounded-full transition-colors duration-500"
-                      style={{
-                        backgroundColor: on ? (b.gold ? '#C0913C' : '#7A9CC6') : 'rgba(58,36,64,0.18)',
-                      }}
-                    />
-                    <span
-                      className="text-[12.5px] font-medium leading-none transition-colors duration-500"
-                      style={{ color: on ? (b.gold ? '#8A6A22' : '#3A2440') : '#8A6E84' }}
-                    >
-                      {b.k}
-                    </span>
-                    {b.gold && on && (
-                      <span
-                        aria-hidden
-                        className="text-[12px] text-[#C0913C]"
-                        style={{ animation: 'annot-in .6s .3s both' }}
-                      >
-                        ★
-                      </span>
-                    )}
-                  </span>
-                </button>
-              </li>
-            )
-          })}
-        </ol>
-
-        {/* ── 旁证：一句话 + 合影 ──────────────────────────────── */}
-        <Reveal delay={0.08}>
-          <blockquote className="mt-12 flex flex-col gap-4 rounded-[1.4rem] border border-plum/10 bg-white/70 p-5 sm:flex-row sm:items-center sm:gap-5 md:p-6">
+        {/* ── 主图：和副主席的奖章合影 —— 这一段的封面 ─────────── */}
+        <div className="mt-10 grid items-center gap-8 md:grid-cols-12 md:gap-10">
+          <figure className="beat-in md:col-span-7">
             <button
               type="button"
               onClick={() => setZoom(4)}
               aria-label="View larger: with Conference Vice Chair Scott Tamashiro"
-              className="group/v halftone relative block shrink-0 cursor-zoom-in self-start overflow-hidden rounded-[1rem] border border-plum/10 sm:self-auto"
+              className="group/hero halftone relative block w-full cursor-zoom-in overflow-hidden rounded-[1.6rem] border border-plum/10 shadow-[0_40px_80px_-42px_rgba(58,36,64,0.7)]"
             >
               <img
-                src="/ieee/theta-vicechair-tight.jpg"
-                alt=""
-                aria-hidden
-                loading="lazy"
-                className="h-[96px] w-[96px] object-cover transition-transform duration-500 group-hover/v:scale-[1.07]"
+                src="/ieee/theta-vicechair.jpg"
+                alt="Olivia with IEEE Rising Stars Conference Vice Chair Scott Tamashiro, holding the first-place certificate and medal"
+                className="aspect-[4/3] w-full object-cover object-[50%_46%] transition-transform duration-[1.2s] group-hover/hero:scale-[1.04]"
               />
+              <span
+                className="pointer-events-none absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11.5px] font-medium text-[#8A6A22] shadow-sm backdrop-blur"
+                style={{ animation: 'annot-in .6s .35s cubic-bezier(.2,.8,.25,1) both' }}
+              >
+                <span aria-hidden className="text-[#C0913C]">★</span>
+                Pitch Contest · Age Tech · 1st place
+              </span>
             </button>
-            <div className="min-w-0">
-              <p className="font-serif text-[clamp(1rem,1.7vw,1.25rem)] font-light leading-snug text-plum">
+            <figcaption className="mt-3 font-hand text-[15px] text-plum-muted">
+              with Scott Tamashiro, Conference Vice Chair ✦
+            </figcaption>
+          </figure>
+
+          <div className="md:col-span-5">
+            <blockquote>
+              <p className="font-serif text-[clamp(1.15rem,2.2vw,1.6rem)] font-light leading-snug text-plum">
                 “Usually there aren’t many questions after a pitch. How active this discussion was
                 reflects how interested the room is.”
               </p>
-              <footer className="mt-2 text-[12px] text-plum-faint">
+              <footer className="mt-3 text-[12.5px] text-plum-faint">
                 Scott Tamashiro · IEEE Rising Stars Conference Vice Chair
               </footer>
-            </div>
-          </blockquote>
-        </Reveal>
+            </blockquote>
+            <p className="mt-6 border-l-2 border-[#C0913C]/50 pl-4 text-[13px] leading-relaxed text-plum-muted">
+              Top 3 finalist → live pitch → 7–8 questions → first place. My part: the product story,
+              the pitch on stage, and the Q&amp;A that followed.
+            </p>
+          </div>
+        </div>
+
+        {/* 四拍现场退成一条小图带 —— 主角只有一个。入场交给 CSS view() */}
+        <ol className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+          {BEATS.map((b) => (
+            <li key={b.k} className="beat-in">
+              <button
+                type="button"
+                onClick={() => setZoom(b.z)}
+                aria-label={`View larger: ${SHOTS[b.z].alt}`}
+                className="group/b block w-full cursor-zoom-in text-left"
+              >
+                <span className="halftone relative block overflow-hidden rounded-[0.9rem] border border-plum/10">
+                  <img
+                    src={SHOTS[b.z].src}
+                    alt={SHOTS[b.z].alt}
+                    loading="lazy"
+                    className="aspect-[5/4] w-full object-cover transition-transform duration-700 group-hover/b:scale-[1.06]"
+                  />
+                </span>
+                <span className="mt-2 flex items-center gap-1.5">
+                  <span
+                    aria-hidden
+                    className="inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+                    style={{ backgroundColor: b.gold ? '#C0913C' : '#7A9CC6' }}
+                  />
+                  <span
+                    className="text-[12px] font-medium leading-none"
+                    style={{ color: b.gold ? '#8A6A22' : '#3A2440' }}
+                  >
+                    {b.k}
+                  </span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ol>
 
         {/* ── 四个方向：一问一答，各两行 ───────────────────────── */}
         <Reveal delay={0.06}>

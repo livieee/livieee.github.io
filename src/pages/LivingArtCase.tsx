@@ -202,15 +202,6 @@ export function LivingArtCase() {
   const [mode, setMode] = useState<'art' | 'explain'>('art')
   const [arch, setArch] = useState(false)
   const [zoom, setZoom] = useState<number | null>(null)
-  const [lifted, setLifted] = useState(false)
-
-  // 滚动后给悬浮导航一层投影，让它从背景里浮起来
-  useEffect(() => {
-    const onScroll = () => setLifted(window.scrollY > 100)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
   const m = MODES[mode]
 
   const CHAPTERS: Chapter[] = [
@@ -518,39 +509,43 @@ export function LivingArtCase() {
         ))}
       </div>
 
-      {/* 悬浮胶囊导航：不贴边通栏，让顶部也能透出背景 */}
-      <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 md:pt-6">
-        <nav
-          aria-label="Case"
-          className={`glass-edge inline-flex items-center gap-1 rounded-full bg-[#0D1020]/55 p-1.5 backdrop-blur-xl transition-shadow duration-500 ${
-            lifted ? 'shadow-[0_16px_40px_-18px_rgba(0,0,0,0.9)]' : ''
-          }`}
-        >
-          <Link
-            to="/#impact"
-            className="group/back inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white sm:px-3.5"
-          >
-            <span aria-hidden className="transition-transform duration-300 group-hover/back:-translate-x-0.5">←</span>
-            <span className="hidden sm:inline">Work</span>
-          </Link>
+      {/* 阅读进度：CSS scroll() 驱动，无 JS、跑在合成线程上 */}
+      <div
+        aria-hidden
+        className="read-progress fixed inset-x-0 top-0 z-[60] h-[2px] bg-transparent"
+      >
+        <i className="block h-full w-full origin-left scale-x-0 bg-gradient-to-r from-[#CBB8F5] via-[#7FD3E8] to-[#E8C77A]" />
+      </div>
 
-          <span aria-hidden className="mx-0.5 h-5 w-px bg-white/10" />
-
+      {/* 导航与其他案例页/首页保持同一套：← Olivia Xiao | All work | Say Hello */}
+      <header className="fixed inset-x-0 top-0 z-50 bg-cream shadow-[0_1px_0_0_rgba(58,36,64,0.06)]">
+        <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Case study">
           <Link
             to="/"
-            className="rounded-full px-2.5 py-1.5 font-serif text-[15px] text-white/90 transition-colors hover:bg-white/10 md:px-3 md:text-[16px]"
+            className="group/logo flex items-baseline gap-2 font-serif text-lg font-medium tracking-tight text-plum"
           >
-            ⌐ Hi, I'm Olivia <span aria-hidden className="text-[#CBB8F5]">↘</span>
+            <span
+              aria-hidden
+              className="text-sm text-orchid/70 transition-transform duration-300 group-hover/logo:-translate-x-0.5"
+            >
+              ←
+            </span>
+            <span>Olivia Xiao</span>
           </Link>
-
-          <span aria-hidden className="mx-0.5 hidden h-5 w-px bg-white/10 sm:block" />
-
-          <Link
-            to="/#contact"
-            className="glass-edge whitespace-nowrap rounded-full bg-white/10 px-3.5 py-1.5 text-[12px] font-medium text-white/90 transition-colors duration-300 hover:bg-white/20 md:px-4 md:text-[12.5px]"
-          >
-            Say Hello <span aria-hidden className="text-white/45">↗</span>
-          </Link>
+          <div className="flex items-center gap-5">
+            <Link
+              to="/#impact"
+              className="text-[13px] font-medium text-plum-muted transition-colors hover:text-plum"
+            >
+              All work
+            </Link>
+            <a
+              href="mailto:olivia.zxiao@gmail.com"
+              className="rounded-full bg-rose px-5 py-2 text-[13px] font-medium text-white transition-all duration-300 hover:bg-plum"
+            >
+              Say Hello
+            </a>
+          </div>
         </nav>
       </header>
 

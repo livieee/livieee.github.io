@@ -674,6 +674,14 @@ export default function ThetaCase() {
     <main className="min-h-screen bg-cream text-plum">
       <style>{CASE_CSS}</style>
       {/* ── 顶栏 ── */}
+      {/* 阅读进度：CSS scroll() 驱动，无 JS、跑在合成线程上 */}
+      <div
+        aria-hidden
+        className="read-progress fixed inset-x-0 top-0 z-[60] h-[2px] bg-transparent"
+      >
+        <i className="block h-full w-full origin-left scale-x-0 bg-gradient-to-r from-orchid via-rose to-champagne" />
+      </div>
+
       <header className="fixed inset-x-0 top-0 z-50 bg-cream/85 shadow-[0_1px_0_0_rgba(58,36,64,0.06)] backdrop-blur-md">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Case study">
           <Link to="/" className="group/logo flex items-baseline gap-2 font-serif text-lg font-medium tracking-tight text-plum">
