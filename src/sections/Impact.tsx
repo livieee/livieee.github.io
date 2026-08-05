@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { GlowEdge } from '@/components/GlowEdge'
 import { IEEEAwards } from '@/components/IEEEAwards'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
 import { TiltCard } from '@/components/TiltCard'
+import { AskDataUI } from '@/components/AskDataUI'
 import { ProgramWall } from '@/components/ProgramWall'
 import { DailyReportCard } from '@/components/DailyReportCard'
 
@@ -52,103 +54,13 @@ function Tag({ children }: { children: string }) {
   )
 }
 
-/**
- * 四个案例的数据。原来 01/02 是通栏大卡、03/04 才并排，三种尺寸混在一起；
- * 统一成一排两个之后节奏一致、整段也短得多。
- * 文案、指标、标签全部沿用原卡片，一句没改。
- */
-const CASES = [
-  {
-    id: 'case-theta',
-    n: '01',
-    eyebrow: 'AI Product Development · Theta Health',
-    title: 'Giving clinicians their time back with a 0-to-1 AI Scribe',
-    body:
-      "Clinical documentation was eating physicians' days. From 5+ physician interviews to prompt design and workflow mapping, I helped ship a HIPAA-compliant AI Scribe MVP — and land its first clinic pilot.",
-    tags: ['Product discovery', 'LLM prompt design', 'HIPAA-compliant infra', 'Clinical workflow'],
-    metrics: [
-      { value: '83%', n: 83, suffix: '%', label: 'reduction in manual documentation time' },
-      { value: '0→1', label: 'MVP launched on compliant infrastructure' },
-      { value: '1st', label: 'clinic pilot secured through demand validation' },
-    ],
-    accent: 'text-rose',
-    bg: 'bg-gradient-to-br from-cream-soft to-blush/40',
-    href: '/work/theta',
-    cta: 'Read the full case study',
-    badge: { text: 'flagship case ✦', bg: '#B98ACB', side: 'left-8', tilt: 'rotate-[-4deg]' },
-    media: <img src="/covers/theta.jpg" alt="" aria-hidden loading="lazy" className="aspect-[21/9] w-full rounded-[1.1rem] border border-plum/10 object-cover" />,
-  },
-  {
-    id: 'case-askdata',
-    n: '02',
-    eyebrow: 'Enterprise AI Product',
-    title: 'Three disconnected tools, one continuous pipeline',
-    body:
-      'Enterprise teams lost the thread between query, analysis and charts. I designed the workspace that holds it — so the answer never has to be re-explained.',
-    tags: ['Product Strategy', 'Workflow Design', 'MVP Definition', 'PRDs'],
-    metrics: [
-      { value: '80%+', n: 80, suffix: '%+', label: 'manual analytics workflows streamlined' },
-      { value: '3→1', label: 'tools folded into one workspace' },
-      { value: 'PRD', label: 'specs shipped to engineering' },
-    ],
-    accent: 'text-[#4E6E96]',
-    bg: 'bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40',
-    href: '/work/genai-analytics',
-    cta: 'Explore the platform',
-    badge: { text: 'built with Bosch ✦', bg: '#4E6E96', side: 'left-8', tilt: 'rotate-[-3deg]' },
-    logos: (
-      <div className="mb-3 flex items-center gap-3">
-        <img src="/logos/bosch-wordmark.png" alt="Bosch" className="h-[18px] w-auto" />
-        <span aria-hidden className="font-hand text-[15px] text-plum-faint">×</span>
-        <img src="/logos/cmu-mark.png" alt="Carnegie Mellon University" className="h-[24px] w-auto" />
-      </div>
-    ),
-    // 原来这里放可交互的 AskDataUI，但它在半宽卡里有 481px 高，
-    // 把整行撑到 949 —— 演示留在案例页，首页用裁好的真实界面图
-    media: <img src="/covers/askdata.jpg" alt="" aria-hidden loading="lazy" className="aspect-[21/9] w-full rounded-[1.1rem] border border-plum/10 object-cover" />,
-  },
-  {
-    id: 'case-aivalley',
-    n: '03',
-    eyebrow: 'GTM & AI Ecosystem Partnerships',
-    title: 'Creating spaces where people come to build',
-    body:
-      'From global builder challenges to Bay Area hackathons and founder conversations, I shape thoughtful programs that connect partner goals with builders and communities around ideas worth building.',
-    tags: ['Ecosystem Partnerships', 'Developer Programs', 'Program Strategy'],
-    metrics: [
-      { value: '9', n: 9, label: 'selected programs' },
-      { value: '221', n: 221, label: 'builders in a flagship challenge' },
-      { value: 'E2E', label: 'flagship program ownership' },
-    ],
-    accent: 'text-rose',
-    bg: 'bg-gradient-to-br from-lavender/60 to-cream-soft',
-    href: '/work/ai-valley',
-    cta: 'Explore programs',
-    badge: { text: 'programs are products too', bg: '#CE7E9E', side: 'right-8', tilt: 'rotate-[3deg]' },
-    media: <ProgramWall />,
-  },
-  {
-    id: 'case-yuto',
-    n: '04',
-    eyebrow: 'Applied AI at Work · Yuto USA',
-    title: 'Shipping AI the executive team uses daily',
-    body:
-      'At an advanced-materials company, I shipped a 0-to-1 forecasting product to production — built solo with agentic coding, fully traceable, with human override — now in daily use by the executive team.',
-    tags: ['Agentic coding', 'Technical program management', 'Market & GTM research'],
-    metrics: [
-      { value: '7.5%', n: 7.5, suffix: '%', label: 'one-month forecast error, down from 9.2%' },
-      { value: '100+', n: 100, suffix: '+', label: 'attendees at the showcase I delivered' },
-      { value: '5+', n: 5, suffix: '+', label: 'concurrent workstreams run' },
-    ],
-    accent: 'text-orchid',
-    bg: 'bg-cream border border-plum/10',
-    href: '/work',
-    cta: 'See it in the index',
-    media: <DailyReportCard />,
-  },
-]
-
 export function Impact() {
+  /** Theta 主视觉上跟随光标的 Tap to view 胶囊 */
+  const [viewCur, setViewCur] = useState<{ x: number; y: number } | null>(null)
+  /** AskData 演示区跟随光标的 Tap to explore 胶囊 */
+  const [askCur, setAskCur] = useState<{ x: number; y: number } | null>(null)
+  /** Multi-agent 长条入口跟随光标的 View project 胶囊 */
+  const [archCur, setArchCur] = useState<{ x: number; y: number } | null>(null)
   return (
     <section id="impact" className="relative bg-white/50">
       {/* 顶部延续 Hero 的方格纸语言，向下淡出 */}
@@ -177,67 +89,383 @@ export function Impact() {
           </p>
         </Reveal>
 
-        {/* ── 四个案例，统一成一排两个 ──────────────────────────────
-             原来 01 / 02 是通栏大卡、03 / 04 才并排，三种尺寸混在一起，
-             整段读下来就显得很长。统一成 2×2 之后节奏一致，也更短。
-             每张卡的形状相同：媒体 → 编号+类别 → 标题 → 一段 → 指标 → 标签 → CTA。 */}
-        <div className="mt-12 grid gap-6 md:mt-14 md:grid-cols-2 md:gap-7">
-          {CASES.map((c, i) => (
-            <Reveal key={c.id} y={30} delay={0.04 + i * 0.06}>
-              <TiltCard className="h-full">
-                {c.badge && (
-                  <span
-                    aria-hidden
-                    className={`absolute -top-3 z-10 rounded-md px-2.5 py-0.5 font-hand text-[13.5px] font-semibold text-white shadow ${c.badge.side} ${c.badge.tilt}`}
-                    style={{ backgroundColor: c.badge.bg }}
-                  >
-                    {c.badge.text}
+        {/* ── Case 1 · AI Product Development — full-width feature ─────────────── */}
+        <Reveal className="mt-14" y={36}>
+          <TiltCard max={2.5} className="h-full">
+            <span
+              aria-hidden
+              className="absolute -top-3 left-8 z-10 rotate-[-4deg] rounded-md bg-orchid px-2.5 py-0.5 font-hand text-[15px] font-semibold text-white shadow"
+            >
+              flagship case ✦
+            </span>
+          <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[1.6rem] bg-gradient-to-br from-cream-soft to-blush/40 p-6 transition-transform duration-500 md:p-8">
+            <GlowEdge />
+            <div className="grid gap-8 md:grid-cols-[48fr_52fr]">
+              <div className="flex flex-col justify-center">
+                <p className="mb-3 flex items-baseline gap-3">
+                  <span aria-hidden className="font-serif text-[clamp(1.6rem,2.6vw,2.2rem)] font-light leading-none text-rose/45">
+                    01
                   </span>
-                )}
-                <article
-                  id={c.id}
-                  className={`group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[1.6rem] p-6 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-7 ${c.bg}`}
+                  <span className="label-text">AI Product Development · Theta Health</span>
+                </p>
+                <h3 className="font-serif text-[21px] font-light leading-snug text-plum md:text-[1.7rem]">
+                  Giving clinicians their time back with a 0-to-1 AI Scribe
+                </h3>
+                <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-plum-muted">
+                  Clinical documentation was eating physicians' days. From 5+ physician
+                  interviews to prompt design and workflow mapping, I helped ship a
+                  HIPAA-compliant AI Scribe MVP — and land its first clinic pilot.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <Tag>Product discovery</Tag>
+                  <Tag>LLM prompt design</Tag>
+                  <Tag>HIPAA-compliant infra</Tag>
+                  <Tag>Clinical workflow</Tag>
+                </div>
+                <Link
+                  to="/work/theta"
+                  className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
                 >
-                  <GlowEdge />
-                  <div className="mb-5">{c.media}</div>
-
-                  <p className="mb-3 flex items-baseline gap-3">
-                    <span aria-hidden className="font-serif text-[clamp(1.5rem,2.2vw,1.9rem)] font-light leading-none text-rose/45">
-                      {c.n}
+                  Read the full case study
+                  <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
+                </Link>
+              </div>
+              <div className="flex flex-col justify-center gap-7">
+                {/* 产品主视觉：医生工作台 + SOAP note 叠放（淡插画作背景） */}
+                <Link
+                  to="/work/theta"
+                  className="group/visual relative block cursor-none pb-12 pr-6"
+                  aria-label="Theta Care product interface — open the case study"
+                  onPointerMove={(e) => {
+                    if (e.pointerType === 'touch') return
+                    const r = e.currentTarget.getBoundingClientRect()
+                    setViewCur({ x: e.clientX - r.left, y: e.clientY - r.top })
+                  }}
+                  onPointerLeave={() => setViewCur(null)}
+                >
+                  <img
+                    src="/images/case-scribe.jpg"
+                    alt=""
+                    aria-hidden
+                    className="absolute -inset-1 h-full w-full rounded-[1.6rem] object-cover opacity-45 blur-[1.5px] saturate-[0.65]"
+                    loading="lazy"
+                  />
+                  <img
+                    src="/theta/ui-dashboard.jpg"
+                    alt="Theta Care pre-chart summary — the physician workspace"
+                    loading="lazy"
+                    className="relative w-[66%] rounded-xl border border-plum/15 shadow-[0_26px_60px_-24px_rgba(90,63,86,0.55)] transition-transform duration-500 group-hover/visual:-translate-y-1"
+                  />
+                  <img
+                    src="/theta/ui-soap.jpg"
+                    alt="AI-generated SOAP note, ready to sign in minutes"
+                    loading="lazy"
+                    className="absolute bottom-0 right-0 w-[32%] rotate-2 rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] transition-transform duration-500 group-hover/visual:-translate-y-1.5 group-hover/visual:rotate-[3deg]"
+                  />
+                  {/* 跟随光标的 Tap to view 胶囊 */}
+                  {viewCur && (
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute z-20 whitespace-nowrap rounded-full bg-orchid px-4 py-1.5 font-hand text-[16px] font-semibold text-white shadow-[0_12px_28px_-8px_rgba(122,74,133,0.6)]"
+                      style={{
+                        left: viewCur.x,
+                        top: viewCur.y,
+                        transform: 'translate(12px, -130%) rotate(3deg)',
+                      }}
+                    >
+                      Tap to view ↗
                     </span>
-                    <span className="label-text">{c.eyebrow}</span>
-                  </p>
+                  )}
+                </Link>
+              </div>
+            </div>
 
-                  {c.logos}
+            {/* 指标挪到卡底通栏：原本挤在右栏里，把右栏顶得比左栏高一大截，
+                左下角因此空出一片。通栏之后两栏等高，标签也能一行放下 */}
+            <Metrics
+              className="mt-7 border-t border-plum/10 pt-6"
+              accent="text-rose"
+              items={[
+                { value: '83%', n: 83, suffix: '%', label: 'reduction in manual documentation time' },
+                { value: '0→1', label: 'MVP launched on compliant infrastructure' },
+                { value: '1st', label: 'clinic pilot secured through demand validation' },
+              ]}
+            />
+          </article>
+          </TiltCard>
+        </Reveal>
 
-                  <h3 className="font-serif text-[19px] font-light leading-snug text-plum md:text-[21px]">
-                    {c.title}
-                  </h3>
-                  <p className="mt-3 text-[13.5px] leading-relaxed text-plum-muted">{c.body}</p>
-
-                  <div className="mt-4">
-                    <Metrics accent={c.accent} items={c.metrics} />
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {c.tags.map((t) => (
-                      <Tag key={t}>{t}</Tag>
-                    ))}
-                  </div>
-
-                  {/* mt-auto：CTA 钉在卡底，两张卡内容不等长时按钮也在同一条线上 */}
+        {/* ── Case 2 · Enterprise AI Product — AskData / Bosch × CMU ─────────── */}
+        <Reveal className="mt-8" y={36}>
+          <TiltCard max={2} className="h-full">
+            <span
+              aria-hidden
+              className="absolute -top-3 left-8 z-10 rotate-[-3deg] rounded-md bg-[#4E6E96] px-2.5 py-0.5 font-hand text-[14px] font-semibold text-white shadow"
+            >
+              built with Bosch ✦
+            </span>
+            <article id="case-askdata" className="group/card relative scroll-mt-24 rounded-[1.6rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-6 transition-transform duration-500 md:p-8">
+            <GlowEdge />
+              <div className="grid items-center gap-12 md:grid-cols-12">
+                {/* 视觉：AskData UI（移动端先展示），整块可点击直达详情页 */}
+                <div className="order-1 md:col-span-8">
                   <Link
-                    to={c.href}
-                    className="group/cta mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 pt-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5"
-                    style={{ marginTop: 'auto', paddingTop: '0.625rem' }}
+                    to="/work/genai-analytics"
+                    aria-label="Explore the platform"
+                    className="group/demo relative block cursor-none rounded-2xl transition-transform duration-300 hover:scale-[1.01]"
+                    onPointerMove={(e) => {
+                      if (e.pointerType === 'touch') return
+                      const r = e.currentTarget.getBoundingClientRect()
+                      setAskCur({ x: e.clientX - r.left, y: e.clientY - r.top })
+                    }}
+                    onPointerLeave={() => setAskCur(null)}
                   >
-                    <span className="pt-0">{c.cta}</span>
+                    <AskDataUI />
+                    {/* 跟随光标的 Tap to explore 胶囊 */}
+                    {askCur && (
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute z-20 whitespace-nowrap rounded-full bg-[#4E6E96] px-4 py-1.5 font-hand text-[16px] font-semibold text-white shadow-[0_12px_28px_-8px_rgba(78,110,150,0.6)]"
+                        style={{
+                          left: askCur.x,
+                          top: askCur.y,
+                          transform: 'translate(12px, -130%) rotate(3deg)',
+                        }}
+                      >
+                        Tap to explore ↗
+                      </span>
+                    )}
+                  </Link>
+
+                  {/* 姊妹项目：窗口下方的轻量长条入口 */}
+                  <div className="mt-6 flex justify-center md:justify-start">
+                    <Link
+                      to="/work/bosch-schema"
+                      className="group/arch relative inline-flex max-w-full cursor-none items-center gap-5 rounded-full border border-plum/10 bg-white/80 py-3.5 pl-6 pr-8 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#7FA3CC]/60 hover:bg-white hover:shadow-[0_16px_34px_-14px_rgba(78,110,150,0.45)]"
+                      onPointerMove={(e) => {
+                        if (e.pointerType === 'touch') return
+                        const r = e.currentTarget.getBoundingClientRect()
+                        setArchCur({ x: e.clientX - r.left, y: e.clientY - r.top })
+                      }}
+                      onPointerLeave={() => setArchCur(null)}
+                    >
+                      {/* 迷你管线图 */}
+                      <svg viewBox="0 0 116 34" className="hidden w-32 shrink-0 sm:block" aria-hidden>
+                        {[1, 12, 23].map((y, i) => (
+                          <rect key={i} x="1" y={y} width="20" height="8" rx="3" fill="#EFF5FB" stroke="#7FA3CC" strokeWidth="1" />
+                        ))}
+                        {[5, 16, 27].map((y, i) => (
+                          <path key={i} d={`M21 ${y} C 34 ${y}, 36 16, 46 16`} fill="none" stroke="#B9CDE4" strokeWidth="1.1" />
+                        ))}
+                        <circle cx="56" cy="16" r="9" fill="#DCE7F2" stroke="#4E6E96" strokeWidth="1.1" />
+                        <path d="M65 16 H76" fill="none" stroke="#B9CDE4" strokeWidth="1.1" />
+                        <path d="m76 16 4.5-2.7v5.4Z" fill="#B9CDE4" />
+                        <rect x="82" y="8" width="33" height="16" rx="5" fill="#F6EFE8" stroke="#D193A8" strokeWidth="1" />
+                        <text x="98" y="19" textAnchor="middle" fontSize="7.5" fill="#8A6E7E">✓</text>
+                      </svg>
+                      <span className="min-w-0">
+                        <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
+                          Also under this collaboration
+                        </span>
+                        <span className="mt-0.5 block truncate font-serif text-[17px] leading-snug text-plum">
+                          Schema Extraction Agents
+                        </span>
+                        <span className="mt-0.5 block text-[11.5px] text-plum-muted">
+                          Solution Architect · 56.6% → 97.2% accuracy
+                        </span>
+                      </span>
+                      <span
+                        aria-hidden
+                        className="shrink-0 font-serif text-xl text-[#7FA3CC] transition-transform duration-300 group-hover/arch:translate-x-1"
+                      >
+                        ↗
+                      </span>
+                      {/* 跟随光标的 View project 胶囊 */}
+                      {archCur && (
+                        <span
+                          aria-hidden
+                          className="pointer-events-none absolute z-20 whitespace-nowrap rounded-full bg-[#4E6E96] px-4 py-1.5 font-hand text-[16px] font-semibold text-white shadow-[0_12px_28px_-8px_rgba(78,110,150,0.6)]"
+                          style={{
+                            left: archCur.x,
+                            top: archCur.y,
+                            transform: 'translate(12px, -130%) rotate(3deg)',
+                          }}
+                        >
+                          View project ↗
+                        </span>
+                      )}
+                    </Link>
+                  </div>
+                </div>
+
+                {/* 文案 */}
+                <div className="order-2 md:col-span-4">
+                  <p className="mb-3 flex items-baseline gap-3">
+                  <span aria-hidden className="font-serif text-[clamp(1.6rem,2.6vw,2.2rem)] font-light leading-none text-rose/45">
+                    02
+                  </span>
+                  <span className="label-text">Enterprise AI Product</span>
+                </p>
+                  {/* 合作双方 logo */}
+                  <div className="mb-5 flex items-center gap-3">
+                    <img src="/logos/bosch-wordmark.png" alt="Bosch" className="h-[22px] w-auto" />
+                    <span aria-hidden className="font-hand text-[17px] text-plum-faint">×</span>
+                    <img src="/logos/cmu-mark.png" alt="Carnegie Mellon University" className="h-[30px] w-auto" />
+                  </div>
+                  <h3 className="font-serif text-[21px] font-light leading-snug text-plum md:text-[1.65rem]">
+                    Three disconnected tools, one continuous pipeline
+                  </h3>
+                  <p className="mt-5 text-[14px] leading-relaxed text-plum-muted">
+                    Enterprise teams lost the thread between query, analysis and charts. I designed
+                    the workspace that holds it — so the answer never has to be re-explained.
+                  </p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    <Tag>Product Strategy</Tag>
+                    <Tag>Workflow Design</Tag>
+                    <Tag>MVP Definition</Tag>
+                    <Tag>PRDs</Tag>
+                  </div>
+                  <div className="mt-6">
+                    <dd className="font-serif text-4xl font-light text-[#4E6E96] md:text-5xl">
+                      <CountUp value={80} suffix="%+" />
+                    </dd>
+                    <span
+                      className="mt-1 block h-[3px] w-24 origin-left rounded-full bg-[#7FA3CC] opacity-40"
+                      style={{ transform: 'scaleX(0)', animation: 'metric-underline 0.6s 0.35s ease-out forwards' }}
+                    />
+                    <dd className="mt-2 text-[12px] leading-snug text-plum-muted">
+                      manual analytics workflows streamlined
+                    </dd>
+                  </div>
+                  <Link
+                    to="/work/genai-analytics"
+                    className="group/cta mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#4E6E96]"
+                  >
+                    Explore the platform
                     <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
                   </Link>
-                </article>
-              </TiltCard>
-            </Reveal>
-          ))}
+                </div>
+
+              </div>
+            </article>
+          </TiltCard>
+        </Reveal>
+
+        {/* ── Case 3 + 4 · 生态项目 与 企业分析，一行两张 ─────────────────────── */}
+        <div className="mt-8 grid gap-7 md:grid-cols-2">
+          {/* ── Case 3 · GTM & AI Ecosystem Partnerships ──────────────────────── */}
+          <Reveal y={36} delay={0.05}>
+            <TiltCard className="h-full">
+              <span
+                aria-hidden
+                className="absolute -top-3 right-8 z-10 rotate-[3deg] rounded-md bg-rose px-2.5 py-0.5 font-hand text-[14px] font-semibold text-white shadow"
+              >
+                programs are products too
+              </span>
+              <article
+                id="case-aivalley"
+                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[1.6rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-6 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-7"
+              >
+                <GlowEdge />
+                <div className="mb-6">
+                  <ProgramWall />
+                </div>
+                <p className="mb-3 flex items-baseline gap-3">
+                  <span aria-hidden className="font-serif text-[clamp(1.6rem,2.6vw,2.2rem)] font-light leading-none text-rose/45">
+                    03
+                  </span>
+                  <span className="label-text">GTM &amp; AI Ecosystem Partnerships</span>
+                </p>
+                <h3 className="font-serif text-[20px] font-light leading-snug text-plum">
+                  Creating spaces where
+                  <br />
+                  people come to build
+                </h3>
+                <p className="mt-4 text-[14px] leading-relaxed text-plum-muted">
+                  From global builder challenges to Bay Area hackathons and founder conversations, I
+                  shape thoughtful programs that connect partner goals with builders and communities
+                  around ideas worth building.
+                </p>
+                <div className="mt-6">
+                  <Metrics
+                    accent="text-rose"
+                    items={[
+                      { value: '9', n: 9, label: 'selected programs' },
+                      { value: '221', n: 221, label: 'builders in a flagship challenge' },
+                      { value: 'E2E', label: 'flagship program ownership' },
+                    ]}
+                  />
+                </div>
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  <Tag>Ecosystem Partnerships</Tag>
+                  <Tag>Developer Programs</Tag>
+                  <Tag>Program Strategy</Tag>
+                </div>
+                <Link
+                  to="/work/ai-valley"
+                  className="group/cta mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
+                >
+                  Explore programs
+                  <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
+                </Link>
+              </article>
+            </TiltCard>
+          </Reveal>
+
+          {/* ── Case 4 · Applied AI at work · Yuto USA ──────────────────────── */}
+          <Reveal y={36} delay={0.15}>
+            <TiltCard className="h-full">
+              <span
+                aria-hidden
+                className="absolute -top-3 left-8 z-10 rotate-[-3deg] rounded-md border border-dashed border-lavender-deep/60 bg-white/95 px-2.5 py-0.5 font-hand text-[14px] text-plum shadow"
+              >
+                now shipping ✈
+              </span>
+              <article
+                id="case-yuto"
+                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[1.6rem] border border-plum/10 bg-cream p-6 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-7"
+              >
+                <GlowEdge />
+                <div className="mb-7" data-cursor="VIEW">
+                  <DailyReportCard />
+                </div>
+                <p className="mb-3 flex items-baseline gap-3">
+                  <span aria-hidden className="font-serif text-[clamp(1.6rem,2.6vw,2.2rem)] font-light leading-none text-rose/45">
+                    04
+                  </span>
+                  <span className="label-text">Applied AI at Work · Yuto USA</span>
+                </p>
+                <h3 className="font-serif text-[20px] font-light leading-snug text-plum">
+                  Shipping AI the executive
+                  <br />
+                  team uses daily
+                </h3>
+                <p className="mt-4 text-[14px] leading-relaxed text-plum-muted">
+                  At an advanced-materials company, I shipped a 0-to-1 forecasting product to
+                  production — built solo with agentic coding, fully traceable, with human
+                  override — now in daily use by the executive team. Alongside it I run technical
+                  program management across concurrent workstreams for top-tier consumer
+                  technology accounts.
+                </p>
+                <div className="mt-6">
+                  <Metrics
+                    accent="text-orchid"
+                    items={[
+                      { value: '7.5%', label: 'one-month forecast error, down from 9.2%' },
+                      { value: '100+', n: 100, suffix: '+', label: 'attendees at the showcase I delivered' },
+                      { value: '5+', n: 5, suffix: '+', label: 'concurrent workstreams run' },
+                    ]}
+                  />
+                </div>
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  <Tag>Agentic coding</Tag>
+                  <Tag>Technical program management</Tag>
+                  <Tag>Market &amp; GTM research</Tag>
+                </div>
+              </article>
+            </TiltCard>
+          </Reveal>
+
         </div>
 
         {/* 首页这一段是叙事；想扫读全部项目就去 /work */}
