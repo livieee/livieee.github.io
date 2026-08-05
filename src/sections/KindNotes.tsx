@@ -353,6 +353,24 @@ function Envelope({
   )
 }
 
+/**
+ * 随手发来的两段私信 —— 和上面六条不是一个语气，所以不塞进信封。
+ * 正式的评价装在信封里，随口的一句就该是气泡的样子；
+ * 语气的差别本身就是信息。
+ *
+ * 原话照录（含 "T_T"，那是原文里的），只做重绘不贴原始截图 ——
+ * 截图里有时间戳、头像和平台痕迹，那些是对方的隐私，不是内容。
+ * 署名按她确认的口径：名 + 角色，不写全名、不写平台。
+ */
+const MESSAGES = {
+  from: 'Victor',
+  role: 'AI Valley founder',
+  threads: [
+    ['i always need more hands', 'and you are proactive rare trait to find'],
+    ['you were one of the best ai valley ppl', 'T_T', 'in terms of work ethic'],
+  ],
+}
+
 /** 每封信停留多久：按字数给时间，短信不必干等，长信不至于读不完 */
 function holdFor(text: string) {
   return Math.min(7000, 2400 + text.split(/\s+/).length * 95)
@@ -515,6 +533,39 @@ export function KindNotes() {
             </div>
           </Reveal>
         ))}
+      </div>
+
+      {/* 私信：气泡按顺序浮现，像消息一条条到 */}
+      <div className="mx-auto mt-4 max-w-5xl px-6 md:mt-8 md:px-10">
+        <Reveal>
+          <p className="mb-5 text-[11px] uppercase tracking-[0.22em] text-plum-faint">
+            and some that arrived as messages
+          </p>
+        </Reveal>
+
+        <div className="flex flex-col gap-6 sm:flex-row sm:gap-10">
+          {MESSAGES.threads.map((thread, t) => (
+            <ul key={t} className="flex max-w-md flex-col items-start gap-2">
+              {thread.map((line, i) => (
+                <Reveal key={line} delay={0.06 + (t * thread.length + i) * 0.09} y={14}>
+                  <li
+                    className="rounded-[1.1rem] rounded-bl-[0.3rem] border border-plum/10 bg-white px-4 py-2.5 text-[14px] leading-snug text-plum shadow-[0_6px_16px_-12px_rgba(90,63,86,0.5)]"
+                  >
+                    {line}
+                  </li>
+                </Reveal>
+              ))}
+            </ul>
+          ))}
+        </div>
+
+        <Reveal delay={0.5}>
+          <p className="mt-5 flex flex-wrap items-baseline gap-x-3 text-[12px]">
+            <span aria-hidden className="h-px w-6 self-center bg-rose/50" />
+            <span className="font-hand text-[17px] leading-none text-plum">{MESSAGES.from}</span>
+            <span className="text-plum-muted">{MESSAGES.role}</span>
+          </p>
+        </Reveal>
       </div>
     </section>
   )
