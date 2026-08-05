@@ -121,6 +121,11 @@ npm run check:tw        # 也会在 npm run build 前自动跑（prebuild）
   稳定才收工、用户一动就停手。改它之前先读注释。
 - GitHub Pages 的 SPA 深链靠 `dist/404.html`（build 时由 `index.html` 复制）
   + `useSpaRedirect()`。`curl` 拿到 404 状态码是正常的，浏览器里能正确落地。
+- **`overflow: hidden` 会让祖先变成滚动容器，`animation-timeline: view()`
+  会绑到它身上 —— 而它永远不滚，进度就卡死不动**（Contact 段曾因此卡在
+  64.4%）。祖先只是为了裁切的话，改用 `overflow: clip`：一样裁，但不创建
+  滚动容器。判断方法：读 `element.getAnimations()[0].timeline.currentTime`，
+  滚动时它如果不变，就是绑错容器了。
 
 ### 4.4 Playwright 验证
 

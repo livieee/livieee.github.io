@@ -565,3 +565,26 @@ body {
     animation: none;
   }
 }
+
+/* ── 随滚动逐词点亮 ──────────────────────────────────────────
+   基线：全部已点亮。增强：跟随命名 view timeline 由浅入深。
+   命名 timeline 挂在段落上，词引用它 —— 每个词各用自己的 view() 的话，
+   同一行的词可见度相同，会变成"一行一行跳"。 */
+@keyframes word-lit {
+  from { color: rgba(138, 110, 132, 0.35); }
+  to   { color: #3A2440; }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .lit-para {
+      view-timeline-name: --lit;
+      view-timeline-axis: block;
+    }
+    .lit-word {
+      animation: word-lit linear both;
+      animation-timeline: --lit;
+      animation-range: var(--lit-range);
+    }
+  }
+}

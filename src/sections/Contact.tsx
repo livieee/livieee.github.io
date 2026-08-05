@@ -1,4 +1,5 @@
 import { Reveal, WordReveal } from '@/components/Reveal'
+import { ScrollLit } from '@/components/ScrollLit'
 import { NetworkCanvas } from '@/components/NetworkCanvas'
 
 const OPEN_TO = [
@@ -12,7 +13,7 @@ const OPEN_TO = [
 
 export function Contact() {
   return (
-    <section id="contact" className="relative overflow-hidden">
+    <section id="contact" className="relative overflow-clip">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute -left-40 bottom-[-30%] h-[560px] w-[560px] rounded-full bg-lavender/50 blur-[130px]" />
         <div className="absolute -right-32 top-[-20%] h-[480px] w-[480px] rounded-full bg-blush/50 blur-[120px]" />
@@ -29,12 +30,10 @@ export function Contact() {
             <WordReveal text="meaningful." delay={0.35} />
           </span>
         </h2>
-        <Reveal delay={0.3}>
-          <p className="mt-8 max-w-xl text-base leading-relaxed text-plum-muted md:text-lg">
-            I'm open to conversations about AI product operations, GTM strategy, partnerships,
-            ecosystem programs, and collaborations worth building slowly.
-          </p>
-        </Reveal>
+        <ScrollLit
+          className="mt-8 max-w-xl text-base leading-relaxed md:text-lg"
+          text="I'm open to conversations about AI product operations, GTM strategy, partnerships, ecosystem programs, and collaborations worth building slowly."
+        />
 
         <Reveal delay={0.4}>
           <div className="mt-8 flex flex-wrap gap-2">
