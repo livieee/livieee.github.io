@@ -91,16 +91,16 @@ export function Impact() {
 
         {/* ── Case 1 · AI Product Development — full-width feature ─────────────── */}
         <Reveal className="mt-14" y={36}>
-          <TiltCard max={2.5} className="h-full">
+          <TiltCard className="h-full">
             <span
               aria-hidden
               className="absolute -top-3 left-8 z-10 rotate-[-4deg] rounded-md bg-orchid px-2.5 py-0.5 font-hand text-[15px] font-semibold text-white shadow"
             >
               flagship case ✦
             </span>
-          <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[1.6rem] bg-gradient-to-br from-cream-soft to-blush/40 p-6 transition-transform duration-500 md:p-8">
+          <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[1.6rem] bg-gradient-to-br from-cream-soft to-blush/40 p-5 transition-transform duration-500 md:p-6">
             <GlowEdge />
-            <div className="grid gap-8 md:grid-cols-[48fr_52fr]">
+            <div className="grid gap-6 md:grid-cols-[43fr_57fr]">
               <div className="flex flex-col justify-center">
                 <p className="mb-3 flex items-baseline gap-3">
                   <span aria-hidden className="font-serif text-[clamp(1.6rem,2.6vw,2.2rem)] font-light leading-none text-rose/45">
@@ -111,12 +111,12 @@ export function Impact() {
                 <h3 className="font-serif text-[21px] font-light leading-snug text-plum md:text-[1.7rem]">
                   Giving clinicians their time back with a 0-to-1 AI Scribe
                 </h3>
-                <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-plum-muted">
+                <p className="mt-3 max-w-xl text-[13.5px] leading-relaxed text-plum-muted">
                   Clinical documentation was eating physicians' days. From 5+ physician
                   interviews to prompt design and workflow mapping, I helped ship a
                   HIPAA-compliant AI Scribe MVP — and land its first clinic pilot.
                 </p>
-                <div className="mt-5 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-2">
                   <Tag>Product discovery</Tag>
                   <Tag>LLM prompt design</Tag>
                   <Tag>HIPAA-compliant infra</Tag>
@@ -124,7 +124,7 @@ export function Impact() {
                 </div>
                 <Link
                   to="/work/theta"
-                  className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
+                  className="group/cta mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
                 >
                   Read the full case study
                   <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
@@ -134,7 +134,7 @@ export function Impact() {
                 {/* 产品主视觉：医生工作台 + SOAP note 叠放（淡插画作背景） */}
                 <Link
                   to="/work/theta"
-                  className="group/visual relative block cursor-none pb-12 pr-6"
+                  className="group/visual relative block aspect-[16/11] w-full cursor-none"
                   aria-label="Theta Care product interface — open the case study"
                   onPointerMove={(e) => {
                     if (e.pointerType === 'touch') return
@@ -144,23 +144,16 @@ export function Impact() {
                   onPointerLeave={() => setViewCur(null)}
                 >
                   <img
-                    src="/images/case-scribe.jpg"
-                    alt=""
-                    aria-hidden
-                    className="absolute -inset-1 h-full w-full rounded-[1.6rem] object-cover opacity-45 blur-[1.5px] saturate-[0.65]"
-                    loading="lazy"
-                  />
-                  <img
                     src="/theta/ui-dashboard.jpg"
                     alt="Theta Care pre-chart summary — the physician workspace"
                     loading="lazy"
-                    className="relative w-[56%] rounded-xl border border-plum/15 shadow-[0_26px_60px_-24px_rgba(90,63,86,0.55)] transition-transform duration-500 group-hover/visual:-translate-y-1"
+                    className="absolute inset-0 h-full w-full rounded-[1.1rem] border border-plum/15 object-cover object-top shadow-[0_26px_60px_-24px_rgba(90,63,86,0.55)] transition-transform duration-500 group-hover/visual:-translate-y-1"
                   />
                   <img
                     src="/theta/ui-soap.jpg"
                     alt="AI-generated SOAP note, ready to sign in minutes"
                     loading="lazy"
-                    className="absolute bottom-0 right-0 w-[28%] rotate-2 rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] transition-transform duration-500 group-hover/visual:-translate-y-1.5 group-hover/visual:rotate-[3deg]"
+                    className="absolute -bottom-3 -right-3 w-[27%] rotate-2 rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] transition-transform duration-500 group-hover/visual:-translate-y-1.5 group-hover/visual:rotate-[3deg]"
                   />
                   {/* 跟随光标的 Tap to view 胶囊 */}
                   {viewCur && (
@@ -197,14 +190,14 @@ export function Impact() {
 
         {/* ── Case 2 · Enterprise AI Product — AskData / Bosch × CMU ─────────── */}
         <Reveal className="mt-8" y={36}>
-          <TiltCard max={2} className="h-full">
+          <TiltCard className="h-full">
             <span
               aria-hidden
               className="absolute -top-3 left-8 z-10 rotate-[-3deg] rounded-md bg-[#4E6E96] px-2.5 py-0.5 font-hand text-[14px] font-semibold text-white shadow"
             >
               built with Bosch ✦
             </span>
-            <article id="case-askdata" className="group/card relative scroll-mt-24 rounded-[1.6rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-6 transition-transform duration-500 md:p-8">
+            <article id="case-askdata" className="group/card relative scroll-mt-24 rounded-[1.6rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-5 transition-transform duration-500 md:p-6">
             <GlowEdge />
               <div className="grid items-center gap-12 md:grid-cols-12">
                 {/* 视觉：AskData UI（移动端先展示），整块可点击直达详情页 */}

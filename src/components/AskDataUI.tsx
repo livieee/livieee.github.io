@@ -136,7 +136,7 @@ export function AskDataUI() {
 
           {/* 04 Visualize（排在 SQL 右侧，编号按工作流） */}
           <ModuleShell i={3} num="04" label="Visualize" active={lit(3)} inView={inView} className="col-span-12 sm:col-span-5">
-            <div className="flex h-[52px] items-end gap-1.5 px-1" aria-hidden>
+            <div className="flex h-[62px] items-end gap-1.5 px-1" aria-hidden>
               {[42, 68, 55, 88, 62].map((h, i) => (
                 <span
                   key={i}
