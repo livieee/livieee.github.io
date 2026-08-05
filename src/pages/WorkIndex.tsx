@@ -8,6 +8,9 @@ import { Reveal, WordReveal } from '@/components/Reveal'
  * 一屏一个。这一页是"目录"：六个项目一览、可扫读、直接进各自的案例页。
  * 两者服务的不是同一件事，所以首页那一段保留，不做替换。
  *
+ * 封面尽量用真实的产品界面 / 系统图 / 现场照，不用抽象插画 —— 索引页上
+ * 封面是唯一的视觉证据。唯一的例外是 Yuto（见下方注释）。
+ *
  * ⚠️ 文案与标签全部取自已有的首页卡片与各案例页，不新写、不加工。
  *    Yuto 那条沿用首页已脱敏的口径（不出现来源站点、品类、价格、收件人）。
  */
@@ -33,7 +36,8 @@ const PROJECTS: Project[] = [
     blurb:
       'From 5+ physician interviews to prompt design and workflow mapping — a HIPAA-compliant AI Scribe MVP, and its first clinic pilot.',
     tags: ['Product discovery', 'LLM prompt design', 'HIPAA-compliant infra', 'Clinical workflow'],
-    img: '/images/case-scribe.jpg',
+    // 整屏 UI 缩到卡片尺寸只剩噪点，裁到读得出的局部
+    img: '/covers/theta.jpg',
     href: '/work/theta',
   },
   {
@@ -43,7 +47,7 @@ const PROJECTS: Project[] = [
     blurb:
       'Enterprise teams lost the thread between query, analysis and charts. I designed the workflow that made it one.',
     tags: ['Product Strategy', 'Workflow Design', 'MVP Definition', 'PRDs'],
-    img: '/images/case-analytics.jpg',
+    img: '/covers/askdata.jpg',
     href: '/work/genai-analytics',
   },
   {
@@ -65,7 +69,7 @@ const PROJECTS: Project[] = [
     blurb:
       'From global builder challenges to Bay Area hackathons and founder conversations — programs that connect partner goals with builders.',
     tags: ['Ecosystem Partnerships', 'Developer Programs', 'Program Strategy'],
-    img: '/images/case-ecosystem.jpg',
+    img: '/events/gtc-fireside.jpg',
     href: '/work/ai-valley',
   },
   {
@@ -85,6 +89,8 @@ const PROJECTS: Project[] = [
     blurb:
       'At an advanced-materials company, I shipped a 0-to-1 forecasting product to production — built solo with agentic coding, fully traceable, with human override.',
     tags: ['Agentic coding', 'Technical program management', 'Market & GTM research'],
+    // 只有这一条用抽象图：产品界面里全是真实的来源、品类与价格，
+    // 按脱敏要求不能出现，所以不放真实截图
     img: '/images/case-industry.jpg',
     note: 'Internal product — no public case study',
   },
