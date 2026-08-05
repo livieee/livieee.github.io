@@ -22,7 +22,7 @@ export function DailyReportCard() {
 
   return (
     <div
-      className="relative aspect-[16/10] w-full overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-champagne/40 via-cream-soft to-lavender/35"
+      className="relative aspect-[16/9] w-full overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-champagne/40 via-cream-soft to-lavender/35"
       onMouseEnter={() => setStep((n) => (n + 1) % STEPS.length)}
     >
       {/* 每天早上的那封邮件 */}

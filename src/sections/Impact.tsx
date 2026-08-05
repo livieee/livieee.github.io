@@ -72,7 +72,7 @@ export function Impact() {
           WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)',
         }}
       />
-      <div className="relative mx-auto max-w-6xl px-6 py-28 md:px-10 md:py-36">
+      <div className="relative mx-auto max-w-6xl px-6 py-20 md:px-10 md:py-28">
         <Reveal>
           <p className="label-text mb-6 flex items-center gap-3">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-orchid" />
@@ -90,7 +90,7 @@ export function Impact() {
         </Reveal>
 
         {/* ── Case 1 · AI Product Development — full-width feature ─────────────── */}
-        <Reveal className="mt-20" y={36}>
+        <Reveal className="mt-14" y={36}>
           <TiltCard max={2.5} className="h-full">
             <span
               aria-hidden
@@ -98,11 +98,11 @@ export function Impact() {
             >
               flagship case ✦
             </span>
-          <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[2rem] bg-gradient-to-br from-cream-soft to-blush/40 p-8 transition-transform duration-500 md:p-14">
+          <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[1.6rem] bg-gradient-to-br from-cream-soft to-blush/40 p-7 transition-transform duration-500 md:p-10">
             <GlowEdge />
-            <div className="grid gap-10 md:grid-cols-[48fr_52fr]">
+            <div className="grid gap-8 md:grid-cols-[48fr_52fr]">
               <div className="flex flex-col justify-center">
-                <p className="mb-4 flex items-baseline gap-3">
+                <p className="mb-3 flex items-baseline gap-3">
                   <span aria-hidden className="font-serif text-[clamp(2rem,3.4vw,2.9rem)] font-light leading-none text-rose/45">
                     01
                   </span>
@@ -111,12 +111,12 @@ export function Impact() {
                 <h3 className="font-serif text-2xl font-light leading-snug text-plum md:text-[2rem]">
                   Giving clinicians their time back with a 0-to-1 AI Scribe
                 </h3>
-                <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-plum-muted">
+                <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-plum-muted">
                   Clinical documentation was eating physicians' days. From 5+ physician
                   interviews to prompt design and workflow mapping, I helped ship a
                   HIPAA-compliant AI Scribe MVP — and land its first clinic pilot.
                 </p>
-                <div className="mt-6 flex flex-wrap gap-2">
+                <div className="mt-5 flex flex-wrap gap-2">
                   <Tag>Product discovery</Tag>
                   <Tag>LLM prompt design</Tag>
                   <Tag>HIPAA-compliant infra</Tag>
@@ -192,7 +192,7 @@ export function Impact() {
         </Reveal>
 
         {/* ── Case 2 · Enterprise AI Product — AskData / Bosch × CMU ─────────── */}
-        <Reveal className="mt-10" y={36}>
+        <Reveal className="mt-8" y={36}>
           <TiltCard max={2} className="h-full">
             <span
               aria-hidden
@@ -200,7 +200,7 @@ export function Impact() {
             >
               built with Bosch ✦
             </span>
-            <article id="case-askdata" className="group/card relative scroll-mt-24 rounded-[2rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-8 transition-transform duration-500 md:p-14">
+            <article id="case-askdata" className="group/card relative scroll-mt-24 rounded-[1.6rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-7 transition-transform duration-500 md:p-10">
             <GlowEdge />
               <div className="grid items-center gap-12 md:grid-cols-12">
                 {/* 视觉：AskData UI（移动端先展示），整块可点击直达详情页 */}
@@ -315,7 +315,7 @@ export function Impact() {
                     Enterprise teams lost the thread between query, analysis and charts. I designed
                     the workspace that holds it — so the answer never has to be re-explained.
                   </p>
-                  <div className="mt-6 flex flex-wrap gap-2">
+                  <div className="mt-5 flex flex-wrap gap-2">
                     <Tag>Product Strategy</Tag>
                     <Tag>Workflow Design</Tag>
                     <Tag>MVP Definition</Tag>
@@ -348,7 +348,7 @@ export function Impact() {
         </Reveal>
 
         {/* ── Case 3 + 4 · 生态项目 与 企业分析，一行两张 ─────────────────────── */}
-        <div className="mt-10 grid gap-10 md:grid-cols-2">
+        <div className="mt-8 grid gap-7 md:grid-cols-2">
           {/* ── Case 3 · GTM & AI Ecosystem Partnerships ──────────────────────── */}
           <Reveal y={36} delay={0.05}>
             <TiltCard className="h-full">
@@ -360,13 +360,13 @@ export function Impact() {
               </span>
               <article
                 id="case-aivalley"
-                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[2rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-8 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-10"
+                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[1.6rem] bg-gradient-to-br from-lavender/60 to-cream-soft p-7 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-8"
               >
                 <GlowEdge />
-                <div className="mb-8">
+                <div className="mb-6">
                   <ProgramWall />
                 </div>
-                <p className="mb-4 flex items-baseline gap-3">
+                <p className="mb-3 flex items-baseline gap-3">
                   <span aria-hidden className="font-serif text-[clamp(2rem,3.4vw,2.9rem)] font-light leading-none text-rose/45">
                     03
                   </span>
@@ -392,14 +392,14 @@ export function Impact() {
                     ]}
                   />
                 </div>
-                <div className="mt-5 flex flex-wrap gap-1.5">
+                <div className="mt-4 flex flex-wrap gap-1.5">
                   <Tag>Ecosystem Partnerships</Tag>
                   <Tag>Developer Programs</Tag>
                   <Tag>Program Strategy</Tag>
                 </div>
                 <Link
                   to="/work/ai-valley"
-                  className="group/cta mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
+                  className="group/cta mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
                 >
                   Explore programs
                   <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
@@ -419,13 +419,13 @@ export function Impact() {
               </span>
               <article
                 id="case-yuto"
-                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[2rem] border border-plum/10 bg-cream p-8 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-10"
+                className="group/card relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[1.6rem] border border-plum/10 bg-cream p-7 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-8"
               >
                 <GlowEdge />
                 <div className="mb-7" data-cursor="VIEW">
                   <DailyReportCard />
                 </div>
-                <p className="mb-4 flex items-baseline gap-3">
+                <p className="mb-3 flex items-baseline gap-3">
                   <span aria-hidden className="font-serif text-[clamp(2rem,3.4vw,2.9rem)] font-light leading-none text-rose/45">
                     04
                   </span>
@@ -453,7 +453,7 @@ export function Impact() {
                     ]}
                   />
                 </div>
-                <div className="mt-5 flex flex-wrap gap-1.5">
+                <div className="mt-4 flex flex-wrap gap-1.5">
                   <Tag>Agentic coding</Tag>
                   <Tag>Technical program management</Tag>
                   <Tag>Market &amp; GTM research</Tag>
@@ -465,7 +465,7 @@ export function Impact() {
         </div>
 
         {/* ── Recognition · IEEE Rising Stars 2026 ───────────────────────── */}
-        <Reveal className="mt-10" y={36}>
+        <Reveal className="mt-8" y={36}>
           <IEEEAwards />
         </Reveal>
       </div>
