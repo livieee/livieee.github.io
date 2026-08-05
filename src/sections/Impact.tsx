@@ -18,13 +18,13 @@ type Metric = {
   suffix?: string
 }
 
-function Metrics({ items, accent }: { items: Metric[]; accent: string }) {
+function Metrics({ items, accent, className = '' }: { items: Metric[]; accent: string; className?: string }) {
   return (
-    <dl className="grid grid-cols-3 gap-6">
+    <dl className={`grid grid-cols-3 gap-5 ${className}`}>
       {items.map((m, i) => (
         <div key={m.label} className="group/metric">
           <dt className="sr-only">{m.label}</dt>
-          <dd className={`font-serif text-3xl font-light md:text-4xl ${accent}`}>
+          <dd className={`font-serif text-[26px] font-light leading-none md:text-[30px] ${accent}`}>
             {m.n !== undefined ? (
               <CountUp prefix={m.prefix} value={m.n} suffix={m.suffix} delay={i * 0.12} />
             ) : (
@@ -33,13 +33,13 @@ function Metrics({ items, accent }: { items: Metric[]; accent: string }) {
           </dd>
           {/* 马克笔下划线：数字滚动时同步描绘 */}
           <span
-            className={`mt-1 block h-[3px] w-full origin-left rounded-full bg-current opacity-25 ${accent}`}
+            className={`mt-1.5 block h-[2px] w-full origin-left rounded-full bg-current opacity-25 ${accent}`}
             style={{
               transform: 'scaleX(0)',
               animation: `metric-underline 0.6s ${0.35 + i * 0.12}s ease-out forwards`,
             }}
           />
-          <dd className="mt-2 text-[12px] leading-snug text-plum-muted">{m.label}</dd>
+          <dd className="mt-1.5 text-[11.5px] leading-snug text-plum-muted">{m.label}</dd>
         </div>
       ))}
     </dl>
@@ -154,13 +154,13 @@ export function Impact() {
                     src="/theta/ui-dashboard.jpg"
                     alt="Theta Care pre-chart summary — the physician workspace"
                     loading="lazy"
-                    className="relative w-[86%] rounded-xl border border-plum/15 shadow-[0_26px_60px_-24px_rgba(90,63,86,0.55)] transition-transform duration-500 group-hover/visual:-translate-y-1"
+                    className="relative w-[74%] rounded-xl border border-plum/15 shadow-[0_26px_60px_-24px_rgba(90,63,86,0.55)] transition-transform duration-500 group-hover/visual:-translate-y-1"
                   />
                   <img
                     src="/theta/ui-soap.jpg"
                     alt="AI-generated SOAP note, ready to sign in minutes"
                     loading="lazy"
-                    className="absolute bottom-0 right-0 w-[40%] rotate-2 rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] transition-transform duration-500 group-hover/visual:-translate-y-1.5 group-hover/visual:rotate-[3deg]"
+                    className="absolute bottom-0 right-0 w-[36%] rotate-2 rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] transition-transform duration-500 group-hover/visual:-translate-y-1.5 group-hover/visual:rotate-[3deg]"
                   />
                   {/* 跟随光标的 Tap to view 胶囊 */}
                   {viewCur && (
@@ -177,16 +177,20 @@ export function Impact() {
                     </span>
                   )}
                 </Link>
-                <Metrics
-                  accent="text-rose"
-                  items={[
-                    { value: '83%', n: 83, suffix: '%', label: 'reduction in manual documentation time' },
-                    { value: '0→1', label: 'MVP launched on compliant infrastructure' },
-                    { value: '1st', label: 'clinic pilot secured through demand validation' },
-                  ]}
-                />
               </div>
             </div>
+
+            {/* 指标挪到卡底通栏：原本挤在右栏里，把右栏顶得比左栏高一大截，
+                左下角因此空出一片。通栏之后两栏等高，标签也能一行放下 */}
+            <Metrics
+              className="mt-7 border-t border-plum/10 pt-6"
+              accent="text-rose"
+              items={[
+                { value: '83%', n: 83, suffix: '%', label: 'reduction in manual documentation time' },
+                { value: '0→1', label: 'MVP launched on compliant infrastructure' },
+                { value: '1st', label: 'clinic pilot secured through demand validation' },
+              ]}
+            />
           </article>
           </TiltCard>
         </Reveal>
@@ -321,7 +325,7 @@ export function Impact() {
                     <Tag>MVP Definition</Tag>
                     <Tag>PRDs</Tag>
                   </div>
-                  <div className="mt-8">
+                  <div className="mt-6">
                     <dd className="font-serif text-4xl font-light text-[#4E6E96] md:text-5xl">
                       <CountUp value={80} suffix="%+" />
                     </dd>
@@ -335,7 +339,7 @@ export function Impact() {
                   </div>
                   <Link
                     to="/work/genai-analytics"
-                    className="group/cta mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#4E6E96]"
+                    className="group/cta mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#4E6E96]"
                   >
                     Explore the platform
                     <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
