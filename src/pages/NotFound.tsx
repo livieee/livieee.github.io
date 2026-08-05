@@ -43,7 +43,7 @@ export default function NotFound() {
           Back to the homepage
         </Link>
         <Link
-          to="/#impact"
+          to="/work"
           className="rounded-full border border-plum/20 bg-white/70 px-6 py-3 text-[13.5px] font-medium text-plum transition-colors hover:border-rose/50"
         >
           See selected work

@@ -534,7 +534,7 @@ export function LivingArtCase() {
           </Link>
           <div className="flex items-center gap-5">
             <Link
-              to="/#impact"
+              to="/work"
               className="text-[13px] font-medium text-plum-muted transition-colors hover:text-plum"
             >
               All work
@@ -667,7 +667,7 @@ export function LivingArtCase() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                to="/#impact"
+                to="/work"
                 className="glass-pill px-5 py-2.5 text-[13px]"
               >
                 ← Back to all work

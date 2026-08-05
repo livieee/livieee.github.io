@@ -689,7 +689,7 @@ export default function ThetaCase() {
             <span>Olivia Xiao</span>
           </Link>
           <div className="flex items-center gap-5">
-            <Link to="/#impact" className="text-[13px] font-medium text-plum-muted transition-colors hover:text-plum">
+            <Link to="/work" className="text-[13px] font-medium text-plum-muted transition-colors hover:text-plum">
               All work
             </Link>
             <a
@@ -1476,7 +1476,7 @@ export default function ThetaCase() {
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
                 <Link
-                  to="/#impact"
+                  to="/work"
                   className="inline-flex items-center gap-2 rounded-full bg-plum px-6 py-3 text-sm font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
                 >
                   ← Back to all work

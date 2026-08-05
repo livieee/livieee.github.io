@@ -1,10 +1,15 @@
+import { Link } from 'react-router'
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 
-/** 顺序跟着页面本身的顺序走，滚动高亮才不会跳 */
-const LINKS = [
+/**
+ * 顺序跟着页面本身的顺序走，滚动高亮才不会跳。
+ * Work 例外：它指向 /work 索引页（全部六个项目），不是首页的 Selected Impact
+ * 那一段 —— 那一段是叙事，Work 该带人去看全部。
+ */
+const LINKS: { label: string; href?: string; to?: string }[] = [
   { label: 'Home', href: '#top' },
-  { label: 'Work', href: '#impact' },
+  { label: 'Work', to: '/work' },
   { label: 'Journey', href: '#journey' },
   { label: 'Life', href: '#life' },
 ]
@@ -20,21 +25,44 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // 当前所在章节：命中视口上三分之一的最后一节
+  /**
+   * 当前所在章节：横跨视口上方那条判定线的最后一节。
+   *
+   * 用滚动监听而不是 IntersectionObserver：大幅跳转（点导航一次跨过好几节）
+   * 时 IO 的回调不一定触发，实测从 Life 滚回作品区时高亮会停在 Life。
+   * rAF 节流，每帧最多算一次，六个 getBoundingClientRect 的开销可以忽略。
+   *
+   * 也把 #impact 算进来 —— 它不再是导航项，但不算的话滚回作品区时
+   * 导航上会留着一个不该亮的高亮。
+   */
   useEffect(() => {
-    const ids = LINKS.map((l) => l.href.slice(1))
-    const io = new IntersectionObserver(
-      (entries) => {
-        const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0]
-        if (hit) setActive('#' + hit.target.id)
-      },
-      { rootMargin: '-12% 0px -70% 0px', threshold: 0 },
-    )
-    ids.forEach((id) => {
-      const el = document.getElementById(id)
-      if (el) io.observe(el)
-    })
-    return () => io.disconnect()
+    const ids = ['top', 'impact', 'journey', 'life']
+    let raf = 0
+
+    const recompute = () => {
+      raf = 0
+      const line = window.innerHeight * 0.12
+      let hit = ''
+      for (const id of ids) {
+        const el = document.getElementById(id)
+        if (!el) continue
+        const r = el.getBoundingClientRect()
+        if (r.top <= line && r.bottom > line) hit = '#' + id
+      }
+      setActive(hit)
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(recompute)
+    }
+
+    recompute()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [])
 
   return (
@@ -53,23 +81,30 @@ export function Navigation() {
           <span aria-hidden className="text-sm text-orchid/70 transition-transform duration-300 group-hover/logo:translate-x-0.5 group-hover/logo:translate-y-0.5">↘</span>
         </a>
         <div className="hidden items-center gap-7 md:flex">
-          {LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              aria-current={active === l.href ? 'true' : undefined}
-              className={`group relative text-[13px] font-medium transition-colors ${
-                active === l.href ? 'text-plum' : 'text-plum-muted hover:text-plum'
-              }`}
-            >
-              {l.label}
+          {LINKS.map((l) => {
+            const on = !!l.href && active === l.href
+            const cls = `group relative text-[13px] font-medium transition-colors ${
+              on ? 'text-plum' : 'text-plum-muted hover:text-plum'
+            }`
+            const underline = (
               <span
                 className={`absolute -bottom-1 left-0 h-px bg-orchid transition-all duration-300 group-hover:w-full ${
-                  active === l.href ? 'w-full' : 'w-0'
+                  on ? 'w-full' : 'w-0'
                 }`}
               />
-            </a>
-          ))}
+            )
+            return l.to ? (
+              <Link key={l.label} to={l.to} className={cls}>
+                {l.label}
+                {underline}
+              </Link>
+            ) : (
+              <a key={l.label} href={l.href} aria-current={on ? 'true' : undefined} className={cls}>
+                {l.label}
+                {underline}
+              </a>
+            )
+          })}
           <a
             href="#contact"
             className="rounded-full bg-rose px-5 py-2 text-[13px] font-medium text-white transition-all duration-300 hover:bg-plum"
