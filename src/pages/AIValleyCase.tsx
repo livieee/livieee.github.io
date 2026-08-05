@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { Glyph, type GlyphName } from '@/components/Glyph'
 import { OutcomeStrip } from '@/components/OutcomeStrip'
+import { BackLink } from '@/components/BackLink'
 
 /**
  * AI Valley 活动运营案例页。
@@ -1208,13 +1209,7 @@ export function AIValleyCase() {
     <main className="min-h-screen bg-cream">
       <header className="fixed inset-x-0 top-0 z-50 bg-cream/85 shadow-[0_1px_0_0_rgba(58,36,64,0.06)] backdrop-blur-md">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Case">
-          <Link
-            to="/work"
-            className="group/back inline-flex items-center gap-1.5 text-[13px] font-medium text-plum-muted transition-colors hover:text-plum"
-          >
-            <span aria-hidden className="transition-transform duration-300 group-hover/back:-translate-x-0.5">←</span>
-            Back to work
-          </Link>
+          <BackLink />
           <Link to="/" className="font-serif text-[17px] text-plum">
             ⌐ Hi, I'm Olivia <span aria-hidden className="text-orchid">↘</span>
           </Link>

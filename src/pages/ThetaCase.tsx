@@ -6,6 +6,7 @@ import { CountUp } from '@/components/CountUp'
 import { Reveal } from '@/components/Reveal'
 import { SignalBoard } from '@/components/SignalBoard'
 import { TiltCard } from '@/components/TiltCard'
+import { BackLink } from '@/components/BackLink'
 
 /** ── 页面数据 ─────────────────────────────────────────────────────────── */
 
@@ -684,13 +685,10 @@ export default function ThetaCase() {
 
       <header className="fixed inset-x-0 top-0 z-50 bg-cream/85 shadow-[0_1px_0_0_rgba(58,36,64,0.06)] backdrop-blur-md">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Case study">
-          <Link to="/" className="group/logo flex items-baseline gap-2 font-serif text-lg font-medium tracking-tight text-plum">
-            <span aria-hidden className="text-sm text-orchid/70 transition-transform duration-300 group-hover/logo:-translate-x-0.5">←</span>
-            <span>Olivia Xiao</span>
-          </Link>
+          <BackLink />
           <div className="flex items-center gap-5">
-            <Link to="/work" className="text-[13px] font-medium text-plum-muted transition-colors hover:text-plum">
-              All work
+            <Link to="/" className="font-serif text-[15px] text-plum transition-colors hover:text-orchid">
+              ⌐ Hi, I'm Olivia <span aria-hidden className="text-orchid">↘</span>
             </Link>
             <a
               href="mailto:olivia.zxiao@gmail.com"

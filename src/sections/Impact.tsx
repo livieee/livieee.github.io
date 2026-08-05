@@ -202,6 +202,7 @@ export function Impact() {
                 </div>
                 <Link
                   to="/work/theta"
+                  state={{ from: 'home' }}
                   className="group/cta mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
                 >
                   Read the full case study
@@ -213,6 +214,7 @@ export function Impact() {
                 <Link
                   ref={visual.ref}
                   to="/work/theta"
+                  state={{ from: 'home' }}
                   className="group/visual relative block aspect-[16/11] w-full cursor-none"
                   aria-label="Theta Care product interface — open the case study"
                   onPointerMove={(e) => {
@@ -297,6 +299,7 @@ export function Impact() {
                 <div className="order-1 md:col-span-8">
                   <Link
                     to="/work/genai-analytics"
+                    state={{ from: 'home' }}
                     aria-label="Explore the platform"
                     className="group/demo relative block cursor-none rounded-2xl transition-transform duration-300 hover:scale-[1.01]"
                     onPointerMove={(e) => {
@@ -327,6 +330,7 @@ export function Impact() {
                   <div className="mt-5 flex justify-center md:justify-start">
                     <Link
                       to="/work/bosch-schema"
+                      state={{ from: 'home' }}
                       className="group/arch relative inline-flex max-w-full cursor-none items-center gap-4 rounded-full border border-plum/10 bg-white/80 py-2.5 pl-5 pr-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#7FA3CC]/60 hover:bg-white hover:shadow-[0_16px_34px_-14px_rgba(78,110,150,0.45)]"
                       onPointerMove={(e) => {
                         if (e.pointerType === 'touch') return
@@ -422,6 +426,7 @@ export function Impact() {
                   </div>
                   <Link
                     to="/work/genai-analytics"
+                    state={{ from: 'home' }}
                     className="group/cta mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#4E6E96]"
                   >
                     Explore the platform
@@ -486,6 +491,7 @@ export function Impact() {
                 </div>
                 <Link
                   to="/work/ai-valley"
+                  state={{ from: 'home' }}
                   className="group/cta mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose"
                 >
                   Explore programs

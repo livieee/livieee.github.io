@@ -157,7 +157,11 @@ function Card({ p, i }: { p: Project; i: number }) {
   return (
     <Reveal delay={0.05 + i * 0.06} y={22} className="h-full">
       {p.href ? (
-        <Link to={p.href} className={`${cls} hover:-translate-y-1 hover:border-rose/35 hover:bg-white`}>
+        <Link
+          to={p.href}
+          state={{ from: 'work' }}
+          className={`${cls} hover:-translate-y-1 hover:border-rose/35 hover:bg-white`}
+        >
           {inner}
         </Link>
       ) : (

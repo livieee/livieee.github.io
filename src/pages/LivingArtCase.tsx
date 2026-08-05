@@ -7,6 +7,7 @@ import { ChapterDeck, type Chapter } from '@/components/ChapterDeck'
 import { StateScrub } from '@/components/StateScrub'
 import { PhotoRail } from '@/components/PhotoRail'
 import { EEGTrace } from '@/components/EEGTrace'
+import { BackLink } from '@/components/BackLink'
 
 /**
  * Therapy as a Living Art —— IEEE Rising Stars 2026 Project Showcase 一等奖。
@@ -517,27 +518,13 @@ export function LivingArtCase() {
         <i className="block h-full w-full origin-left scale-x-0 bg-gradient-to-r from-[#CBB8F5] via-[#7FD3E8] to-[#E8C77A]" />
       </div>
 
-      {/* 导航与其他案例页/首页保持同一套：← Olivia Xiao | All work | Say Hello */}
+      {/* 导航与其他案例页同一套：返回（跟着来路走）| 首页 | Say Hello */}
       <header className="fixed inset-x-0 top-0 z-50 bg-cream shadow-[0_1px_0_0_rgba(58,36,64,0.06)]">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Case study">
-          <Link
-            to="/"
-            className="group/logo flex items-baseline gap-2 font-serif text-lg font-medium tracking-tight text-plum"
-          >
-            <span
-              aria-hidden
-              className="text-sm text-orchid/70 transition-transform duration-300 group-hover/logo:-translate-x-0.5"
-            >
-              ←
-            </span>
-            <span>Olivia Xiao</span>
-          </Link>
+          <BackLink />
           <div className="flex items-center gap-5">
-            <Link
-              to="/work"
-              className="text-[13px] font-medium text-plum-muted transition-colors hover:text-plum"
-            >
-              All work
+            <Link to="/" className="font-serif text-[15px] text-plum transition-colors hover:text-orchid">
+              ⌐ Hi, I'm Olivia <span aria-hidden className="text-orchid">↘</span>
             </Link>
             <a
               href="mailto:olivia.zxiao@gmail.com"
