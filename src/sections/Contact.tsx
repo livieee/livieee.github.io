@@ -11,6 +11,40 @@ const OPEN_TO = [
   'AI Program Management',
 ]
 
+/**
+ * 三块「贴纸」就是三个真实入口，不是装饰。
+ * 参考图里那排是纯图案；这里每一块都点得动 —— 一个看着像按钮的东西
+ * 点不了，比不放更糟。
+ */
+const CHANNELS = [
+  {
+    emoji: '✉️',
+    label: 'Email',
+    sub: 'olivia.zxiao@gmail.com',
+    href: 'mailto:olivia.zxiao@gmail.com',
+    bg: 'bg-blush',
+    tilt: '-5deg',
+  },
+  {
+    emoji: '💼',
+    label: 'LinkedIn',
+    sub: '/olivia-zerun-xiao',
+    href: 'https://linkedin.com/in/olivia-zerun-xiao/',
+    external: true,
+    bg: 'bg-lavender',
+    tilt: '3deg',
+  },
+  {
+    emoji: '📄',
+    label: 'Résumé',
+    sub: 'PDF, one page',
+    href: '/Olivia_Xiao_Resume.pdf',
+    download: true,
+    bg: 'bg-champagne',
+    tilt: '-3deg',
+  },
+]
+
 export function Contact() {
   return (
     <section id="contact" className="relative overflow-clip">
@@ -24,19 +58,54 @@ export function Contact() {
         <Reveal>
           <p className="label-text mb-6">Contact</p>
         </Reveal>
-        <h2 className="max-w-4xl font-serif text-[clamp(2.2rem,6vw,4.4rem)] font-light leading-[1.08] text-plum">
-          <WordReveal text="Let’s build something" />{' '}
-          <span className="gradient-text italic">
-            <WordReveal text="meaningful." delay={0.35} />
-          </span>
-        </h2>
-        <ScrollLit
-          className="mt-8 max-w-xl text-base leading-relaxed md:text-lg"
-          text="I'm open to conversations about AI product operations, GTM strategy, partnerships, ecosystem programs, and collaborations worth building slowly."
-        />
+
+        {/* 一张浮在氛围层上的卡片：标题、入口、正文收在同一块白底里 */}
+        <Reveal y={28}>
+          <div className="max-w-2xl rounded-[1.8rem] border border-white/70 bg-white/85 p-7 shadow-[0_36px_80px_-40px_rgba(58,36,64,0.35)] backdrop-blur-md md:p-10">
+            <h2 className="font-serif text-[clamp(2rem,5vw,3.2rem)] font-light leading-[1.05] text-plum">
+              <WordReveal text="Let’s" />{' '}
+              {/* 渐变字不能套 WordReveal：后者在内层加了 filter，子元素自成
+                  渲染上下文，父级 background-clip: text 裁出来的渐变盖不到它，
+                  字会整个变透明。一个词也不需要逐词入场 */}
+              <span className="gradient-text italic">connect.</span>
+            </h2>
+
+            <ul className="mt-7 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3">
+              {CHANNELS.map((c) => (
+                <li key={c.label}>
+                  <a
+                    href={c.href}
+                    {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+                    {...(c.download ? { download: true } : {})}
+                    className="group/tile flex w-full flex-col items-center rounded-[1rem] px-1.5 py-3 text-center transition-all duration-300 hover:-translate-y-1 sm:w-[132px] sm:px-3 sm:py-3.5"
+                    style={{ transform: `rotate(${c.tilt})` }}
+                  >
+                    <span
+                      aria-hidden
+                      className={`flex h-[54px] w-[54px] items-center justify-center rounded-[0.9rem] text-[26px] leading-none sm:h-[62px] sm:w-[62px] sm:rounded-[0.95rem] sm:text-[30px] shadow-[0_10px_22px_-12px_rgba(58,36,64,0.5)] transition-transform duration-300 group-hover/tile:scale-[1.06] ${c.bg}`}
+                    >
+                      {c.emoji}
+                    </span>
+                    <span className="mt-2.5 block text-[12.5px] font-medium leading-none text-plum">
+                      {c.label}
+                    </span>
+                    <span className="mt-1 hidden w-full text-[10px] leading-tight text-plum-faint sm:block">
+                      {c.sub}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <ScrollLit
+              className="mt-7 text-[15px] leading-relaxed md:text-base"
+              text="I'm open to conversations about AI product operations, GTM strategy, partnerships, ecosystem programs, and collaborations worth building slowly — and to making friends who care about the same things."
+            />
+          </div>
+        </Reveal>
 
         <Reveal delay={0.4}>
-          <div className="mt-8 flex flex-wrap gap-2">
+          <div className="mt-8 flex max-w-3xl flex-wrap gap-2">
             {OPEN_TO.map((o) => (
               <span key={o} className="rounded-full border border-plum/15 bg-cream/70 px-4 py-1.5 text-[12px] font-medium text-plum-muted">
                 {o}
@@ -45,35 +114,8 @@ export function Contact() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.5}>
-          <div className="mt-12 flex flex-wrap items-center gap-4">
-            <a
-              href="mailto:olivia.zxiao@gmail.com"
-              className="group inline-flex items-center gap-2 rounded-full bg-plum px-8 py-3.5 text-sm font-medium text-cream transition-all duration-300 hover:bg-orchid"
-            >
-              olivia.zxiao@gmail.com
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </a>
-            <a
-              href="https://linkedin.com/in/olivia-zerun-xiao/"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-plum/25 px-8 py-3.5 text-sm font-medium text-plum transition-all duration-300 hover:border-orchid hover:bg-lavender/40"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="/Olivia_Xiao_Resume.pdf"
-              download
-              className="text-sm font-medium text-plum underline decoration-rose-soft decoration-2 underline-offset-4 transition-colors hover:text-orchid"
-            >
-              Download Résumé
-            </a>
-          </div>
-        </Reveal>
-
         <Reveal delay={0.6}>
-          <p className="mt-14 flex items-center gap-3 text-[13px] text-plum-faint">
+          <p className="mt-12 flex items-center gap-3 text-[13px] text-plum-faint">
             <span className="inline-block h-1.5 w-1.5 animate-pulse-soft rounded-full bg-orchid" />
             Based in the San Francisco Bay Area · Always up for a good conversation
           </p>
