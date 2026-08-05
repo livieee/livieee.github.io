@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { ScrollLit } from '@/components/ScrollLit'
 import { NetworkCanvas } from '@/components/NetworkCanvas'
@@ -22,7 +23,7 @@ const CHANNELS = [
     label: 'Email',
     sub: 'olivia.zxiao@gmail.com',
     href: 'mailto:olivia.zxiao@gmail.com',
-    bg: 'bg-blush',
+    bg: '#F4D8E0',
     tilt: '-5deg',
   },
   {
@@ -31,7 +32,7 @@ const CHANNELS = [
     sub: '/olivia-zerun-xiao',
     href: 'https://linkedin.com/in/olivia-zerun-xiao/',
     external: true,
-    bg: 'bg-lavender',
+    bg: '#E5DAF3',
     tilt: '3deg',
   },
   {
@@ -40,8 +41,17 @@ const CHANNELS = [
     sub: 'PDF, one page',
     href: '/Olivia_Xiao_Resume.pdf',
     download: true,
-    bg: 'bg-champagne',
+    bg: '#EADFC6',
     tilt: '-3deg',
+  },
+  {
+    emoji: '🐙',
+    label: 'GitHub',
+    sub: '@livieee',
+    href: 'https://github.com/livieee',
+    external: true,
+    bg: '#D6E4D9',
+    tilt: '4deg',
   },
 ]
 
@@ -66,11 +76,20 @@ export function Contact() {
               <WordReveal text="Let’s" />{' '}
               {/* 渐变字不能套 WordReveal：后者在内层加了 filter，子元素自成
                   渲染上下文，父级 background-clip: text 裁出来的渐变盖不到它，
-                  字会整个变透明。一个词也不需要逐词入场 */}
-              <span className="gradient-text italic">connect.</span>
+                  字会整个变透明。所以动效直接挂在带渐变的这个元素本身 ——
+                  transform / opacity 和 background-clip: text 不冲突 */}
+              <motion.span
+                className="gradient-text inline-block italic"
+                initial={{ opacity: 0, y: 18, rotate: -3 }}
+                whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+                viewport={{ once: true, margin: '0px 0px -20% 0px' }}
+                transition={{ duration: 0.75, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
+              >
+                connect.
+              </motion.span>
             </h2>
 
-            <ul className="mt-7 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3">
+            <ul className="mt-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3">
               {CHANNELS.map((c) => (
                 <li key={c.label}>
                   <a
@@ -82,14 +101,15 @@ export function Contact() {
                   >
                     <span
                       aria-hidden
-                      className={`flex h-[54px] w-[54px] items-center justify-center rounded-[0.9rem] text-[26px] leading-none sm:h-[62px] sm:w-[62px] sm:rounded-[0.95rem] sm:text-[30px] shadow-[0_10px_22px_-12px_rgba(58,36,64,0.5)] transition-transform duration-300 group-hover/tile:scale-[1.06] ${c.bg}`}
+                      className="flex h-[54px] w-[54px] items-center justify-center rounded-[0.9rem] text-[26px] leading-none shadow-[0_10px_22px_-12px_rgba(58,36,64,0.5)] transition-transform duration-300 group-hover/tile:scale-[1.06] sm:h-[62px] sm:w-[62px] sm:rounded-[0.95rem] sm:text-[30px]"
+                      style={{ backgroundColor: c.bg }}
                     >
                       {c.emoji}
                     </span>
                     <span className="mt-2.5 block text-[12.5px] font-medium leading-none text-plum">
                       {c.label}
                     </span>
-                    <span className="mt-1 hidden w-full text-[10px] leading-tight text-plum-faint sm:block">
+                    <span className="mt-1 block w-full text-[10px] leading-tight text-plum-faint">
                       {c.sub}
                     </span>
                   </a>
