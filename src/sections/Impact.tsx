@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router'
+import { useInView, useReducedMotion } from 'motion/react'
 import { GlowEdge } from '@/components/GlowEdge'
 import { IEEEAwards } from '@/components/IEEEAwards'
 import { Reveal, WordReveal } from '@/components/Reveal'
@@ -18,25 +19,70 @@ type Metric = {
   suffix?: string
 }
 
-function Metrics({ items, accent, className = '' }: { items: Metric[]; accent: string; className?: string }) {
+/**
+ * 非数字指标（0→1、1st）也要动，否则一条指标条里只有一个数字在滚，
+ * 另外两格看着就是静态文字。0→1 拆成三段：起点淡入 → 箭头画出来 →
+ * 终点弹进来，正好演一遍这条指标本身的意思。
+ */
+function StaticValue({ value, start, delay }: { value: string; start: boolean; delay: number }) {
+  const rise = (d: number) => ({
+    display: 'inline-block',
+    opacity: start ? 1 : 0,
+    transform: start ? 'none' : 'translateY(10px)',
+    transition: `opacity 520ms ${d}s ease-out, transform 640ms ${d}s cubic-bezier(0.16, 1, 0.3, 1)`,
+  })
+  const arrow = value.includes('→') ? value.split('→') : null
+  if (!arrow) return <span style={rise(delay)}>{value}</span>
   return (
-    <dl className={`grid grid-cols-3 gap-5 ${className}`}>
+    <span className="inline-flex items-center">
+      <span style={rise(delay)}>{arrow[0]}</span>
+      <span
+        aria-hidden
+        style={{
+          display: 'inline-block',
+          transformOrigin: 'left center',
+          transform: start ? 'scaleX(1)' : 'scaleX(0)',
+          transition: `transform 460ms ${delay + 0.26}s cubic-bezier(0.16, 1, 0.3, 1)`,
+        }}
+      >
+        →
+      </span>
+      <span style={rise(delay + 0.52)}>{arrow[1]}</span>
+    </span>
+  )
+}
+
+function Metrics({ items, accent, className = '' }: { items: Metric[]; accent: string; className?: string }) {
+  const ref = useRef<HTMLDListElement>(null)
+  const reduce = useReducedMotion()
+  /* 整条指标条共用一个触发源：三格各自观察的话会前后错开，看着像没对齐。
+     下划线原本是挂在挂载时刻的 CSS 动画 —— 首屏以下的卡片，人还没滚到
+     它就已经画完了。 */
+  const seen = useInView(ref, { once: true, margin: '0px 0px -35% 0px' })
+  const start = reduce || seen
+  return (
+    <dl ref={ref} className={`grid grid-cols-3 gap-5 ${className}`}>
       {items.map((m, i) => (
         <div key={m.label} className="group/metric">
           <dt className="sr-only">{m.label}</dt>
           <dd className={`font-serif text-[26px] font-light leading-none md:text-[30px] ${accent}`}>
             {m.n !== undefined ? (
-              <CountUp prefix={m.prefix} value={m.n} suffix={m.suffix} delay={i * 0.12} />
-            ) : (
+              <CountUp prefix={m.prefix} value={m.n} suffix={m.suffix} delay={i * 0.12} start={start} />
+            ) : reduce ? (
               m.value
+            ) : (
+              <StaticValue value={m.value} start={start} delay={i * 0.12} />
             )}
           </dd>
           {/* 马克笔下划线：数字滚动时同步描绘 */}
           <span
             className={`mt-1.5 block h-[2px] w-full origin-left rounded-full bg-current opacity-25 ${accent}`}
             style={{
-              transform: 'scaleX(0)',
-              animation: `metric-underline 0.6s ${0.35 + i * 0.12}s ease-out forwards`,
+              transform: reduce ? undefined : 'scaleX(0)',
+              animation:
+                start && !reduce
+                  ? `metric-underline 0.6s ${0.35 + i * 0.12}s ease-out forwards`
+                  : undefined,
             }}
           />
           <dd className="mt-1.5 text-[11.5px] leading-snug text-plum-muted">{m.label}</dd>
@@ -84,7 +130,7 @@ export function Impact() {
         </h2>
         <Reveal delay={0.12}>
           <p className="mt-4 font-hand text-[18px] text-plum-muted md:text-[19px]">
-            five chapters, one throughline —{' '}
+            different rooms, one throughline —{' '}
             <span className="text-orchid">make it adopted, not just shipped ✦</span>
           </p>
         </Reveal>
@@ -473,7 +519,7 @@ export function Impact() {
               aria-hidden
               className="block h-px w-8 bg-plum/25 transition-all duration-500 group-hover/all:w-12 group-hover/all:bg-rose"
             />
-            More work — all six projects
+            More work
             <span aria-hidden className="transition-transform duration-300 group-hover/all:translate-x-0.5">→</span>
           </Link>
         </Reveal>

@@ -4,7 +4,7 @@ import { motion } from 'motion/react'
 
 /**
  * 顺序跟着页面本身的顺序走，滚动高亮才不会跳。
- * Work 指向首页的 Selected Impact；想看全部六个项目，走那一段最底下的
+ * Work 指向首页的 Selected Impact；想看全部项目，走那一段最底下的
  * More work → /work。导航项直接跳去另一页会把正在读首页的人踢出去。
  */
 const LINKS: { label: string; href?: string; to?: string }[] = [

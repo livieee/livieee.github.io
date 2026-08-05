@@ -11,6 +11,8 @@ type CountUpProps = {
   className?: string
   /** stagger 延迟（秒） */
   delay?: number
+  /** 外部统一触发；不传则自己观察视口 */
+  start?: boolean
 }
 
 /**
@@ -19,9 +21,10 @@ type CountUpProps = {
  * 触发点故意压到视口下沿往上 30%：挂在下沿触发的话，指标条刚冒头就开始跑，
  * 等人把它滚到眼前 0.9s 早跑完了 —— 看到的永远是终值，像根本没动过。
  */
-export function CountUp({ prefix = '', value, suffix = '', className, delay = 0 }: CountUpProps) {
+export function CountUp({ prefix = '', value, suffix = '', className, delay = 0, start }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, margin: '0px 0px -35% 0px' })
+  const self = useInView(ref, { once: true, margin: '0px 0px -35% 0px' })
+  const inView = start ?? self
   const [display, setDisplay] = useState(0)
   const reduce = useReducedMotion()
 

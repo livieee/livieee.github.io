@@ -5,7 +5,8 @@ import { Reveal, WordReveal } from '@/components/Reveal'
  * /work —— 作品索引页。
  *
  * 首页的 Selected Impact 是"叙事"：四个案例按故事顺序铺开、各带媒体与指标，
- * 一屏一个。这一页是"目录"：六个项目一览、可扫读、直接进各自的案例页。
+ * 一屏一个。这一页是"目录"：全部项目一览、可扫读、直接进各自的案例页。
+ * 文案里不写具体数量 —— 项目会增减，写死了就得记着回来改。
  * 两者服务的不是同一件事，所以首页那一段保留，不做替换。
  *
  * 封面尽量用真实的产品界面 / 系统图 / 现场照，不用抽象插画 —— 索引页上
@@ -208,7 +209,7 @@ export function WorkIndex() {
         </Reveal>
 
         <h1 className="max-w-3xl font-serif text-[clamp(1.9rem,4.5vw,3rem)] font-light leading-[1.15] text-plum">
-          <WordReveal text="Six projects —" />{' '}
+          <WordReveal text="Everything I've built —" />{' '}
           <span className="italic text-orchid">
             <WordReveal text="products, systems, and the programs around them." delay={0.24} />
           </span>
