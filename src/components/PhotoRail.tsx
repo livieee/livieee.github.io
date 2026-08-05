@@ -10,7 +10,7 @@ import type { GalleryItem } from '@/components/Lightbox'
  */
 
 const SIZE = {
-  sm: { img: 'h-[88px] w-[132px]', cap: 'max-w-[132px] text-[11.5px]', gap: 'gap-3' },
+  sm: { img: 'h-[74px] w-[111px]', cap: 'max-w-[111px] text-[11px]', gap: 'gap-2.5' },
   md: { img: 'h-[168px] w-[252px] sm:h-[196px] sm:w-[294px]', cap: 'max-w-[252px] text-[13px] sm:max-w-[294px]', gap: 'gap-4' },
 }
 

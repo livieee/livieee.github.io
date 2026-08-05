@@ -152,7 +152,7 @@ export function IEEEAwards() {
         }}
       />
 
-      <div className="relative px-6 py-7 md:px-8 md:py-8">
+      <div className="relative px-5 py-5 md:px-7 md:py-6">
         {/* 顶部 */}
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-start gap-3">
@@ -176,7 +176,7 @@ export function IEEEAwards() {
         </p>
 
         {/* 双面展台 */}
-        <div className="mt-6 grid gap-5 md:grid-cols-[1fr_auto_1fr] md:gap-3">
+        <div className="mt-5 grid gap-4 md:grid-cols-[1fr_auto_1fr] md:gap-3">
           {/* ── 左：Theta · Pitch Board ─────────────────────── */}
           <div
             onPointerEnter={(e) => e.pointerType !== 'touch' && setSide('theta')}
@@ -206,7 +206,7 @@ export function IEEEAwards() {
                   src="/ieee/theta-podium.jpg"
                   alt="Olivia presenting Theta Health AI at IEEE Rising Stars"
                   loading="lazy"
-                  className="h-[142px] w-full object-cover object-[50%_24%] transition-transform duration-700 group-hover/th:scale-[1.04]"
+                  className="h-[124px] w-full object-cover object-[50%_24%] transition-transform duration-700 group-hover/th:scale-[1.04]"
                 />
               </button>
 
@@ -264,7 +264,7 @@ export function IEEEAwards() {
               })}
             </div>
 
-            <div className="mt-2 min-h-[56px]">
+            <div className="mt-2 min-h-[50px]">
               <p
                 key={`a-${sig}`}
                 className="border-l-2 pl-2.5 text-[12px] leading-relaxed text-plum-muted"
@@ -277,31 +277,6 @@ export function IEEEAwards() {
               </p>
             </div>
 
-            {/* 现场旁证：会议副主席的原话 —— 比自述有力 */}
-            <button
-              type="button"
-              onClick={() => setZoom(3)}
-              aria-label="View larger: with Conference Vice Chair Scott Tamashiro"
-              className="group/q mt-3 flex w-full cursor-zoom-in items-center gap-3 rounded-[0.9rem] border border-plum/10 bg-white/70 p-2 text-left transition-colors duration-300 hover:border-rose/40 hover:bg-white"
-            >
-              <span className="halftone relative block shrink-0 overflow-hidden rounded-[0.6rem]">
-                <img
-                  src="/ieee/theta-vicechair-tight.jpg"
-                  alt=""
-                  aria-hidden
-                  loading="lazy"
-                  className="h-[56px] w-[56px] object-cover transition-transform duration-500 group-hover/q:scale-[1.08]"
-                />
-              </span>
-              <span className="min-w-0">
-                <span className="block text-[11.5px] italic leading-snug text-plum">
-                  “How active this discussion was reflects how interested the room is.”
-                </span>
-                <span className="mt-1 block text-[10.5px] leading-none text-plum-faint">
-                  Scott Tamashiro · IEEE Rising Stars Conference Vice Chair
-                </span>
-              </span>
-            </button>
 
             <div className="mt-3 flex flex-wrap gap-1.5">
               {['Product storytelling', 'Live pitch', 'Market signals'].map((t) => (
@@ -397,7 +372,7 @@ export function IEEEAwards() {
                   src={MODES[mode].img}
                   alt={MODES[mode].alt}
                   loading="lazy"
-                  className="h-[142px] w-full object-cover transition-transform duration-700 group-hover/ta:scale-[1.04]"
+                  className="h-[124px] w-full object-cover transition-transform duration-700 group-hover/ta:scale-[1.04]"
                   style={{ animation: 'q-pop .5s cubic-bezier(.2,.8,.25,1) both' }}
                 />
               </button>
@@ -448,7 +423,7 @@ export function IEEEAwards() {
               })}
             </div>
 
-            <div className="mt-2 min-h-[56px]">
+            <div className="mt-2 min-h-[50px]">
               <p
                 key={`mb-${mode}`}
                 className="border-l-2 pl-2.5 text-[12px] leading-relaxed text-plum-muted"
@@ -490,8 +465,36 @@ export function IEEEAwards() {
           </div>
         </div>
 
+        {/* 现场旁证：会议副主席的原话 —— 比自述有力。
+            原本挂在左栏里，把左栏顶得比右栏高一大截，右栏因此空出一片。
+            抽成通栏一条：两栏等高，这句话也从角落里的小字变成读得见的一行 */}
+        <button
+          type="button"
+          onClick={() => setZoom(3)}
+          aria-label="View larger: with Conference Vice Chair Scott Tamashiro"
+          className="group/q mt-4 flex w-full cursor-zoom-in items-center gap-3.5 rounded-[0.9rem] border border-plum/10 bg-white/70 p-2.5 text-left transition-colors duration-300 hover:border-rose/40 hover:bg-white"
+        >
+          <span className="halftone relative block shrink-0 overflow-hidden rounded-[0.6rem]">
+            <img
+              src="/ieee/theta-vicechair-tight.jpg"
+              alt=""
+              aria-hidden
+              loading="lazy"
+              className="h-[46px] w-[46px] object-cover transition-transform duration-500 group-hover/q:scale-[1.08]"
+            />
+          </span>
+          <span className="min-w-0">
+            <span className="block text-[13px] italic leading-snug text-plum">
+              “How active this discussion was reflects how interested the room is.”
+            </span>
+            <span className="mt-1 block text-[11px] leading-none text-plum-faint">
+              Scott Tamashiro · IEEE Rising Stars Conference Vice Chair
+            </span>
+          </span>
+        </button>
+
         {/* 现场照：跟案例页一样自己走，没人会去拖一条横条 */}
-        <div className="mt-5">
+        <div className="mt-4">
           <PhotoRail items={SHOTS} onZoom={setZoom} duration={78} size="sm" tone="light" bleed={false} />
         </div>
       </div>
