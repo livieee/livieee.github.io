@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 
+/** 顺序跟着页面本身的顺序走，滚动高亮才不会跳 */
 const LINKS = [
   { label: 'Home', href: '#top' },
   { label: 'Work', href: '#impact' },
+  { label: 'Journey', href: '#journey' },
   { label: 'Life', href: '#life' },
 ]
 
