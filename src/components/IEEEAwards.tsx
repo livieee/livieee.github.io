@@ -152,7 +152,7 @@ export function IEEEAwards() {
         }}
       />
 
-      <div className="relative px-6 py-8 md:px-9 md:py-9">
+      <div className="relative px-6 py-7 md:px-8 md:py-8">
         {/* 顶部 */}
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-start gap-3">
@@ -181,7 +181,7 @@ export function IEEEAwards() {
           <div
             onPointerEnter={(e) => e.pointerType !== 'touch' && setSide('theta')}
             onPointerLeave={() => setSide(null)}
-            className="group/th relative flex flex-col rounded-[1.3rem] border border-rose/25 bg-white/70 p-4 transition-all duration-500"
+            className="group/th relative flex flex-col rounded-[1.2rem] border border-rose/25 bg-white/70 p-3.5 transition-all duration-500"
             style={{
               transform: side === 'theta' ? 'scale(1.02)' : 'scale(1)',
               opacity: side === 'taala' ? 0.6 : 1,
@@ -206,7 +206,7 @@ export function IEEEAwards() {
                   src="/ieee/theta-podium.jpg"
                   alt="Olivia presenting Theta Health AI at IEEE Rising Stars"
                   loading="lazy"
-                  className="h-[172px] w-full object-cover object-[50%_24%] transition-transform duration-700 group-hover/th:scale-[1.04]"
+                  className="h-[142px] w-full object-cover object-[50%_24%] transition-transform duration-700 group-hover/th:scale-[1.04]"
                 />
               </button>
 
@@ -234,7 +234,7 @@ export function IEEEAwards() {
             </div>
 
             {/* 四个方向：现场提问 → 产品判断。点一下换一条，不动就自己走 */}
-            <p className="mt-4 flex items-center gap-1.5 font-hand text-[13px] text-plum-muted">
+            <p className="mt-3 flex items-center gap-1.5 font-hand text-[13px] text-plum-muted">
               <span aria-hidden>↳</span> 7–8 questions — four directions
             </p>
 
@@ -264,7 +264,7 @@ export function IEEEAwards() {
               })}
             </div>
 
-            <div className="mt-2.5 min-h-[64px]">
+            <div className="mt-2 min-h-[56px]">
               <p
                 key={`a-${sig}`}
                 className="border-l-2 pl-2.5 text-[12px] leading-relaxed text-plum-muted"
@@ -315,7 +315,7 @@ export function IEEEAwards() {
             </div>
 
 
-            <div className="mt-auto flex items-center justify-between gap-2 pt-4">
+            <div className="mt-auto flex items-center justify-between gap-2 pt-3">
               <Link
                 to="/work/theta#pitch-story"
                 className="inline-flex items-center gap-1.5 rounded-full bg-rose px-4 py-2 text-[12px] font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-plum"
@@ -341,7 +341,7 @@ export function IEEEAwards() {
           <div
             onPointerEnter={(e) => e.pointerType !== 'touch' && setSide('taala')}
             onPointerLeave={() => setSide(null)}
-            className="group/ta relative flex flex-col rounded-[1.3rem] border border-orchid/25 bg-white/60 p-4 transition-all duration-500"
+            className="group/ta relative flex flex-col rounded-[1.2rem] border border-orchid/25 bg-white/60 p-3.5 transition-all duration-500"
             style={{
               transform: side === 'taala' ? 'scale(1.02)' : 'scale(1)',
               opacity: side === 'theta' ? 0.6 : 1,
@@ -397,7 +397,7 @@ export function IEEEAwards() {
                   src={MODES[mode].img}
                   alt={MODES[mode].alt}
                   loading="lazy"
-                  className="h-[172px] w-full object-cover transition-transform duration-700 group-hover/ta:scale-[1.04]"
+                  className="h-[142px] w-full object-cover transition-transform duration-700 group-hover/ta:scale-[1.04]"
                   style={{ animation: 'q-pop .5s cubic-bezier(.2,.8,.25,1) both' }}
                 />
               </button>
@@ -418,7 +418,7 @@ export function IEEEAwards() {
             </div>
 
             {/* 两种模式：一种给人感受，一种给人理解。不动就自己交替 */}
-            <p className="mt-4 flex items-center gap-1.5 font-hand text-[13px] text-plum-muted">
+            <p className="mt-3 flex items-center gap-1.5 font-hand text-[13px] text-plum-muted">
               <span aria-hidden>↳</span> one to feel, one to understand
             </p>
 
@@ -448,7 +448,7 @@ export function IEEEAwards() {
               })}
             </div>
 
-            <div className="mt-2.5 min-h-[64px]">
+            <div className="mt-2 min-h-[56px]">
               <p
                 key={`mb-${mode}`}
                 className="border-l-2 pl-2.5 text-[12px] leading-relaxed text-plum-muted"
@@ -472,7 +472,7 @@ export function IEEEAwards() {
               ))}
             </div>
 
-            <div className="mt-auto flex items-center justify-between gap-2 pt-4">
+            <div className="mt-auto flex items-center justify-between gap-2 pt-3">
               <Link
                 to="/work/therapy-as-living-art"
                 className="inline-flex items-center gap-1.5 rounded-full bg-orchid px-4 py-2 text-[12px] font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-plum"
@@ -491,7 +491,7 @@ export function IEEEAwards() {
         </div>
 
         {/* 现场照：跟案例页一样自己走，没人会去拖一条横条 */}
-        <div className="mt-6">
+        <div className="mt-5">
           <PhotoRail items={SHOTS} onZoom={setZoom} duration={78} size="sm" tone="light" bleed={false} />
         </div>
       </div>
