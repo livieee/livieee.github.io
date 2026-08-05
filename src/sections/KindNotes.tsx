@@ -24,54 +24,67 @@ type Note = {
   affil: string
   /** 与她的关系 / 时间，没有就不显示 */
   meta?: string
-  /** 来源：横排成一行之后，分组标题没了，标签接住这个信息 */
-  tag: string
+  /** 机构：做成信封上的邮票，也做成信纸的信头 —— 真实性靠这个立 */
+  org: { name: string; logo: string }
+  /** 可核验的出处。真实性最强的信号是"不用信我，自己去看" */
+  source?: { label: string; href: string }
 }
+
+const CMU = { name: 'Carnegie Mellon University', logo: '/logos/cmu.png' }
+const III = { name: 'CMU Integrated Innovation Institute', logo: '/logos/iii.png' }
+const PEOPLEAI = { name: 'People.ai', logo: '/logos/peopleai.png' }
+
+/** 她的 LinkedIn 推荐区 —— 两条同事推荐语的原始出处 */
+// 用主页地址而不是 /details/recommendations/：未登录访客点后者会被
+// LinkedIn 的 authwall 拦掉并重定向回主页，等于绕一圈
+const LI_RECS = 'https://www.linkedin.com/in/olivia-zerun-xiao/'
 
 const NOTES: Note[] = [
   {
-    tag: 'CMU',
+    org: CMU,
     lead: 'The team she guided earned the highest score in the class.',
     text: 'Olivia demonstrated exceptional mentorship and leadership as a PM Course Advisor. The team she guided earned the highest score in the class, and their Product Plan/PRD was among the best I have seen in years of teaching the course.',
     from: 'Prof. Adrian Ott',
     affil: 'Carnegie Mellon University',
   },
   {
-    tag: 'CMU',
+    org: III,
     lead: 'One of the best submissions we received.',
     text: 'Olivia’s work stood out as one of the best submissions we received—beautifully articulated, deeply insightful, and a brilliant synthesis of complex concepts. Her ability to communicate with clarity, nuance, and depth was truly commendable.',
     from: 'Sahaana Das',
     affil: 'Applied AI Course Team, CMU Integrated Innovation Institute',
   },
   {
-    tag: 'CMU',
+    org: CMU,
     lead: 'Watching her development has been deeply rewarding.',
     text: 'Across several courses, Olivia’s contributions demonstrated a strong commitment to academic excellence and professional growth. Watching her development has been deeply rewarding.',
     from: 'Prof. Catherine Fang',
     affil: 'Carnegie Mellon University',
   },
   {
-    tag: 'CMU',
+    org: CMU,
     lead: 'It was always a delight to answer your curious questions.',
     text: 'It was always a delight to answer your curious questions in all the classes we had together.',
     from: 'Prof. Stuart Evans',
     affil: 'Carnegie Mellon University',
   },
   {
-    tag: 'People.ai',
+    org: PEOPLEAI,
     lead: 'She has consistently proven to be an invaluable asset to our team.',
     text: 'I enjoyed working with Olivia for over a year at People.ai, and throughout this time, she has consistently proven to be an invaluable asset to our team. […] Olivia has a knack for effectively conveying complex ideas and concepts in a clear and concise manner, whether it be in written reports, presentations, or interpersonal interactions.',
     from: 'Tetiana Krytsyna',
     affil: 'Technical Success Engineer / Manual QA Engineer',
     meta: 'Senior to Olivia, worked alongside her · February 2024',
+    source: { label: 'View on LinkedIn', href: LI_RECS },
   },
   {
-    tag: 'People.ai',
+    org: PEOPLEAI,
     lead: 'Olivia does not hesitate to pick up complex problems and lead them to successful resolution.',
     text: 'I had a pleasure to work with Olivia for over a year. She is a highly motivated, detail-oriented engineer with great technical skillset and work ethics. Olivia does not hesitate to pick up complex problems and lead them to successful resolution.',
     from: 'Vadym Rudenko',
     affil: 'Sr. Technical Success Engineer at People.ai',
     meta: 'Worked with Olivia on the same team · November 2023',
+    source: { label: 'View on LinkedIn', href: LI_RECS },
   },
 ]
 
@@ -134,6 +147,27 @@ function Seal({ open }: { open: boolean }) {
           O
         </text>
       </svg>
+    </span>
+  )
+}
+
+/**
+ * 邮票：真信封右上角本来就是贴邮票的地方，机构标识放这儿位置天然正确，
+ * 一眼看出这封信来自哪儿。
+ *
+ * 齿孔没用 repeating-radial 遮罩 —— 那会在整张票面上打洞（像被虫蛀），
+ * 齿孔只该在边上。改成白票面 + 虚线描边 + 投影，干净且一眼读得出是邮票。
+ */
+function Stamp({ org }: { org: Note['org'] }) {
+  return (
+    <span
+      aria-hidden
+      className="pointer-events-none absolute right-6 top-[24px] z-40 flex h-[54px] w-[46px] rotate-[3deg] items-center justify-center rounded-[3px] bg-white p-[5px]"
+      style={{ boxShadow: '0 4px 10px -4px rgba(196,143,163,0.5)' }}
+    >
+      <span className="flex h-full w-full items-center justify-center rounded-[2px] border border-dashed border-[#C48FA3]/45">
+        <img src={org.logo} alt="" className="h-[26px] w-[26px] object-contain" />
+      </span>
     </span>
   )
 }
@@ -214,10 +248,7 @@ function Envelope({ note }: { note: Note }) {
 
           <Seal open={open} />
 
-          {/* 来源标签：横排之后分组标题没了，这里接住 */}
-          <span className="relative z-10 mb-3 inline-block rounded-full bg-rose/10 px-2.5 py-[3px] text-[10px] font-medium uppercase tracking-[0.16em] text-rose">
-            {note.tag}
-          </span>
+          <Stamp org={note.org} />
 
           {/* 封面那句 */}
           <p
@@ -248,6 +279,22 @@ function Envelope({ note }: { note: Note }) {
                   transition: `transform .9s ${EASE} .14s, opacity .55s ease .14s, box-shadow .8s ${EASE}`,
                 }}
               >
+                {/* 信头：像真的机构信笺，标识 + 姓名 + 关系日期 */}
+                <div className="mb-4 flex items-center gap-3 border-b border-plum/10 pb-3.5">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-white ring-1 ring-plum/10">
+                    <img src={note.org.logo} alt="" className="h-[18px] w-[18px] object-contain" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[11px] font-medium uppercase tracking-[0.16em] text-plum">
+                      {note.org.name}
+                    </span>
+                    {note.meta && (
+                      <span className="mt-1 block text-[10.5px] leading-snug text-plum-faint">
+                        {note.meta}
+                      </span>
+                    )}
+                  </span>
+                </div>
                 <p className="text-[14px] leading-relaxed text-plum-muted">{note.text}</p>
               </div>
             </div>
@@ -258,8 +305,27 @@ function Envelope({ note }: { note: Note }) {
             <p className="font-hand text-[19px] leading-none text-plum">{note.from}</p>
             <p className="mt-2.5 text-[12px] leading-snug text-plum-muted">{note.affil}</p>
             <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-              {note.meta ? (
-                <p className="text-[11px] text-plum-faint">{note.meta}</p>
+              {note.source ? (
+                // 真实性最强的信号：不用信我，自己去看。
+                // 放在 button 里，所以用 span + onClick 手动开，避免嵌套交互元素
+                <span
+                  role="link"
+                  tabIndex={0}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    window.open(note.source!.href, '_blank', 'noopener,noreferrer')
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      window.open(note.source!.href, '_blank', 'noopener,noreferrer')
+                    }
+                  }}
+                  className="cursor-pointer text-[11px] text-plum-faint underline decoration-plum/20 underline-offset-4 transition-colors hover:text-rose hover:decoration-rose/50"
+                >
+                  {note.source.label} ↗
+                </span>
               ) : (
                 <span />
               )}
