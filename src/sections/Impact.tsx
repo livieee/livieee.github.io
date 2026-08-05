@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useInView, useReducedMotion } from 'motion/react'
 import { GlowEdge } from '@/components/GlowEdge'
@@ -92,6 +92,36 @@ function Metrics({ items, accent, className = '' }: { items: Metric[]; accent: s
   )
 }
 
+/**
+ * 进视口触发一次就断开。用于「落位」这类一次性动作 —— 挂
+ * animation-timeline: view() 的话往回滚会把它再抬起来，看着像出 bug。
+ */
+function useLandOnce<T extends HTMLElement>() {
+  const ref = useRef<T>(null)
+  const reduce = useReducedMotion()
+  const [landed, setLanded] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    // 关掉动效的人直接给终态，不做位移也不做淡入
+    if (reduce) {
+      setLanded(true)
+      return
+    }
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return
+        setLanded(true)
+        io.disconnect()
+      },
+      { rootMargin: '0px 0px -22% 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [reduce])
+  return { ref, landed }
+}
+
 function Tag({ children }: { children: string }) {
   return (
     <span className="rounded-full border border-plum/15 px-2.5 py-[2px] text-[10px] font-medium text-plum-muted">
@@ -107,6 +137,8 @@ export function Impact() {
   const [askCur, setAskCur] = useState<{ x: number; y: number } | null>(null)
   /** Multi-agent 长条入口跟随光标的 View project 胶囊 */
   const [archCur, setArchCur] = useState<{ x: number; y: number } | null>(null)
+  /** 01 的产品视觉：窗口和手机各自落位 */
+  const visual = useLandOnce<HTMLAnchorElement>()
   return (
     <section id="impact" className="relative bg-white/50">
       {/* 顶部延续 Hero 的方格纸语言，向下淡出 */}
@@ -144,7 +176,7 @@ export function Impact() {
             >
               flagship case ✦
             </span>
-          <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[1.6rem] bg-gradient-to-br from-cream-soft to-blush/40 p-5 transition-transform duration-500 md:p-6">
+          <article id="case-theta" className="group/card relative scroll-mt-24 overflow-hidden rounded-[1.6rem] bg-gradient-to-br from-cream-soft to-blush/40 p-5 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-6">
             <GlowEdge />
             <div className="grid gap-6 md:grid-cols-[43fr_57fr]">
               <div className="flex flex-col justify-center">
@@ -179,6 +211,7 @@ export function Impact() {
               <div className="flex flex-col justify-center gap-5">
                 {/* 产品主视觉：医生工作台 + SOAP note 叠放（淡插画作背景） */}
                 <Link
+                  ref={visual.ref}
                   to="/work/theta"
                   className="group/visual relative block aspect-[16/11] w-full cursor-none"
                   aria-label="Theta Care product interface — open the case study"
@@ -193,13 +226,27 @@ export function Impact() {
                     src="/theta/ui-dashboard.jpg"
                     alt="Theta Care pre-chart summary — the physician workspace"
                     loading="lazy"
-                    className="absolute inset-0 h-full w-full rounded-[1.1rem] border border-plum/15 object-cover object-top shadow-[0_26px_60px_-24px_rgba(90,63,86,0.55)] transition-transform duration-500 group-hover/visual:-translate-y-1"
+                    className="absolute inset-0 h-full w-full rounded-[1.1rem] border border-plum/15 object-cover object-top shadow-[0_26px_60px_-24px_rgba(90,63,86,0.55)] group-hover/visual:-translate-y-1"
+                    style={{
+                      opacity: visual.landed ? 1 : 0,
+                      transform: visual.landed ? 'none' : 'scale(1.05)',
+                      transition:
+                        'opacity 620ms ease-out, transform 900ms cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
                   />
                   <img
                     src="/theta/ui-soap.jpg"
                     alt="AI-generated SOAP note, ready to sign in minutes"
                     loading="lazy"
-                    className="absolute -bottom-3 -right-3 w-[27%] rotate-2 rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] transition-transform duration-500 group-hover/visual:-translate-y-1.5 group-hover/visual:rotate-[3deg]"
+                    className="absolute -bottom-3 -right-3 w-[27%] rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] group-hover/visual:-translate-y-1.5"
+                    style={{
+                      opacity: visual.landed ? 1 : 0,
+                      transform: visual.landed
+                        ? 'translateY(0) rotate(2deg)'
+                        : 'translateY(34px) rotate(9deg)',
+                      transition:
+                        'opacity 520ms 280ms ease-out, transform 820ms 280ms cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
                   />
                   {/* 跟随光标的 Tap to view 胶囊 */}
                   {viewCur && (
@@ -243,7 +290,7 @@ export function Impact() {
             >
               built with Bosch ✦
             </span>
-            <article id="case-askdata" className="group/card relative scroll-mt-24 rounded-[1.6rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-5 transition-transform duration-500 md:p-6">
+            <article id="case-askdata" className="group/card relative scroll-mt-24 rounded-[1.6rem] bg-gradient-to-br from-[#D9E5F2] via-cream-soft to-blush/40 p-5 transition-all duration-500 hover:-translate-y-[5px] hover:shadow-[0_28px_60px_-28px_rgba(58,36,64,0.42)] md:p-6">
             <GlowEdge />
               <div className="grid items-center gap-12 md:grid-cols-12">
                 {/* 视觉：AskData UI（移动端先展示），整块可点击直达详情页 */}
