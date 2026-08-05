@@ -25,3 +25,6 @@ dist-ssr
 
 # Claude Code local config
 .claude/
+
+# 交接文档的私有部分：内容红线 / 素材来源 / 个人偏好，不进公开仓库
+HANDOFF.private.md
