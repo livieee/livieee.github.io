@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Reveal, WordReveal } from '@/components/Reveal'
 
 /**
@@ -24,58 +24,54 @@ type Note = {
   affil: string
   /** 与她的关系 / 时间，没有就不显示 */
   meta?: string
+  /** 来源：横排成一行之后，分组标题没了，标签接住这个信息 */
+  tag: string
 }
 
-type Group = { label: string; notes: Note[] }
-
-const GROUPS: Group[] = [
+const NOTES: Note[] = [
   {
-    label: 'From my professors at CMU',
-    notes: [
-      {
-        lead: 'The team she guided earned the highest score in the class.',
-        text: 'Olivia demonstrated exceptional mentorship and leadership as a PM Course Advisor. The team she guided earned the highest score in the class, and their Product Plan/PRD was among the best I have seen in years of teaching the course.',
-        from: 'Prof. Adrian Ott',
-        affil: 'Carnegie Mellon University',
-      },
-      {
-        lead: 'One of the best submissions we received.',
-        text: 'Olivia’s work stood out as one of the best submissions we received—beautifully articulated, deeply insightful, and a brilliant synthesis of complex concepts. Her ability to communicate with clarity, nuance, and depth was truly commendable.',
-        from: 'Sahaana Das',
-        affil: 'Applied AI Course Team, CMU Integrated Innovation Institute',
-      },
-      {
-        lead: 'Watching her development has been deeply rewarding.',
-        text: 'Across several courses, Olivia’s contributions demonstrated a strong commitment to academic excellence and professional growth. Watching her development has been deeply rewarding.',
-        from: 'Prof. Catherine Fang',
-        affil: 'Carnegie Mellon University',
-      },
-      {
-        lead: 'It was always a delight to answer your curious questions.',
-        text: 'It was always a delight to answer your curious questions in all the classes we had together.',
-        from: 'Prof. Stuart Evans',
-        affil: 'Carnegie Mellon University',
-      },
-    ],
+    tag: 'CMU',
+    lead: 'The team she guided earned the highest score in the class.',
+    text: 'Olivia demonstrated exceptional mentorship and leadership as a PM Course Advisor. The team she guided earned the highest score in the class, and their Product Plan/PRD was among the best I have seen in years of teaching the course.',
+    from: 'Prof. Adrian Ott',
+    affil: 'Carnegie Mellon University',
   },
   {
-    label: 'From the team I worked with',
-    notes: [
-      {
-        lead: 'She has consistently proven to be an invaluable asset to our team.',
-        text: 'I enjoyed working with Olivia for over a year at People.ai, and throughout this time, she has consistently proven to be an invaluable asset to our team. […] Olivia has a knack for effectively conveying complex ideas and concepts in a clear and concise manner, whether it be in written reports, presentations, or interpersonal interactions.',
-        from: 'Tetiana Krytsyna',
-        affil: 'Technical Success Engineer / Manual QA Engineer',
-        meta: 'Senior to Olivia, worked alongside her · February 2024',
-      },
-      {
-        lead: 'Olivia does not hesitate to pick up complex problems and lead them to successful resolution.',
-        text: 'I had a pleasure to work with Olivia for over a year. She is a highly motivated, detail-oriented engineer with great technical skillset and work ethics. Olivia does not hesitate to pick up complex problems and lead them to successful resolution.',
-        from: 'Vadym Rudenko',
-        affil: 'Sr. Technical Success Engineer at People.ai',
-        meta: 'Worked with Olivia on the same team · November 2023',
-      },
-    ],
+    tag: 'CMU',
+    lead: 'One of the best submissions we received.',
+    text: 'Olivia’s work stood out as one of the best submissions we received—beautifully articulated, deeply insightful, and a brilliant synthesis of complex concepts. Her ability to communicate with clarity, nuance, and depth was truly commendable.',
+    from: 'Sahaana Das',
+    affil: 'Applied AI Course Team, CMU Integrated Innovation Institute',
+  },
+  {
+    tag: 'CMU',
+    lead: 'Watching her development has been deeply rewarding.',
+    text: 'Across several courses, Olivia’s contributions demonstrated a strong commitment to academic excellence and professional growth. Watching her development has been deeply rewarding.',
+    from: 'Prof. Catherine Fang',
+    affil: 'Carnegie Mellon University',
+  },
+  {
+    tag: 'CMU',
+    lead: 'It was always a delight to answer your curious questions.',
+    text: 'It was always a delight to answer your curious questions in all the classes we had together.',
+    from: 'Prof. Stuart Evans',
+    affil: 'Carnegie Mellon University',
+  },
+  {
+    tag: 'People.ai',
+    lead: 'She has consistently proven to be an invaluable asset to our team.',
+    text: 'I enjoyed working with Olivia for over a year at People.ai, and throughout this time, she has consistently proven to be an invaluable asset to our team. […] Olivia has a knack for effectively conveying complex ideas and concepts in a clear and concise manner, whether it be in written reports, presentations, or interpersonal interactions.',
+    from: 'Tetiana Krytsyna',
+    affil: 'Technical Success Engineer / Manual QA Engineer',
+    meta: 'Senior to Olivia, worked alongside her · February 2024',
+  },
+  {
+    tag: 'People.ai',
+    lead: 'Olivia does not hesitate to pick up complex problems and lead them to successful resolution.',
+    text: 'I had a pleasure to work with Olivia for over a year. She is a highly motivated, detail-oriented engineer with great technical skillset and work ethics. Olivia does not hesitate to pick up complex problems and lead them to successful resolution.',
+    from: 'Vadym Rudenko',
+    affil: 'Sr. Technical Success Engineer at People.ai',
+    meta: 'Worked with Olivia on the same team · November 2023',
   },
 ]
 
@@ -218,6 +214,11 @@ function Envelope({ note }: { note: Note }) {
 
           <Seal open={open} />
 
+          {/* 来源标签：横排之后分组标题没了，这里接住 */}
+          <span className="relative z-10 mb-3 inline-block rounded-full bg-rose/10 px-2.5 py-[3px] text-[10px] font-medium uppercase tracking-[0.16em] text-rose">
+            {note.tag}
+          </span>
+
           {/* 封面那句 */}
           <p
             className="relative z-10 font-serif font-light leading-[1.32] text-plum"
@@ -278,41 +279,93 @@ function Envelope({ note }: { note: Note }) {
   )
 }
 
+/**
+ * 横向信封带。
+ *
+ * 不做自动滚动：信封是要点开读的，正读着被滑走会很烦
+ * （照片带可以自动走，因为看照片不需要停留）。
+ * 这里用 scroll-snap + 拖动 + 两个箭头，节奏交给读者。
+ */
 export function KindNotes() {
-  if (GROUPS.every((g) => g.notes.length === 0)) return null
+  if (NOTES.length === 0) return null
+
+  const railRef = useRef<HTMLDivElement>(null)
+  const [atStart, setAtStart] = useState(true)
+  const [atEnd, setAtEnd] = useState(false)
+
+  const sync = () => {
+    const el = railRef.current
+    if (!el) return
+    setAtStart(el.scrollLeft < 8)
+    setAtEnd(el.scrollLeft > el.scrollWidth - el.clientWidth - 8)
+  }
+
+  const nudge = (dir: 1 | -1) => {
+    const el = railRef.current
+    if (!el) return
+    const card = el.querySelector('article')
+    const step = card ? card.getBoundingClientRect().width + 24 : 360
+    el.scrollBy({ left: dir * step, behavior: 'smooth' })
+  }
 
   return (
-    <section id="notes" className="mx-auto max-w-5xl px-6 py-24 md:px-10 md:py-32">
-      <Reveal>
-        <p className="label-text mb-6 flex items-center gap-3">
-          <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-orchid" />
-          Kind Notes I've Kept
-        </p>
-      </Reveal>
+    <section id="notes" className="py-24 md:py-32">
+      <div className="mx-auto max-w-5xl px-6 md:px-10">
+        <Reveal>
+          <p className="label-text mb-6 flex items-center gap-3">
+            <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-orchid" />
+            Kind Notes I've Kept
+          </p>
+        </Reveal>
 
-      <h2 className="max-w-3xl font-serif text-[clamp(1.8rem,4vw,2.8rem)] font-light leading-[1.15] text-plum">
-        <WordReveal text="The part I can't write myself —" />{' '}
-        <span className="italic text-orchid">
-          <WordReveal text="in their words." delay={0.28} />
-        </span>
-      </h2>
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <h2 className="max-w-3xl font-serif text-[clamp(1.8rem,4vw,2.8rem)] font-light leading-[1.15] text-plum">
+            <WordReveal text="The part I can't write myself —" />{' '}
+            <span className="italic text-orchid">
+              <WordReveal text="in their words." delay={0.28} />
+            </span>
+          </h2>
 
-      {GROUPS.map((group, gi) => (
-        <div key={group.label} className={gi === 0 ? 'mt-12 md:mt-16' : 'mt-16 md:mt-24'}>
-          <Reveal>
-            <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-plum-faint">
-              {group.label}
-            </p>
-          </Reveal>
-          <div className="grid items-start gap-6 md:grid-cols-2 md:gap-x-8">
-            {group.notes.map((note, i) => (
-              <Reveal key={note.from} delay={0.05 + i * 0.07} y={22}>
-                <Envelope note={note} />
-              </Reveal>
+          {/* 左右箭头：到头就禁用，不做无限循环 */}
+          <div className="flex items-center gap-2">
+            <span className="mr-1 font-hand text-[15px] text-plum-muted">slide · open one ✦</span>
+            {([-1, 1] as const).map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => nudge(d)}
+                disabled={d === -1 ? atStart : atEnd}
+                aria-label={d === 1 ? 'Next note' : 'Previous note'}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-plum/15 bg-white text-[14px] text-plum transition-all duration-300 hover:-translate-y-0.5 hover:border-rose/50 disabled:pointer-events-none disabled:opacity-25"
+              >
+                {d === 1 ? '→' : '←'}
+              </button>
             ))}
           </div>
         </div>
-      ))}
+      </div>
+
+      {/* 满宽的带子：第一封与容器左边缘对齐，末尾留出同样的余量 */}
+      <div
+        ref={railRef}
+        onScroll={sync}
+        className="mt-10 flex snap-x snap-mandatory items-start gap-6 overflow-x-auto overscroll-x-contain pb-6 pt-2 [-ms-overflow-style:none] [scrollbar-width:none] md:mt-14 md:gap-7 [&::-webkit-scrollbar]:hidden"
+        style={{
+          // 用内边距而不是前导空白元素：snap-mandatory 会跳过不是吸附点的空白，
+          // 第一封会被直接吸到视口边上。scroll-padding 让吸附点落在内边距之后。
+          paddingLeft: 'max(24px, calc((100vw - 64rem) / 2 + 40px))',
+          paddingRight: 'max(24px, calc((100vw - 64rem) / 2 + 40px))',
+          scrollPaddingLeft: 'max(24px, calc((100vw - 64rem) / 2 + 40px))',
+        }}
+      >
+        {NOTES.map((note, i) => (
+          <Reveal key={note.from} delay={0.04 + i * 0.05} y={22} className="shrink-0 snap-start">
+            <div className="w-[300px] sm:w-[340px] md:w-[368px]">
+              <Envelope note={note} />
+            </div>
+          </Reveal>
+        ))}
+      </div>
     </section>
   )
 }
