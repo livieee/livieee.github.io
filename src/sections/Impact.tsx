@@ -468,6 +468,21 @@ export function Impact() {
 
         </div>
 
+        {/* 首页这一段是叙事；想扫读全部项目就去 /work */}
+        <Reveal className="mt-10" y={20}>
+          <Link
+            to="/work"
+            className="group/all inline-flex items-center gap-3 text-[13.5px] font-medium text-plum-muted transition-colors hover:text-plum"
+          >
+            <span
+              aria-hidden
+              className="block h-px w-8 bg-plum/25 transition-all duration-500 group-hover/all:w-12 group-hover/all:bg-rose"
+            />
+            See all six projects
+            <span aria-hidden className="transition-transform duration-300 group-hover/all:translate-x-0.5">→</span>
+          </Link>
+        </Reveal>
+
         {/* ── Recognition · IEEE Rising Stars 2026 ───────────────────────── */}
         <Reveal className="mt-8" y={36}>
           <IEEEAwards />

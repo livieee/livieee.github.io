@@ -6,6 +6,7 @@ import { AskDataCase } from './pages/AskDataCase'
 import { BoschSchemaCase } from './pages/BoschSchemaCase'
 import { AIValleyCase } from '@/pages/AIValleyCase'
 import { LivingArtCase } from '@/pages/LivingArtCase'
+import { WorkIndex } from '@/pages/WorkIndex'
 import NotFound from './pages/NotFound'
 
 /**
@@ -92,6 +93,7 @@ export default function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/work" element={<WorkIndex />} />
         <Route path="/work/theta" element={<ThetaCase />} />
         <Route path="/work/genai-analytics" element={<AskDataCase />} />
         <Route path="/work/bosch-schema" element={<BoschSchemaCase />} />
