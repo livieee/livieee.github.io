@@ -113,7 +113,7 @@ function Seal({ open }: { open: boolean }) {
   return (
     <span
       aria-hidden
-      className="pointer-events-none absolute left-1/2 top-[62px] z-40 block h-[52px] w-[52px] -translate-x-1/2"
+      className="pointer-events-none absolute left-1/2 top-[44px] z-40 block h-[42px] w-[42px] -translate-x-1/2"
       style={{
         opacity: open ? 0 : 1,
         transform: `translateX(-50%) scale(${open ? 0.4 : 1}) rotate(${open ? 90 : 0}deg)`,
@@ -162,11 +162,11 @@ function Stamp({ org }: { org: Note['org'] }) {
   return (
     <span
       aria-hidden
-      className="pointer-events-none absolute right-6 top-[24px] z-40 flex h-[54px] w-[46px] rotate-[3deg] items-center justify-center rounded-[3px] bg-white p-[5px]"
+      className="pointer-events-none absolute right-5 top-[18px] z-40 flex h-[46px] w-[39px] rotate-[3deg] items-center justify-center rounded-[3px] bg-white p-[5px]"
       style={{ boxShadow: '0 4px 10px -4px rgba(196,143,163,0.5)' }}
     >
       <span className="flex h-full w-full items-center justify-center rounded-[2px] border border-dashed border-[#C48FA3]/45">
-        <img src={org.logo} alt="" className="h-[26px] w-[26px] object-contain" />
+        <img src={org.logo} alt="" className="h-[22px] w-[22px] object-contain" />
       </span>
     </span>
   )
@@ -186,7 +186,7 @@ function Envelope({
 
   return (
     // pt 给掀开的封口留头顶空间；不能 overflow-hidden，否则封口会被切掉
-    <article className="relative pt-[64px]" style={{ perspective: '1500px' }}>
+    <article className="relative pt-[44px]" style={{ perspective: '1500px' }}>
       <button
         type="button"
         onClick={onToggle}
@@ -196,7 +196,7 @@ function Envelope({
         className="group/env block w-full text-left"
       >
         <div
-          className="relative rounded-[1.4rem] px-7 pb-7 pt-[104px] transition-all duration-700 md:px-8"
+          className="relative rounded-[1.3rem] px-6 pb-6 pt-[74px] transition-all duration-700 md:px-7"
           style={{
             background: 'linear-gradient(176deg, #FFFFFF 0%, #FEF8F9 55%, #FCF1F3 100%)',
             // 极柔的漫射投影，没有硬边 —— 参考图的质感全在这
@@ -212,7 +212,7 @@ function Envelope({
           {/* 封口：绕顶边翻上去。两面分开画 —— 翻过来那面原本贴着信封内侧，更暗 */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 z-30 h-[86px] origin-top"
+            className="pointer-events-none absolute inset-x-0 top-0 z-30 h-[62px] origin-top"
             style={{
               transformStyle: 'preserve-3d',
               transform: `rotateX(${open ? -152 : hover ? -8 : 0}deg)`,
@@ -220,7 +220,7 @@ function Envelope({
             }}
           >
             <svg
-              viewBox="0 0 400 86"
+              viewBox="0 0 400 62"
               preserveAspectRatio="none"
               className="absolute inset-0 h-full w-full"
               style={{ backfaceVisibility: 'hidden', filter: 'drop-shadow(0 6px 10px rgba(196,143,163,0.26))' }}
@@ -231,11 +231,11 @@ function Envelope({
                   <stop offset="1" stopColor="#FBEFF2" />
                 </linearGradient>
               </defs>
-              <path d="M0 0 H400 L200 86 Z" fill="url(#flapF)" />
-              <path d="M0 0 L200 86 L400 0" fill="none" stroke="rgba(196,143,163,0.28)" strokeWidth="1" />
+              <path d="M0 0 H400 L200 62 Z" fill="url(#flapF)" />
+              <path d="M0 0 L200 62 L400 0" fill="none" stroke="rgba(196,143,163,0.28)" strokeWidth="1" />
             </svg>
             <svg
-              viewBox="0 0 400 86"
+              viewBox="0 0 400 62"
               preserveAspectRatio="none"
               className="absolute inset-0 h-full w-full"
               style={{
@@ -250,7 +250,7 @@ function Envelope({
                   <stop offset="1" stopColor="#FEFAFB" />
                 </linearGradient>
               </defs>
-              <path d="M0 0 H400 L200 86 Z" fill="url(#flapB)" />
+              <path d="M0 0 H400 L200 62 Z" fill="url(#flapB)" />
             </svg>
           </div>
 
@@ -258,13 +258,23 @@ function Envelope({
 
           <Stamp org={note.org} />
 
-          {/* 封面那句 */}
-          <p
-            className="relative z-10 font-serif font-light leading-[1.32] text-plum"
-            style={{ fontSize: 'clamp(1.15rem,2.1vw,1.5rem)', letterSpacing: '-0.012em' }}
+          {/* 封面那句：拆开后收掉 —— 它本来就是信里的一句，
+              开着时同一句读两遍是冗余，收掉还省下三四行高度 */}
+          <div
+            className="relative z-10 grid"
+            style={{
+              gridTemplateRows: open ? '0fr' : '1fr',
+              opacity: open ? 0 : 1,
+              transition: `grid-template-rows .7s ${EASE}, opacity .4s ease`,
+            }}
           >
-            {note.lead}
-          </p>
+            <p
+              className="overflow-hidden font-serif font-light leading-[1.32] text-plum"
+              style={{ fontSize: 'clamp(1rem,1.75vw,1.25rem)', letterSpacing: '-0.012em' }}
+            >
+              {note.lead}
+            </p>
+          </div>
 
           {/* 整封信 */}
           <div
@@ -276,7 +286,7 @@ function Envelope({
           >
             <div className="overflow-hidden">
               <div
-                className="mt-6 rounded-[0.8rem] px-5 py-5"
+                className="mt-4 rounded-[0.7rem] px-4 py-4"
                 style={{
                   background: 'linear-gradient(180deg, #FFFFFF 0%, #FDF9FA 100%)',
                   boxShadow: open
@@ -288,8 +298,8 @@ function Envelope({
                 }}
               >
                 {/* 信头：像真的机构信笺，标识 + 姓名 + 关系日期 */}
-                <div className="mb-4 flex items-center gap-3 border-b border-plum/10 pb-3.5">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-white ring-1 ring-plum/10">
+                <div className="mb-3 flex items-center gap-2.5 border-b border-plum/10 pb-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-white ring-1 ring-plum/10">
                     <img src={note.org.logo} alt="" className="h-[18px] w-[18px] object-contain" />
                   </span>
                   <span className="min-w-0">
@@ -303,16 +313,16 @@ function Envelope({
                     )}
                   </span>
                 </div>
-                <p className="text-[14px] leading-relaxed text-plum-muted">{note.text}</p>
+                <p className="text-[13px] leading-relaxed text-plum-muted">{note.text}</p>
               </div>
             </div>
           </div>
 
           {/* 落款：署名用手写体，像信末的签名 */}
-          <footer className="relative z-10 mt-7 border-t border-plum/10 pt-5">
-            <p className="font-hand text-[19px] leading-none text-plum">{note.from}</p>
-            <p className="mt-2.5 text-[12px] leading-snug text-plum-muted">{note.affil}</p>
-            <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <footer className="relative z-10 mt-5 border-t border-plum/10 pt-4">
+            <p className="font-hand text-[17px] leading-none text-plum">{note.from}</p>
+            <p className="mt-2 text-[11.5px] leading-snug text-plum-muted">{note.affil}</p>
+            <div className="mt-2.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5">
               {note.source ? (
                 // 真实性最强的信号：不用信我，自己去看。
                 // 放在 button 里，所以用 span + onClick 手动开，避免嵌套交互元素
@@ -463,7 +473,7 @@ export function KindNotes() {
   if (NOTES.length === 0) return null
 
   return (
-    <section id="notes" className="pb-6 pt-24 md:pb-10 md:pt-32">
+    <section id="notes" className="pb-4 pt-20 md:pb-8 md:pt-28">
       <div className="mx-auto max-w-5xl px-6 md:px-10">
         <Reveal>
           <p className="label-text mb-6 flex items-center gap-3">
@@ -509,10 +519,11 @@ export function KindNotes() {
         onWheel={takeOver}
         onTouchStart={takeOver}
         // min-h 给"拆开后最高的那封"预留：不留的话自动演示每拆一封，
-        // 整页下方都会跟着上下跳。实测最高一封 764px（桌面）/ 804px（手机，
-        // 卡更窄所以文字更高）—— 手机反而要留得更多。
-        // 合着时多出来的空白由 section 减掉下边距吃掉，不会看着像个洞。
-        className="mt-10 flex min-h-[820px] snap-x snap-mandatory items-start gap-6 md:min-h-[790px] overflow-x-auto overscroll-x-contain pb-6 pt-2 [-ms-overflow-style:none] [scrollbar-width:none] md:mt-14 md:gap-7 [&::-webkit-scrollbar]:hidden"
+        // 整页下方都会跟着上下跳。收窄卡片、拆开时收掉封面那句之后，
+        // 实测最高一封从 764/804 降到 597px（桌面）/ 639px（手机，卡更窄
+        // 所以同样的文字更高）——手机反而要留得更多。
+        // 合着时多出来的空白由 section 减掉下边距吃掉。
+        className="mt-8 flex min-h-[660px] snap-x snap-mandatory items-start gap-5 md:mt-12 md:min-h-[620px] overflow-x-auto overscroll-x-contain pb-6 pt-2 [-ms-overflow-style:none] [scrollbar-width:none] md:mt-14 md:gap-6 [&::-webkit-scrollbar]:hidden"
         style={{
           paddingLeft: 'max(24px, calc((100vw - 64rem) / 2 + 40px))',
           paddingRight: 'max(24px, calc((100vw - 64rem) / 2 + 40px))',
@@ -521,7 +532,7 @@ export function KindNotes() {
       >
         {NOTES.map((note, i) => (
           <Reveal key={note.from} delay={0.04 + i * 0.05} y={22} className="shrink-0 snap-start">
-            <div className="w-[300px] sm:w-[340px] md:w-[368px]">
+            <div className="w-[268px] sm:w-[296px] md:w-[318px]">
               <Envelope
                 note={note}
                 open={openIdx === i}
