@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Reveal, WordReveal } from '@/components/Reveal'
 
 /**
@@ -172,8 +172,16 @@ function Stamp({ org }: { org: Note['org'] }) {
   )
 }
 
-function Envelope({ note }: { note: Note }) {
-  const [open, setOpen] = useState(false)
+function Envelope({
+  note,
+  open,
+  onToggle,
+}: {
+  note: Note
+  open: boolean
+  /** open 交给父级 —— 自动演示要能替读者拆信 */
+  onToggle: () => void
+}) {
   const [hover, setHover] = useState(false)
 
   return (
@@ -181,7 +189,7 @@ function Envelope({ note }: { note: Note }) {
     <article className="relative pt-[64px]" style={{ perspective: '1500px' }}>
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={onToggle}
         onPointerEnter={(e) => e.pointerType !== 'touch' && setHover(true)}
         onPointerLeave={() => setHover(false)}
         aria-expanded={open}
@@ -345,19 +353,40 @@ function Envelope({ note }: { note: Note }) {
   )
 }
 
+/** 每封信停留多久：按字数给时间，短信不必干等，长信不至于读不完 */
+function holdFor(text: string) {
+  return Math.min(7000, 2400 + text.split(/\s+/).length * 95)
+}
+
 /**
- * 横向信封带。
+ * 横向信封带 + 自动演示。
  *
- * 不做自动滚动：信封是要点开读的，正读着被滑走会很烦
- * （照片带可以自动走，因为看照片不需要停留）。
- * 这里用 scroll-snap + 拖动 + 两个箭头，节奏交给读者。
+ * 它自己会演一遍：滑到一封 → 拆开 → 停够读完 → 收回 → 滑向下一封。
+ * 「自动滑动」和「拆信」在这里是同一件事，而不是两个各自播放的动效。
+ *
+ * 但自动播放不能跟正在读的人抢方向盘，所以：
+ *   - 只在整块进入视口时才播，离开就停
+ *   - 悬停暂停
+ *   - 用户一旦自己动（点信封 / 点箭头 / 拖动 / 触屏 / 滚轮）就**永久让位**
+ *   - prefers-reduced-motion 下完全不播
  */
 export function KindNotes() {
-  if (NOTES.length === 0) return null
-
   const railRef = useRef<HTMLDivElement>(null)
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(false)
+
+  /** 当前拆开的是哪一封（null = 都合着） */
+  const [openIdx, setOpenIdx] = useState<number | null>(null)
+  /** 自动演示走到第几封 */
+  const [cursor, setCursor] = useState(0)
+  const [playing, setPlaying] = useState(false)
+  const [hovering, setHovering] = useState(false)
+  const taken = useRef(false)
+
+  const takeOver = () => {
+    taken.current = true
+    setPlaying(false)
+  }
 
   const sync = () => {
     const el = railRef.current
@@ -366,7 +395,19 @@ export function KindNotes() {
     setAtEnd(el.scrollLeft > el.scrollWidth - el.clientWidth - 8)
   }
 
+  /** 把第 i 封滑到带子左缘（对齐内边距，和 snap 落点一致） */
+  const slideTo = (i: number) => {
+    const el = railRef.current
+    if (!el) return
+    const card = el.querySelectorAll('article')[i] as HTMLElement | undefined
+    if (!card) return
+    const pad = parseFloat(getComputedStyle(el).paddingLeft) || 0
+    const left = card.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft - pad
+    el.scrollTo({ left, behavior: 'smooth' })
+  }
+
   const nudge = (dir: 1 | -1) => {
+    takeOver()
     const el = railRef.current
     if (!el) return
     const card = el.querySelector('article')
@@ -374,8 +415,37 @@ export function KindNotes() {
     el.scrollBy({ left: dir * step, behavior: 'smooth' })
   }
 
+  // 整块进视口才播；离开就停（别在看不见的地方空转）
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const el = railRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => setPlaying(e.isIntersecting && !taken.current),
+      { threshold: 0.25 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  // 一封信的完整一拍：滑过去 → 拆开 → 停 → 收回 → 下一封
+  useEffect(() => {
+    if (!playing || hovering) return
+    const timers: number[] = []
+    const note = NOTES[cursor]
+    slideTo(cursor)
+    timers.push(window.setTimeout(() => setOpenIdx(cursor), 850))
+    timers.push(window.setTimeout(() => setOpenIdx(null), 850 + holdFor(note.text)))
+    timers.push(
+      window.setTimeout(() => setCursor((c) => (c + 1) % NOTES.length), 850 + holdFor(note.text) + 700),
+    )
+    return () => timers.forEach(clearTimeout)
+  }, [playing, hovering, cursor])
+
+  if (NOTES.length === 0) return null
+
   return (
-    <section id="notes" className="py-24 md:py-32">
+    <section id="notes" className="pb-6 pt-24 md:pb-10 md:pt-32">
       <div className="mx-auto max-w-5xl px-6 md:px-10">
         <Reveal>
           <p className="label-text mb-6 flex items-center gap-3">
@@ -392,9 +462,10 @@ export function KindNotes() {
             </span>
           </h2>
 
-          {/* 左右箭头：到头就禁用，不做无限循环 */}
           <div className="flex items-center gap-2">
-            <span className="mr-1 font-hand text-[15px] text-plum-muted">slide · open one ✦</span>
+            <span className="mr-1 font-hand text-[15px] text-plum-muted">
+              {playing && !hovering ? 'reading them for you ✦' : 'slide · open one ✦'}
+            </span>
             {([-1, 1] as const).map((d) => (
               <button
                 key={d}
@@ -411,14 +482,20 @@ export function KindNotes() {
         </div>
       </div>
 
-      {/* 满宽的带子：第一封与容器左边缘对齐，末尾留出同样的余量 */}
       <div
         ref={railRef}
         onScroll={sync}
-        className="mt-10 flex snap-x snap-mandatory items-start gap-6 overflow-x-auto overscroll-x-contain pb-6 pt-2 [-ms-overflow-style:none] [scrollbar-width:none] md:mt-14 md:gap-7 [&::-webkit-scrollbar]:hidden"
+        onPointerEnter={(e) => e.pointerType !== 'touch' && setHovering(true)}
+        onPointerLeave={() => setHovering(false)}
+        onPointerDown={takeOver}
+        onWheel={takeOver}
+        onTouchStart={takeOver}
+        // min-h 给"拆开后最高的那封"预留：不留的话自动演示每拆一封，
+        // 整页下方都会跟着上下跳。实测最高一封 764px（桌面）/ 804px（手机，
+        // 卡更窄所以文字更高）—— 手机反而要留得更多。
+        // 合着时多出来的空白由 section 减掉下边距吃掉，不会看着像个洞。
+        className="mt-10 flex min-h-[820px] snap-x snap-mandatory items-start gap-6 md:min-h-[790px] overflow-x-auto overscroll-x-contain pb-6 pt-2 [-ms-overflow-style:none] [scrollbar-width:none] md:mt-14 md:gap-7 [&::-webkit-scrollbar]:hidden"
         style={{
-          // 用内边距而不是前导空白元素：snap-mandatory 会跳过不是吸附点的空白，
-          // 第一封会被直接吸到视口边上。scroll-padding 让吸附点落在内边距之后。
           paddingLeft: 'max(24px, calc((100vw - 64rem) / 2 + 40px))',
           paddingRight: 'max(24px, calc((100vw - 64rem) / 2 + 40px))',
           scrollPaddingLeft: 'max(24px, calc((100vw - 64rem) / 2 + 40px))',
@@ -427,7 +504,14 @@ export function KindNotes() {
         {NOTES.map((note, i) => (
           <Reveal key={note.from} delay={0.04 + i * 0.05} y={22} className="shrink-0 snap-start">
             <div className="w-[300px] sm:w-[340px] md:w-[368px]">
-              <Envelope note={note} />
+              <Envelope
+                note={note}
+                open={openIdx === i}
+                onToggle={() => {
+                  takeOver()
+                  setOpenIdx((cur) => (cur === i ? null : i))
+                }}
+              />
             </div>
           </Reveal>
         ))}
