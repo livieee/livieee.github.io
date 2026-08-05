@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { Reveal, WordReveal } from '@/components/Reveal'
+import { tagStyle } from '@/components/TagTint'
 
 /**
  * /work —— 作品索引页。
@@ -126,7 +127,8 @@ function Card({ p, i }: { p: Project; i: number }) {
         {p.tags.map((t) => (
           <span
             key={t}
-            className="rounded-full border border-plum/10 bg-white/70 px-2.5 py-[3px] text-[10.5px] leading-none text-plum-faint"
+            className="rounded-full border px-2.5 py-[3px] text-[10.5px] font-medium leading-none"
+            style={tagStyle(t)}
           >
             {t}
           </span>

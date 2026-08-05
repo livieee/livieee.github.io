@@ -5,6 +5,7 @@ import { GlowEdge } from '@/components/GlowEdge'
 import { IEEEAwards } from '@/components/IEEEAwards'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { CountUp } from '@/components/CountUp'
+import { tagStyle } from '@/components/TagTint'
 import { TiltCard } from '@/components/TiltCard'
 import { AskDataUI } from '@/components/AskDataUI'
 import { ProgramWall } from '@/components/ProgramWall'
@@ -124,7 +125,10 @@ function useLandOnce<T extends HTMLElement>() {
 
 function Tag({ children }: { children: string }) {
   return (
-    <span className="rounded-full border border-plum/15 px-2.5 py-[2px] text-[10px] font-medium text-plum-muted">
+    <span
+      className="rounded-full border px-2.5 py-[2px] text-[10px] font-medium"
+      style={tagStyle(children)}
+    >
       {children}
     </span>
   )

@@ -70,17 +70,24 @@ export function Navigation() {
       initial={{ y: -32, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-cream/85 shadow-[0_1px_0_0_rgba(58,36,64,0.06)] backdrop-blur-md' : 'bg-transparent'
-      }`}
+      className="fixed inset-x-0 top-0 z-50 px-4 pt-3 md:px-6 md:pt-4"
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10" aria-label="Main">
-        <a href="#top" className="group/logo flex items-baseline gap-2 font-serif text-lg font-medium tracking-tight text-plum">
+      {/* 浮在内容上的圆角胶囊，而不是通栏横条。滚动后加深底色和阴影，
+          让它从"页面的一部分"变成"压在页面上的一层" */}
+      <nav
+        className={`mx-auto flex max-w-5xl items-center justify-between rounded-full px-5 py-2.5 transition-all duration-500 md:px-6 md:py-3 ${
+          scrolled
+            ? 'border border-white/70 bg-cream/85 shadow-[0_16px_40px_-22px_rgba(58,36,64,0.45)] backdrop-blur-md'
+            : 'border border-transparent bg-transparent'
+        }`}
+        aria-label="Main"
+      >
+        <a href="#top" className="group/logo flex items-baseline gap-2 font-serif text-[17px] font-medium tracking-tight text-plum">
           <span aria-hidden className="text-sm text-orchid/70 transition-transform duration-300 group-hover/logo:-translate-y-0.5">⌐</span>
           <span>Hi, I'm Olivia</span>
           <span aria-hidden className="text-sm text-orchid/70 transition-transform duration-300 group-hover/logo:translate-x-0.5 group-hover/logo:translate-y-0.5">↘</span>
         </a>
-        <div className="hidden items-center gap-7 md:flex">
+        <div className="hidden items-center gap-6 md:flex">
           {LINKS.map((l) => {
             const on = !!l.href && active === l.href
             const cls = `group relative text-[13px] font-medium transition-colors ${
