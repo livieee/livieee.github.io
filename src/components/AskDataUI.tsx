@@ -25,13 +25,13 @@ function ModuleShell({ i, num, label, active, inView, className = '', children }
       initial={{ opacity: 0, y: 14 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ delay: 0.25 + i * 0.16, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className={`relative rounded-xl border p-3 transition-all duration-500 ${
+      className={`relative rounded-xl border p-2.5 transition-all duration-500 ${
         active
           ? 'border-[#7FA3CC]/70 bg-[#EFF5FB] shadow-[0_0_0_4px_rgba(127,163,204,0.16),0_12px_26px_-14px_rgba(78,110,150,0.4)]'
           : 'border-plum/10 bg-white/85'
       } ${className}`}
     >
-      <div className="mb-2 flex items-center gap-1.5">
+      <div className="mb-1.5 flex items-center gap-1.5">
         <span
           className={`rounded-full px-1.5 py-0.5 text-[8.5px] font-semibold tracking-wide transition-colors duration-500 ${
             active ? 'bg-[#4E6E96] text-white' : 'bg-plum/[0.07] text-plum-faint'
@@ -92,7 +92,7 @@ export function AskDataUI() {
     <div ref={ref} className="select-none">
       <div className="overflow-hidden rounded-[1.4rem] border border-plum/10 bg-[#F7FAFD] shadow-[0_24px_60px_-28px_rgba(78,110,150,0.35)]">
         {/* 浏览器 chrome */}
-        <div className="flex items-center gap-3 border-b border-plum/[0.07] bg-white/80 px-4 py-2.5">
+        <div className="flex items-center gap-3 border-b border-plum/[0.07] bg-white/80 px-4 py-2">
           <span className="flex gap-1.5" aria-hidden>
             <i className="h-2.5 w-2.5 rounded-full bg-blush-deep" />
             <i className="h-2.5 w-2.5 rounded-full bg-champagne-deep" />
@@ -107,7 +107,7 @@ export function AskDataUI() {
         </div>
 
         {/* 工作台 */}
-        <div className="grid grid-cols-12 gap-2.5 p-3 sm:gap-3 sm:p-4">
+        <div className="grid grid-cols-12 gap-2 p-2.5 sm:gap-2.5 sm:p-3">
           {/* 01 Ask */}
           <ModuleShell i={0} num="01" label="Ask" active={lit(0)} inView={inView} className="col-span-12">
             <div className="flex items-center gap-2 rounded-lg border border-plum/[0.08] bg-white px-3 py-2">
@@ -136,7 +136,7 @@ export function AskDataUI() {
 
           {/* 04 Visualize（排在 SQL 右侧，编号按工作流） */}
           <ModuleShell i={3} num="04" label="Visualize" active={lit(3)} inView={inView} className="col-span-12 sm:col-span-5">
-            <div className="flex h-[64px] items-end gap-1.5 px-1" aria-hidden>
+            <div className="flex h-[52px] items-end gap-1.5 px-1" aria-hidden>
               {[42, 68, 55, 88, 62].map((h, i) => (
                 <span
                   key={i}

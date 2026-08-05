@@ -130,7 +130,7 @@ export function Impact() {
                   <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
                 </Link>
               </div>
-              <div className="flex flex-col justify-center gap-7">
+              <div className="flex flex-col justify-center gap-5">
                 {/* 产品主视觉：医生工作台 + SOAP note 叠放（淡插画作背景） */}
                 <Link
                   to="/work/theta"
@@ -154,13 +154,13 @@ export function Impact() {
                     src="/theta/ui-dashboard.jpg"
                     alt="Theta Care pre-chart summary — the physician workspace"
                     loading="lazy"
-                    className="relative w-[66%] rounded-xl border border-plum/15 shadow-[0_26px_60px_-24px_rgba(90,63,86,0.55)] transition-transform duration-500 group-hover/visual:-translate-y-1"
+                    className="relative w-[56%] rounded-xl border border-plum/15 shadow-[0_26px_60px_-24px_rgba(90,63,86,0.55)] transition-transform duration-500 group-hover/visual:-translate-y-1"
                   />
                   <img
                     src="/theta/ui-soap.jpg"
                     alt="AI-generated SOAP note, ready to sign in minutes"
                     loading="lazy"
-                    className="absolute bottom-0 right-0 w-[32%] rotate-2 rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] transition-transform duration-500 group-hover/visual:-translate-y-1.5 group-hover/visual:rotate-[3deg]"
+                    className="absolute bottom-0 right-0 w-[28%] rotate-2 rounded-xl border border-plum/15 shadow-[0_22px_48px_-18px_rgba(90,63,86,0.6)] transition-transform duration-500 group-hover/visual:-translate-y-1.5 group-hover/visual:rotate-[3deg]"
                   />
                   {/* 跟随光标的 Tap to view 胶囊 */}
                   {viewCur && (
@@ -183,7 +183,7 @@ export function Impact() {
             {/* 指标挪到卡底通栏：原本挤在右栏里，把右栏顶得比左栏高一大截，
                 左下角因此空出一片。通栏之后两栏等高，标签也能一行放下 */}
             <Metrics
-              className="mt-7 border-t border-plum/10 pt-6"
+              className="mt-5 border-t border-plum/10 pt-5"
               accent="text-rose"
               items={[
                 { value: '83%', n: 83, suffix: '%', label: 'reduction in manual documentation time' },
@@ -238,10 +238,10 @@ export function Impact() {
                   </Link>
 
                   {/* 姊妹项目：窗口下方的轻量长条入口 */}
-                  <div className="mt-6 flex justify-center md:justify-start">
+                  <div className="mt-5 flex justify-center md:justify-start">
                     <Link
                       to="/work/bosch-schema"
-                      className="group/arch relative inline-flex max-w-full cursor-none items-center gap-5 rounded-full border border-plum/10 bg-white/80 py-3.5 pl-6 pr-8 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#7FA3CC]/60 hover:bg-white hover:shadow-[0_16px_34px_-14px_rgba(78,110,150,0.45)]"
+                      className="group/arch relative inline-flex max-w-full cursor-none items-center gap-4 rounded-full border border-plum/10 bg-white/80 py-2.5 pl-5 pr-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#7FA3CC]/60 hover:bg-white hover:shadow-[0_16px_34px_-14px_rgba(78,110,150,0.45)]"
                       onPointerMove={(e) => {
                         if (e.pointerType === 'touch') return
                         const r = e.currentTarget.getBoundingClientRect()
@@ -250,7 +250,7 @@ export function Impact() {
                       onPointerLeave={() => setArchCur(null)}
                     >
                       {/* 迷你管线图 */}
-                      <svg viewBox="0 0 116 34" className="hidden w-32 shrink-0 sm:block" aria-hidden>
+                      <svg viewBox="0 0 116 34" className="hidden w-24 shrink-0 sm:block" aria-hidden>
                         {[1, 12, 23].map((y, i) => (
                           <rect key={i} x="1" y={y} width="20" height="8" rx="3" fill="#EFF5FB" stroke="#7FA3CC" strokeWidth="1" />
                         ))}
@@ -264,14 +264,11 @@ export function Impact() {
                         <text x="98" y="19" textAnchor="middle" fontSize="7.5" fill="#8A6E7E">✓</text>
                       </svg>
                       <span className="min-w-0">
-                        <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-plum-faint">
-                          Also under this collaboration
-                        </span>
-                        <span className="mt-0.5 block truncate font-serif text-[17px] leading-snug text-plum">
+                        <span className="block truncate font-serif text-[16px] leading-snug text-plum">
                           Schema Extraction Agents
                         </span>
-                        <span className="mt-0.5 block text-[11.5px] text-plum-muted">
-                          Solution Architect · 56.6% → 97.2% accuracy
+                        <span className="mt-0.5 block truncate text-[11px] text-plum-muted">
+                          Also under this collaboration · 56.6% → 97.2% accuracy
                         </span>
                       </span>
                       <span
@@ -325,15 +322,15 @@ export function Impact() {
                     <Tag>MVP Definition</Tag>
                     <Tag>PRDs</Tag>
                   </div>
-                  <div className="mt-6">
-                    <dd className="font-serif text-4xl font-light text-[#4E6E96] md:text-5xl">
+                  <div className="mt-5">
+                    <dd className="font-serif text-[26px] font-light leading-none text-[#4E6E96] md:text-[30px]">
                       <CountUp value={80} suffix="%+" />
                     </dd>
                     <span
-                      className="mt-1 block h-[3px] w-24 origin-left rounded-full bg-[#7FA3CC] opacity-40"
+                      className="mt-1.5 block h-[2px] w-20 origin-left rounded-full bg-[#7FA3CC] opacity-40"
                       style={{ transform: 'scaleX(0)', animation: 'metric-underline 0.6s 0.35s ease-out forwards' }}
                     />
-                    <dd className="mt-2 text-[12px] leading-snug text-plum-muted">
+                    <dd className="mt-1.5 text-[11.5px] leading-snug text-plum-muted">
                       manual analytics workflows streamlined
                     </dd>
                   </div>
