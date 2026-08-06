@@ -1,4 +1,4 @@
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { ScrollLit } from '@/components/ScrollLit'
 import { NetworkCanvas } from '@/components/NetworkCanvas'
@@ -13,11 +13,24 @@ const OPEN_TO = [
 ]
 
 /**
- * 三块「贴纸」就是三个真实入口，不是装饰。
+ * 每块「贴纸」都是一个真实入口，不是装饰。
  * 参考图里那排是纯图案；这里每一块都点得动 —— 一个看着像按钮的东西
  * 点不了，比不放更糟。
  */
-const CHANNELS = [
+type Channel = {
+  /** emoji 与 glyph 二选一：X 没有对应的 emoji，只能用字形 */
+  emoji?: string
+  glyph?: string
+  label: string
+  sub: string
+  href: string
+  external?: boolean
+  download?: boolean
+  bg: string
+  tilt: string
+}
+
+const CHANNELS: Channel[] = [
   {
     emoji: '✉️',
     label: 'Email',
@@ -38,15 +51,6 @@ const CHANNELS = [
     external: true,
     bg: '#E5DAF3',
     tilt: '3deg',
-  },
-  {
-    emoji: '📄',
-    label: 'Résumé',
-    sub: 'PDF, one page',
-    href: '/Olivia_Xiao_Resume.pdf',
-    download: true,
-    bg: '#EADFC6',
-    tilt: '-3deg',
   },
   {
     emoji: '🐙',
@@ -71,6 +75,7 @@ const CHANNELS = [
 ]
 
 export function Contact() {
+  const reduce = useReducedMotion()
   return (
     <section id="contact" className="relative overflow-clip">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -86,7 +91,7 @@ export function Contact() {
 
         {/* 一张浮在氛围层上的卡片：标题、入口、正文收在同一块白底里 */}
         <Reveal y={28}>
-          <div className="max-w-3xl rounded-[1.8rem] border border-white/70 bg-white/85 p-7 shadow-[0_36px_80px_-40px_rgba(58,36,64,0.35)] backdrop-blur-md md:p-10">
+          <div className="max-w-2xl rounded-[1.8rem] border border-white/70 bg-white/85 p-7 shadow-[0_36px_80px_-40px_rgba(58,36,64,0.35)] backdrop-blur-md md:p-10">
             <h2 className="font-serif text-[clamp(2rem,5vw,3.2rem)] font-light leading-[1.05] text-plum">
               <WordReveal text="Let’s" />{' '}
               {/* 渐变字不能套 WordReveal：后者在内层加了 filter，子元素自成
@@ -95,7 +100,7 @@ export function Contact() {
                   transform / opacity 和 background-clip: text 不冲突 */}
               <motion.span
                 className="gradient-text inline-block italic"
-                initial={{ opacity: 0, y: 18, rotate: -3 }}
+                initial={{ opacity: 0, y: reduce ? 0 : 18, rotate: reduce ? 0 : -3 }}
                 whileInView={{ opacity: 1, y: 0, rotate: 0 }}
                 viewport={{ once: true, margin: '0px 0px -20% 0px' }}
                 transition={{ duration: 0.75, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
@@ -104,14 +109,14 @@ export function Contact() {
               </motion.span>
             </h2>
 
-            <ul className="mt-7 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3">
+            <ul className="mt-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3">
               {CHANNELS.map((c) => (
                 <li key={c.label}>
                   <a
                     href={c.href}
                     {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})}
                     {...(c.download ? { download: true } : {})}
-                    className="group/tile flex w-full flex-col items-center rounded-[1rem] px-1.5 py-3 text-center transition-all duration-300 hover:-translate-y-1 sm:w-[118px] sm:px-2 sm:py-3.5"
+                    className="group/tile flex w-full flex-col items-center rounded-[1rem] px-1.5 py-3 text-center transition-all duration-300 hover:-translate-y-1 sm:w-[128px] sm:px-2.5 sm:py-3.5"
                     style={{ transform: `rotate(${c.tilt})` }}
                   >
                     <span
@@ -124,7 +129,7 @@ export function Contact() {
                     <span className="mt-2.5 block text-[12.5px] font-medium leading-none text-plum">
                       {c.label}
                     </span>
-                    <span className="mt-1 hidden w-full text-[10px] leading-tight text-plum-faint sm:block">
+                    <span className="mt-1 block w-full text-[10px] leading-tight text-plum-faint">
                       {c.sub}
                     </span>
                   </a>
@@ -139,22 +144,33 @@ export function Contact() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.4}>
-          <div className="mt-8 flex max-w-3xl flex-wrap gap-2">
-            {OPEN_TO.map((o) => (
-              <span key={o} className="rounded-full border border-plum/15 bg-cream/70 px-4 py-1.5 text-[12px] font-medium text-plum-muted">
-                {o}
-              </span>
-            ))}
-          </div>
-        </Reveal>
+        {/* 一整块一起淡入的话，六个标签看着就是一张静态图；
+            逐个错开进场，读的人会顺着一个个看过去 */}
+        <ul className="mt-8 flex max-w-3xl flex-wrap gap-2">
+          {OPEN_TO.map((o, i) => (
+            <motion.li
+              key={o}
+              initial={{ opacity: 0, y: reduce ? 0 : 12, scale: reduce ? 1 : 0.94 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '0px 0px -18% 0px' }}
+              transition={{ duration: 0.5, delay: reduce ? 0 : i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+              className="rounded-full border border-plum/15 bg-cream/70 px-4 py-1.5 text-[12px] font-medium text-plum-muted transition-colors duration-300 hover:border-orchid/50 hover:text-plum"
+            >
+              {o}
+            </motion.li>
+          ))}
+        </ul>
 
-        <Reveal delay={0.6}>
-          <p className="mt-12 flex items-center gap-3 text-[13px] text-plum-faint">
-            <span className="inline-block h-1.5 w-1.5 animate-pulse-soft rounded-full bg-orchid" />
-            Based in the San Francisco Bay Area · Always up for a good conversation
-          </p>
-        </Reveal>
+        <motion.p
+          initial={{ opacity: 0, y: reduce ? 0 : 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '0px 0px -15% 0px' }}
+          transition={{ duration: 0.6, delay: reduce ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-12 flex items-center gap-3 text-[13px] text-plum-faint"
+        >
+          <span className="inline-block h-1.5 w-1.5 animate-pulse-soft rounded-full bg-orchid" />
+          Based in the San Francisco Bay Area · Always up for a good conversation
+        </motion.p>
       </div>
 
       <footer className="relative z-10 border-t border-plum/10">
@@ -163,10 +179,16 @@ export function Contact() {
           <p className="font-serif italic">connect · build · grow</p>
         </div>
         {/* 巨型幽灵署名：底边被页脚裁切 */}
-        <div aria-hidden className="pointer-events-none select-none">
-          <p className="translate-y-[26%] text-center font-serif text-[clamp(5.5rem,19vw,16rem)] font-light leading-none tracking-tight text-orchid/[0.08]">
+        <div aria-hidden className="pointer-events-none select-none overflow-clip">
+          <motion.p
+            initial={{ opacity: 0, y: reduce ? '26%' : '60%' }}
+            whileInView={{ opacity: 1, y: '26%' }}
+            viewport={{ once: true, margin: '0px 0px -8% 0px' }}
+            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center font-serif text-[clamp(5.5rem,19vw,16rem)] font-light leading-none tracking-tight text-orchid/[0.08]"
+          >
             Olivia
-          </p>
+          </motion.p>
         </div>
       </footer>
     </section>
