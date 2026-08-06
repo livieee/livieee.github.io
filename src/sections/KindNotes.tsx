@@ -365,19 +365,21 @@ function Envelope({
 
 /**
  * 随手发来的两段私信 —— 和上面六条不是一个语气，所以不塞进信封。
- * 正式的评价装在信封里，随口的一句就该是气泡的样子；
- * 语气的差别本身就是信息。
+ * 和上面的信封是同一套纸，只是短一些 —— 原本做成聊天气泡，那太像
+ * 在展示别人的私信了；收成便条，读的是那句话本身，不是它从哪儿来的。
  *
- * 原话照录（含 "T_T"，那是原文里的），只做重绘不贴原始截图 ——
- * 截图里有时间戳、头像和平台痕迹，那些是对方的隐私，不是内容。
- * 署名按她确认的口径：名 + 角色，不写全名、不写平台。
+ * 用词照录、不改写、不补标点。只做两处取舍：
+ *   - 同一条消息里连着发的几行合成一句（词序词形都没动）
+ *   - 略去 "T_T" —— 那是情绪，不是评价
+ * 只重绘、不贴原始截图：截图里有时间戳、头像和平台痕迹，
+ * 那些是对方的隐私，不是内容。署名按她确认的口径：名 + 角色。
  */
 const MESSAGES = {
   from: 'Victor',
   role: 'AI Valley founder',
-  threads: [
-    ['i always need more hands', 'and you are proactive rare trait to find'],
-    ['you were one of the best ai valley ppl', 'T_T', 'in terms of work ethic'],
+  notes: [
+    'i always need more hands and you are proactive rare trait to find',
+    'you were one of the best ai valley ppl in terms of work ethic',
   ],
 }
 
@@ -546,31 +548,37 @@ export function KindNotes() {
         ))}
       </div>
 
-      {/* 私信：气泡按顺序浮现，像消息一条条到 */}
+      {/* 两张便条：和信封同一套纸，只是短一些 */}
       <div className="mx-auto mt-4 max-w-5xl px-6 md:mt-8 md:px-10">
         <Reveal>
           <p className="mb-5 text-[11px] uppercase tracking-[0.22em] text-plum-faint">
-            and some that arrived as messages
+            and some that came as short notes
           </p>
         </Reveal>
 
-        <div className="flex flex-col gap-6 sm:flex-row sm:gap-10">
-          {MESSAGES.threads.map((thread, t) => (
-            <ul key={t} className="flex max-w-md flex-col items-start gap-2">
-              {thread.map((line, i) => (
-                <Reveal key={line} delay={0.06 + (t * thread.length + i) * 0.09} y={14}>
-                  <li
-                    className="rounded-[1.1rem] rounded-bl-[0.3rem] border border-plum/10 bg-white px-4 py-2.5 text-[14px] leading-snug text-plum shadow-[0_6px_16px_-12px_rgba(90,63,86,0.5)]"
-                  >
-                    {line}
-                  </li>
-                </Reveal>
-              ))}
-            </ul>
+        <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
+          {MESSAGES.notes.map((note, i) => (
+            <Reveal key={note} delay={0.08 + i * 0.12} y={18}>
+              <figure className="relative h-full overflow-hidden rounded-[1.1rem] border border-plum/10 bg-cream-soft/80 px-6 py-5 md:py-6 shadow-[0_12px_30px_-22px_rgba(90,63,86,0.55)]">
+                {/* 纸的上缘：一条比纸略深的窄边，像便条撕下来的那一侧 */}
+                <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-rose/25" />
+                <span
+                  aria-hidden
+                  className="absolute left-4 top-3 font-serif text-[42px] leading-none text-rose/20"
+                >
+                  “
+                </span>
+                <blockquote className="relative pl-6 font-serif text-[15px] font-light italic leading-relaxed text-plum md:text-[16px]">
+                  {note}
+                </blockquote>
+              </figure>
+            </Reveal>
           ))}
         </div>
 
-        <Reveal delay={0.5}>
+        {/* 两句都出自同一个人，署名就该只有一条 —— 每张卡各署一次，
+            并排看过去像是两个人说的 */}
+        <Reveal delay={0.4}>
           <p className="mt-5 flex flex-wrap items-baseline gap-x-3 text-[12px]">
             <span aria-hidden className="h-px w-6 self-center bg-rose/50" />
             <span className="font-hand text-[17px] leading-none text-plum">{MESSAGES.from}</span>
