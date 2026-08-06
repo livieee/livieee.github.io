@@ -22,7 +22,11 @@ const CHANNELS = [
     emoji: '✉️',
     label: 'Email',
     sub: 'olivia.zxiao@gmail.com',
-    href: 'mailto:olivia.zxiao@gmail.com',
+    // mailto: 会交给系统默认邮件客户端 —— 没配过的人点了什么都不发生。
+    // 这里直接开 Gmail 的撰写窗口，收件人已填好。地址本身还印在下面，
+    // 想用别的客户端的人可以自己复制。
+    href: 'https://mail.google.com/mail/?view=cm&fs=1&to=olivia.zxiao@gmail.com',
+    external: true,
     bg: '#F4D8E0',
     tilt: '-5deg',
   },
@@ -53,6 +57,17 @@ const CHANNELS = [
     bg: '#D6E4D9',
     tilt: '4deg',
   },
+  {
+    // X 没有对应的 emoji（🐦 是旧 Twitter 的鸟，已经不是它了），
+    // 直接用官方字形，字号调小一档配平其他几块的 emoji 视觉重量
+    glyph: '𝕏',
+    label: 'X',
+    sub: '@oliviahhhh61',
+    href: 'https://x.com/oliviahhhh61',
+    external: true,
+    bg: '#DCD8E8',
+    tilt: '-4deg',
+  },
 ]
 
 export function Contact() {
@@ -71,7 +86,7 @@ export function Contact() {
 
         {/* 一张浮在氛围层上的卡片：标题、入口、正文收在同一块白底里 */}
         <Reveal y={28}>
-          <div className="max-w-2xl rounded-[1.8rem] border border-white/70 bg-white/85 p-7 shadow-[0_36px_80px_-40px_rgba(58,36,64,0.35)] backdrop-blur-md md:p-10">
+          <div className="max-w-3xl rounded-[1.8rem] border border-white/70 bg-white/85 p-7 shadow-[0_36px_80px_-40px_rgba(58,36,64,0.35)] backdrop-blur-md md:p-10">
             <h2 className="font-serif text-[clamp(2rem,5vw,3.2rem)] font-light leading-[1.05] text-plum">
               <WordReveal text="Let’s" />{' '}
               {/* 渐变字不能套 WordReveal：后者在内层加了 filter，子元素自成
@@ -89,14 +104,14 @@ export function Contact() {
               </motion.span>
             </h2>
 
-            <ul className="mt-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3">
+            <ul className="mt-7 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3">
               {CHANNELS.map((c) => (
                 <li key={c.label}>
                   <a
                     href={c.href}
                     {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})}
                     {...(c.download ? { download: true } : {})}
-                    className="group/tile flex w-full flex-col items-center rounded-[1rem] px-1.5 py-3 text-center transition-all duration-300 hover:-translate-y-1 sm:w-[132px] sm:px-3 sm:py-3.5"
+                    className="group/tile flex w-full flex-col items-center rounded-[1rem] px-1.5 py-3 text-center transition-all duration-300 hover:-translate-y-1 sm:w-[118px] sm:px-2 sm:py-3.5"
                     style={{ transform: `rotate(${c.tilt})` }}
                   >
                     <span
@@ -104,12 +119,12 @@ export function Contact() {
                       className="flex h-[54px] w-[54px] items-center justify-center rounded-[0.9rem] text-[26px] leading-none shadow-[0_10px_22px_-12px_rgba(58,36,64,0.5)] transition-transform duration-300 group-hover/tile:scale-[1.06] sm:h-[62px] sm:w-[62px] sm:rounded-[0.95rem] sm:text-[30px]"
                       style={{ backgroundColor: c.bg }}
                     >
-                      {c.emoji}
+                      {c.glyph ? <span className="text-[24px] sm:text-[27px]">{c.glyph}</span> : c.emoji}
                     </span>
                     <span className="mt-2.5 block text-[12.5px] font-medium leading-none text-plum">
                       {c.label}
                     </span>
-                    <span className="mt-1 block w-full text-[10px] leading-tight text-plum-faint">
+                    <span className="mt-1 hidden w-full text-[10px] leading-tight text-plum-faint sm:block">
                       {c.sub}
                     </span>
                   </a>
