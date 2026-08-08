@@ -33,6 +33,7 @@ type Note = {
 const CMU = { name: 'Carnegie Mellon University', logo: '/logos/cmu.png' }
 const III = { name: 'CMU Integrated Innovation Institute', logo: '/logos/iii.png' }
 const PEOPLEAI = { name: 'People.ai', logo: '/logos/peopleai.png' }
+const AIVALLEY = { name: 'AI Valley', logo: '/logos/aivalley.png' }
 
 /** 她的 LinkedIn 推荐区 —— 两条同事推荐语的原始出处 */
 // 用主页地址而不是 /details/recommendations/：未登录访客点后者会被
@@ -85,6 +86,27 @@ const NOTES: Note[] = [
     affil: 'Sr. Technical Success Engineer at People.ai',
     meta: 'Worked with Olivia on the same team · November 2023',
     source: { label: 'View on LinkedIn', href: LI_RECS },
+  },
+  // Victor 这两句是随手发来的短消息，不是写下来的推荐信 —— meta 里说清楚，
+  // 免得混在正式推荐语里被当成同一种东西。用词照录、不改写、不补标点、
+  // 不动大小写；略去原文里的 "T_T"（那是情绪，不是评价）。
+  // 只重绘、不贴原始截图：截图里有时间戳、头像和平台痕迹，
+  // 那些是对方的隐私，不是内容。署名按她确认的口径：名 + 角色。
+  {
+    org: AIVALLEY,
+    lead: 'you are proactive rare trait to find',
+    text: 'i always need more hands and you are proactive rare trait to find',
+    from: 'Victor',
+    affil: 'AI Valley founder',
+    meta: 'A short note, not a written recommendation',
+  },
+  {
+    org: AIVALLEY,
+    lead: 'one of the best ai valley ppl',
+    text: 'you were one of the best ai valley ppl in terms of work ethic',
+    from: 'Victor',
+    affil: 'AI Valley founder',
+    meta: 'A short note, not a written recommendation',
   },
 ]
 
@@ -363,26 +385,6 @@ function Envelope({
   )
 }
 
-/**
- * 随手发来的两段私信 —— 和上面六条不是一个语气，所以不塞进信封。
- * 和上面的信封是同一套纸，只是短一些 —— 原本做成聊天气泡，那太像
- * 在展示别人的私信了；收成便条，读的是那句话本身，不是它从哪儿来的。
- *
- * 用词照录、不改写、不补标点。只做两处取舍：
- *   - 同一条消息里连着发的几行合成一句（词序词形都没动）
- *   - 略去 "T_T" —— 那是情绪，不是评价
- * 只重绘、不贴原始截图：截图里有时间戳、头像和平台痕迹，
- * 那些是对方的隐私，不是内容。署名按她确认的口径：名 + 角色。
- */
-const MESSAGES = {
-  from: 'Victor',
-  role: 'AI Valley founder',
-  notes: [
-    'i always need more hands and you are proactive rare trait to find',
-    'you were one of the best ai valley ppl in terms of work ethic',
-  ],
-}
-
 /** 每封信停留多久：按字数给时间，短信不必干等，长信不至于读不完 */
 function holdFor(text: string) {
   return Math.min(7000, 2400 + text.split(/\s+/).length * 95)
@@ -546,45 +548,6 @@ export function KindNotes() {
             </div>
           </Reveal>
         ))}
-      </div>
-
-      {/* 两张便条：和信封同一套纸，只是短一些 */}
-      <div className="mx-auto mt-4 max-w-5xl px-6 md:mt-8 md:px-10">
-        <Reveal>
-          <p className="mb-5 text-[11px] uppercase tracking-[0.22em] text-plum-faint">
-            and some that came as short notes
-          </p>
-        </Reveal>
-
-        <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
-          {MESSAGES.notes.map((note, i) => (
-            <Reveal key={note} delay={0.08 + i * 0.12} y={18}>
-              <figure className="relative h-full overflow-hidden rounded-[1.1rem] border border-plum/10 bg-cream-soft/80 px-6 py-5 md:py-6 shadow-[0_12px_30px_-22px_rgba(90,63,86,0.55)]">
-                {/* 纸的上缘：一条比纸略深的窄边，像便条撕下来的那一侧 */}
-                <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-rose/25" />
-                <span
-                  aria-hidden
-                  className="absolute left-4 top-3 font-serif text-[42px] leading-none text-rose/20"
-                >
-                  “
-                </span>
-                <blockquote className="relative pl-6 font-serif text-[15px] font-light italic leading-relaxed text-plum md:text-[16px]">
-                  {note}
-                </blockquote>
-              </figure>
-            </Reveal>
-          ))}
-        </div>
-
-        {/* 两句都出自同一个人，署名就该只有一条 —— 每张卡各署一次，
-            并排看过去像是两个人说的 */}
-        <Reveal delay={0.4}>
-          <p className="mt-5 flex flex-wrap items-baseline gap-x-3 text-[12px]">
-            <span aria-hidden className="h-px w-6 self-center bg-rose/50" />
-            <span className="font-hand text-[17px] leading-none text-plum">{MESSAGES.from}</span>
-            <span className="text-plum-muted">{MESSAGES.role}</span>
-          </p>
-        </Reveal>
       </div>
     </section>
   )
