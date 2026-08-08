@@ -33,7 +33,6 @@ type Note = {
 const CMU = { name: 'Carnegie Mellon University', logo: '/logos/cmu.png' }
 const III = { name: 'CMU Integrated Innovation Institute', logo: '/logos/iii.png' }
 const PEOPLEAI = { name: 'People.ai', logo: '/logos/peopleai.png' }
-const AIVALLEY = { name: 'AI Valley', logo: '/logos/aivalley.png' }
 
 /** 她的 LinkedIn 推荐区 —— 两条同事推荐语的原始出处 */
 // 用主页地址而不是 /details/recommendations/：未登录访客点后者会被
@@ -87,28 +86,25 @@ const NOTES: Note[] = [
     meta: 'Worked with Olivia on the same team · November 2023',
     source: { label: 'View on LinkedIn', href: LI_RECS },
   },
-  // Victor 这两句是随手发来的短消息，不是写下来的推荐信 —— meta 里说清楚，
-  // 免得混在正式推荐语里被当成同一种东西。用词照录、不改写、不补标点、
-  // 不动大小写；略去原文里的 "T_T"（那是情绪，不是评价）。
-  // 只重绘、不贴原始截图：截图里有时间戳、头像和平台痕迹，
-  // 那些是对方的隐私，不是内容。署名按她确认的口径：名 + 角色。
-  {
-    org: AIVALLEY,
-    lead: 'you are proactive rare trait to find',
-    text: 'i always need more hands and you are proactive rare trait to find',
-    from: 'Victor',
-    affil: 'AI Valley founder',
-    meta: 'A short note, not a written recommendation',
-  },
-  {
-    org: AIVALLEY,
-    lead: 'one of the best ai valley ppl',
-    text: 'you were one of the best ai valley ppl in terms of work ethic',
-    from: 'Victor',
-    affil: 'AI Valley founder',
-    meta: 'A short note, not a written recommendation',
-  },
 ]
+
+/**
+ * 聊天面板的底纹：自己画的一组细线小图形（信封、星、心、对话框），
+ * 不复刻任何一家的壁纸。用 data URI 省一次请求。
+ */
+const DOODLE = `url("data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns='http://www.w3.org/2000/svg' width='148' height='148' fill='none' stroke='#BE8A9C' stroke-width='1.4'>
+     <rect x='14' y='16' width='22' height='15' rx='2'/><path d='M14 18l11 8 11-8'/>
+     <path d='M72 14l2.6 5.6 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6-4.4-4.2 6-.8z'/>
+     <path d='M118 30c-3 0-5-2.2-5-5s2-4.6 4.2-4.6c1.6 0 2.6.8 3.3 1.8.7-1 1.7-1.8 3.3-1.8 2.2 0 4.2 1.8 4.2 4.6s-2 5-5 5z'/>
+     <rect x='20' y='72' width='26' height='18' rx='4'/><path d='M27 90l-2 6 7-6'/>
+     <circle cx='84' cy='80' r='9'/><path d='M80 80l3 3 5-6'/>
+     <path d='M112 74h20M112 80h20M112 86h13'/>
+     <rect x='16' y='118' width='20' height='20' rx='4'/><path d='M22 126h8M22 131h8'/>
+     <path d='M74 116l3 6.6 7 .9-5.2 4.9 1.3 7-6.1-3.4-6.1 3.4 1.3-7-5.2-4.9 7-.9z'/>
+     <circle cx='122' cy='126' r='8'/><path d='M122 118v16M114 126h16'/>
+   </svg>`,
+)}")`
 
 /** 慢而有重量的收尾 */
 const EASE = 'cubic-bezier(.16,1,.3,1)'
@@ -385,6 +381,28 @@ function Envelope({
   )
 }
 
+/**
+ * 随手发来的两段私信 —— 和上面那几封不是一个语气，所以不塞进信封，
+ * 按聊天的样子呈现：语气本身就是信息。
+ *
+ * 脱敏（原始截图里有，这里一律不放）：
+ *   - 手机号、全名 —— 署名只到名 + 角色，这是她确认过的口径
+ *   - 头像、平台标识、时间戳
+ * 时间戳尤其不能补：这两段我手上没有确切时间，编一个就是在伪造证据。
+ * 背景纹样自己画，不复刻 WhatsApp 那套涂鸦壁纸（那是它的美术资产）。
+ *
+ * 用词照录、不改写、不补标点、不动大小写；
+ * 略去原文里的 "T_T" —— 那是情绪，不是评价。
+ */
+const MESSAGES = {
+  from: 'Victor',
+  role: 'AI Valley founder',
+  threads: [
+    ['i always need more hands', 'and you are proactive rare trait to find'],
+    ['you were one of the best ai valley ppl', 'in terms of work ethic'],
+  ],
+}
+
 /** 每封信停留多久：按字数给时间，短信不必干等，长信不至于读不完 */
 function holdFor(text: string) {
   return Math.min(7000, 2400 + text.split(/\s+/).length * 95)
@@ -548,6 +566,45 @@ export function KindNotes() {
             </div>
           </Reveal>
         ))}
+      </div>
+
+      {/* 私信：按聊天的样子呈现。左侧收到的气泡、发信人名字用彩色，
+          右下角那只小尖角 —— 这些是通用的聊天界面惯例，不是谁的美术资产。
+          背景那层纹样是自己画的，没有复刻任何一家的壁纸。 */}
+      <div className="mx-auto mt-4 max-w-5xl px-6 md:mt-8 md:px-10">
+        <Reveal>
+          <p className="mb-5 text-[11px] uppercase tracking-[0.22em] text-plum-faint">
+            and some that arrived as messages
+          </p>
+        </Reveal>
+
+        <Reveal y={20}>
+          <div className="relative overflow-hidden rounded-[1.4rem] border border-plum/10 bg-cream-soft px-5 py-6 md:px-8 md:py-8">
+            <span aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: DOODLE, backgroundSize: '186px 186px' }} />
+
+            <div className="relative flex flex-col gap-5">
+              {MESSAGES.threads.map((thread, t) => (
+                <div key={t} className="flex flex-col items-start gap-1.5">
+                  <p className="pl-1 text-[12.5px] font-semibold text-[#B05A72]">
+                    {MESSAGES.from}
+                    <span className="ml-2 font-normal text-plum-faint">{MESSAGES.role}</span>
+                  </p>
+                  {thread.map((line, i) => (
+                    <Reveal key={line} delay={0.08 + (t * 2 + i) * 0.12} y={12}>
+                      <p
+                        className={`relative max-w-[34rem] bg-white px-4 py-2.5 text-[14.5px] leading-snug text-plum shadow-[0_4px_14px_-8px_rgba(90,63,86,0.45)] ${
+                          i === 0 ? 'rounded-[0.9rem] rounded-tl-[0.2rem]' : 'rounded-[0.9rem]'
+                        }`}
+                      >
+                        {line}
+                      </p>
+                    </Reveal>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
