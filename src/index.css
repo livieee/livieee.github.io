@@ -588,3 +588,31 @@ body {
     }
   }
 }
+
+/* Contact 那排贴纸的常驻浮动。
+   每块自己的倾角挂在外层的 <a> 上，这层只管上下浮 + 轻微摆动 ——
+   两个 transform 挂同一个元素会互相覆盖。
+   悬停时的放大挂在更内层的色块上，同理。 */
+@keyframes tile-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(-3.5deg);
+  }
+}
+.tile-float {
+  display: block;
+  animation: tile-float 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+/* 悬停时停下来：正在被指着的东西还在飘，点起来会打滑 */
+.group\/tile:hover .tile-float {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tile-float {
+    animation: none;
+  }
+}

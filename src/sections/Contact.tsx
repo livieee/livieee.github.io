@@ -110,7 +110,7 @@ export function Contact() {
             </h2>
 
             <ul className="mt-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3">
-              {CHANNELS.map((c) => (
+              {CHANNELS.map((c, i) => (
                 <li key={c.label}>
                   <a
                     href={c.href}
@@ -121,10 +121,17 @@ export function Contact() {
                   >
                     <span
                       aria-hidden
-                      className="flex h-[54px] w-[54px] items-center justify-center rounded-[0.9rem] text-[26px] leading-none shadow-[0_10px_22px_-12px_rgba(58,36,64,0.5)] transition-transform duration-300 group-hover/tile:scale-[1.06] sm:h-[62px] sm:w-[62px] sm:rounded-[0.95rem] sm:text-[30px]"
-                      style={{ backgroundColor: c.bg }}
+                      className="tile-float"
+                      // 四块各走各的节奏：同步起落会像一整块在动，
+                      // 错开之后才像四张各自贴上去的纸
+                      style={{ animationDelay: `${i * 0.55}s`, animationDuration: `${3.8 + i * 0.45}s` }}
                     >
-                      {c.glyph ? <span className="text-[24px] sm:text-[27px]">{c.glyph}</span> : c.emoji}
+                      <span
+                        className="flex h-[54px] w-[54px] items-center justify-center rounded-[0.9rem] text-[26px] leading-none shadow-[0_10px_22px_-12px_rgba(58,36,64,0.5)] transition-transform duration-300 group-hover/tile:scale-[1.08] sm:h-[62px] sm:w-[62px] sm:rounded-[0.95rem] sm:text-[30px]"
+                        style={{ backgroundColor: c.bg }}
+                      >
+                        {c.glyph ? <span className="text-[24px] sm:text-[27px]">{c.glyph}</span> : c.emoji}
+                      </span>
                     </span>
                     <span className="mt-2.5 block text-[12.5px] font-medium leading-none text-plum">
                       {c.label}
