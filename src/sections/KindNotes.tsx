@@ -566,46 +566,50 @@ export function KindNotes() {
             </div>
           </Reveal>
         ))}
-      </div>
 
-      {/* 私信：按聊天的样子呈现。左侧收到的气泡、发信人名字用彩色，
-          右下角那只小尖角 —— 这些是通用的聊天界面惯例，不是谁的美术资产。
-          背景那层纹样是自己画的，没有复刻任何一家的壁纸。 */}
-      <div className="mx-auto mt-4 max-w-5xl px-6 md:mt-8 md:px-10">
-        <Reveal>
-          <p className="mb-5 text-[11px] uppercase tracking-[0.22em] text-plum-faint">
-            and some that arrived as messages
-          </p>
-        </Reveal>
-
-        <Reveal y={20}>
-          <div className="relative overflow-hidden rounded-[1.4rem] border border-plum/10 bg-cream-soft px-5 py-6 md:px-8 md:py-8">
-            <span aria-hidden className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: DOODLE, backgroundSize: '186px 186px' }} />
-
-            <div className="relative flex flex-col gap-5">
-              {MESSAGES.threads.map((thread, t) => (
-                <div key={t} className="flex flex-col items-start gap-1.5">
-                  <p className="pl-1 text-[12.5px] font-semibold text-[#B05A72]">
-                    {MESSAGES.from}
-                    <span className="ml-2 font-normal text-plum-faint">{MESSAGES.role}</span>
-                  </p>
-                  {thread.map((line, i) => (
-                    <Reveal key={line} delay={0.08 + (t * 2 + i) * 0.12} y={12}>
-                      <p
-                        className={`relative max-w-[34rem] bg-white px-4 py-2.5 text-[14.5px] leading-snug text-plum shadow-[0_4px_14px_-8px_rgba(90,63,86,0.45)] ${
-                          i === 0 ? 'rounded-[0.9rem] rounded-tl-[0.2rem]' : 'rounded-[0.9rem]'
-                        }`}
-                      >
-                        {line}
+        {/* 随手发来的私信和上面几封不是一个语气，所以不塞进信封 —— 但也不该
+            单独占一整块：它和那几封讲的是同一件事，就该排在同一条线索上。
+            宽度跟信封一致，滑到这儿自然就读到。
+            气泡、小尖角、彩色发信人名是通用的聊天界面惯例；底纹是自己画的，
+            没有复刻任何一家的壁纸。 */}
+        <Reveal delay={0.04 + NOTES.length * 0.05} y={22} className="shrink-0 snap-start">
+          <div className="w-[268px] sm:w-[296px] md:w-[318px]">
+            <div className="relative overflow-hidden rounded-[1.4rem] border border-plum/10 bg-cream-soft px-4 py-4 shadow-[0_18px_44px_-30px_rgba(90,63,86,0.5)]">
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 opacity-20"
+                style={{ backgroundImage: DOODLE, backgroundSize: '150px 150px' }}
+              />
+              <div className="relative">
+                <p className="mb-3 text-[9.5px] uppercase tracking-[0.2em] text-plum-muted">
+                  and some arrived as messages
+                </p>
+                <div className="flex flex-col gap-3.5">
+                  {MESSAGES.threads.map((thread, t) => (
+                    <div key={t} className="flex flex-col items-start gap-1">
+                      <p className="pl-0.5 text-[11px] font-semibold text-[#B05A72]">
+                        {MESSAGES.from}
+                        <span className="ml-1.5 font-normal text-plum-faint">{MESSAGES.role}</span>
                       </p>
-                    </Reveal>
+                      {thread.map((line, i) => (
+                        <p
+                          key={line}
+                          className={`max-w-full bg-white px-3 py-2 text-[12.5px] leading-snug text-plum shadow-[0_3px_10px_-6px_rgba(90,63,86,0.45)] ${
+                            i === 0 ? 'rounded-[0.8rem] rounded-tl-[0.18rem]' : 'rounded-[0.8rem]'
+                          }`}
+                        >
+                          {line}
+                        </p>
+                      ))}
+                    </div>
                   ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </Reveal>
       </div>
+
     </section>
   )
 }
