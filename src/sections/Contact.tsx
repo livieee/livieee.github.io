@@ -144,14 +144,14 @@ export function Contact() {
               ))}
             </ul>
 
-            {/* 原来这句把六个方向逐个列了一遍 —— 而正下方那排标签写的就是
-                同样六个，读第二遍是浪费。删掉枚举，留下这句真正在说的事。
-                字少了就撑得起更大的字号，逐词点亮也才看得出来。 */}
+            {/* 只留她点名的两件事：conversations，和志同道合的人。
+                方向由正下方那排标签讲（写的就是同样六个），这里不重复。
+                字越少越撑得起大字号，逐词点亮也才看得出来。 */}
             <ScrollLit
-              className="mt-7 text-[17px] leading-relaxed md:text-[19px]"
+              className="mt-7 text-[19px] leading-relaxed md:text-[22px]"
               from={8}
               to={70}
-              text="I'm open to conversations about work worth building slowly — and to making friends who care about the same things."
+              text="Open to conversations — and to friends who care about the same things."
             />
           </div>
         </Reveal>
