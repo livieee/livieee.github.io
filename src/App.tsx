@@ -9,6 +9,7 @@ import { LivingArtCase } from '@/pages/LivingArtCase'
 import { WorkIndex } from '@/pages/WorkIndex'
 import { YutoCase } from '@/pages/YutoCase'
 import { OnAI } from '@/pages/OnAI'
+import { OnAIPost } from '@/pages/OnAIPost'
 import NotFound from './pages/NotFound'
 
 /**
@@ -103,6 +104,7 @@ export default function App() {
         <Route path="/work/therapy-as-living-art" element={<LivingArtCase />} />
         <Route path="/work/yuto" element={<YutoCase />} />
         <Route path="/on-ai" element={<OnAI />} />
+        <Route path="/on-ai/:slug" element={<OnAIPost />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
