@@ -17,6 +17,15 @@ import { PhotoRail } from '@/components/PhotoRail'
  * 事实来源：IEEE Rising Stars 官方页面 + Theta Health 赛后复盘。
  */
 
+/**
+ * 第一名这句主张的出处：CMU Integrated Innovation Institute 官方账号发的帖。
+ * 「不用信我，自己去看」比任何自述都有力 —— 实测未登录也能读到正文
+ * （页面上方有 Sign in 提示条，但帖子内容照常渲染）。
+ * 链接去掉了分享时带上的跟踪参数（utm_* / rcm）。
+ */
+const CMU_POST =
+  'https://www.linkedin.com/posts/the-year-just-started-and-master-of-science-share-7417683318499979265-rdc9'
+
 const SHOTS: GalleryItem[] = [
   { src: '/ieee/two-certs.jpg', alt: 'Two first-place certificates', cap: 'Two first-place certificates — Pitch Contest and Project Showcase' },
   { src: '/ieee/theta-podium.jpg', alt: 'Olivia presenting Theta Health AI at the lectern', cap: 'The AgeTech pitch, from the lectern' },
@@ -323,8 +332,18 @@ export function IEEEAwards() {
               opacity: side === 'theta' ? 0.6 : 1,
             }}
           >
-            <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-orchid">
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-medium uppercase tracking-[0.14em] text-orchid">
               Project Showcase · 1st place
+              <a
+                href={CMU_POST}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="group/src inline-flex items-center gap-1 rounded-full border border-orchid/30 px-2 py-[1px] text-[9px] normal-case tracking-normal text-plum-muted transition-colors duration-300 hover:border-orchid hover:text-plum"
+              >
+                Announced by CMU III
+                <span aria-hidden className="transition-transform duration-300 group-hover/src:translate-x-0.5">↗</span>
+              </a>
             </p>
             <h4 className="mt-1 font-serif text-[17px] font-light leading-snug text-plum">
               Therapy as a Living Art

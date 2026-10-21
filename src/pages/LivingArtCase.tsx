@@ -31,6 +31,10 @@ const REPO = 'https://github.com/jessiex1998/IEEE_muse'
 const POST =
   'https://www.linkedin.com/posts/jessie-x_ieeerisingstar2026-ieee-ieeerisingstar2026-activity-7413748579472859138-BOzY'
 const IEEE = 'https://ieee-risingstars.org/2026/project-showcase/'
+// 学院官方账号宣布这次获奖的帖子 —— 一等奖这句主张最硬的一条出处。
+// 去掉了分享时带的跟踪参数（utm_* / rcm）
+const CMU_POST =
+  'https://www.linkedin.com/posts/the-year-just-started-and-master-of-science-share-7417683318499979265-rdc9'
 
 function Chapter({
   n,
@@ -590,6 +594,7 @@ export function LivingArtCase() {
               { href: IEEE, label: 'IEEE Showcase', logo: '/logos/ieee.png', alt: 'IEEE' },
               { href: REPO, label: 'GitHub', logo: '/logos/tools/github.jpg', alt: 'GitHub' },
               { href: POST, label: 'Project write-up', logo: '/logos/tools/linkedin.png', alt: 'LinkedIn' },
+              { href: CMU_POST, label: 'Announced by CMU III', logo: '/logos/iii.png', alt: 'CMU Integrated Innovation Institute' },
             ].map((l) => (
               <a
                 key={l.label}
