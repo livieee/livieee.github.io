@@ -94,7 +94,7 @@ const PROJECTS: Project[] = [
     // 只有这一条用抽象图：产品界面里全是真实的来源、品类与价格，
     // 按脱敏要求不能出现，所以不放真实截图
     img: '/images/case-industry.jpg',
-    note: 'Internal product — no public case study',
+    href: '/work/yuto',
   },
 ]
 

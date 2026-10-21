@@ -39,8 +39,10 @@ export function DailyReportCard() {
 
         <div className="px-3 pb-3 pt-2.5">
           <p className="text-[11px] font-semibold leading-tight text-plum">Daily price report</p>
+          {/* 不写品类数与来源数：那是公司的数据口径，不是她的产出。
+              这张卡是形状示意，不承担举证 */}
           <p className="mt-0.5 text-[8.5px] leading-tight text-plum-faint">
-            seven grades · two industry sources
+            multiple grades · multiple sources
           </p>
 
           {/* 报表示意 —— 形状而非数据 */}
@@ -64,10 +66,12 @@ export function DailyReportCard() {
             ))}
           </ul>
 
+          {/* 数据集有多大同样属于公司口径，而且它每天都在变 ——
+              写死一个数字，隔几个月就是错的 */}
           <div className="mt-2.5 flex items-baseline gap-1.5 border-t border-plum/10 pt-2">
-            <span className="font-serif text-[24px] leading-none text-orchid">337</span>
+            <span className="font-serif text-[15px] leading-none text-orchid">daily</span>
             <span className="text-[8.5px] leading-tight text-plum-faint">
-              trading days on record
+              since early 2025, unattended
             </span>
           </div>
         </div>

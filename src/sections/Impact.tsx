@@ -555,6 +555,14 @@ export function Impact() {
                   <Tag>Technical program management</Tag>
                   <Tag>Market &amp; GTM research</Tag>
                 </div>
+                <Link
+                  to="/work/yuto"
+                  state={{ from: 'home' }}
+                  className="group/cta mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-plum px-5 py-2.5 text-[13px] font-medium text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-orchid"
+                >
+                  Read the case study
+                  <span aria-hidden className="transition-transform duration-300 group-hover/cta:translate-x-0.5">→</span>
+                </Link>
               </article>
             </TiltCard>
           </Reveal>
