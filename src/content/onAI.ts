@@ -22,8 +22,6 @@ export type LocalPost = {
   when: string
   topic: string
   title: string
-  /** 拎到边栏的一句 —— 逐字摘自下面的正文，不是新写的 */
-  lift: string
   /** 她的思考 */
   learning: string[]
   /** 她推演的用法 */
@@ -69,7 +67,6 @@ export const POSTS: Post[] = [
   {
     kind: 'local',
     slug: "focus-on-software",
-    lift: "software design and ideas are now more valuable than raw coding skills",
     n: "06",
     when: 'Early 2025',
     topic: "AI and software careers",
@@ -88,7 +85,6 @@ export const POSTS: Post[] = [
   {
     kind: 'local',
     slug: "lines-of-code-is-a-bad-proxy",
-    lift: "these metrics often fail to capture the depth of contributions, problem-solving abilities, and technical leadership",
     n: "05",
     when: 'Early 2025',
     topic: "Measuring engineers",
@@ -106,7 +102,6 @@ export const POSTS: Post[] = [
   {
     kind: 'local',
     slug: "data-volume-to-data-quality",
-    lift: "AI development is shifting from data volume to data quality",
     n: "04",
     when: 'Early 2025',
     topic: "Distributed computing",
@@ -124,7 +119,6 @@ export const POSTS: Post[] = [
   {
     kind: 'local',
     slug: "efficient-beats-powerful",
-    lift: "AI models must become not only more powerful but also computationally efficient, similar to how the human brain processes information",
     n: "03",
     when: 'Early 2025',
     topic: "Cheap models, and who they help",
@@ -141,7 +135,6 @@ export const POSTS: Post[] = [
   {
     kind: 'local',
     slug: "multimodal-is-trial-and-error",
-    lift: "upgrading tools and infrastructure to handle the increasing complexity of AI workloads",
     n: "02",
     when: 'Early 2025',
     topic: "AI infrastructure",
@@ -156,7 +149,6 @@ export const POSTS: Post[] = [
   {
     kind: 'local',
     slug: "build-on-what-works",
-    lift: "innovation thrives by addressing limitations while enhancing current technologies",
     n: "01",
     when: 'Early 2025',
     topic: "Generative AI in robotics",

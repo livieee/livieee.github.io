@@ -46,6 +46,27 @@ function Quoted({ text }: { text: string }) {
   )
 }
 
+/**
+ * 一节 —— 两节长得完全一样：同一个左边缘、同一个字号、同一条分隔线。
+ * 之前第二节做成淡色面板，结果左边缘比第一节缩进了 32px，读下来会突然一跳；
+ * 而且那块平板和站上别处（白底 + 细边）不是一套语言。
+ * 区分两节靠小标题就够了，不需要再加一层底色。
+ */
+function Movement({ label, paras }: { label: string; paras: string[] }) {
+  return (
+    <section className="mt-12 border-t border-plum/10 pt-7 md:mt-14">
+      <p className="label-text mb-5">{label}</p>
+      <div className="space-y-5">
+        {paras.map((t) => (
+          <p key={t.slice(0, 40)} className="text-[15.5px] leading-[1.75] text-plum-muted md:text-base">
+            <Quoted text={t} />
+          </p>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export function OnAIPost() {
   const { slug } = useParams()
   const i = LOCAL.findIndex((p) => p.slug === slug)
@@ -73,8 +94,8 @@ export function OnAIPost() {
         </nav>
       </header>
 
-      {/* 正文一栏居中；边栏那句用 absolute 浮在右边，不挤版心 */}
-      <div className="relative mx-auto max-w-2xl px-6 pb-24 pt-32 md:px-10 md:pt-36">
+      {/* 正文一栏居中，65 字符左右的行宽 */}
+      <div className="mx-auto max-w-2xl px-6 pb-24 pt-32 md:px-10 md:pt-36">
         <article>
           <Reveal>
             <p className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -93,50 +114,12 @@ export function OnAIPost() {
 
           {/* ── 一 · 回看 ───────────────────────────────── */}
           <Reveal delay={0.14}>
-            <section className="relative mt-10">
-              {/* 边栏拎的那一句 —— 逐字摘自正文，贴着开头几段浮在右侧。
-                  窄屏隐藏：挤不下，而且同一句出现两遍在小屏上只是噪音 */}
-              <aside
-                aria-hidden
-                className="pointer-events-none absolute left-full top-8 hidden w-[230px] pl-10 xl:block"
-              >
-                <span aria-hidden className="block font-serif text-[40px] leading-none text-rose/25">
-                  {'\u201C'}
-                </span>
-                <p className="-mt-2 font-serif text-[17px] font-light italic leading-snug text-plum/70">
-                  {post.lift}
-                </p>
-              </aside>
-              <p className="label-text mb-4">What I took from it</p>
-              <div className="space-y-5">
-                {post.learning.map((t, k) => (
-                  <p
-                    key={t.slice(0, 40)}
-                    className={
-                      k === 0
-                        ? 'text-[17px] leading-[1.7] text-plum md:text-[18px]'
-                        : 'text-[15.5px] leading-[1.75] text-plum-muted md:text-base'
-                    }
-                  >
-                    <Quoted text={t} />
-                  </p>
-                ))}
-              </div>
-            </section>
+            <Movement label="What I took from it" paras={post.learning} />
           </Reveal>
 
           {/* ── 二 · 推演 ───────────────────────────────── */}
           <Reveal delay={0.2}>
-            <section className="mt-12 border-l-2 border-orchid/35 bg-lavender/20 py-6 pl-6 pr-5 md:mt-14 md:pl-8">
-              <p className="label-text mb-4">Where I'd point it</p>
-              <div className="space-y-5">
-                {post.useCase.map((t) => (
-                  <p key={t.slice(0, 40)} className="text-[15.5px] leading-[1.75] text-plum-muted md:text-base">
-                    <Quoted text={t} />
-                  </p>
-                ))}
-              </div>
-            </section>
+            <Movement label="Where I'd point it" paras={post.useCase} />
           </Reveal>
 
           <Reveal delay={0.24}>
