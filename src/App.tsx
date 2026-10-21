@@ -8,7 +8,7 @@ import { AIValleyCase } from '@/pages/AIValleyCase'
 import { LivingArtCase } from '@/pages/LivingArtCase'
 import { WorkIndex } from '@/pages/WorkIndex'
 import { YutoCase } from '@/pages/YutoCase'
-import { Writing } from '@/pages/Writing'
+import { OnAI } from '@/pages/OnAI'
 import NotFound from './pages/NotFound'
 
 /**
@@ -102,7 +102,7 @@ export default function App() {
         <Route path="/work/ai-valley" element={<AIValleyCase />} />
         <Route path="/work/therapy-as-living-art" element={<LivingArtCase />} />
         <Route path="/work/yuto" element={<YutoCase />} />
-        <Route path="/writing" element={<Writing />} />
+        <Route path="/on-ai" element={<OnAI />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

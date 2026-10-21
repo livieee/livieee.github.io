@@ -5,11 +5,13 @@ import { motion } from 'motion/react'
 /**
  * 顺序跟着页面本身的顺序走，滚动高亮才不会跳。
  * Work 指向首页的 Selected Impact；想看全部项目，走那一段最底下的
- * More work → /work。导航项直接跳去另一页会把正在读首页的人踢出去。
+ * More work → /work。导航项直接跳去另一页会把正在读首页的人踢出去 ——
+ * On AI 例外，它本来就是另一页，没有对应的首页段落。
  */
 const LINKS: { label: string; href?: string; to?: string }[] = [
   { label: 'Home', href: '#top' },
   { label: 'Work', href: '#impact' },
+  { label: 'On AI', to: '/on-ai' },
   { label: 'Journey', href: '#journey' },
   { label: 'Life', href: '#life' },
 ]

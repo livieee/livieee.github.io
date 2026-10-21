@@ -227,8 +227,8 @@ export function Contact() {
       <footer className="relative z-10 border-t border-plum/10">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-6 py-8 text-[12px] text-plum-faint md:flex-row md:items-center md:px-10">
           <p>© 2026 Olivia Xiao — AI Product · GTM · Partnerships</p>
-          <Link to="/writing" className="transition-colors hover:text-plum">
-            Writing →
+          <Link to="/on-ai" className="transition-colors hover:text-plum">
+            On AI →
           </Link>
           <p className="font-serif italic">connect · build · grow</p>
         </div>

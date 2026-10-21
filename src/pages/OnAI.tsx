@@ -3,19 +3,24 @@ import { Reveal, WordReveal } from '@/components/Reveal'
 import { BackLink } from '@/components/BackLink'
 
 /**
- * /writing —— 六篇课后反思。
+ * /on-ai —— 六篇对 AI 行业的判断。
  *
  * 原文是 CMU 课程作业，每篇四段：讲者摘要 / 讲者原话 / Personal Learning /
  * Possible Use Case。这里**只收后两段** —— 前两段是复述别人讲了什么、
  * 引用别人的原话，课堂客座讲座不是公开场合，不该替讲者发布。
  *
  * 文字按站上的语气压过一遍（原文是学生论文腔），但论点、例子、立场
- * 全部是她原文里的，没有新增观点。改写前后对照留在 PR 描述里。
- * 抬头的 Andrew ID 不上站。
+ * 全部是她原文里的，没有新增观点。抬头的 Andrew ID 不上站。
+ *
+ * 日期是刻意留在明面上的：这些是 2025 年初下的判断，不是现在的观点。
+ * 框成"我对 AI 的见解"而不标时间，读的人会默认这是此刻的判断 ——
+ * 其中有几条当时是赌、现在已是常识。标了时间，赌对的那几条才算数。
  */
 
 type Piece = {
   n: string
+  /** 写下这篇判断的时间 —— 六篇都出自同一个学期 */
+  when: string
   topic: string
   title: string
   /** 她的思考 */
@@ -27,6 +32,7 @@ type Piece = {
 const PIECES: Piece[] = [
   {
     n: '01',
+    when: 'Early 2025',
     topic: 'Generative AI in robotics',
     title: 'Build on what already works',
     body: [
@@ -39,6 +45,7 @@ const PIECES: Piece[] = [
   },
   {
     n: '02',
+    when: 'Early 2025',
     topic: 'AI infrastructure',
     title: 'Multimodal work is mostly trial and error',
     body: [
@@ -50,6 +57,7 @@ const PIECES: Piece[] = [
   },
   {
     n: '03',
+    when: 'Early 2025',
     topic: 'Cheap models, and who they help',
     title: 'Efficient beats powerful',
     body: [
@@ -62,6 +70,7 @@ const PIECES: Piece[] = [
   },
   {
     n: '04',
+    when: 'Early 2025',
     topic: 'Distributed computing',
     title: 'The shift from data volume to data quality',
     body: [
@@ -74,6 +83,7 @@ const PIECES: Piece[] = [
   },
   {
     n: '05',
+    when: 'Early 2025',
     topic: 'Measuring engineers',
     title: 'Lines of code is a bad proxy for contribution',
     body: [
@@ -86,6 +96,7 @@ const PIECES: Piece[] = [
   },
   {
     n: '06',
+    when: 'Early 2025',
     topic: 'AI and software careers',
     title: 'Focus on software, not on being a programmer',
     body: [
@@ -98,7 +109,7 @@ const PIECES: Piece[] = [
   },
 ]
 
-export function Writing() {
+export function OnAI() {
   return (
     <main className="min-h-screen bg-cream">
       <header className="fixed inset-x-0 top-0 z-50 bg-cream/85 shadow-[0_1px_0_0_rgba(58,36,64,0.06)] backdrop-blur-md">
@@ -114,22 +125,22 @@ export function Writing() {
         <Reveal>
           <p className="label-text mb-5 flex items-center gap-3">
             <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-orchid" />
-            Writing
+            On AI
           </p>
         </Reveal>
 
         <h1 className="font-serif text-[clamp(1.9rem,4.5vw,3rem)] font-light leading-[1.15] text-plum">
-          <WordReveal text="Six things I thought about" />{' '}
+          <WordReveal text="What I think is actually" />{' '}
           <span className="italic text-orchid">
-            <WordReveal text="while the field moved." delay={0.26} />
+            <WordReveal text="changing in AI." delay={0.26} />
           </span>
         </h1>
 
         <Reveal delay={0.16}>
           <p className="mt-5 max-w-xl text-[14.5px] leading-relaxed text-plum-muted">
-            Notes written after guest lectures at CMU in early 2025 — infrastructure, robotics,
-            cheap models, and what all of it does to the job. These are my own takeaways only;
-            what the speakers said stays in their room.
+            Infrastructure, robotics, cheap models, and what all of it does to the job.
+            Written after guest lectures at CMU — these are my own takeaways only; what the
+            speakers said stays in their room.
           </p>
         </Reveal>
 
@@ -142,6 +153,10 @@ export function Writing() {
                     {p.n}
                   </span>
                   <span className="label-text">{p.topic}</span>
+                  <span aria-hidden className="h-px w-4 bg-plum/15" />
+                  <span className="text-[10.5px] uppercase tracking-[0.18em] text-plum-faint">
+                    {p.when}
+                  </span>
                 </p>
 
                 <h2 className="font-serif text-[22px] font-light leading-snug text-plum md:text-[26px]">
