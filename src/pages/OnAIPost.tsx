@@ -103,8 +103,11 @@ export function OnAIPost() {
                 {post.n}
               </span>
               <span className="label-text">{post.topic}</span>
-              <span aria-hidden className="h-px w-4 bg-plum/15" />
-              <span className="text-[10.5px] uppercase tracking-[0.18em] text-plum-faint">{post.when}</span>
+              {/* 同上：短横跟日期绑在一起换行；窄屏不要它 */}
+              <span className="inline-flex items-baseline gap-3">
+                <span aria-hidden className="hidden h-px w-4 translate-y-[-4px] bg-plum/15 sm:block" />
+                <span className="text-[10.5px] uppercase tracking-[0.18em] text-plum-faint">{post.when}</span>
+              </span>
             </p>
           </Reveal>
 

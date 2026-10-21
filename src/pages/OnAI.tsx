@@ -55,9 +55,14 @@ export function OnAI() {
                   <span className="label-text">
                     {p.kind === 'external' ? p.where : p.topic}
                   </span>
-                  <span aria-hidden className="h-px w-4 bg-plum/15" />
-                  <span className="text-[10.5px] uppercase tracking-[0.18em] text-plum-faint">
-                    {p.when}
+                  {/* 短横和日期绑成一组：分开放的话换行时短横会留在上一行末尾，
+                      变成一根吊在半空的横线（390px 下实测过）。
+                      窄屏整条换行时短横会落到行首，同样别扭，所以 sm 以下直接不要 */}
+                  <span className="inline-flex items-baseline gap-3">
+                    <span aria-hidden className="hidden h-px w-4 translate-y-[-4px] bg-plum/15 sm:block" />
+                    <span className="text-[10.5px] uppercase tracking-[0.18em] text-plum-faint">
+                      {p.when}
+                    </span>
                   </span>
                 </span>
 
