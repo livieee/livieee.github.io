@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { Link } from 'react-router'
 import { motion, useReducedMotion } from 'motion/react'
 import { Reveal, WordReveal } from '@/components/Reveal'
 import { ScrollLit } from '@/components/ScrollLit'
@@ -23,6 +25,8 @@ type Channel = {
   glyph?: string
   label: string
   sub: string
+  /** 跟随光标的胶囊里显示的动作 —— 副标已经写了地址，这里说"点了会怎样" */
+  cta: string
   href: string
   external?: boolean
   download?: boolean
@@ -34,6 +38,7 @@ const CHANNELS: Channel[] = [
   {
     emoji: '✉️',
     label: 'Email',
+    cta: 'Write to me',
     sub: 'olivia.zxiao@gmail.com',
     // mailto: 会交给系统默认邮件客户端 —— 没配过的人点了什么都不发生。
     // 这里直接开 Gmail 的撰写窗口，收件人已填好。地址本身还印在下面，
@@ -46,6 +51,7 @@ const CHANNELS: Channel[] = [
   {
     emoji: '💼',
     label: 'LinkedIn',
+    cta: 'See my profile',
     sub: '/olivia-zerun-xiao',
     href: 'https://linkedin.com/in/olivia-zerun-xiao/',
     external: true,
@@ -55,6 +61,7 @@ const CHANNELS: Channel[] = [
   {
     emoji: '🐙',
     label: 'GitHub',
+    cta: 'See what I build',
     sub: '@livieee',
     href: 'https://github.com/livieee',
     external: true,
@@ -66,6 +73,7 @@ const CHANNELS: Channel[] = [
     // 直接用官方字形，字号调小一档配平其他几块的 emoji 视觉重量
     glyph: '𝕏',
     label: 'X',
+    cta: 'Follow along',
     sub: '@oliviahhhh61',
     href: 'https://x.com/oliviahhhh61',
     external: true,
@@ -76,6 +84,8 @@ const CHANNELS: Channel[] = [
 
 export function Contact() {
   const reduce = useReducedMotion()
+  /** 跟随光标的胶囊：指到哪一块、光标在这一排里的哪个位置 */
+  const [tileCur, setTileCur] = useState<{ x: number; y: number; cta: string } | null>(null)
   return (
     <section id="contact" className="relative overflow-clip">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -109,7 +119,10 @@ export function Contact() {
               </motion.span>
             </h2>
 
-            <ul className="mt-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3">
+            <ul
+              className="group/tiles relative mt-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3"
+              onPointerLeave={() => setTileCur(null)}
+            >
               {CHANNELS.map((c, i) => (
                 <li key={c.label}>
                   <a
@@ -118,6 +131,11 @@ export function Contact() {
                     {...(c.download ? { download: true } : {})}
                     className="group/tile flex w-full flex-col items-center rounded-[1rem] px-1.5 py-3 text-center transition-all duration-300 hover:-translate-y-1 sm:w-[128px] sm:px-2.5 sm:py-3.5"
                     style={{ transform: `rotate(${c.tilt})` }}
+                    onPointerMove={(e) => {
+                      if (e.pointerType === 'touch') return
+                      const r = e.currentTarget.parentElement!.parentElement!.getBoundingClientRect()
+                      setTileCur({ x: e.clientX - r.left, y: e.clientY - r.top, cta: c.cta })
+                    }}
                   >
                     <span
                       aria-hidden
@@ -126,11 +144,15 @@ export function Contact() {
                       // 错开之后才像四张各自贴上去的纸
                       style={{ animationDelay: `${i * 0.55}s`, animationDuration: `${3.8 + i * 0.45}s` }}
                     >
-                      <span
-                        className="flex h-[54px] w-[54px] items-center justify-center rounded-[0.9rem] text-[26px] leading-none shadow-[0_10px_22px_-12px_rgba(58,36,64,0.5)] transition-transform duration-300 group-hover/tile:scale-[1.08] sm:h-[62px] sm:w-[62px] sm:rounded-[0.95rem] sm:text-[30px]"
-                        style={{ backgroundColor: c.bg }}
-                      >
-                        {c.glyph ? <span className="text-[24px] sm:text-[27px]">{c.glyph}</span> : c.emoji}
+                      {/* 两级放大分两层挂：整排一起醒 × 这一块再长一档。
+                          两个 group-hover 挂在同一个元素上，谁覆盖谁不可控 */}
+                      <span className="block transition-transform duration-500 ease-out group-hover/tiles:scale-[1.08]">
+                        <span
+                          className="flex h-[54px] w-[54px] items-center justify-center rounded-[0.9rem] text-[26px] leading-none shadow-[0_10px_22px_-12px_rgba(58,36,64,0.5)] transition-transform duration-300 group-hover/tile:scale-[1.1] sm:h-[62px] sm:w-[62px] sm:rounded-[0.95rem] sm:text-[30px]"
+                          style={{ backgroundColor: c.bg }}
+                        >
+                          {c.glyph ? <span className="text-[24px] sm:text-[27px]">{c.glyph}</span> : c.emoji}
+                        </span>
                       </span>
                     </span>
                     <span className="mt-2.5 block text-[12.5px] font-medium leading-none text-plum">
@@ -142,6 +164,23 @@ export function Contact() {
                   </a>
                 </li>
               ))}
+
+              {/* 跟随光标的动作胶囊。圆角一角收尖朝向光标，
+                  和站上 Impact 里那几枚（Tap to view ↗）是同一套语言 */}
+              {tileCur && !reduce && (
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute z-20 hidden whitespace-nowrap bg-plum px-3 py-1.5 text-[12px] font-medium text-cream shadow-[0_12px_28px_-10px_rgba(58,36,64,0.6)] sm:block"
+                  style={{
+                    left: tileCur.x,
+                    top: tileCur.y,
+                    transform: 'translate(14px, 12px)',
+                    borderRadius: '2px 12px 12px 12px',
+                  }}
+                >
+                  {tileCur.cta} ↗
+                </span>
+              )}
             </ul>
 
             {/* 只留她点名的两件事：conversations，和志同道合的人。
@@ -188,6 +227,9 @@ export function Contact() {
       <footer className="relative z-10 border-t border-plum/10">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-6 py-8 text-[12px] text-plum-faint md:flex-row md:items-center md:px-10">
           <p>© 2026 Olivia Xiao — AI Product · GTM · Partnerships</p>
+          <Link to="/writing" className="transition-colors hover:text-plum">
+            Writing →
+          </Link>
           <p className="font-serif italic">connect · build · grow</p>
         </div>
         {/* 巨型幽灵署名：底边被页脚裁切 */}
